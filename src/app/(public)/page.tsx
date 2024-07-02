@@ -1,14 +1,8 @@
-import React from "react";
-import Navbar from "@/components/navbar/navbar";
+import Dashboard from "@/components/dashboard/dashboard";
 
-const App = ({children}: React.ReactNode) => {
+const Home = () => {
   return (
-    <>
-      <Navbar/>
-      <div className="container">
-        {children}
-      </div>
-    </>
+    <Dashboard/>
   );
 };
-export default App;
+export default Home;

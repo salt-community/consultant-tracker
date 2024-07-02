@@ -1,0 +1,43 @@
+.infographic-container {
+  display: flex;
+  height: 50px;
+  width: fit-content;
+  border-radius: 5px;
+  padding: 35px 20px;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+}
+
+.infographic-container.blue {
+  background-color: var(--light-blue);
+  color: var(--text-blue);
+}
+
+.infographic-container.green {
+  background-color: var(--light-green);
+  color: var(--text-green);
+}
+
+.infographic-container.yellow {
+  background-color: var(--light-yellow);
+  color: var(--text-yellow);
+}
+
+.infographic-container.violet {
+  background-color: var(--light-violet);
+  color: var(--text-violet);
+}
+
+.infographic-container h5 {
+  font-size: 15px;
+  font-weight: 500;
+  width: 100px;
+}
+
+.infographic-container span {
+  font-size: 30px;
+  font-weight: 600;
+}
