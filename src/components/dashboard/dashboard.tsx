@@ -1,17 +1,11 @@
-"use client"
+"use client";
 import Infographic from "./infographic/infographic";
 import "./dashboard.css";
 import { infographicData } from "@/mockData";
 import { ChangeEvent, useState } from "react";
+import FilterField from "../filter/filter";
 
 const Dashboard = () => {
-
-  const [filterValue, setFilterValue] = useState("");
-
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setFilterValue(e.target.value);
-    console.log("filter: ", filterValue)
-  }
   return (
     <section>
       <div className="dashboard-infographic__card">
@@ -28,12 +22,7 @@ const Dashboard = () => {
         })}
       </div>
       <div className="dashboard-table__wrapper">
-      <input
-        type="text"
-        value={filterValue}
-        onChange={(e) => handleInputChange(e)}
-        placeholder='Type to filter by ...'
-      />
+        <FilterField />
       </div>
     </section>
   );

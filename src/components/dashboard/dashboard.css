@@ -4,8 +4,3 @@
   justify-content: center;
   align-items: center;
 }
-
-.dashboard-table__wrapper {
-  display: flex;
-  background-color: brown;
-}
