@@ -2,7 +2,7 @@
 import React, { ChangeEvent, useState } from "react";
 import "./filter.css";
 import { ConsultantDataType } from "@/types";
-import { consultantsData } from "@/mockData";
+import { consultantsData, statusOptions } from "@/mockData";
 
 function FilterField() {
   const [filterValue, setFilterValue] = useState("");
@@ -55,6 +55,11 @@ function FilterField() {
       </div>
       {/* <button>Search</button> */}
       <button onClick={handleClear}>Clear Filter</button>
+      <div>
+      <select name="status" id="status">
+        {statusOptions.map((st, index) => <option value={st.toLowerCase()} key={index}>{st}</option>)}
+      </select>
+      </div>
     </>
   );
 }

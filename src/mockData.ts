@@ -23,3 +23,7 @@ export const consultantsData = [
   { id: "009", name: "Zara Larsson", client: "Swedbank", details: "some image", status: "active"},
   { id: "010", name: "Iris Lindahl", client: "Swedbank", details: "some image", status: "active"},
 ];
+
+export const statusOptions = [
+  "Show All", "Active", "Absence", "Inactive"
+]
