@@ -4,6 +4,7 @@ import {infographicData} from "@/mockData";
 import FilterField from "../filter/filter";
 import PageWrapper from "@/components/page-wrapper/page-wrapper";
 import TableLegend from "@/components/table/table-legend/table-legend";
+import Table from "../table/table";
 
 const Dashboard = () => {
   return (
@@ -23,6 +24,7 @@ const Dashboard = () => {
       </div>
       <FilterField/>
       <TableLegend />
+      <Table/>
     </PageWrapper>
   );
 };

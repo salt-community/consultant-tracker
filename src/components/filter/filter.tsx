@@ -1,25 +1,32 @@
 "use client";
-import React, {ChangeEvent, useState} from "react";
+
+import { ChangeEvent, useState } from "react";
 import "./filter.css";
-import {ConsultantDataType} from "@/types";
-import {consultantsData, statusOptions} from "@/mockData";
+import { consultantsData, statusOptions } from "@/mockData";
+import { useTableContext } from "@/context/context";
 
 function FilterField() {
   const [filterValue, setFilterValue] = useState("");
   const [filterBy, setFilterBy] = useState("Consultant");
-  const [data] = useState<ConsultantDataType[]>(consultantsData);
   const [status, setStatus] = useState("show all");
+  const data = useTableContext();
 
   const checkFilterValue = (dataVal: string, filterVal: string) => {
-    return dataVal.toLowerCase().includes(filterVal.toLowerCase());
+    console.log("FilterVal: ", filterVal);
+    const test = dataVal.toLowerCase().includes(filterVal.toLowerCase());
+    console.log("test ", test);
+    return test;
   };
 
   const checkStatus = (dataVal: string, statusVal: string) => {
+    if (statusVal === "show all") {
+      return true;
+    }
     return dataVal === statusVal;
   };
 
   const filterData = (searchParam: string, selectedStatus: string) => {
-    const filteredData = [...data].filter((df) => {
+    const filteredData = [...consultantsData].filter((df) => {
       if (filterBy === "Consultant") {
         return (
           checkFilterValue(df.name, searchParam) &&
@@ -31,7 +38,8 @@ function FilterField() {
         checkStatus(df.status, selectedStatus)
       );
     });
-    console.log(filteredData)
+    console.log("filteredData: ", filteredData);
+    data!.setData(filteredData);
   };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -47,6 +55,7 @@ function FilterField() {
   const handleClear = () => {
     setFilterValue("");
     setStatus("show all");
+    filterData("", "show all");
   };
 
   const handleStatusChange = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -102,8 +111,9 @@ function FilterField() {
           ))}
         </select>
       </div>
-      {/* <button>Search</button> */}
-      <button onClick={handleClear} className="clear-filter__button">Clear Filter</button>
+      <button onClick={handleClear} className="clear-filter__button">
+        Clear Filter
+      </button>
     </section>
   );
 }
