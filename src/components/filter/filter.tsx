@@ -12,10 +12,7 @@ function FilterField() {
   const data = useTableContext();
 
   const checkFilterValue = (dataVal: string, filterVal: string) => {
-    console.log("FilterVal: ", filterVal);
-    const test = dataVal.toLowerCase().includes(filterVal.toLowerCase());
-    console.log("test ", test);
-    return test;
+    return dataVal.toLowerCase().includes(filterVal.toLowerCase());
   };
 
   const checkStatus = (dataVal: string, statusVal: string) => {
@@ -38,7 +35,6 @@ function FilterField() {
         checkStatus(df.status, selectedStatus)
       );
     });
-    console.log("filteredData: ", filteredData);
     data!.setData(filteredData);
   };
 
