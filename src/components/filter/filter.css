@@ -1,3 +1,50 @@
-.dashboard-table__wrapper {
+.filter-section {
+    margin: 20px 0;
     display: flex;
-  }
+    flex-direction: column;
+    gap: 10px;
+}
+
+.filter-by__wrapper {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    flex-direction: row;
+}
+
+.filter-by__wrapper label, .filter-by__wrapper input[type="radio"] {
+    cursor: pointer;
+}
+
+.filter-text__input, .filter-status__wrapper select {
+    border-radius: 5px;
+    border: 2px solid #ddd;
+    font-size: 14px;
+    outline: none;
+    padding-left: 10px;
+}
+
+.filter-text__input:focus {
+    border: 2px solid #0d6eff;
+}
+
+.filter-text__input::placeholder {
+    font-size: 10px;
+}
+
+.filter-status__wrapper {
+    display: flex;
+    flex-direction: column;
+    max-width: 250px;
+}
+
+.clear-filter__button {
+    width: 200px;
+    background: #759bfb;
+    border: 1px solid navy;
+    color: navy;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+

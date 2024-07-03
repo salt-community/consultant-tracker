@@ -25,5 +25,20 @@ export const consultantsData = [
 ];
 
 export const statusOptions = [
-  "Show All", "Active", "Absence", "Inactive"
+   "Show All", "Active", "Absence", "Inactive"
+]
+
+export const status = [
+  {
+    id: 1,
+    value: "active"
+  },
+  {
+    id: 2,
+    value: "absence"
+  },
+  {
+    id: 1,
+    value: "inactive"
+  }
 ]

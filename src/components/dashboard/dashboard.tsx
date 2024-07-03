@@ -1,16 +1,16 @@
-"use client";
 import Infographic from "./infographic/infographic";
 import "./dashboard.css";
-import { infographicData } from "@/mockData";
-import { ChangeEvent, useState } from "react";
+import {infographicData} from "@/mockData";
 import FilterField from "../filter/filter";
+import PageWrapper from "@/components/page-wrapper/page-wrapper";
+import TableLegend from "@/components/table/table-legend/table-legend";
 
 const Dashboard = () => {
   return (
-    <section>
+    <PageWrapper>
       <div className="dashboard-infographic__card">
         {infographicData.map((element, index) => {
-          const { title, amount, variant } = element;
+          const {title, amount, variant} = element;
           return (
             <Infographic
               key={index}
@@ -21,10 +21,9 @@ const Dashboard = () => {
           );
         })}
       </div>
-      <div className="dashboard-table__wrapper">
-        <FilterField />
-      </div>
-    </section>
+      <FilterField/>
+      <TableLegend />
+    </PageWrapper>
   );
 };
 
