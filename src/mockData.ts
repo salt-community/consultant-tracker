@@ -12,33 +12,41 @@ export const infographicData = [
 ];
 
 export const consultantsData = [
-  { id: "001", name: "Stefan Hansdotter", client: "Syntronix", details: "some image", status: "active"},
-  { id: "002", name: "Astrad Rehnquist", client: "Scania", details: "some image", status: "absence"},
-  { id: "003", name: "Josephine Ahlgren Björk", client: "Astra Zeneca", details: "some image", status: "absence"},
-  { id: "004", name: "Olof Dahlquist", client: "Swedbank", details: "some image", status: "active"},
-  { id: "005", name: "Axel Folly", client: "Spotify", details: "some image", status: "active"},
-  { id: "006", name: "Allan Sanddahl", client: "ABB", details: "some image", status: "active"},
-  { id: "007", name: "Julia Roberts", client: "Telia", details: "some image", status: "active"},
-  { id: "008", name: "Agnes Ekbom", client: "Scania", details: "some image", status: "absence"},
-  { id: "009", name: "Zara Larsson", client: "Swedbank", details: "some image", status: "active"},
-  { id: "010", name: "Iris Lindahl", client: "Swedbank", details: "some image", status: "active"},
+  {
+    id: "001",
+    name: "Stefan Hansdotter",
+    client: "Syntronix",
+    status: "active",
+  },
+  { id: "002", name: "Astrad Rehnquist", client: "Scania", status: "absence" },
+  {
+    id: "003",
+    name: "Josephine Ahlgren Björk",
+    client: "Astra Zeneca",
+    status: "absence",
+  },
+  { id: "004", name: "Olof Dahlquist", client: "", status: "inactive" },
+  { id: "005", name: "Axel Folly", client: "Spotify", status: "active" },
+  { id: "006", name: "Allan Sanddahl", client: "ABB", status: "active" },
+  { id: "007", name: "Julia Roberts", client: "Telia", status: "active" },
+  { id: "008", name: "Agnes Ekbom", client: "Scania", status: "absence" },
+  { id: "009", name: "Zara Larsson", client: "", status: "inactive" },
+  { id: "010", name: "Iris Lindahl", client: "Swedbank", status: "active" },
 ];
 
-export const statusOptions = [
-   "Show All", "Active", "Absence", "Inactive"
-]
+export const statusOptions = ["Show All", "Active", "Absence", "Inactive"];
 
 export const status = [
   {
     id: 1,
-    value: "active"
+    value: "active",
   },
   {
     id: 2,
-    value: "absence"
+    value: "absence",
   },
   {
-    id: 1,
-    value: "inactive"
-  }
-]
+    id: 3,
+    value: "inactive",
+  },
+];
