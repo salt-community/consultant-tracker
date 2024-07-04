@@ -19,3 +19,31 @@
     justify-content: space-between;
     margin: 70px 0 15px 0;
 }
+
+.MuiPaper-root.paper-root__table {
+    width: 100%;
+    margin-bottom: 50px;
+    background: rgba(255, 255, 255, 0.4);
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px;
+}
+
+.MuiTableCell-root.header {
+    font-weight: 700;
+    font-size: 16px;
+
+}
+
+.MuiTableCell-root.header.center {
+    padding-left: 35px;
+}
+
+.MuiTableCell-root.outer-column {
+width: 10%;
+text-align: center;
+}
+
+.MuiTableCell-root.middle-column {
+    width: 40%;
+    text-align: left;
+    font-size: 16px;
+}

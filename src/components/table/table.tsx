@@ -81,11 +81,11 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   return (
     <TableHead>
       <TableRow>
-        {headCells.map((headCell) => (
+        {headCells.map((headCell, index) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? "right" : "left"}
-            padding={headCell.disablePadding ? "none" : "normal"}
+            padding="normal"
+            className={index == 0 || index == headCells.length -1 ? "header center" : "header"}
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
@@ -167,10 +167,10 @@ export default function EnhancedTable() {
         <p className="table-total-results">Total results: {tableData.length}</p>
       </div>
       <Box sx={{ width: "100%" }}>
-        <Paper sx={{ width: "100%", mb: 2 }}>
+        <Paper className="paper-root__table">
           <TableContainer>
             <Table
-              sx={{ minWidth: 750 }}
+              sx={{ minWidth: 750, background: "transparent"}}
               aria-labelledby="tableTitle"
               size={"medium"}
             >
@@ -183,9 +183,8 @@ export default function EnhancedTable() {
                 rowCount={tableData.length}
               />
               <TableBody>
-                {visibleRows.map((row) => {
+                {visibleRows.map((row, index) => {
                   const isItemSelected = isSelected(row.id);
-
                   return (
                     <TableRow
                       hover
@@ -194,11 +193,11 @@ export default function EnhancedTable() {
                       key={row.id}
                       selected={isItemSelected}
                     >
-                      <TableCell style={{ width: "10px" }} align="center">
+                      <TableCell className="outer-column">
                         <Indicator value={row.status} />
                       </TableCell>
-                      <TableCell align="left">{row.name}</TableCell>
-                      <TableCell align="left">
+                      <TableCell className="middle-column">{row.name}</TableCell>
+                      <TableCell className="middle-column">
                         {row.client === "-" ? (
                           row.client
                         ) : (
@@ -210,7 +209,7 @@ export default function EnhancedTable() {
                           </Link>
                         )}
                       </TableCell>
-                      <TableCell align="center" style={{ width: "20px" }}>
+                      <TableCell className="outer-column">
                         <Link
                           href={`/consultants/${row.id}`}
                           className="details-link"
