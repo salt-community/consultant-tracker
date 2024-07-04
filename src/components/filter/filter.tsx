@@ -51,7 +51,7 @@ function FilterField() {
     filterData(e.target.value, status);
   };
 
-  const handleCriteriaSelection = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleCriteriaSelection = (e: SelectChangeEvent) => {
     setFilterBy(e.target.value);
     handleClear();
   };
