@@ -1,0 +1,16 @@
+.details-link {
+    display: flex;
+    justify-content: center;
+}
+
+.clients-link {
+    color: var(--text-blue);
+}
+
+.table-total-results {
+    text-align: right;
+    color: var(--main-background);
+    font-weight: thin;
+    font-size: smaller;
+    margin: 5px 0;
+}
