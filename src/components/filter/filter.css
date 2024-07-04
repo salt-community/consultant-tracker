@@ -3,8 +3,8 @@
 }
 
 .filter-fieldset {
-    border: 1px solid #ddd;
-    padding: 10px;
+    border: none;
+    padding: 20px 10px;
     border-radius: 5px;
     position: relative;
     margin: 20px 0;
@@ -13,6 +13,7 @@
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px;
 }
 
 .filter-by__wrapper {
@@ -29,14 +30,6 @@
 .MuiFormControl-root.filter-text__input{
     width: 215px;
 }
-
-/*.filter-text__input, .filter-status__wrapper select {*/
-/*    border-radius: 5px;*/
-/*    border: 2px solid #ddd;*/
-/*    font-size: 14px;*/
-/*    outline: none;*/
-/*    padding-left: 10px;*/
-/*}*/
 
 .filter-text__input:focus {
     border: 2px solid #0d6eff;
