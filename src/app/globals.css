@@ -29,6 +29,9 @@
 body {
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-image: url("../../public/background.jpg");
 }
 
 img,
