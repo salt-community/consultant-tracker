@@ -12,10 +12,8 @@ export type ConsultantDataType = {
 };
 
 export type HeaderCellsType = {
-  disablePadding: boolean;
   id: keyof ConsultantDataType;
   label: string;
-  numeric: boolean;
 };
 
 export type ClientDataType = {

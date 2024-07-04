@@ -105,28 +105,20 @@ export const status = [
 
 export const headCells: HeaderCellsType[] = [
   {
-    disablePadding: false,
     id: "status",
     label: "Status",
-    numeric: false,
   },
   {
-    disablePadding: false,
     id: "name",
     label: "Name",
-    numeric: false,
   },
   {
-    disablePadding: false,
     id: "client",
     label: "Client",
-    numeric: false,
   },
   {
-    disablePadding: false,
     id: "details",
     label: "Details",
-    numeric: false,
   },
 ];
 
