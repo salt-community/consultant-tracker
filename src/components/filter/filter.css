@@ -1,8 +1,18 @@
-.filter-section {
+.filter-section__title {
+    padding: 0 10px;
+}
+
+.filter-fieldset {
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+    position: relative;
     margin: 20px 0;
     display: flex;
-    flex-direction: column;
     gap: 10px;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
 .filter-by__wrapper {
@@ -16,13 +26,17 @@
     cursor: pointer;
 }
 
-.filter-text__input, .filter-status__wrapper select {
-    border-radius: 5px;
-    border: 2px solid #ddd;
-    font-size: 14px;
-    outline: none;
-    padding-left: 10px;
+.MuiFormControl-root.filter-text__input{
+    width: 215px;
 }
+
+/*.filter-text__input, .filter-status__wrapper select {*/
+/*    border-radius: 5px;*/
+/*    border: 2px solid #ddd;*/
+/*    font-size: 14px;*/
+/*    outline: none;*/
+/*    padding-left: 10px;*/
+/*}*/
 
 .filter-text__input:focus {
     border: 2px solid #0d6eff;
@@ -38,13 +52,13 @@
     max-width: 250px;
 }
 
-.clear-filter__button {
-    width: 200px;
-    background: #759bfb;
-    border: 1px solid navy;
-    color: navy;
-    border-radius: 15px;
-    cursor: pointer;
-}
+/*.clear-filter__button {*/
+/*    width: 200px;*/
+/*    background: #759bfb;*/
+/*    border: 1px solid navy;*/
+/*    color: navy;*/
+/*    border-radius: 15px;*/
+/*    cursor: pointer;*/
+/*}*/
 
 

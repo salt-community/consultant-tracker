@@ -1,15 +1,23 @@
 "use client";
-
-import { ChangeEvent, useState } from "react";
+import {ChangeEvent, useState} from "react";
 import "./filter.css";
-import { consultantsData, statusOptions } from "@/mockData";
-import { useTableContext } from "@/context/context";
+import {consultantsData} from "@/mockData";
+import {useTableContext} from "@/context/context";
+import SelectStatus from "@/components/filter/select-status/select-status";
+import {SelectChangeEvent} from "@mui/material/Select";
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import FilterBy from "@/components/filter/filter-by/filter-by";
 
 function FilterField() {
   const [filterValue, setFilterValue] = useState("");
   const [filterBy, setFilterBy] = useState("Consultant");
   const [status, setStatus] = useState("show all");
   const data = useTableContext();
+  const handleStatusChange = (e: SelectChangeEvent) => {
+    setStatus(e.target.value as string);
+    filterData(filterValue, e.target.value);
+  }
 
   const checkFilterValue = (dataVal: string, filterVal: string) => {
     return dataVal.toLowerCase().includes(filterVal.toLowerCase());
@@ -54,62 +62,22 @@ function FilterField() {
     filterData("", "show all");
   };
 
-  const handleStatusChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setStatus(e.target.value);
-    filterData(filterValue, e.target.value);
-  };
-
   return (
-    <section className="filter-section">
-      <h3> Filter</h3>
-      <div className="filter-by__wrapper">
-        <div>
-          <input
-            type="radio"
-            id="consultant"
-            value="Consultant"
-            name="filter"
-            onChange={(e) => handleCriteriaSelection(e)}
-            checked={filterBy === "Consultant"}
-          />
-          <label htmlFor="consultant"> Consultant</label>
+    <section>
+      <fieldset className="filter-fieldset">
+        <legend className="filter-section__title"> Filter</legend>
+        <div className="filter-by__wrapper">
+          <TextField id="outlined-basic"
+                     label={`Type to filter by ${filterBy.toLowerCase()}`}
+                     variant="outlined"
+                     className="filter-text__input"
+                     value={filterValue}
+                     onChange={handleInputChange}/>
+          <FilterBy value={filterBy} handleChange={handleCriteriaSelection}/>
         </div>
-        <div>
-          <input
-            type="radio"
-            value="Client"
-            id="client"
-            name="filter"
-            onChange={(e) => handleCriteriaSelection(e)}
-            checked={filterBy === "Client"}
-          />
-          <label htmlFor="client"> Client</label>
-        </div>
-        <input
-          type="text"
-          className="filter-text__input"
-          value={filterValue}
-          onChange={(e) => handleInputChange(e)}
-          placeholder={`Type to filter by ${filterBy.toLowerCase()}`}
-        />
-      </div>
-      <div className="filter-status__wrapper">
-        <label htmlFor="status">Consultant status</label>
-        <select
-          name="status"
-          id="status"
-          onChange={(e) => handleStatusChange(e)}
-        >
-          {statusOptions.map((st, index) => (
-            <option value={st.toLowerCase()} key={index}>
-              {st}
-            </option>
-          ))}
-        </select>
-      </div>
-      <button onClick={handleClear} className="clear-filter__button">
-        Clear Filter
-      </button>
+        <SelectStatus status={status} handleChange={handleStatusChange}/>
+        <Button onClick={handleClear} variant="contained">Clear filter</Button>
+      </fieldset>
     </section>
   );
 }
