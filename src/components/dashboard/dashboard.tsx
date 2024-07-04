@@ -5,6 +5,7 @@ import FilterField from "../filter/filter";
 import PageWrapper from "@/components/page-wrapper/page-wrapper";
 import TableLegend from "@/components/table/table-legend/table-legend";
 import Table from "../table/table";
+import EnhancedTable from "../table/table-mui";
 
 const Dashboard = () => {
   return (
@@ -24,7 +25,8 @@ const Dashboard = () => {
       </div>
       <FilterField/>
       <TableLegend />
-      <Table/>
+      {/* <Table/> */}
+      <EnhancedTable />
     </PageWrapper>
   );
 };

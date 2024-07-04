@@ -1,3 +1,5 @@
+import { HeaderCellsType } from "./types";
+
 export const navLinks = [
   "Create new consultant",
   "Create new client",
@@ -17,21 +19,71 @@ export const consultantsData = [
     name: "Stefan Hansdotter",
     client: "Syntronix",
     status: "active",
+    details: "details.svg",
   },
-  { id: "002", name: "Astrad Rehnquist", client: "Scania", status: "absence" },
+  {
+    id: "002",
+    name: "Astrad Rehnquist",
+    client: "Scania",
+    status: "absence",
+    details: "details.svg",
+  },
   {
     id: "003",
     name: "Josephine Ahlgren Björk",
     client: "Astra Zeneca",
     status: "absence",
+    details: "details.svg",
   },
-  { id: "004", name: "Olof Dahlquist", client: "", status: "inactive" },
-  { id: "005", name: "Axel Folly", client: "Spotify", status: "active" },
-  { id: "006", name: "Allan Sanddahl", client: "ABB", status: "active" },
-  { id: "007", name: "Julia Roberts", client: "Telia", status: "active" },
-  { id: "008", name: "Agnes Ekbom", client: "Scania", status: "absence" },
-  { id: "009", name: "Zara Larsson", client: "", status: "inactive" },
-  { id: "010", name: "Iris Lindahl", client: "Swedbank", status: "active" },
+  {
+    id: "004",
+    name: "Olof Dahlquist",
+    client: "",
+    status: "inactive",
+    details: "details.svg",
+  },
+  {
+    id: "005",
+    name: "Axel Folly",
+    client: "Spotify",
+    status: "active",
+    details: "details.svg",
+  },
+  {
+    id: "006",
+    name: "Allan Sanddahl",
+    client: "ABB",
+    status: "active",
+    details: "details.svg",
+  },
+  {
+    id: "007",
+    name: "Julia Roberts",
+    client: "Telia",
+    status: "active",
+    details: "details.svg",
+  },
+  {
+    id: "008",
+    name: "Agnes Ekbom",
+    client: "Scania",
+    status: "absence",
+    details: "details.svg",
+  },
+  {
+    id: "009",
+    name: "Zara Larsson",
+    client: "",
+    status: "inactive",
+    details: "details.svg",
+  },
+  {
+    id: "010",
+    name: "Iris Lindahl",
+    client: "Swedbank",
+    status: "active",
+    details: "details.svg",
+  },
 ];
 
 export const statusOptions = ["Show All", "Active", "Absence", "Inactive"];
@@ -48,5 +100,32 @@ export const status = [
   {
     id: 3,
     value: "inactive",
+  },
+];
+
+export const headCells: HeaderCellsType[] = [
+  {
+    disablePadding: true,
+    id: "status",
+    label: "Status",
+    numeric: false,
+  },
+  {
+    disablePadding: true,
+    id: "name",
+    label: "Name",
+    numeric: false,
+  },
+  {
+    disablePadding: true,
+    id: "client",
+    label: "Client",
+    numeric: false,
+  },
+  {
+    disablePadding: true,
+    id: "details",
+    label: "Details",
+    numeric: false,
   },
 ];
