@@ -1,7 +1,6 @@
 "use client";
 
-import Indicator from "@/components/table/table-legend/indicator/indicator";
-import { consultantDetailsData, consultantsData } from "@/mockData";
+import { consultantDetailsData} from "@/mockData";
 import { ConsultantDetailsDataType } from "@/types";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
