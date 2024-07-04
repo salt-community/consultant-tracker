@@ -23,7 +23,7 @@ const PersonalData = () => {
 
   return (
     personalData && (
-      <div>
+      <section className="section-consultants">
         <h2>Personal Information</h2>
         <Indicator value={status} />
         <p>Name: {name}</p>
@@ -32,7 +32,7 @@ const PersonalData = () => {
         <p>Phone: {phone}</p>
         <p>Start date with Salt: {startDate}</p>
         <p>Remains hours with Salt: {remainsHours}</p>
-      </div>
+      </section>
     )
   );
 };
