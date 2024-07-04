@@ -38,7 +38,7 @@ export const consultantsData = [
   {
     id: "004",
     name: "Olof Dahlquist",
-    client: "",
+    client: "-",
     status: "inactive",
     details: "details.svg",
   },
@@ -73,7 +73,7 @@ export const consultantsData = [
   {
     id: "009",
     name: "Zara Larsson",
-    client: "",
+    client: "-",
     status: "inactive",
     details: "details.svg",
   },
