@@ -4,7 +4,7 @@ import { status } from "@/mockData";
 
 const TableLegend = () => {
   return (
-    <>
+    <div className="legend-wrapper">
       {status.map((status) => {
         const { id, value } = status;
         return (
@@ -14,7 +14,7 @@ const TableLegend = () => {
           </div>
         );
       })}
-    </>
+    </div>
   );
 };
 

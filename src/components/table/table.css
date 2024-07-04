@@ -8,9 +8,14 @@
 }
 
 .table-total-results {
-    text-align: right;
+    align-self: right;
     color: var(--main-background);
     font-weight: thin;
     font-size: smaller;
-    margin: 5px 0;
+}
+
+.table-top-info {
+    display: flex;
+    justify-content: space-between;
+    margin: 70px 0 15px 0;
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import "./indicator.css"
 
 type Props = {
   value: string;

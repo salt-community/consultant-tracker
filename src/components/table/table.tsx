@@ -17,6 +17,7 @@ import Indicator from "./table-legend/indicator/indicator";
 import { useTableContext } from "@/context/context";
 import Link from "next/link";
 import "./table.css";
+import TableLegend from "./table-legend/table-legend";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -161,7 +162,10 @@ export default function EnhancedTable() {
 
   return (
     <>
-    <p className="table-total-results">Total results: {tableData.length}</p>
+      <div className="table-top-info">
+        <TableLegend />
+        <p className="table-total-results">Total results: {tableData.length}</p>
+      </div>
       <Box sx={{ width: "100%" }}>
         <Paper sx={{ width: "100%", mb: 2 }}>
           <TableContainer>

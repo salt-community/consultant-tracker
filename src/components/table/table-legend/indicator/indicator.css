@@ -1,0 +1,24 @@
+.status-indicator__wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.status-indicator {
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    border-radius: 50%;
+}
+
+.status-indicator.active {
+    background: var(--text-green);
+}
+
+.status-indicator.absence {
+    background: var(--text-yellow);
+}
+
+.status-indicator.inactive {
+    background: var(--main-background);
+}

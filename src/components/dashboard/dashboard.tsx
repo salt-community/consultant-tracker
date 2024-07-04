@@ -23,7 +23,6 @@ const Dashboard = () => {
         })}
       </div>
       <FilterField />
-      <TableLegend />
       <EnhancedTable />
     </PageWrapper>
   );
