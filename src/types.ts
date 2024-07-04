@@ -9,7 +9,7 @@ export type ConsultantDataType = {
   client: string;
   status: string;
   details: string;
-}
+};
 
 export type HeaderCellsType = {
   disablePadding: boolean;
@@ -17,3 +17,39 @@ export type HeaderCellsType = {
   label: string;
   numeric: boolean;
 };
+
+export type ClientDataType = {
+  id: string;
+  name: string;
+  startDate: string;
+  endDate: string;
+};
+
+export type AbsenceType = {
+  description: string;
+  startDateAbsence: string;
+  endDateAbsence?: string;
+  absenceHours?: number;
+};
+
+export type MeetingsType = {
+  id: string;
+  date: string;
+  title: string;
+  description: string;
+};
+
+
+export type ConsultantDetailsDataType = {
+  id: string,
+  name: string
+  client: ClientDataType[],
+  status: string,
+  absence: AbsenceType[],
+  address: string,
+  phone: string,
+  startDate: string,
+  remainsHours: number,
+  email: string,
+  meetings: MeetingsType[],
+}
