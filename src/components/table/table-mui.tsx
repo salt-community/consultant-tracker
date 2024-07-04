@@ -15,7 +15,7 @@ import { headCells } from "@/mockData";
 import { ConsultantDataType } from "@/types";
 import Indicator from "./table-legend/indicator/indicator";
 import { useTableContext } from "@/context/context";
-
+import Link from "next/link";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -69,11 +69,7 @@ interface EnhancedTableProps {
 }
 
 function EnhancedTableHead(props: EnhancedTableProps) {
-  const {
-    order,
-    orderBy,
-    onRequestSort,
-  } = props;
+  const { order, orderBy, onRequestSort } = props;
   const createSortHandler =
     (property: keyof ConsultantDataType) =>
     (event: React.MouseEvent<unknown>) => {
@@ -118,7 +114,6 @@ export default function EnhancedTable() {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const tableData = useTableContext().data;
-  console.log("table data: ", tableData);
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -152,9 +147,7 @@ export default function EnhancedTable() {
   const isSelected = (id: string) => selected.indexOf(id) !== -1;
 
   const emptyRows =
-    page > 0
-      ? Math.max(0, (1 + page) * rowsPerPage - tableData.length)
-      : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - tableData.length) : 0;
 
   const visibleRows = React.useMemo(
     () =>
@@ -183,7 +176,7 @@ export default function EnhancedTable() {
               rowCount={tableData.length}
             />
             <TableBody>
-              {visibleRows.map((row, index) => {
+              {visibleRows.map(row => {
                 const isItemSelected = isSelected(row.id);
 
                 return (
@@ -194,17 +187,23 @@ export default function EnhancedTable() {
                     key={row.id}
                     selected={isItemSelected}
                   >
-                    <TableCell align="right"><Indicator value={row.status}/></TableCell>
+                    <TableCell align="right">
+                      <Indicator value={row.status} />
+                    </TableCell>
                     <TableCell align="right">{row.name}</TableCell>
                     <TableCell align="right">{row.client}</TableCell>
-                    <TableCell align="right">{row.details}</TableCell>
+                    <TableCell align="right">
+                      <Link href={`/details/${row.id}`}>
+                        <img src={row.details} alt="details-icon" />
+                      </Link>
+                    </TableCell>
                   </TableRow>
                 );
               })}
               {emptyRows > 0 && (
                 <TableRow
                   style={{
-                    height: (53) * emptyRows,
+                    height: 53 * emptyRows,
                   }}
                 >
                   <TableCell colSpan={6} />
