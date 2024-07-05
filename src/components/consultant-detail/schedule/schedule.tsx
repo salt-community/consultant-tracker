@@ -1,9 +1,10 @@
 "use client";
 
-import { consultantDetailsData} from "@/mockData";
-import { ConsultantDetailsDataType } from "@/types";
-import { usePathname } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import {consultantDetailsData} from "@/mockData";
+import {ConsultantDetailsDataType} from "@/types";
+import {usePathname} from "next/navigation";
+import React, {useEffect, useState} from "react";
+import './schedules.css'
 
 const Schedule = () => {
   const idParam = usePathname().split("/").pop();
@@ -20,21 +21,19 @@ const Schedule = () => {
 
   return (
     scheduleData && (
-      <div>
-        <h2>Manage schedules</h2>
-
+      <div className="meetings-schedule__wrapper">
         {scheduleData.meetings.map((item) => {
-          const { id, date, title, description } = item;
-          return( <div key={id}> 
-          <p>Title: {title}</p>
-          <p>Date : {date}</p>
-          <p>Description: {description}</p>
-          </div>
-          )        
+          const {id, date, title, description} = item;
+          return (<div key={id}>
+              <p>Title: {title}</p>
+              <p>Date : {date}</p>
+            <p>Description: {description}</p>
+          </div>)
         })}
       </div>
     )
-  );
+  )
+    ;
 };
 
 export default Schedule;

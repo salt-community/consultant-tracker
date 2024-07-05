@@ -1,4 +1,4 @@
-import { ConsultantDataType, ConsultantDetailsDataType, HeaderCellsType } from "./types";
+import {ConsultantDataType, ConsultantDetailsDataType, HeaderCellsType} from "./types";
 
 export const navLinks = [
   "Create new consultant",
@@ -7,10 +7,10 @@ export const navLinks = [
 ];
 
 export const infographicData = [
-  { title: "Total consultants", amount: 10, variant: "blue" },
-  { title: "Active consultants", amount: 7, variant: "green" },
-  { title: "Absent consultants", amount: 3, variant: "yellow" },
-  { title: "Number of clients", amount: 7, variant: "violet" },
+  {title: "Total consultants", amount: 10, variant: "blue"},
+  {title: "Active consultants", amount: 7, variant: "green"},
+  {title: "Absent consultants", amount: 3, variant: "yellow"},
+  {title: "Number of clients", amount: 7, variant: "violet"},
 ];
 
 export const consultantsData: ConsultantDataType[] = [
@@ -132,19 +132,19 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
         id: "001",
         date: "2021-02-01",
         title: "First regular meeting",
-        description: "Ask something",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
       },
       {
         id: "002",
         date: "2021-02-01",
         title: "Second regular meeting",
-        description: "Ask something",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
       },
       {
         id: "003",
         date: "2021-02-01",
         title: "Third regular meeting",
-        description: "Ask something",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
       },
     ],
   },
@@ -505,3 +505,26 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
     ],
   },
 ];
+
+export const tabs = [
+  {
+    id: 1,
+    label: "Personal information",
+    value: "personal"
+  },
+  {
+    id: 2,
+    label: "Meetings schedule",
+    value: "schedule"
+  },
+  {
+    id: 3,
+    label: "Vacation",
+    value: "vacation"
+  },
+  {
+    id: 4,
+    label: "Clients",
+    value: "clients"
+  }
+]

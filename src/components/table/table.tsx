@@ -18,7 +18,7 @@ import {useTableContext} from "@/context/context";
 import Link from "next/link";
 import "./table.css";
 import TableLegend from "./table-legend/table-legend";
-import {VscFileSymlinkDirectory} from "react-icons/vsc";
+import { FaArrowUpRightFromSquare } from "react-icons/fa6";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -201,7 +201,7 @@ export default function EnhancedTable() {
                       <TableCell className="middle-column">
                         <Link href={`/consultants/${row.id}`} className="clients-link">
                           {row.name}
-                          <VscFileSymlinkDirectory/>
+                          <FaArrowUpRightFromSquare />
                         </Link>
                       </TableCell>
                       <TableCell className="middle-column">
@@ -213,7 +213,7 @@ export default function EnhancedTable() {
                             className="clients-link"
                           >
                             {row.client}
-                            <VscFileSymlinkDirectory/>
+                            <FaArrowUpRightFromSquare />
                           </Link>
                         )}
                       </TableCell>
