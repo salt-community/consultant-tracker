@@ -8,7 +8,7 @@ import EnhancedTable from "../table/table";
 
 const Dashboard = () => {
   return (
-    <PageWrapper>
+    <>
       <div className="dashboard-infographic__card">
         {infographicData.map((element, index) => {
           const { title, amount, variant } = element;
@@ -24,7 +24,7 @@ const Dashboard = () => {
       </div>
       <FilterField />
       <EnhancedTable />
-    </PageWrapper>
+    </>
   );
 };
 
