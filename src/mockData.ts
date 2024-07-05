@@ -214,7 +214,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
         absenceHours: 80,
       },
     ],
-    github: "Kungsgatan 2, 111 11 Stockholm",
+    github: "jojophin",
     phone: "070-123 45 67",
     startDate: "2021-01-01",
     remainsHours: 200,
