@@ -8,11 +8,62 @@
 .basic-info__highlight-name {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: left;
+    width: 100%;
+    margin: 10px 0 30px 0;
 }
 
 .basic-info__indicator  {
     display: flex;
     align-items: center;
     gap: 7px;
+}
+
+.basic-info-section {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    /* width: 300px; */
+    padding: 30px 0;
+}
+
+.section-consultants{
+    display: flex;
+    margin-left: 50px;
+}
+
+.basic-info__data {
+    display: flex;
+    gap: 70px;
+}
+
+.basic-info__card {
+    box-shadow: rgba(0, 0, 0, 0.1) 0 0 5px 0, rgba(0, 0, 0, 0.1) 0 0 1px 0;
+    border-radius: 5px;
+    padding: 20px;
+    min-width: 450px;
+    min-height: 200px;
+    gap: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.basic-info__name {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.basic-info__contact-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 7px;
+}
+
+.basic-info__wrapper {
+    display: flex;
+    flex-direction: column;
+    margin-left: 60px;
+    padding-top: 30px;
 }
