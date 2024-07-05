@@ -8,6 +8,7 @@ import VacationInfo from "@/components/consultant-detail/vacation-info/vacation-
 import TabsComponent from "@/components/tabs/tabs";
 import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs";
 import {useDetailsContext} from "@/context/details";
+import BasicInfo from "@/components/consultant-detail/basic-info/basic-info";
 
 const ConsultantDetail = () => {
   const [value, setValue] = useState('personal');
@@ -31,6 +32,7 @@ const ConsultantDetail = () => {
   return (
     <>
       <Breadcrumbs current={`${details.name}`}/>
+      <BasicInfo />
       <TabsComponent value={value} handleChange={handleChange}/>
       <div className="consultant-detail__card">{content()}</div>
     </>
