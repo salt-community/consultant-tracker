@@ -1,6 +1,6 @@
 "use client";
 
-import { consultantDetailsData} from "@/mockData";
+import { consultantDetailsData } from "@/mockData";
 import { ConsultantDetailsDataType } from "@/types";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -21,16 +21,15 @@ const Client = () => {
   return (
     clientData && (
       <div>
-        <h2>Clients</h2>
-
         {clientData.client.map((item) => {
           const { id, name, startDate, endDate } = item;
-          return( <div key={id}> 
-          <p>Name of the client: {name}</p>
-          <p>Start date : {startDate}</p>
-          <p>End date: {endDate}</p>
-          </div>
-          )        
+          return (
+            <div key={id}>
+              <h3>{name}</h3>
+              <p>Start date : {startDate}</p>
+              <p>End date: {endDate}</p>
+            </div>
+          );
         })}
       </div>
     )
