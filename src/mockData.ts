@@ -13,76 +13,66 @@ export const infographicData = [
   { title: "Number of clients", amount: 7, variant: "violet" },
 ];
 
-export const consultantsData = [
+export const consultantsData: ConsultantDataType[] = [
   {
     id: "001",
     name: "Stefan Hansdotter",
     client: "Syntronix",
-    status: "active",
-    details: "details.svg",
+    status: "active"
   },
   {
     id: "002",
     name: "Astrad Rehnquist",
     client: "Scania",
     status: "absence",
-    details: "details.svg",
   },
   {
     id: "003",
     name: "Josephine Ahlgren Björk",
     client: "Astra Zeneca",
     status: "absence",
-    details: "details.svg",
   },
   {
     id: "004",
     name: "Olof Dahlquist",
     client: "-",
     status: "inactive",
-    details: "details.svg",
   },
   {
     id: "005",
     name: "Axel Folly",
     client: "Spotify",
     status: "active",
-    details: "details.svg",
   },
   {
     id: "006",
     name: "Allan Sanddahl",
     client: "ABB",
     status: "active",
-    details: "details.svg",
   },
   {
     id: "007",
     name: "Julia Roberts",
     client: "Telia",
     status: "active",
-    details: "details.svg",
   },
   {
     id: "008",
     name: "Agnes Ekbom",
     client: "Scania",
     status: "absence",
-    details: "details.svg",
   },
   {
     id: "009",
     name: "Zara Larsson",
     client: "-",
     status: "inactive",
-    details: "details.svg",
   },
   {
     id: "010",
     name: "Iris Lindahl",
     client: "Swedbank",
     status: "active",
-    details: "details.svg",
   },
 ];
 
@@ -115,11 +105,7 @@ export const headCells: HeaderCellsType[] = [
   {
     id: "client",
     label: "Client",
-  },
-  {
-    id: "details",
-    label: "Details",
-  },
+  }
 ];
 
 export const consultantDetailsData: ConsultantDetailsDataType[] = [

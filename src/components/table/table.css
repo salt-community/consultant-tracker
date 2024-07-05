@@ -4,13 +4,17 @@
 }
 
 .clients-link {
-    color: var(--text-blue);
+    color: var(--main-background);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .table-total-results {
-    align-self: right;
+    align-self: flex-end;
     color: var(--main-background);
-    font-weight: thin;
+    font-weight: 400;
     font-size: smaller;
 }
 
@@ -24,7 +28,7 @@
     width: 100%;
     margin-bottom: 50px;
     background: rgba(255, 255, 255, 0.4);
-    box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px;
+    box-shadow: rgba(17, 17, 26, 0.1) 0 4px 16px, rgba(17, 17, 26, 0.05) 0 8px 32px;
 }
 
 .MuiTableCell-root.header {
@@ -38,8 +42,8 @@
 }
 
 .MuiTableCell-root.outer-column {
-width: 10%;
-text-align: center;
+    width: 20%;
+    text-align: center;
 }
 
 .MuiTableCell-root.middle-column {

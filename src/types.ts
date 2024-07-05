@@ -8,7 +8,6 @@ export type ConsultantDataType = {
   name: string;
   client: string;
   status: string;
-  details: string;
 };
 
 export type HeaderCellsType = {

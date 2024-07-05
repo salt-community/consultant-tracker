@@ -10,14 +10,15 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import Paper from "@mui/material/Paper";
-import { visuallyHidden } from "@mui/utils";
-import { headCells } from "@/mockData";
-import { ConsultantDataType } from "@/types";
+import {visuallyHidden} from "@mui/utils";
+import {headCells} from "@/mockData";
+import {ConsultantDataType} from "@/types";
 import Indicator from "./table-legend/indicator/indicator";
-import { useTableContext } from "@/context/context";
+import {useTableContext} from "@/context/context";
 import Link from "next/link";
 import "./table.css";
 import TableLegend from "./table-legend/table-legend";
+import {VscFileSymlinkDirectory} from "react-icons/vsc";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -71,12 +72,12 @@ interface EnhancedTableProps {
 }
 
 function EnhancedTableHead(props: EnhancedTableProps) {
-  const { order, orderBy, onRequestSort } = props;
+  const {order, orderBy, onRequestSort} = props;
   const createSortHandler =
     (property: keyof ConsultantDataType) =>
-    (event: React.MouseEvent<unknown>) => {
-      onRequestSort(event, property);
-    };
+      (event: React.MouseEvent<unknown>) => {
+        onRequestSort(event, property);
+      };
 
   return (
     <TableHead>
@@ -85,7 +86,8 @@ function EnhancedTableHead(props: EnhancedTableProps) {
           <TableCell
             key={headCell.id}
             padding="normal"
-            className={index == 0 || index == headCells.length -1 ? "header center" : "header"}
+            align={index == 0 ? "center" : "left"}
+            className={index == 0 ? "header center" : "header"}
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
@@ -163,14 +165,14 @@ export default function EnhancedTable() {
   return (
     <>
       <div className="table-top-info">
-        <TableLegend />
+        <TableLegend/>
         <p className="table-total-results">Total results: {tableData.length}</p>
       </div>
-      <Box sx={{ width: "100%" }}>
+      <Box sx={{width: "100%"}}>
         <Paper className="paper-root__table">
           <TableContainer>
             <Table
-              sx={{ minWidth: 750, background: "transparent"}}
+              sx={{minWidth: 750, background: "transparent"}}
               aria-labelledby="tableTitle"
               size={"medium"}
             >
@@ -183,7 +185,7 @@ export default function EnhancedTable() {
                 rowCount={tableData.length}
               />
               <TableBody>
-                {visibleRows.map((row, index) => {
+                {visibleRows.map((row:ConsultantDataType) => {
                   const isItemSelected = isSelected(row.id);
                   return (
                     <TableRow
@@ -194,9 +196,14 @@ export default function EnhancedTable() {
                       selected={isItemSelected}
                     >
                       <TableCell className="outer-column">
-                        <Indicator value={row.status} />
+                        <Indicator value={row.status}/>
                       </TableCell>
-                      <TableCell className="middle-column">{row.name}</TableCell>
+                      <TableCell className="middle-column">
+                        <Link href={`/consultants/${row.id}`} className="clients-link">
+                          {row.name}
+                          <VscFileSymlinkDirectory/>
+                        </Link>
+                      </TableCell>
                       <TableCell className="middle-column">
                         {row.client === "-" ? (
                           row.client
@@ -206,16 +213,9 @@ export default function EnhancedTable() {
                             className="clients-link"
                           >
                             {row.client}
+                            <VscFileSymlinkDirectory/>
                           </Link>
                         )}
-                      </TableCell>
-                      <TableCell className="outer-column">
-                        <Link
-                          href={`/consultants/${row.id}`}
-                          className="details-link"
-                        >
-                          <img src={row.details} alt="details-icon" />
-                        </Link>
                       </TableCell>
                     </TableRow>
                   );
@@ -226,7 +226,7 @@ export default function EnhancedTable() {
                       height: 53 * emptyRows,
                     }}
                   >
-                    <TableCell colSpan={6} />
+                    <TableCell colSpan={6}/>
                   </TableRow>
                 )}
               </TableBody>

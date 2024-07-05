@@ -12,13 +12,16 @@
 }
 
 .status-indicator.active {
-    background: var(--text-green);
+    /*background: var(--text-green);*/
+    background-image: linear-gradient(90deg, rgba(17, 108, 83, 1) 0%, rgba(45, 203, 114, 1) 100%);
 }
 
 .status-indicator.absence {
-    background: var(--text-yellow);
+    /*background: var(--text-yellow);*/
+    background-image: linear-gradient(90deg, rgba(188, 116, 24, 1) 0%, rgba(246, 176, 76, 1) 100%);
 }
 
 .status-indicator.inactive {
-    background: var(--main-background);
+    /*background: var(--main-background);*/
+    background: linear-gradient(90deg, rgba(29,29,29,1) 0%, rgba(124,124,124,1) 100%);
 }

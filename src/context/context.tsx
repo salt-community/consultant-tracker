@@ -16,7 +16,7 @@ type TableContextType = {
   setData: Dispatch<SetStateAction<ConsultantDataType[]>>;
 };
 
-const TableContext = createContext<TableContextType>({data: [], setData: ()=>[...consultantsData]});
+const TableContext = createContext<TableContextType>({data: [...consultantsData], setData: ()=>[...consultantsData]});
 
 type ContextProviderProps = {
   children: ReactNode;
