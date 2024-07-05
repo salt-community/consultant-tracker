@@ -122,7 +122,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
     ],
     status: "active",
     absence: [],
-    address: "Kungsgatan 1, 111 11 Stockholm",
+    github: "stefan67509",
     phone: "070-123 45 67",
     startDate: "2021-01-01",
     remainsHours: 200,
@@ -168,7 +168,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
         absenceHours: 80,
       },
     ],
-    address: "Kungsgatan 2, 111 11 Stockholm",
+    github: "astradthereh",
     phone: "070-123 45 67",
     startDate: "2021-01-01",
     remainsHours: 200,
@@ -214,7 +214,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
         absenceHours: 80,
       },
     ],
-    address: "Kungsgatan 2, 111 11 Stockholm",
+    github: "Kungsgatan 2, 111 11 Stockholm",
     phone: "070-123 45 67",
     startDate: "2021-01-01",
     remainsHours: 200,
@@ -246,7 +246,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
     client: [],
     status: "inactive",
     absence: [],
-    address: "Kungsgatan 3, 111 11 Stockholm",
+    github: "olofdahlquist",
     phone: "070-223 45 67",
     startDate: "2023-01-01",
     remainsHours: 100,
@@ -285,7 +285,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
     ],
     status: "active",
     absence: [],
-    address: "Kungsgatan 5, 111 11 Stockholm",
+    github: "axelfolly",
     phone: "070-113 45 67",
     startDate: "2022-01-01",
     remainsHours: 10,
@@ -324,7 +324,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
     ],
     status: "active",
     absence: [],
-    address: "Kungsgatan 10, 111 11 Stockholm",
+    github: "sanddahlall",
     phone: "070-113 45 67",
     startDate: "2022-03-01",
     remainsHours: 999,
@@ -363,7 +363,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
     ],
     status: "active",
     absence: [],
-    address: "Kungsgatan 11, 111 11 Stockholm",
+    github: "juliaroberts",
     phone: "070-113 45 67",
     startDate: "2023-03-02",
     remainsHours: 999,
@@ -407,7 +407,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
         startDateAbsence: "2024-01-01",
       },
     ],
-    address: "Kungsgatan 11, 111 11 Stockholm",
+    github: "agnesekbom",
     phone: "070-113 45 67",
     startDate: "2023-03-02",
     remainsHours: 999,
@@ -439,7 +439,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
     client: [],
     status: "inactive",
     absence: [],
-    address: "Kungsgatan 20, 111 11 Stockholm",
+    github: "zaralarsson",
     phone: "070-113 45 67",
     startDate: "2023-03-02",
     remainsHours: 109,
@@ -478,7 +478,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
     ],
     status: "active",
     absence: [],
-    address: "Kungsgatan 100, 111 11 Stockholm",
+    github: "irislinda",
     phone: "070-113 45 67",
     startDate: "2022-03-02",
     remainsHours: 101,
@@ -509,8 +509,8 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
 export const tabs = [
   {
     id: 1,
-    label: "Personal information",
-    value: "personal"
+    label: "Clients",
+    value: "clients"
   },
   {
     id: 2,
@@ -521,10 +521,5 @@ export const tabs = [
     id: 3,
     label: "Vacation",
     value: "vacation"
-  },
-  {
-    id: 4,
-    label: "Clients",
-    value: "clients"
   }
 ]

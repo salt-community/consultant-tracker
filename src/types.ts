@@ -43,7 +43,7 @@ export type ConsultantDetailsDataType = {
   client: ClientDataType[],
   status: string,
   absence: AbsenceType[],
-  address: string,
+  github: string,
   phone: string,
   startDate: string,
   remainsHours: number,
