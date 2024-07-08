@@ -86,7 +86,7 @@ const BasicInfo = () => {
               />
               <TextField
                 id="outlined-basic"
-                label="Github"
+                label="GitHub"
                 variant="standard"
                 value={github}
                 InputProps={{
