@@ -56,6 +56,10 @@
     font-weight: 500;
 }
 
+.MuiInputBase-input.Mui-disabled {
+    -webkit-text-fill-color: black;
+}
+
 .basic-info-section {
     display: flex;
     flex-direction: row;

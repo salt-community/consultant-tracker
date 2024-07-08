@@ -58,6 +58,7 @@ const BasicInfo = () => {
                 display: "flex",
                 flexDirection: "column",
                 gap: "15px",
+                color: "black"
                 // },
               }}
               noValidate
@@ -85,7 +86,7 @@ const BasicInfo = () => {
               />
               <TextField
                 id="outlined-basic"
-                label="github"
+                label="Github"
                 variant="standard"
                 value={github}
                 InputProps={{
