@@ -2,7 +2,7 @@
 import { ConsultantDetailsDataType } from "@/types";
 import "./basic-info.css";
 import { consultantDetailsData } from "@/mockData";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import Indicator from "@/components/table/table-legend/indicator/indicator";
 import { usePathname } from "next/navigation";
 import { useDetailsContext } from "@/context/details";
@@ -18,6 +18,18 @@ const BasicInfo = () => {
     consultantDetailsData.filter((c) => c.id === id)[0]
   );
   const details = useDetailsContext();
+  let refName = useRef<HTMLInputElement>(null);
+  const [nameReadOnly, setNameReadOnly] = useState(true);
+
+  const handleClick = () => {
+    console.log("CLICKED");
+    setNameReadOnly(false);
+  };
+
+  const changeName = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log(refName.current?.value)
+  }
 
   useEffect(() => {
     details.setName(name);
@@ -36,31 +48,32 @@ const BasicInfo = () => {
           </aside>
           <div className="basic-info__title">
             <div className="basic-info__name">
-            <Box
-              component="form"
-              sx={{
-                width: "100%",
-                display: "flex",
-                flexDirection: "column",
-                gap: "15px",
-                color: "black"
-              }}
-              noValidate
-              autoComplete="off"
-            >
-              <TextField
-                id="outlined-basic"
-                label=""
-                variant="standard"
-                value={name}
-                InputProps={{
-                  readOnly: true,
+              <Box
+                component="form"
+                sx={{
+                  width: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "15px",
+                  color: "black",
                 }}
-                disabled
-              />
+                noValidate
+                autoComplete="off"
+                onSubmit={(e) => changeName(e)}
+              >
+                <TextField
+                  id="outlined-basic"
+                  label=""
+                  variant="standard"
+                  defaultValue={name}
+                  InputProps={{
+                    readOnly: nameReadOnly,
+                  }}
+                  disabled={nameReadOnly}
+                  inputRef={refName}
+                />
               </Box>
-              {/* <h2>{name}</h2> */}
-              <PiPencilSimpleLineThin />
+              <PiPencilSimpleLineThin onClick={handleClick} />
             </div>
             <h5 className="basic-info__indicator">
               <Indicator value={status} /> {status}
@@ -81,7 +94,7 @@ const BasicInfo = () => {
                 display: "flex",
                 flexDirection: "column",
                 gap: "15px",
-                color: "black"
+                color: "black",
                 // },
               }}
               noValidate
