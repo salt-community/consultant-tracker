@@ -2,8 +2,6 @@ import Infographic from "./infographic/infographic";
 import "./dashboard.css";
 import { infographicData } from "@/mockData";
 import FilterField from "../filter/filter";
-import PageWrapper from "@/components/page-wrapper/page-wrapper";
-import TableLegend from "@/components/table/table-legend/table-legend";
 import EnhancedTable from "../table/table";
 
 const Dashboard = () => {
