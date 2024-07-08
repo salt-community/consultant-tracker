@@ -36,7 +36,30 @@ const BasicInfo = () => {
           </aside>
           <div className="basic-info__title">
             <div className="basic-info__name">
-              <h2>{name}</h2>
+            <Box
+              component="form"
+              sx={{
+                width: "100%",
+                display: "flex",
+                flexDirection: "column",
+                gap: "15px",
+                color: "black"
+              }}
+              noValidate
+              autoComplete="off"
+            >
+              <TextField
+                id="outlined-basic"
+                label=""
+                variant="standard"
+                value={name}
+                InputProps={{
+                  readOnly: true,
+                }}
+                disabled
+              />
+              </Box>
+              {/* <h2>{name}</h2> */}
               <PiPencilSimpleLineThin />
             </div>
             <h5 className="basic-info__indicator">
