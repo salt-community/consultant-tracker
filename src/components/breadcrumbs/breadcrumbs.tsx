@@ -10,7 +10,7 @@ type Props = {
 const BreadcrumbsComponent = ({current}: Props) => {
   return (
     <Breadcrumbs aria-label="breadcrumb">
-      <Link underline="hover" color="inherit" href="/">
+      <Link color="inherit" href="/">
         Home
       </Link>
       <Typography color="text.primary">{current}</Typography>

@@ -2,7 +2,7 @@
 import {ConsultantDetailsDataType} from "@/types";
 import "./basic-info.css";
 import {consultantDetailsData} from "@/mockData";
-import { useState} from "react";
+import {useState} from "react";
 import {usePathname} from "next/navigation";
 import {PiPencilSimpleLineThin} from "react-icons/pi";
 import TextField from "@mui/material/TextField";
@@ -15,11 +15,8 @@ const BasicInfo = () => {
   const [personalData] = useState<ConsultantDetailsDataType>(
     consultantDetailsData.filter((c) => c.id === id)[0]
   );
-
-
   const {name, status, email, github, phone, startDate, remainsHours} =
     personalData;
-
   return (
     personalData && (
       <div className="basic-info__wrapper">
@@ -33,13 +30,11 @@ const BasicInfo = () => {
             <Box
               component="form"
               sx={{
-                // "& > :not(style)": {
                 width: "100%",
                 display: "flex",
                 flexDirection: "column",
                 gap: "15px",
                 color: "black",
-                // },
               }}
               noValidate
               autoComplete="off"
