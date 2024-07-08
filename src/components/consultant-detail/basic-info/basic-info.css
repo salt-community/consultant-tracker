@@ -2,10 +2,9 @@
 
 .basic-info__highlight-name {
     display: flex;
-    flex-direction: column;
-    align-items: left;
     width: 100%;
-    /* margin: 10px 0 30px 0; */
+    gap: 40px;
+    align-items: center;
 }
 
 .basic-info__indicator  {
@@ -34,7 +33,7 @@
 .basic-info__name {
     display: flex;
     align-items: center;
-    gap: 7px;
+    gap: 15px;
 }
 
 .basic-info__contact-title {
@@ -51,3 +50,29 @@
     width: 100%;
     gap: 30px;
 }
+
+.MuiInputBase-root {
+    font-size: large;
+    font-weight: 500;
+}
+
+.basic-info-section {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+  
+  .avatar {
+    width: 100px;
+    height: 100px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    align-self: start;
+    border-radius: 50%;
+  }
+
+  .basic-info__title {
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+  }

@@ -33,7 +33,7 @@ const ConsultantDetail = () => {
       <BreadcrumbsComponent current={`${details.name}`} />
       <div className="detail-page__wrapper">
         <section className="section-consultants">
-          <LeftSideImage />
+          {/* <LeftSideImage /> */}
           <div className="detail-page__right-side__wrapper">
             <BasicInfo />
             <div className="detail-page__tabs-wrapper">
