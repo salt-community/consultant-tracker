@@ -126,7 +126,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
     phone: "070-123 45 67",
     startDate: "2021-01-01",
     remainsHours: 200,
-    email: "voldemort_2004@hotmail.com",
+    email: "stefan.hansdotter@appliedtechnology.se",
     meetings: [
       {
         id: "001",
@@ -172,7 +172,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
     phone: "070-123 45 67",
     startDate: "2021-01-01",
     remainsHours: 200,
-    email: "jarry_porter_2004@hotmail.com",
+    email: "astrad.rehnquist@appliedtechnology.se",
     meetings: [
       {
         id: "001",
@@ -218,7 +218,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
     phone: "070-123 45 67",
     startDate: "2021-01-01",
     remainsHours: 200,
-    email: "voldemort_2004@hotmail.com",
+    email: "josephine.ahlgren.bjork@appliedtechnology.se",
     meetings: [
       {
         id: "001",
@@ -250,7 +250,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
     phone: "070-223 45 67",
     startDate: "2023-01-01",
     remainsHours: 100,
-    email: "the_lord_of_the_all_rings_44_22@hotmail.com",
+    email: "olof.dahlquist@appliedtechnology.se",
     meetings: [
       {
         id: "001",
@@ -289,7 +289,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
     phone: "070-113 45 67",
     startDate: "2022-01-01",
     remainsHours: 10,
-    email: "the_@hotmail.com",
+    email: "axel.folly@appliedtechnology.se",
     meetings: [
       {
         id: "001",
@@ -328,7 +328,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
     phone: "070-113 45 67",
     startDate: "2022-03-01",
     remainsHours: 999,
-    email: "the_allan@hotmail.com",
+    email: "allan.sanddahl@appliedtechnology.se",
     meetings: [
       {
         id: "001",
@@ -367,7 +367,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
     phone: "070-113 45 67",
     startDate: "2023-03-02",
     remainsHours: 999,
-    email: "the_pretty_woman@hotmail.com",
+    email: "julia.roberts@appliedtechnology.se",
     meetings: [
       {
         id: "001",
@@ -411,7 +411,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
     phone: "070-113 45 67",
     startDate: "2023-03-02",
     remainsHours: 999,
-    email: "the_pretty_ekbom@hotmail.com",
+    email: "agnes.ekbom@appliedtechnology.se",
     meetings: [
       {
         id: "001",
@@ -443,7 +443,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
     phone: "070-113 45 67",
     startDate: "2023-03-02",
     remainsHours: 109,
-    email: "less_famous_than_avici@hotmail.com",
+    email: "zara.larsson@appliedtechnology.se",
     meetings: [
       {
         id: "001",
@@ -482,7 +482,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
     phone: "070-113 45 67",
     startDate: "2022-03-02",
     remainsHours: 101,
-    email: "the-iris@hotmail.com",
+    email: "iris.lindahl@appliedtechnology.se",
     meetings: [
       {
         id: "001",
