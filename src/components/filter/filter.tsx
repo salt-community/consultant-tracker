@@ -2,7 +2,7 @@
 import {ChangeEvent, useState} from "react";
 import "./filter.css";
 import {consultantsData} from "@/mockData";
-import {useTableContext} from "@/context/context";
+import {useTableContext} from "@/context/table";
 import SelectStatus from "@/components/filter/select-status/select-status";
 import {SelectChangeEvent} from "@mui/material/Select";
 import Button from '@mui/material/Button';

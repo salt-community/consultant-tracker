@@ -2,7 +2,7 @@ import type {Metadata} from "next";
 import {Inter} from "next/font/google";
 import "./globals.css";
 import React from "react";
-import {TableContextProvider} from "@/context/context";
+import {TableContextProvider} from "@/context/table";
 import {DetailsContextProvider} from "@/context/details";
 
 const inter = Inter({subsets: ["latin"]});

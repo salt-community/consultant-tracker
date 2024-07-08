@@ -5,11 +5,9 @@ import "./page.css";
 import React, { SyntheticEvent, useState } from "react";
 import VacationInfo from "@/components/consultant-detail/vacation-info/vacation-info";
 import TabsComponent from "@/components/tabs/tabs";
-import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs";
 import { useDetailsContext } from "@/context/details";
 import BasicInfo from "@/components/consultant-detail/basic-info/basic-info";
 import BreadcrumbsComponent from "@/components/breadcrumbs/breadcrumbs";
-import LeftSideImage from "@/components/consultant-detail/left-side-image/left-side-image";
 
 const ConsultantDetail = () => {
   const [value, setValue] = useState("clients");
@@ -33,7 +31,6 @@ const ConsultantDetail = () => {
       <BreadcrumbsComponent current={`${details.name}`} />
       <div className="detail-page__wrapper">
         <section className="section-consultants">
-          {/* <LeftSideImage /> */}
           <div className="detail-page__right-side__wrapper">
             <BasicInfo />
             <div className="detail-page__tabs-wrapper">

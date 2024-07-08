@@ -14,7 +14,7 @@ import {visuallyHidden} from "@mui/utils";
 import {headCells} from "@/mockData";
 import {ConsultantDataType} from "@/types";
 import Indicator from "./table-legend/indicator/indicator";
-import {useTableContext} from "@/context/context";
+import {useTableContext} from "@/context/table";
 import Link from "next/link";
 import "./table.css";
 import TableLegend from "./table-legend/table-legend";
