@@ -5,6 +5,7 @@ import {ConsultantDetailsDataType} from "@/types";
 import {usePathname} from "next/navigation";
 import React, {useEffect, useState} from "react";
 import './schedules.css'
+import { PiPencilSimpleLineThin } from "react-icons/pi";
 
 const Schedule = () => {
   const idParam = usePathname().split("/").pop();
@@ -22,6 +23,7 @@ const Schedule = () => {
   return (
     scheduleData && (
       <div className="meetings-schedule__wrapper">
+        <PiPencilSimpleLineThin style={{alignSelf: "end"}}/>
         {scheduleData.meetings.map((item) => {
           const {id, date, title, description} = item;
           return (<div key={id}>

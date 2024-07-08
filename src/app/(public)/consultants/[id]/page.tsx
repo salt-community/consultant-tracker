@@ -9,6 +9,7 @@ import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs";
 import { useDetailsContext } from "@/context/details";
 import BasicInfo from "@/components/consultant-detail/basic-info/basic-info";
 import BreadcrumbsComponent from "@/components/breadcrumbs/breadcrumbs";
+import LeftSideImage from "@/components/consultant-detail/left-side-image/left-side-image";
 
 const ConsultantDetail = () => {
   const [value, setValue] = useState("clients");
@@ -31,11 +32,16 @@ const ConsultantDetail = () => {
     <>
       <BreadcrumbsComponent current={`${details.name}`} />
       <div className="detail-page__wrapper">
-        <BasicInfo />
-        <div className="detail-page__tabs-wrapper">
-          <TabsComponent value={value} handleChange={handleChange} />
-          <div className="consultant-detail__card">{content()}</div>
-        </div>
+        <section className="section-consultants">
+          <LeftSideImage />
+          <div className="detail-page__right-side__wrapper">
+            <BasicInfo />
+            <div className="detail-page__tabs-wrapper">
+              <TabsComponent value={value} handleChange={handleChange} />
+              <div className="consultant-detail__card">{content()}</div>
+            </div>
+          </div>
+        </section>
       </div>
     </>
   );

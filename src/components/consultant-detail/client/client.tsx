@@ -4,6 +4,8 @@ import { consultantDetailsData } from "@/mockData";
 import { ConsultantDetailsDataType } from "@/types";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { PiPencilSimpleLineThin } from "react-icons/pi";
+import "../basic-info/basic-info.css"
 
 const Client = () => {
   const idParam = usePathname().split("/").pop();
@@ -25,7 +27,10 @@ const Client = () => {
           const { id, name, startDate, endDate } = item;
           return (
             <div key={id}>
-              <h3>{name}</h3>
+              <div className="basic-info__contact-title">
+                <h3>{name}</h3>
+                <PiPencilSimpleLineThin />
+              </div>
               <p>Start date : {startDate}</p>
               <p>End date: {endDate}</p>
             </div>
