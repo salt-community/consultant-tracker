@@ -31,11 +31,26 @@ const BasicInfo = () => {
     console.log(refName.current?.value)
   }
 
-  useEffect(() => {
-    details.setName(name);
-  }, []);
   const { name, status, email, github, phone, startDate, remainsHours } =
     personalData;
+    useEffect(() => {
+        details.setName(name);
+    }, [details, name]);
+
+    const FONT_SIZE = 9
+    const DEFAULT_INPUT_WIDTH = 200
+
+    const [textValue, setTextValue] = useState("")
+    const [inputWidth, setInputWidth] = useState(DEFAULT_INPUT_WIDTH)
+    useEffect(() => {
+        if (textValue.length * FONT_SIZE > DEFAULT_INPUT_WIDTH) {
+            setInputWidth((textValue.length + 1) * FONT_SIZE)
+            setTextValue(name)
+        } else {
+            setInputWidth(DEFAULT_INPUT_WIDTH)
+            setTextValue(name)
+        }
+    }, [name, textValue])
   return (
     personalData && (
       <div className="basic-info__wrapper">
