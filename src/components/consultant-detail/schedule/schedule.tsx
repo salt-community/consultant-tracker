@@ -1,10 +1,10 @@
 "use client";
 
-import {consultantDetailsData} from "@/mockData";
-import {ConsultantDetailsDataType} from "@/types";
-import {usePathname} from "next/navigation";
-import React, {useEffect, useState} from "react";
-import './schedules.css'
+import { consultantDetailsData } from "@/mockData";
+import { ConsultantDetailsDataType } from "@/types";
+import { usePathname } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import "./schedules.css";
 import { PiPencilSimpleLineThin } from "react-icons/pi";
 
 const Schedule = () => {
@@ -23,19 +23,20 @@ const Schedule = () => {
   return (
     scheduleData && (
       <div className="meetings-schedule__wrapper">
-        <PiPencilSimpleLineThin style={{alignSelf: "end"}}/>
+        <PiPencilSimpleLineThin style={{ alignSelf: "end" }} />
         {scheduleData.meetings.map((item) => {
-          const {id, date, title, description} = item;
-          return (<div key={id}>
+          const { id, date, title, description } = item;
+          return (
+            <div key={id}>
               <p>Title: {title}</p>
               <p>Date : {date}</p>
-            <p>Description: {description}</p>
-          </div>)
+              <p>Description: {description}</p>
+            </div>
+          );
         })}
       </div>
     )
-  )
-    ;
+  );
 };
 
 export default Schedule;

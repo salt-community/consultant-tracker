@@ -5,10 +5,11 @@ type Props = {
   label: string;
   value: string | number;
   readonly: boolean;
+  name: string,
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 };
 
-const TextField = ({ label, value, readonly, onChange }: Props) => {
+const TextField = ({ label, value, readonly, onChange, name }: Props) => {
   return (
     <Mui.TextField
       id="outlined-basic"
@@ -17,6 +18,7 @@ const TextField = ({ label, value, readonly, onChange }: Props) => {
       value={value}
       onChange={onChange}
       disabled={readonly}
+      name={name}
     />
   );
 };
