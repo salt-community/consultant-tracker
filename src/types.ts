@@ -46,7 +46,7 @@ export type ConsultantDetailsDataType = {
   github: string,
   phone: string,
   startDate: string,
-  remainsHours: number,
+  remainingHours: number,
   email: string,
   meetings: MeetingsType[],
 }

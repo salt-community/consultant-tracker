@@ -125,7 +125,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
     github: "stefan67509",
     phone: "070-123 45 67",
     startDate: "2021-01-01",
-    remainsHours: 200,
+    remainingHours: 200,
     email: "stefan.hansdotter@appliedtechnology.se",
     meetings: [
       {
@@ -171,7 +171,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
     github: "astradthereh",
     phone: "070-123 45 67",
     startDate: "2021-01-01",
-    remainsHours: 200,
+    remainingHours: 200,
     email: "astrad.rehnquist@appliedtechnology.se",
     meetings: [
       {
@@ -217,7 +217,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
     github: "jojophin",
     phone: "070-123 45 67",
     startDate: "2021-01-01",
-    remainsHours: 200,
+    remainingHours: 200,
     email: "josephine.ahlgren.bjork@appliedtechnology.se",
     meetings: [
       {
@@ -249,7 +249,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
     github: "olofdahlquist",
     phone: "070-223 45 67",
     startDate: "2023-01-01",
-    remainsHours: 100,
+    remainingHours: 100,
     email: "olof.dahlquist@appliedtechnology.se",
     meetings: [
       {
@@ -288,7 +288,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
     github: "axelfolly",
     phone: "070-113 45 67",
     startDate: "2022-01-01",
-    remainsHours: 10,
+    remainingHours: 10,
     email: "axel.folly@appliedtechnology.se",
     meetings: [
       {
@@ -327,7 +327,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
     github: "sanddahlall",
     phone: "070-113 45 67",
     startDate: "2022-03-01",
-    remainsHours: 999,
+    remainingHours: 999,
     email: "allan.sanddahl@appliedtechnology.se",
     meetings: [
       {
@@ -366,7 +366,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
     github: "juliaroberts",
     phone: "070-113 45 67",
     startDate: "2023-03-02",
-    remainsHours: 999,
+    remainingHours: 999,
     email: "julia.roberts@appliedtechnology.se",
     meetings: [
       {
@@ -410,7 +410,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
     github: "agnesekbom",
     phone: "070-113 45 67",
     startDate: "2023-03-02",
-    remainsHours: 999,
+    remainingHours: 999,
     email: "agnes.ekbom@appliedtechnology.se",
     meetings: [
       {
@@ -442,7 +442,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
     github: "zaralarsson",
     phone: "070-113 45 67",
     startDate: "2023-03-02",
-    remainsHours: 109,
+    remainingHours: 109,
     email: "zara.larsson@appliedtechnology.se",
     meetings: [
       {
@@ -481,7 +481,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
     github: "irislinda",
     phone: "070-113 45 67",
     startDate: "2022-03-02",
-    remainsHours: 101,
+    remainingHours: 101,
     email: "iris.lindahl@appliedtechnology.se",
     meetings: [
       {
