@@ -5,10 +5,9 @@ import "./basic-info.css";
 import { consultantDetailsData } from "@/mockData";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
-
 import BasicInfoHeader from "@/components/consultant-detail/basic-info/header/header";
-import ContactDetails from "./body/contact-details/contact-details";
-import SaltContract from "./body/salt-contract/salt-contract";
+import ContactDetails from "./contact-details/contact-details";
+import SaltContract from "./salt-contract/salt-contract";
 
 const BasicInfo = () => {
   const id = usePathname().split("/").pop();
@@ -25,7 +24,7 @@ const BasicInfo = () => {
         <BasicInfoHeader name={name} status={status} />
         <div className="basic-info__data">
           <ContactDetails email={email} phone={phone} github={github} />
-          <SaltContract startDate={startDate} remainingHours={remainingHours}/>
+          <SaltContract startDate={startDate} remainingHours={remainingHours} />
         </div>
       </div>
     )

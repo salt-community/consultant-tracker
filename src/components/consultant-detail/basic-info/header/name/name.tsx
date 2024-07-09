@@ -6,8 +6,7 @@ import "./name.css";
 import { usePathname } from "next/navigation";
 import { FONT_SIZE } from "@/constants";
 import { consultantDetailsData } from "@/mockData";
-import Edit from "@/components/edit-card/edit/edit";
-
+import Edit from "@/components/edit/edit";
 
 type Props = {
   name: string;
