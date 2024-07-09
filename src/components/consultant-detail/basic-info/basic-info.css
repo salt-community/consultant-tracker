@@ -1,40 +1,7 @@
-
-/*.basic-info__highlight-name {*/
-/*    display: flex;*/
-/*    width: 100%;*/
-/*    gap: 40px;*/
-/*    align-items: center;*/
-/*}*/
-
-.basic-info__indicator {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-}
-
 .basic-info__data {
     display: flex;
     gap: 70px;
     width: 100%;
-}
-
-.basic-info__card {
-    box-shadow: rgba(0, 0, 0, 0.1) 0 0 5px 0, rgba(0, 0, 0, 0.1) 0 0 1px 0;
-    border-radius: 5px;
-    padding: 40px;
-    min-height: 200px;
-    width: 100%;
-    gap: 15px;
-    display: flex;
-    flex-direction: column;
-}
-
-
-.basic-info__contact-title {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 7px;
 }
 
 .basic-info__wrapper {

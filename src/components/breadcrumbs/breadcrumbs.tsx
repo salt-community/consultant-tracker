@@ -1,24 +1,20 @@
 "use client";
 
-import React, { useEffect } from "react";
 import Typography from "@mui/material/Typography";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Link from "next/link";
 import { useDetailsContext } from "@/context/details";
+import "./breadcrumbs.css";
 
 const BreadcrumbsComponent = () => {
   const details = useDetailsContext();
-  let name = details.name;
-  useEffect(() => {
-    name = details.name;
-  }, [details.name]);
 
   return (
     <Breadcrumbs aria-label="breadcrumb">
-      <Link color="inherit" href="/">
+      <Link className="breadcrumb-link" href="/">
         Home
       </Link>
-      <Typography color="text.primary">{name}</Typography>
+      <Typography color="text.primary">{details.name}</Typography>
     </Breadcrumbs>
   );
 };

@@ -7,13 +7,9 @@ const ConsultantDetail = () => {
   return (
     <>
       <BreadcrumbsComponent />
-      <div className="detail-page__wrapper">
-        <section className="section-consultants">
-          <div className="detail-page__right-side__wrapper">
-            <BasicInfo />
-            <CardDetails/>
-          </div>
-        </section>
+      <div className="detail-consultant__wrapper">
+        <BasicInfo />
+        <CardDetails />
       </div>
     </>
   );
