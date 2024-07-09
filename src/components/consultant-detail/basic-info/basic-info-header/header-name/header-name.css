@@ -15,3 +15,7 @@
 .header-name__edit {
     cursor: pointer;
 }
+
+.MuiInputBase-root.Mui-disabled:before {
+    border-bottom-style: hidden;
+}

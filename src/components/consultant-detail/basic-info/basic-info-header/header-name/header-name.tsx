@@ -32,6 +32,7 @@ const HeaderName = ({name}: Props) => {
       }
     })
     setNameLength(refName.current!.value.length)
+    details.setName(refName.current!.value)
     setNameReadOnly(true);
   }
 
