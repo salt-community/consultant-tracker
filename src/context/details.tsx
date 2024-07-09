@@ -1,4 +1,7 @@
 "use client";
+
+import { consultantDetailsData } from "@/mockData";
+import { ConsultantDetailsDataType } from "@/types";
 import {
   Dispatch,
   ReactNode,
@@ -10,20 +13,31 @@ import {
 
 type DetailsContextType = {
   name: string;
+  data: ConsultantDetailsDataType[];
   setName: Dispatch<SetStateAction<string>>;
+  setData: Dispatch<SetStateAction<ConsultantDetailsDataType[]>>;
 };
 
-const DetailsContext = createContext<DetailsContextType>({name: "", setName: () => ""});
+const DetailsContext = createContext<DetailsContextType>({
+  name: "",
+  data: [],
+  setName: () => "",
+  setData: () => [],
+});
 
 type ContextProviderProps = {
   children: ReactNode;
 };
 
-export const DetailsContextProvider = ({children}: ContextProviderProps) => {
+export const DetailsContextProvider = ({ children }: ContextProviderProps) => {
   const [name, setName] = useState<string>("");
-  const value = {name, setName};
+  const [data, setData] = useState<ConsultantDetailsDataType[]>(
+    consultantDetailsData
+  );
+  const value = { name, setName, data, setData };
 
-  return <DetailsContext.Provider value={value}>{children}</DetailsContext.Provider>
-    ;
+  return (
+    <DetailsContext.Provider value={value}>{children}</DetailsContext.Provider>
+  );
 };
 export const useDetailsContext = () => useContext(DetailsContext);
