@@ -567,6 +567,11 @@ export const clientsData: ClientsDetailsDataType[] = [
         phone: "111-222-222",
         email: "leon.goransson@scania.se"
       },
+      {
+        name: "Thor Söderberg",
+        phone: "111-222-223",
+        email: "thor.soderberg@scania.se"
+      },
     ],
     listOfConsultants:[
       {
