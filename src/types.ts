@@ -50,3 +50,21 @@ export type ConsultantDetailsDataType = {
   email: string,
   meetings: MeetingsType[],
 }
+
+export type ContactPeopleType = {
+  name: string,
+  phone: string,
+  email: string
+}
+
+export type CompanyConsultantsType = {
+  id: string,
+  name: string
+}
+
+export type ClientsDetailsDataType = {
+  id: string,
+  name: string,
+  contactPeople: ContactPeopleType[],
+  listOfConsultants: CompanyConsultantsType[]
+}

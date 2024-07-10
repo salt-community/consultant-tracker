@@ -1,50 +1,47 @@
-import {FormEvent, useEffect, useRef, useState} from "react";
+"use client"
+import React, {FormEvent, useEffect, useRef, useState} from 'react';
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import {useDetailsContext} from "@/context/details";
-import "./name.css";
-import {usePathname} from "next/navigation";
 import {FONT_SIZE} from "@/constants";
-import {consultantDetailsData} from "@/mockData";
 import Edit from "@/components/edit/edit";
+import {usePathname} from "next/navigation";
+import {useClientsContext} from "@/context/clients";
 
 type Props = {
-  name: string;
-};
-
-const HeaderName = ({name}: Props) => {
+  name: string
+}
+const Header = ({name}: Props) => {
   const [nameReadonly, setNameReadonly] = useState(true);
   const [inputName, setInputName] = useState(name);
   const refName = useRef<HTMLInputElement | null>(null);
   const idParam = usePathname().split("/").pop();
-  const details = useDetailsContext();
+  const client = useClientsContext();
 
   const handleClick = (v: boolean) => {
     setNameReadonly(v);
-    setInputName(details.name);
+    setInputName(client.name);
   };
 
   const changeName = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    details.setData(details.data.map((el) => {
+    client.setData(client.data.map((el) => {
       if (el.id === idParam) {
         el.name = refName.current!.value;
       }
-      return el
+      return el;
     }));
     setInputName(refName.current!.value);
-    details.setName(refName.current!.value);
+    client.setName(refName.current!.value);
     setNameReadonly(true);
   };
 
   useEffect(() => {
     if (refName.current!.value === name) {
-      details.setName(name);
+      client.setName(name);
     }
-  }, [details, name]);
-
+  }, [client, name]);
   return (
-    <div className="header-name__container">
+    <div>
       <Box
         component="form"
         className="header-name__form"
@@ -73,4 +70,4 @@ const HeaderName = ({name}: Props) => {
   );
 };
 
-export default HeaderName;
+export default Header;

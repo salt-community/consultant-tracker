@@ -7,7 +7,7 @@ import VacationInfo from "../consultant-detail/vacation-info/vacation-info";
 import Client from "../consultant-detail/client/client";
 
 const CardDetails = () => {
-    const [value, setValue] = useState("clients");
+    const [value, setValue] = useState("clients.tsx");
 
     const handleChange = (event: SyntheticEvent, newValue: string) => {
       setValue(newValue);

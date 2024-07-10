@@ -6,7 +6,7 @@ import CardDetails from "@/components/card-details/card-details";
 const ConsultantDetail = () => {
   return (
     <>
-      <BreadcrumbsComponent />
+      <BreadcrumbsComponent variant="consultant" />
       <div className="detail-consultant__wrapper">
         <BasicInfo />
         <CardDetails />
