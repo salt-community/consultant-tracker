@@ -53,6 +53,7 @@ export type ConsultantDetailsDataType = {
 }
 
 export type ContactPeopleType = {
+  id: string,
   name: string,
   phone: string,
   email: string
