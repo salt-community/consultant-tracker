@@ -3,7 +3,7 @@ import {
   ClientsDetailsDataType,
   ConsultantDataType,
   ConsultantDetailsDataType,
-  HeaderCellsType
+  HeaderCellsType,
 } from "./types";
 
 export const navLinks = [
@@ -13,10 +13,10 @@ export const navLinks = [
 ];
 
 export const infographicData = [
-  {title: "Total consultants", amount: 10, variant: "blue"},
-  {title: "Active consultants", amount: 7, variant: "green"},
-  {title: "Absent consultants", amount: 3, variant: "yellow"},
-  {title: "Number of clients.tsx", amount: 7, variant: "violet"},
+  { title: "Total consultants", amount: 10, variant: "blue" },
+  { title: "Active consultants", amount: 7, variant: "green" },
+  { title: "Absent consultants", amount: 3, variant: "yellow" },
+  { title: "Number of clients.tsx", amount: 7, variant: "violet" },
 ];
 
 export const consultantsData: ConsultantDataType[] = [
@@ -25,7 +25,7 @@ export const consultantsData: ConsultantDataType[] = [
     name: "Stefan Hansdotter",
     clientId: "111",
     client: "Syntronix",
-    status: "active"
+    status: "active",
   },
   {
     id: "002",
@@ -121,7 +121,7 @@ export const headCells: HeaderCellsType[] = [
   {
     id: "client",
     label: "Client",
-  }
+  },
 ];
 
 export const consultantDetailsData: ConsultantDetailsDataType[] = [
@@ -148,19 +148,22 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
         id: "001",
         date: "2021-02-01",
         title: "First regular meeting",
-        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+        description:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
       },
       {
         id: "002",
         date: "2021-02-01",
         title: "Second regular meeting",
-        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+        description:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
       },
       {
         id: "003",
         date: "2021-02-01",
         title: "Third regular meeting",
-        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        description:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
       },
     ],
   },
@@ -526,19 +529,19 @@ export const tabs = [
   {
     id: 1,
     label: "Clients",
-    value: "clients.tsx"
+    value: "clients.tsx",
   },
   {
     id: 2,
     label: "Meetings schedule",
-    value: "schedule"
+    value: "schedule",
   },
   {
     id: 3,
     label: "Vacation",
-    value: "vacation"
-  }
-]
+    value: "vacation",
+  },
+];
 
 export const clientsData: ClientsDetailsDataType[] = [
   {
@@ -546,127 +549,135 @@ export const clientsData: ClientsDetailsDataType[] = [
     name: "Syntronix",
     contactPeople: [
       {
+        id: "11",
         name: "Edvin Ekdal",
         phone: "111-222-111",
-        email: "edvin.ekdal@syntronix.se"
+        email: "edvin.ekdal@syntronix.se",
       },
     ],
-    listOfConsultants:[
+    listOfConsultants: [
       {
         id: "001",
-        name: "Stefan Hansdotter"
+        name: "Stefan Hansdotter",
       },
-    ]
+    ],
   },
   {
     id: "222",
     name: "Scania",
     contactPeople: [
       {
+        id: "22",
         name: "Leon Göransson",
         phone: "111-222-222",
-        email: "leon.goransson@scania.se"
+        email: "leon.goransson@scania.se",
       },
       {
+        id: "33",
         name: "Thor Söderberg",
         phone: "111-222-223",
-        email: "thor.soderberg@scania.se"
+        email: "thor.soderberg@scania.se",
       },
     ],
-    listOfConsultants:[
+    listOfConsultants: [
       {
         id: "002",
-        name: "Astrad Rehnquist"
+        name: "Astrad Rehnquist",
       },
       {
         id: "008",
-        name: "Agnes Ekbom"
+        name: "Agnes Ekbom",
       },
-    ]
+    ],
   },
   {
     id: "333",
     name: "AstraZeneca",
     contactPeople: [
       {
+        id: "44",
         name: "Thomas Lundmark",
         phone: "111-222-333",
-        email: "thomas.lundmark@astrazeneca.se"
+        email: "thomas.lundmark@astrazeneca.se",
       },
     ],
-    listOfConsultants:[
+    listOfConsultants: [
       {
         id: "003",
-        name: "Josephine Ahlgren Björk"
+        name: "Josephine Ahlgren Björk",
       },
-    ]
+    ],
   },
   {
     id: "444",
     name: "Spotify",
     contactPeople: [
       {
+        id: "55",
         name: "Loke Lundholm",
         phone: "111-222-444",
-        email: "loke.lundholm@spotify.se"
+        email: "loke.lundholm@spotify.se",
       },
     ],
-    listOfConsultants:[
+    listOfConsultants: [
       {
         id: "005",
-        name: "Axel Folly"
+        name: "Axel Folly",
       },
-    ]
+    ],
   },
   {
     id: "555",
     name: "ABB",
     contactPeople: [
       {
+        id: "66",
         name: "Odert Haglund",
         phone: "111-222-555",
-        email: "odert.haglund@abb.se"
+        email: "odert.haglund@abb.se",
       },
     ],
-    listOfConsultants:[
+    listOfConsultants: [
       {
         id: "006",
-        name: "Allan Sanddahl"
+        name: "Allan Sanddahl",
       },
-    ]
+    ],
   },
   {
     id: "666",
     name: "Telia",
     contactPeople: [
       {
+        id: "77",
         name: "Lars Persson",
         phone: "111-222-666",
-        email: "lars.persson@telia.se"
+        email: "lars.persson@telia.se",
       },
     ],
-    listOfConsultants:[
+    listOfConsultants: [
       {
         id: "007",
-        name: "Julia Roberts"
+        name: "Julia Roberts",
       },
-    ]
+    ],
   },
   {
     id: "777",
     name: "Swedbank",
     contactPeople: [
       {
+        id: "88",
         name: "Axel Westermark",
         phone: "111-222-777",
-        email: "axel.westermark@swedbank.se"
+        email: "axel.westermark@swedbank.se",
       },
     ],
-    listOfConsultants:[
+    listOfConsultants: [
       {
         id: "010",
-        name: "Iris Lindahl"
+        name: "Iris Lindahl",
       },
-    ]
+    ],
   },
-]
+];
