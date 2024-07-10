@@ -6,6 +6,7 @@ import {FONT_SIZE} from "@/constants";
 import Edit from "@/components/edit/edit";
 import {usePathname} from "next/navigation";
 import {useClientsContext} from "@/context/clients";
+import "./header.css"
 
 type Props = {
   name: string
