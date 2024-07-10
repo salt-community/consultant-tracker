@@ -12,14 +12,9 @@ type Props = {
 };
 
 const ContactPeople = ({ contactPeople }: Props) => {
-  const handleChange = () => {
-    console.log("I've Changed!");
-  };
 
-  //   const handleClick = (v: boolean) => {
-  //     console.log("You Clicked!");
-  //     setReadonly(v);
-  //   };
+
+
 
   return (
     <>
@@ -28,10 +23,10 @@ const ContactPeople = ({ contactPeople }: Props) => {
         {contactPeople.map((el, index) => (
           <MapBox
             index={index}
-            handleChange={handleChange}
             name={el.name}
             phone={el.phone}
             email={el.email}
+            id={el.id}
           />
         ))}
       </div>
