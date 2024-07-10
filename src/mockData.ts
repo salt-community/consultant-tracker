@@ -1,4 +1,10 @@
-import {ConsultantDataType, ConsultantDetailsDataType, HeaderCellsType} from "./types";
+import {
+  ClientDataType,
+  ClientsDetailsDataType,
+  ConsultantDataType,
+  ConsultantDetailsDataType,
+  HeaderCellsType
+} from "./types";
 
 export const navLinks = [
   "Create new consultant",
@@ -10,7 +16,7 @@ export const infographicData = [
   {title: "Total consultants", amount: 10, variant: "blue"},
   {title: "Active consultants", amount: 7, variant: "green"},
   {title: "Absent consultants", amount: 3, variant: "yellow"},
-  {title: "Number of clients", amount: 7, variant: "violet"},
+  {title: "Number of clients.tsx", amount: 7, variant: "violet"},
 ];
 
 export const consultantsData: ConsultantDataType[] = [
@@ -114,7 +120,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
     name: "Stefan Hansdotter",
     client: [
       {
-        id: "001",
+        id: "111",
         name: "Syntronix",
         startDate: "2021-01-01",
         endDate: "2021-12-31",
@@ -153,7 +159,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
     name: "Astrad Rehnquist",
     client: [
       {
-        id: "002",
+        id: "222",
         name: "Scania",
         startDate: "2021-01-01",
         endDate: "2021-12-31",
@@ -199,7 +205,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
     name: "Josephine Ahlgren Björk",
     client: [
       {
-        id: "003",
+        id: "333",
         name: "AstraZeneca",
         startDate: "2022-01-01",
         endDate: "2022-12-31",
@@ -277,7 +283,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
     name: "Axel Folly",
     client: [
       {
-        id: "004",
+        id: "444",
         name: "Spotify",
         startDate: "2022-01-01",
         endDate: "2022-12-31",
@@ -316,7 +322,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
     name: "Allan Sanddahl",
     client: [
       {
-        id: "005",
+        id: "555",
         name: "ABB",
         startDate: "2022-01-01",
         endDate: "2022-12-31",
@@ -355,7 +361,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
     name: "Julia Roberts",
     client: [
       {
-        id: "006",
+        id: "666",
         name: "Telia",
         startDate: "2022-01-01",
         endDate: "2022-12-31",
@@ -394,7 +400,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
     name: "Agnes Ekbom",
     client: [
       {
-        id: "001",
+        id: "222",
         name: "Scania",
         startDate: "2022-01-01",
         endDate: "2022-12-31",
@@ -470,7 +476,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
     name: "Iris Lindahl",
     client: [
       {
-        id: "007",
+        id: "777",
         name: "Swedbank",
         startDate: "2022-01-01",
         endDate: "2022-12-31",
@@ -510,7 +516,7 @@ export const tabs = [
   {
     id: 1,
     label: "Clients",
-    value: "clients"
+    value: "clients.tsx"
   },
   {
     id: 2,
@@ -522,4 +528,130 @@ export const tabs = [
     label: "Vacation",
     value: "vacation"
   }
+]
+
+export const clientsData: ClientsDetailsDataType[] = [
+  {
+    id: "111",
+    name: "Syntronix",
+    contactPeople: [
+      {
+        name: "Edvin Ekdal",
+        phone: "111-222-111",
+        email: "edvin.ekdal@syntronix.se"
+      },
+    ],
+    listOfConsultants:[
+      {
+        id: "001",
+        name: "Stefan Hansdotter"
+      },
+    ]
+  },
+  {
+    id: "222",
+    name: "Scania",
+    contactPeople: [
+      {
+        name: "Leon Göransson",
+        phone: "111-222-222",
+        email: "leon.goransson@scania.se"
+      },
+    ],
+    listOfConsultants:[
+      {
+        id: "002",
+        name: "Astrad Rehnquist"
+      },
+      {
+        id: "008",
+        name: "Agnes Ekbom"
+      },
+    ]
+  },
+  {
+    id: "333",
+    name: "AstraZeneca",
+    contactPeople: [
+      {
+        name: "Thomas Lundmark",
+        phone: "111-222-333",
+        email: "thomas.lundmark@astrazeneca.se"
+      },
+    ],
+    listOfConsultants:[
+      {
+        id: "003",
+        name: "Josephine Ahlgren Björk"
+      },
+    ]
+  },
+  {
+    id: "444",
+    name: "Spotify",
+    contactPeople: [
+      {
+        name: "Loke Lundholm",
+        phone: "111-222-444",
+        email: "loke.lundholm@spotify.se"
+      },
+    ],
+    listOfConsultants:[
+      {
+        id: "005",
+        name: "Axel Folly"
+      },
+    ]
+  },
+  {
+    id: "555",
+    name: "ABB",
+    contactPeople: [
+      {
+        name: "Odert Haglund",
+        phone: "111-222-555",
+        email: "odert.haglund@abb.se"
+      },
+    ],
+    listOfConsultants:[
+      {
+        id: "006",
+        name: "Allan Sanddahl"
+      },
+    ]
+  },
+  {
+    id: "666",
+    name: "Telia",
+    contactPeople: [
+      {
+        name: "Lars Persson",
+        phone: "111-222-666",
+        email: "lars.persson@telia.se"
+      },
+    ],
+    listOfConsultants:[
+      {
+        id: "007",
+        name: "Julia Roberts"
+      },
+    ]
+  },
+  {
+    id: "777",
+    name: "Swedbank",
+    contactPeople: [
+      {
+        name: "Axel Westermark",
+        phone: "111-222-777",
+        email: "axel.westermark@swedbank.se"
+      },
+    ],
+    listOfConsultants:[
+      {
+        id: "010",
+        name: "Iris Lindahl"
+      },
+    ]
+  },
 ]
