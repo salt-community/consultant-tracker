@@ -16,7 +16,7 @@ export const infographicData = [
   { title: "Total consultants", amount: 10, variant: "blue" },
   { title: "Active consultants", amount: 7, variant: "green" },
   { title: "Absent consultants", amount: 3, variant: "yellow" },
-  { title: "Number of clients.tsx", amount: 7, variant: "violet" },
+  { title: "Number of clients", amount: 7, variant: "violet" },
 ];
 
 export const consultantsData: ConsultantDataType[] = [

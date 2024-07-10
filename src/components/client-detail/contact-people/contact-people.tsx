@@ -12,21 +12,17 @@ type Props = {
 };
 
 const ContactPeople = ({ contactPeople }: Props) => {
-
-
-
-
   return (
     <>
       <h3>Contact People</h3>
       <div className="client-contact__container">
-        {contactPeople.map((el, index) => (
+        {contactPeople.map((el) => (
           <MapBox
-            index={index}
             name={el.name}
             phone={el.phone}
             email={el.email}
             id={el.id}
+            key={el.id}
           />
         ))}
       </div>

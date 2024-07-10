@@ -5,15 +5,14 @@ import {usePathname} from "next/navigation";
 import ContactPeople from "./contact-people/contact-people";
 
 const ClientsDetails = () => {
-  const client= useClientsContext();
+  const client = useClientsContext();
   const idClient = usePathname().split("/").pop();
-  const name = client.data.filter(el=>el.id == idClient)[0].name;
-  const clientData = client.data.filter(el=>el.id == idClient)[0];
-
+  const clientData = client.data.filter(el => el.id == idClient)[0];
+  const {name, contactPeople} = clientData;
   return (
     <div>
-      <Header name={clientData.name} />
-      <ContactPeople contactPeople={clientData.contactPeople}/>
+      <Header name={name}/>
+      <ContactPeople contactPeople={contactPeople}/>
     </div>
   );
 };

@@ -1,20 +1,21 @@
 import Edit from "@/components/edit/edit";
 import TextField from "@/components/text-field/text-field";
-import { useClientsContext } from "@/context/clients";
-import { ClientsDetailsDataType } from "@/types";
+import {useClientsContext} from "@/context/clients";
+import {ClientsDetailsDataType} from "@/types";
 import Box from "@mui/material/Box";
-import { usePathname } from "next/navigation";
-import React, { ChangeEvent, FormEvent, useState } from "react";
+import {usePathname} from "next/navigation";
+import {ChangeEvent, FormEvent, useState} from "react";
+import {PiCopySimpleThin} from "react-icons/pi";
+import toast, {Toaster} from "react-hot-toast";
 
 type Props = {
-  index: number;
   name: string;
   phone: string;
   email: string;
   id: string;
 };
 
-const MapBox = ({ index, name, phone, email, id }: Props) => {
+const MapBox = ({name, phone, email, id}: Props) => {
   const [readonly, setReadonly] = useState<boolean>(true);
   const [clientData, setClientData] = useState({
     name,
@@ -68,15 +69,22 @@ const MapBox = ({ index, name, phone, email, id }: Props) => {
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+    const {name, value} = e.target;
     setClientData({
       ...clientData,
       [name]: value,
     });
   };
+  const handleCopyToClipboard = () => {
+    const {name, phone, email} = clientData;
+    const text = `name: ${name},\nphone : ${phone}, \nemail: ${email}`
+    navigator.clipboard.writeText(text)
+      .then(() => toast.success("Successfully copied!"))
+      .catch((err) => toast.error(`Ups not able to copy!`));
+  }
 
   return (
-    <div key={index} className="client-contact-details-card">
+    <div className="client-contact-details-card">
       <Box
         component="form"
         className="client-contact-details-form"
@@ -85,7 +93,8 @@ const MapBox = ({ index, name, phone, email, id }: Props) => {
         onSubmit={(e) => onSubmit(e)}
       >
         <div className="card-edit">
-          <Edit readonly={readonly} handleClick={handleClick} />
+          <Edit readonly={readonly} handleClick={handleClick}/>
+          <PiCopySimpleThin className="card-edit__copy" onClick={handleCopyToClipboard}/>
         </div>
         <TextField
           label="Name"
@@ -109,6 +118,10 @@ const MapBox = ({ index, name, phone, email, id }: Props) => {
           name="email"
         />
       </Box>
+      <Toaster
+        position="top-center"
+        reverseOrder={false}
+      />
     </div>
   );
 };

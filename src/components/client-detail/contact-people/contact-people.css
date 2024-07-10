@@ -1,25 +1,31 @@
 .client-contact__container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
 }
 
 .client-contact-details-card {
-  box-shadow: rgba(0, 0, 0, 0.1) 0 0 5px 0, rgba(0, 0, 0, 0.1) 0 0 1px 0;
-  border-radius: 5px;
-  padding: 30px;
-  min-height: 150px;
-  width: 300px;
-  gap: 15px;
-  display: flex;
-  flex-direction: column;
+    box-shadow: rgba(0, 0, 0, 0.1) 0 0 5px 0, rgba(0, 0, 0, 0.1) 0 0 1px 0;
+    border-radius: 5px;
+    padding: 30px;
+    min-height: 150px;
+    width: 300px;
+    gap: 15px;
+    display: flex;
+    flex-direction: column;
 }
 
 .client-contact-details-form {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }
 
 .card-edit {
-  align-self: flex-end;
+    align-self: flex-end;
+    display: flex;
+    gap: 20px;
+}
+
+.card-edit__copy{
+    cursor: pointer;
 }
