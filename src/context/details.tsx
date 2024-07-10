@@ -11,14 +11,14 @@ import {
   useState,
 } from "react";
 
-type DetailsContextType = {
+export type DetailsContextType = {
   name: string;
   data: ConsultantDetailsDataType[];
   setName: Dispatch<SetStateAction<string>>;
   setData: Dispatch<SetStateAction<ConsultantDetailsDataType[]>>;
 };
 
-const DetailsContext = createContext<DetailsContextType>({
+export const DetailsContext = createContext<DetailsContextType>({
   name: "",
   data: [],
   setName: () => "",

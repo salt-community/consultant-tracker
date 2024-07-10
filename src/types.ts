@@ -6,6 +6,7 @@ export type InfographicType = {
 export type ConsultantDataType = {
   id: string;
   name: string;
+  clientId: string,
   client: string;
   status: string;
 };

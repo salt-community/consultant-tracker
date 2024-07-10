@@ -1,5 +1,4 @@
 "use client";
-
 import { consultantsData } from "@/mockData";
 import { ConsultantDataType } from "@/types";
 import {

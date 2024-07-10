@@ -209,7 +209,7 @@ export default function EnhancedTable() {
                           row.client
                         ) : (
                           <Link
-                            href={`/clients/${row.client}`}
+                            href={`/clients/${row.clientId}`}
                             className="clients-link"
                           >
                             {row.client}

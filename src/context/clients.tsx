@@ -11,14 +11,14 @@ import {
   useState,
 } from "react";
 
-type ClientsContextType = {
+export type ClientsContextType = {
   name: string;
   data: ClientsDetailsDataType[];
   setData: Dispatch<SetStateAction<ClientsDetailsDataType[]>>
   setName: Dispatch<SetStateAction<string>>
 };
 
-const ClientsContext = createContext<ClientsContextType>({
+export const ClientsContext = createContext<ClientsContextType>({
   name: "",
   data: [],
   setName: () => "",

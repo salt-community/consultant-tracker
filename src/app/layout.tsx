@@ -3,6 +3,7 @@ import "./globals.css";
 import React from "react";
 import {TableContextProvider} from "@/context/table";
 import {DetailsContextProvider} from "@/context/details";
+import {ClientsContextProvider} from "@/context/clients";
 
 
 export const metadata: Metadata = {
@@ -17,7 +18,9 @@ export default function RootLayout({children}: Readonly<{
     <html lang="en">
     <TableContextProvider>
       <DetailsContextProvider>
-        <body>{children}</body>
+        <ClientsContextProvider>
+          <body>{children}</body>
+        </ClientsContextProvider>
       </DetailsContextProvider>
     </TableContextProvider>
     </html>
