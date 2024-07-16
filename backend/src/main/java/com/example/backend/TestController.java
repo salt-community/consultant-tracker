@@ -1,15 +1,17 @@
-package com.consultant_tracker.backend;
+package com.example.backend;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Controller
+@RequestMapping("/api/test")
 @RestController
-@RequestMapping("/api")
-public class TestController {
+public class TestController{
 
     @GetMapping
-    public String test() {
-        return "Hello World";
+    public String test(){
+        return "Hello world!";
     }
 }
