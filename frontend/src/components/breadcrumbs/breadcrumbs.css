@@ -1,0 +1,7 @@
+.breadcrumb-link{
+color: gray
+}
+
+.breadcrumb-link:hover{
+color: var(--text-blue)
+}

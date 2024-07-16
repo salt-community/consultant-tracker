@@ -1,0 +1,38 @@
+.basic-info__data {
+    display: flex;
+    gap: 70px;
+    width: 100%;
+}
+
+.basic-info__wrapper {
+    display: flex;
+    flex-direction: column;
+    padding-top: 30px;
+    width: 100%;
+    gap: 30px;
+}
+
+.MuiInputBase-root {
+    font-size: large;
+    font-weight: 500;
+}
+
+.MuiInputBase-input.Mui-disabled {
+    -webkit-text-fill-color: black;
+}
+
+.basic-info-section {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.avatar {
+    width: 100px;
+    height: 100px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    align-self: start;
+    border-radius: 50%;
+}
+
