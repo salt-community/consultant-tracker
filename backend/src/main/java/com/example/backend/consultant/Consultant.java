@@ -1,8 +1,6 @@
 package com.example.backend.consultant;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.example.backend.saltUser.SaltUser;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.UUID;
@@ -20,6 +18,8 @@ public class Consultant {
     private String phoneNumber;
 
 //    private Client client;
-//    private SaltUser saltUser;
+    @ManyToOne
+    @JoinColumn(name = "saltUser_id", referencedColumnName = "id")
+    private SaltUser saltUser;
 //    private Contract contract;
 }
