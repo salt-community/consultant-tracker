@@ -7,4 +7,6 @@ import java.util.UUID;
 
 @Repository
 public interface ConsultantRepository extends JpaRepository<Consultant, UUID> {
+    boolean existsByTimekeeperId(Long id);
+    Consultant save(Consultant consultant);
 }

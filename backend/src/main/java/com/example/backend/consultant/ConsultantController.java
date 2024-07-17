@@ -16,22 +16,23 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ConsultantController {
 
-    private final TimekeeperClient client;
+    private final ConsultantService consultantService;
 
     @GetMapping
     public ResponseEntity<List<ConsultantResponseDto>> getConsultants() {
-        List<ConsultantResponseDto> listOfConsultants = new ArrayList<>();
-        listOfConsultants.add(new ConsultantResponseDto(
-                UUID.randomUUID(),
-                "Rune Ossler",
-                "rune.ossler@appliedtechnology.se",
-                "111-222-333"));
-        return ResponseEntity.ok(listOfConsultants);
+        List<ConsultantResponseDto> consultantsResponse =  consultantService.getAllConsultants();
+//        List<ConsultantResponseDto> listOfConsultants = new ArrayList<>();
+//        listOfConsultants.add(new ConsultantResponseDto(
+//                UUID.randomUUID(),
+//                "Rune Ossler",
+//                "rune.ossler@appliedtechnology.se",
+//                "111-222-333"));
+        return ResponseEntity.ok(consultantsResponse);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<TimekeeperUserResponseDto> getConsultant(@PathVariable Long id) {
-        TimekeeperUserResponseDto timekeeperUserResponseDto = client.getUser(id);
-        return ResponseEntity.ok(timekeeperUserResponseDto);
-    }
+//    @GetMapping("/{id}")
+//    public ResponseEntity<TimekeeperUserResponseDto> getConsultant(@PathVariable Long id) {
+//        TimekeeperUserResponseDto timekeeperUserResponseDto = client.getUser(id);
+//        return ResponseEntity.ok(timekeeperUserResponseDto);
+//    }
 }
