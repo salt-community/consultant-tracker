@@ -1,11 +1,10 @@
 package com.example.backend.consultant;
 
+import com.example.backend.client.TimekeeperClient;
+import com.example.backend.client.dto.TimekeeperUserResponseDto;
 import com.example.backend.consultant.dto.ConsultantResponseDto;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +14,7 @@ import java.util.UUID;
 @RequestMapping("/api/consultants")
 public class ConsultantController {
 
+    TimekeeperClient client = new TimekeeperClient();
     @GetMapping
     public ResponseEntity<List<ConsultantResponseDto>> getConsultants() {
         List<ConsultantResponseDto> listOfConsultants = new ArrayList<>();
@@ -24,5 +24,11 @@ public class ConsultantController {
                 "rune.ossler@appliedtechnology.se",
                 "111-222-333"));
         return ResponseEntity.ok(listOfConsultants);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<TimekeeperUserResponseDto> getConsultant(@PathVariable Long id) {
+        TimekeeperUserResponseDto timekeeperUserResponseDto = client.getUser(id);
+        return ResponseEntity.ok(timekeeperUserResponseDto);
     }
 }
