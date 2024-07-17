@@ -26,4 +26,10 @@ public class ConsultantController {
         ConsultantResponseDto consultant = consultantService.findConsultantById(id);
         return ResponseEntity.ok(consultant);
     }
+
+    @GetMapping("/time/{id}")
+    public ResponseEntity<Float> getConsultancyHoursByUserId(@PathVariable UUID id){
+        Float getHours = consultantService.getConsultancyHoursByUserId(id);
+        return ResponseEntity.ok(getHours);
+    }
 }

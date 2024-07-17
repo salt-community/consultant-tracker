@@ -1,15 +1,15 @@
 package com.example.backend.consultant;
 
 import com.example.backend.client.TimekeeperClient;
+import com.example.backend.client.dto.TimekeeperConsultancyTimeResponseDto;
 import com.example.backend.client.dto.TimekeeperUserResponseDto;
 import com.example.backend.consultant.dto.ConsultantResponseDto;
+import com.example.backend.exceptions.ConsultantNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 @Service
@@ -59,5 +59,14 @@ public class ConsultantService {
         Consultant consultant = consultantRepository.findById(id).orElse(null);
         assert consultant != null;
         return ConsultantResponseDto.toDto(consultant);
+    }
+
+    public Float getConsultancyHoursByUserId(UUID id) {
+        Consultant consultant = consultantRepository.findById(id).orElseThrow(() -> new ConsultantNotFoundException("Consultant not found"));
+        List<TimekeeperConsultancyTimeResponseDto> consultancyTime = timekeeperClient.getConsultancyTime(consultant.getTimekeeperId());
+        AtomicReference<Float> totalHoursResponse = new AtomicReference<>((float) 0.0);
+
+        consultancyTime.forEach(el -> totalHoursResponse.updateAndGet(v -> v + el.totalHours()));
+        return totalHoursResponse.get();
     }
 }

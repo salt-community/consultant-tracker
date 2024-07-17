@@ -9,8 +9,8 @@ public enum Activity {
     LEAVE_OF_ABSENCE("Tjänstledig"),
     CONSULTANCY_TIME("Konsult-tid"),
     ON_CALL("Jourtid");
-    private final String activity;
-    Activity(String activity) {
+    public final String activity;
+    private Activity(String activity) {
         this.activity = activity;
     }
 }

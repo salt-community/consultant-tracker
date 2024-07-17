@@ -1,6 +1,8 @@
 package com.example.backend.client;
 
 
+import com.example.backend.client.dto.TimekeeperConsultancyTimeListResponseDto;
+import com.example.backend.client.dto.TimekeeperConsultancyTimeResponseDto;
 import com.example.backend.client.dto.TimekeeperUserListResponseDto;
 import com.example.backend.client.dto.TimekeeperUserResponseDto;
 import lombok.Data;
@@ -9,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
+
+import static com.example.backend.client.Activity.CONSULTANCY_TIME;
 
 @Service
 @Data
@@ -57,6 +61,23 @@ public class TimekeeperClient {
                             tkUser.email(),
                             tkUser.phone(),
                             tkUser.id());
+                }).toList();
+    }
+
+    public List<TimekeeperConsultancyTimeResponseDto> getConsultancyTime(Long id) {
+        TimekeeperConsultancyTimeListResponseDto dto = CLIENT_URL.get()
+                .uri("api/v1/TimeRegistration?UserId={id}&PageSize=200", id)
+                .header("Authorization", HEADER)
+                .retrieve()
+                .bodyToMono(TimekeeperConsultancyTimeListResponseDto.class)
+                .block();
+        assert dto != null;
+        return dto.consultancyTime().stream()
+                .filter(time -> time.activityName().equals(CONSULTANCY_TIME.activity))
+                .map(time -> {
+                    return new TimekeeperConsultancyTimeResponseDto(
+                            time.totalHours(),
+                            time.activityName());
                 }).toList();
     }
 }
