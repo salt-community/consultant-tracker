@@ -22,7 +22,7 @@ public class ConsultantController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ConsultantResponseDto> getConsultant(@PathVariable UUID id) {
+    public ResponseEntity<ConsultantResponseDto> getConsultantById(@PathVariable UUID id) {
         ConsultantResponseDto consultant = consultantService.findConsultantById(id);
         return ResponseEntity.ok(consultant);
     }
