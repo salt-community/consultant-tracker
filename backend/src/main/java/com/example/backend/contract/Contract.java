@@ -22,7 +22,4 @@ public class Contract {
     @OneToOne
     @JoinColumn(name = "consultant_id", referencedColumnName = "id")
     private Consultant consultant;
-
-
-
 }

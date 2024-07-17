@@ -16,10 +16,9 @@ public class Consultant {
     private String fullName;
     private String email;
     private String phoneNumber;
+    private Long timekeeperId;
 
-//    private Client client;
     @ManyToOne
     @JoinColumn(name = "saltUser_id", referencedColumnName = "id")
     private SaltUser saltUser;
-//    private Contract contract;
 }
