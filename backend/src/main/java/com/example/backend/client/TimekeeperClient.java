@@ -19,7 +19,6 @@ public class TimekeeperClient {
     }
 
     public TimekeeperUserResponseDto getUser(Long id) {
-        System.out.println("HEADER: " + HEADER);
         TimekeeperUserListResponseDto dto = CLIENT_URL.get()
                 .uri("api/v1/user/{id}", id)
                 .header("Authorization", HEADER)
