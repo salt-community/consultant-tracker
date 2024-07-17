@@ -10,31 +10,29 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Service
 public class TimekeeperClient {
     private final WebClient CLIENT_URL;
-    private String HEADER;
+    private final String HEADER;
 
-    @Value("${TIMEKEEPER.AUTH}")
-    private static String HEADER_VALUE;
-    @Value("${TIMEKEEPER.URL}")
-    private static String BASE_URL;
+//    @Value("${TIMEKEEPER.AUTH}")
+//    private static String HEADER_VALUE;
+//    @Value("${TIMEKEEPER.URL}")
+//    private static String BASE_URL;
 
-
-//    public TimekeeperClient(@Value("${TIMEKEEPER.URL}") String baseUrl,
-//                            @Value("${TIMEKEEPER.AUTH}")
-//                            String HEADER) {
-//        CLIENT_URL = WebClient.create(baseUrl);
-//        this.HEADER = HEADER;
-//    }
-
-    public TimekeeperClient() {
-        CLIENT_URL = WebClient.create(BASE_URL);
-        this.HEADER = HEADER_VALUE;
+    public TimekeeperClient(@Value("${TIMEKEEPER.URL}") String baseUrl,
+                            @Value("${TIMEKEEPER.AUTH}") String HEADER) {
+        CLIENT_URL = WebClient.create(baseUrl);
+        this.HEADER = HEADER;
     }
+
+//    public TimekeeperClient() {
+//        CLIENT_URL = WebClient.create(BASE_URL);
+//        this.HEADER = HEADER_VALUE;
+//    }
 
     public TimekeeperUserResponseDto getUser(Long id) {
         System.out.println("HEADER: " + HEADER);
         TimekeeperUserListResponseDto dto = CLIENT_URL.get()
                 .uri("api/v1/user/{id}", id)
-                .header("Authorization", "Basic amFnb2RhLmJvZG5hckBhcHBsaWVkdGVjaG5vbG9neS5zZTp2bzN0c2JwNQ==")
+                .header("Authorization", HEADER)
                 .retrieve()
                 .bodyToMono(TimekeeperUserListResponseDto.class)
                 .block();

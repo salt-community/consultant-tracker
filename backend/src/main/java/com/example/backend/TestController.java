@@ -9,10 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/test")
 @RestController
 public class TestController{
-TimekeeperClient client = new TimekeeperClient();
+
     @GetMapping
     public String test(){
-        client.getUser(22748L);
         return "Hello world!";
     }
 }
