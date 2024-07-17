@@ -1,7 +1,11 @@
 package com.example.backend.consultant;
+
 import com.example.backend.saltUser.SaltUser;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 import java.util.UUID;
 
@@ -20,5 +24,21 @@ public class Consultant {
 
     @ManyToOne
     @JoinColumn(name = "saltUser_id", referencedColumnName = "id")
+    @Nullable
     private SaltUser saltUser;
+
+    public Consultant(UUID id,
+                      String fullName,
+                      String email,
+                      String phoneNumber,
+                      Long timekeeperId) {
+        this.id = id;
+        this.fullName = fullName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.timekeeperId = timekeeperId;
+    }
+
+    public Consultant() {
+    }
 }
