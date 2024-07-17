@@ -14,8 +14,7 @@ public record ConsultantResponseDto(UUID id,
                 consultant.getId(),
                 consultant.getFullName(),
                 consultant.getEmail(),
-                consultant.getPhoneNumber()
-        );
+                consultant.getPhoneNumber());
     }
 
 }

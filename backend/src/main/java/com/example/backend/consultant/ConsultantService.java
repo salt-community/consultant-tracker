@@ -54,4 +54,10 @@ public class ConsultantService {
     private void createConsultant(Consultant consultant) {
         consultantRepository.save(consultant);
     }
+
+    public ConsultantResponseDto findConsultantById(UUID id) {
+        Consultant consultant = consultantRepository.findById(id).orElse(null);
+        assert consultant != null;
+        return ConsultantResponseDto.toDto(consultant);
+    }
 }

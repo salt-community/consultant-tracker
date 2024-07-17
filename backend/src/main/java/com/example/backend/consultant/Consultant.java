@@ -3,9 +3,7 @@ package com.example.backend.consultant;
 import com.example.backend.saltUser.SaltUser;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 
 import java.util.UUID;
 
