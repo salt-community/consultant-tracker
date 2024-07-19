@@ -2,6 +2,8 @@ import {
   ClientsDetailsDataType,
   ConsultantDataType,
   ConsultantDetailsDataType,
+  ConsultantItemsType,
+  ConsultantsCalendarType,
   HeaderCellsType,
 } from "./types";
 
@@ -681,7 +683,7 @@ export const clientsData: ClientsDetailsDataType[] = [
   },
 ];
 
-export const consultantDataCalendar = [
+export const consultantsCalendar: ConsultantsCalendarType[] = [
   { id: 1, title: "Stefan Hansdotter" },
   { id: 2, title: "Astrad Rehnquist" },
   { id: 3, title: "Josephine Ahlgren Björk" },
@@ -694,17 +696,17 @@ export const consultantDataCalendar = [
   { id: 10, title: "Iris Lindahl" },
 ];
 
-export const consultantItems = [
+export const consultantItems: ConsultantItemsType[] = [
   {
     id: 1,
     group: 1,
     start_time: new Date("2024-07-17T00:00:00"),
     end_time: new Date("2024-07-17T23:59:59"),
-    itemProps: {
-      style: {
-        backgroundColor: "red",
-      },
-    },
+    // itemProps: {
+    //   style: {
+    //     backgroundColor: "red",
+    //   },
+    // },
   },
   {
     id: 2,
@@ -732,14 +734,14 @@ export const consultantItems = [
   {
     id: 5,
     group: 1,
-    start_time: new Date("2024-07-19T08:00:00"),
-    end_time: new Date("2024-07-19T17:00:00"),
+    start_time: new Date("2024-07-19T00:00:00"),
+    end_time: new Date("2024-07-19T23:59:59"),
   },
   {
     id: 6,
     group: 1,
-    start_time: new Date("2024-07-22T08:00:00"),
-    end_time: new Date("2024-07-22T17:00:00"),
+    start_time: new Date("2024-07-22T00:00:00"),
+    end_time: new Date("2024-07-22T23:59:59"),
   },
   {
     id: 7,

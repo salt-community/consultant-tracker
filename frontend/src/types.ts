@@ -6,7 +6,7 @@ export type InfographicType = {
 export type ConsultantDataType = {
   id: string;
   name: string;
-  clientId: string,
+  clientId: string;
   client: string;
   status: string;
 };
@@ -37,36 +37,54 @@ export type MeetingsType = {
   description: string;
 };
 
-
 export type ConsultantDetailsDataType = {
-  id: string,
-  name: string
-  client: ClientDataType[],
-  status: string,
-  absence: AbsenceType[],
-  github: string,
-  phone: string,
-  startDate: string,
-  remainingHours: number,
-  email: string,
-  meetings: MeetingsType[],
-}
+  id: string;
+  name: string;
+  client: ClientDataType[];
+  status: string;
+  absence: AbsenceType[];
+  github: string;
+  phone: string;
+  startDate: string;
+  remainingHours: number;
+  email: string;
+  meetings: MeetingsType[];
+};
 
 export type ContactPeopleType = {
-  id: string,
-  name: string,
-  phone: string,
-  email: string
-}
+  id: string;
+  name: string;
+  phone: string;
+  email: string;
+};
 
 export type CompanyConsultantsType = {
-  id: string,
-  name: string
-}
+  id: string;
+  name: string;
+};
 
 export type ClientsDetailsDataType = {
-  id: string,
-  name: string,
-  contactPeople: ContactPeopleType[],
-  listOfConsultants: CompanyConsultantsType[]
-}
+  id: string;
+  name: string;
+  contactPeople: ContactPeopleType[];
+  listOfConsultants: CompanyConsultantsType[];
+};
+
+export type ConsultantsCalendarType = {
+  id: number;
+  title: string;
+};
+
+export type ConsultantItemsType = {
+  id: number;
+  group: number;
+  title?: React.ReactNode | undefined;
+  start_time: Date;
+  end_time: Date;
+  canMove?: boolean | undefined;
+  canResize?: boolean | "left" | "right" | "both" | undefined;
+  canChangeGroup?: boolean | undefined;
+  className?: string | undefined;
+  style?: React.CSSProperties | undefined;
+  itemProps?: React.HTMLAttributes<HTMLDivElement> | undefined;
+};
