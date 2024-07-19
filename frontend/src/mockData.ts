@@ -1,5 +1,4 @@
 import {
-  ClientDataType,
   ClientsDetailsDataType,
   ConsultantDataType,
   ConsultantDetailsDataType,
@@ -679,5 +678,78 @@ export const clientsData: ClientsDetailsDataType[] = [
         name: "Iris Lindahl",
       },
     ],
+  },
+];
+
+export const consultantDataCalendar = [
+  { id: 1, title: "Stefan Hansdotter" },
+  { id: 2, title: "Astrad Rehnquist" },
+  { id: 3, title: "Josephine Ahlgren Björk" },
+  { id: 4, title: "Olof Dahlquist" },
+  { id: 5, title: "Axel Folly" },
+  { id: 6, title: "Allan Sanddahl" },
+  { id: 7, title: "Julia Roberts" },
+  { id: 8, title: "Agnes Ekbom" },
+  { id: 9, title: "Zara Larsson" },
+  { id: 10, title: "Iris Lindahl" },
+];
+
+export const consultantItems = [
+  {
+    id: 1,
+    group: 1,
+    start_time: new Date("2024-07-17T00:00:00"),
+    end_time: new Date("2024-07-17T23:59:59"),
+    itemProps: {
+      style: {
+        backgroundColor: "red",
+      },
+    },
+  },
+  {
+    id: 2,
+    group: 2,
+    start_time: new Date("2024-07-17T00:00:00"),
+    end_time: new Date("2024-07-17T23:59:59"),
+  },
+  {
+    id: 3,
+    group: 1,
+    start_time: new Date("2024-07-18T00:00:00"),
+    end_time: new Date("2024-07-18T23:59:59"),
+    itemProps: {
+      style: {
+        backgroundColor: "green",
+      },
+    },
+  },
+  {
+    id: 4,
+    group: 2,
+    start_time: new Date("2024-07-18T00:00:00"),
+    end_time: new Date("2024-07-18T23:59:59"),
+  },
+  {
+    id: 5,
+    group: 1,
+    start_time: new Date("2024-07-19T08:00:00"),
+    end_time: new Date("2024-07-19T17:00:00"),
+  },
+  {
+    id: 6,
+    group: 1,
+    start_time: new Date("2024-07-22T08:00:00"),
+    end_time: new Date("2024-07-22T17:00:00"),
+  },
+  {
+    id: 7,
+    group: 1,
+    start_time: new Date("2024-05-01T00:00:00"),
+    end_time: new Date("2024-07-16T123:59:59"),
+    itemProps: {
+      style: {
+        backgroundColor: "grey",
+      },
+    },
   },
 ];
