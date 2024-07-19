@@ -745,7 +745,7 @@ export const consultantItems = [
     id: 7,
     group: 1,
     start_time: new Date("2024-05-01T00:00:00"),
-    end_time: new Date("2024-07-16T123:59:59"),
+    end_time: new Date("2024-07-16T23:59:59"),
     itemProps: {
       style: {
         backgroundColor: "grey",
