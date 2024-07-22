@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import {
   ClientsDetailsDataType,
   ConsultantDataType,
@@ -700,24 +701,19 @@ export const consultantItems: ConsultantItemsType[] = [
   {
     id: 1,
     group: 1,
-    start_time: new Date("2024-07-17T00:00:00"),
-    end_time: new Date("2024-07-22T23:59:59"),
+    start_time: dayjs("2024-07-17T00:00:00"),
+    end_time: dayjs("2024-07-17T23:59:59"),
     itemProps: {
       style: {
         zIndex: 1,
       },
-    },
-    // itemProps: {
-    //   style: {
-    //     backgroundColor: "red",
-    //   },
-    // },
+    }
   },
   {
     id: 2,
     group: 2,
-    start_time: new Date("2024-07-17T00:00:00"),
-    end_time: new Date("2024-07-17T23:59:59"),
+    start_time: dayjs("2024-07-17T00:00:00"),
+    end_time: dayjs("2024-07-17T23:59:59"),
     itemProps: {
       style: {
         zIndex: 1,
@@ -727,8 +723,8 @@ export const consultantItems: ConsultantItemsType[] = [
   {
     id: 3,
     group: 3,
-    start_time: new Date("2024-07-18T00:00:00"),
-    end_time: new Date("2024-07-18T23:59:59"),
+    start_time: dayjs("2024-07-18T00:00:00"),
+    end_time: dayjs("2024-07-18T23:59:59"),
     itemProps: {
       style: {
         zIndex: 1,
@@ -738,8 +734,8 @@ export const consultantItems: ConsultantItemsType[] = [
   {
     id: 4,
     group: 4,
-    start_time: new Date("2024-07-18T00:00:00"),
-    end_time: new Date("2024-07-18T23:59:59"),
+    start_time: dayjs("2024-07-18T00:00:00"),
+    end_time: dayjs("2024-07-18T23:59:59"),
     itemProps: {
       style: {
         zIndex: 1,
@@ -749,8 +745,8 @@ export const consultantItems: ConsultantItemsType[] = [
   {
     id: 5,
     group: 5,
-    start_time: new Date("2024-07-19T00:00:00"),
-    end_time: new Date("2024-07-19T23:59:59"),
+    start_time: dayjs("2024-07-19T00:00:00"),
+    end_time: dayjs("2024-07-19T23:59:59"),
     itemProps: {
       style: {
         zIndex: 1,
@@ -760,25 +756,47 @@ export const consultantItems: ConsultantItemsType[] = [
   {
     id: 6,
     group: 6,
-    start_time: new Date("2024-07-22T00:00:00"),
-    end_time: new Date("2024-07-22T23:59:59"),
+    start_time: dayjs("2024-07-22T00:00:00"),
+    end_time: dayjs("2024-07-22T23:59:59"),
     itemProps: {
       style: {
         zIndex: 1,
       },
     },
   },
-  // {
-  //   id: 7,
-  //   group: 1,
-  //   start_time: new Date("2024-05-01T00:00:00"),
-  //   end_time: new Date("2024-07-16T23:59:59"),
-  //   itemProps: {
-  //     style: {
-  //       backgroundColor: "grey",
-  //     },
-  //   },
-  // },
+  {
+    id: 7,
+    group: 1,
+    start_time: dayjs("2024-07-18T00:00:00"),
+    end_time: dayjs("2024-07-18T23:59:59"),
+    itemProps: {
+      style: {
+        zIndex: 1,
+      },
+    }
+  },
+  {
+    id: 8,
+    group: 1,
+    start_time: dayjs("2024-07-19T00:00:00"),
+    end_time: dayjs("2024-07-19T23:59:59"),
+    itemProps: {
+      style: {
+        zIndex: 1,
+      },
+    }
+  },
+  {
+    id: 9,
+    group: 1,
+    start_time: dayjs("2024-07-22T00:00:00"),
+    end_time: dayjs("2024-07-22T23:59:59"),
+    itemProps: {
+      style: {
+        zIndex: 1,
+      },
+    }
+  },
 ];
 
 export const redDays = [

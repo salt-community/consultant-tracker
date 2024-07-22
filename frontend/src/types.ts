@@ -1,3 +1,4 @@
+import { Dayjs } from "dayjs";
 import React from "react";
 
 export type InfographicType = {
@@ -81,8 +82,8 @@ export type ConsultantItemsType = {
   id: number;
   group: number;
   title?: React.ReactNode | undefined;
-  start_time: Date;
-  end_time: Date;
+  start_time: Dayjs;
+  end_time: Dayjs;
   canMove?: boolean | undefined;
   canResize?: boolean | "left" | "right" | "both" | undefined;
   canChangeGroup?: boolean | undefined;

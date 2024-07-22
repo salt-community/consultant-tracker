@@ -5,10 +5,12 @@ import Timeline from "react-calendar-timeline";
 import "react-calendar-timeline/lib/Timeline.css";
 import moment from "moment";
 import { consultantsCalendar, consultantItems } from "@/mockData";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ConsultantItemsType } from "@/types";
 import { getDatesForRemainingTime } from "@/helperMethods";
-import './consultant-list.css'
+import "./consultant-list.css";
+import dayjs from "dayjs";
+import { grey } from "@mui/material/colors";
 
 const ConsultantsList = () => {
   const client = useClientsContext();
@@ -16,8 +18,26 @@ const ConsultantsList = () => {
   const singleClient = client.data.filter((el) => el.id === idParam)[0];
   const [items, setItems] = useState<ConsultantItemsType[]>(consultantItems);
 
- 
-  console.log("addEstimatedTimeLeft: " + getDatesForRemainingTime(1, items));
+  useEffect(() => {
+    const remainingTimeItem = getDatesForRemainingTime(1, items);
+    let tempItems = items;
+    const newItem = {
+      id: 10,
+      group: 1,
+      start_time: remainingTimeItem.start_date,
+      end_time: remainingTimeItem.end_date,
+      itemProps: {
+        style: {
+          zIndex: 1,
+          backgroundColor: "grey",
+        },
+      },
+    };
+    tempItems.push(newItem);
+    setItems(tempItems);
+  }, []);
+
+  console.log("All items", items);
 
   return (
     <div>
