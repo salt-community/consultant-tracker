@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { ConsultantItemsType } from "./types";
+import {ConsultantItemsType} from "./types";
 
 export const getDatesForRemainingTime = (
   id: number,
@@ -18,13 +18,14 @@ export const getDatesForRemainingTime = (
     .set("month", lastWorkedDay.month())
     .set("year", lastWorkedDay.year())
     .set("hours", 0)
-    .set("minutes", 0 + timezoneOffset)
+    .set("minutes", 0)
     .set("seconds", 0);
+  console.log('first startDate', startDate);
 
   const tempEndDate = dayjs(startDate)
     .set("date", startDate.date() + remainingDays - 1)
     .set("hours", 23)
-    .set("minutes", 59 + timezoneOffset)
+    .set("minutes", 59)
     .set("seconds", 59);
 
   const endDate = accountForNonWorkingDays(startDate, tempEndDate);
@@ -41,18 +42,17 @@ function accountForNonWorkingDays(
   tempEndDate: dayjs.Dayjs
 ) {
   let nonWorkDaysCount = 0;
-  let isWeekend = false;
 
-  while (startDate < tempEndDate) {
-    var day = startDate.day();
-    isWeekend = day === 6 || day === 0;
-    if (isWeekend) {
+  const daysDiff = tempEndDate.diff(startDate, "day");
+
+  for (let i = 0; i <= daysDiff + 1; i++) {
+    const date = startDate.add(i, "day")
+    const day = date.day();
+    const saturday = 6;
+    const sunday = 0;
+    if (day === saturday || day === sunday) {
       nonWorkDaysCount++;
-    } // return immediately if weekend found
-    startDate.date(startDate.day() + 1);
+    }
   }
-  console.log("tempEndDate: ", tempEndDate);
-  const endDate = dayjs(tempEndDate).set('date', tempEndDate.date() + nonWorkDaysCount);
-  console.log("adjusted end date: ", endDate);
-  return endDate;
+  return dayjs(tempEndDate).add(nonWorkDaysCount, "day");
 }

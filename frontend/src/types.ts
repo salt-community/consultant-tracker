@@ -1,3 +1,5 @@
+import React from "react";
+
 export type InfographicType = {
   title: string;
   amount: number;

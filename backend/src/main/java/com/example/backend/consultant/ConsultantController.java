@@ -28,8 +28,8 @@ public class ConsultantController {
     }
 
     @GetMapping("/time/{id}")
-    public ResponseEntity<Float> getConsultancyHoursByUserId(@PathVariable UUID id){
-        Float getHours = consultantService.getConsultancyHoursByUserId(id);
+    public ResponseEntity<Double> getConsultancyHoursByUserId(@PathVariable UUID id){
+        Double getHours = consultantService.getConsultancyHoursByUserId(id);
         return ResponseEntity.ok(getHours);
     }
 }

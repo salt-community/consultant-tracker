@@ -61,11 +61,10 @@ public class ConsultantService {
         return ConsultantResponseDto.toDto(consultant);
     }
 
-    public Float getConsultancyHoursByUserId(UUID id) {
+    public Double getConsultancyHoursByUserId(UUID id) {
         Consultant consultant = consultantRepository.findById(id).orElseThrow(() -> new ConsultantNotFoundException("Consultant not found"));
         List<TimekeeperConsultancyTimeResponseDto> consultancyTime = timekeeperClient.getConsultancyTime(consultant.getTimekeeperId());
-        AtomicReference<Float> totalHoursResponse = new AtomicReference<>((float) 0.0);
-
+        AtomicReference<Double> totalHoursResponse = new AtomicReference<>(0.0);
         consultancyTime.forEach(el -> totalHoursResponse.updateAndGet(v -> v + el.totalHours()));
         return totalHoursResponse.get();
     }
