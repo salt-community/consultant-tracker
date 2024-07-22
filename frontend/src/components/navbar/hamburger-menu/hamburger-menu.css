@@ -30,7 +30,7 @@
     right: 0;
     background: var(--main-background);
     height: 100vh;
-    z-index: 2;
+    z-index: 100;
 }
 
 .navbar-list__close-icon {

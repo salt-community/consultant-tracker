@@ -1,0 +1,8 @@
+.react-calendar-timeline .rct-header-root {
+    background: #575957;
+    border-bottom: 1px solid #bbb;
+}
+
+.react-calendar-timeline .rct-vertical-lines .rct-vl{
+    z-index: 1;
+}
