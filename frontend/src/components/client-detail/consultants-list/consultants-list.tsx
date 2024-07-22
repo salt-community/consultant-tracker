@@ -7,7 +7,7 @@ import moment from "moment";
 import { consultantsCalendar, consultantItems } from "@/mockData";
 import { useState } from "react";
 import { ConsultantItemsType } from "@/types";
-import dayjs from "dayjs";
+import { getDatesForRemainingTime } from "@/helperMethods";
 
 const ConsultantsList = () => {
   const client = useClientsContext();
@@ -15,37 +15,8 @@ const ConsultantsList = () => {
   const singleClient = client.data.filter((el) => el.id === idParam)[0];
   const [items, setItems] = useState<ConsultantItemsType[]>(consultantItems);
 
-  const getDatesForRemainingTime = (id: number) => {
-    const matchingDates = items
-      .filter((i) => i.group === id)
-      .map((d) => d.start_time);
-    const workedTime = matchingDates.length * 8;
-    const remainingHours = 48 - workedTime;
-    const remainingDays = remainingHours / 8;
-    const lastWorkedDay = dayjs(matchingDates[matchingDates.length - 1]);
-    const timezoneOffset = lastWorkedDay.utcOffset();
-    const startDate = dayjs()
-      .set("day", lastWorkedDay.day() + 1)
-      .set("month", lastWorkedDay.month())
-      .set("year", lastWorkedDay.year())
-      .set("hours", 0)
-      .set("minutes", 0 + timezoneOffset)
-      .set("seconds", 0);
-
-    const endDate = dayjs(startDate)
-      .set("date", startDate.date() + remainingDays - 1)
-      .set("hours", 23)
-      .set("minutes", 59 + timezoneOffset)
-      .set("seconds", 59);
-
-    return JSON.stringify({
-      start_date: startDate,
-      end_date: endDate,
-      remainingHours: remainingHours,
-    });
-  };
-
-  console.table("addEstimatedTimeLeft: " + getDatesForRemainingTime(1));
+ 
+  console.log("addEstimatedTimeLeft: " + getDatesForRemainingTime(1, items));
 
   return (
     <div>
