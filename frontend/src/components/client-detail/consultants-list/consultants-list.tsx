@@ -9,8 +9,6 @@ import { useEffect, useState } from "react";
 import { ConsultantItemsType } from "@/types";
 import { getDatesForRemainingTime } from "@/helperMethods";
 import "./consultant-list.css";
-import dayjs from "dayjs";
-import { grey } from "@mui/material/colors";
 
 const ConsultantsList = () => {
   const client = useClientsContext();
@@ -20,9 +18,8 @@ const ConsultantsList = () => {
 
   useEffect(() => {
     const remainingTimeItem = getDatesForRemainingTime(1, items);
-    let tempItems = items;
     const newItem = {
-      id: 10,
+      id: 20,
       group: 1,
       start_time: remainingTimeItem.start_date,
       end_time: remainingTimeItem.end_date,
@@ -33,8 +30,8 @@ const ConsultantsList = () => {
         },
       },
     };
-    tempItems.push(newItem);
-    setItems(tempItems);
+    const pushedItem = [...items, newItem];
+    setItems(pushedItem);
   }, []);
 
   console.log("All items", items);
