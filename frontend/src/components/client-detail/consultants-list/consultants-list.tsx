@@ -8,6 +8,7 @@ import { consultantsCalendar, consultantItems } from "@/mockData";
 import { useState } from "react";
 import { ConsultantItemsType } from "@/types";
 import { getDatesForRemainingTime } from "@/helperMethods";
+import './consultant-list.css'
 
 const ConsultantsList = () => {
   const client = useClientsContext();
