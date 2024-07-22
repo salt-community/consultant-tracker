@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import {ConsultantItemsType} from "./types";
+import {redDays} from "@/mockData";
 
 export const getDatesForRemainingTime = (
   id: number,
@@ -37,22 +38,25 @@ export const getDatesForRemainingTime = (
   });
 };
 
-function accountForNonWorkingDays(
-  startDate: dayjs.Dayjs,
-  tempEndDate: dayjs.Dayjs
-) {
+const accountForNonWorkingDays = (startDate: dayjs.Dayjs,
+                                  tempEndDate: dayjs.Dayjs) => {
   let nonWorkDaysCount = 0;
-
   const daysDiff = tempEndDate.diff(startDate, "day");
-
   for (let i = 0; i <= daysDiff + 1; i++) {
     const date = startDate.add(i, "day")
     const day = date.day();
-    const saturday = 6;
-    const sunday = 0;
-    if (day === saturday || day === sunday) {
+    if (isWeekend(day) || isRedDay(date)) {
       nonWorkDaysCount++;
     }
   }
   return dayjs(tempEndDate).add(nonWorkDaysCount, "day");
+}
+const isRedDay = (date) => {
+  const redDaysByYear = redDays.filter(el => el.year === date.year())[0]
+  return redDaysByYear.redDays.includes(date.format("YYYY-MM-DD"));
+}
+const isWeekend = (day) => {
+  const saturday = 6;
+  const sunday = 0;
+  return day === saturday || day === sunday
 }

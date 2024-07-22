@@ -14,10 +14,10 @@ export const navLinks = [
 ];
 
 export const infographicData = [
-  { title: "Total consultants", amount: 10, variant: "blue" },
-  { title: "Active consultants", amount: 7, variant: "green" },
-  { title: "Absent consultants", amount: 3, variant: "yellow" },
-  { title: "Number of clients", amount: 7, variant: "violet" },
+  {title: "Total consultants", amount: 10, variant: "blue"},
+  {title: "Active consultants", amount: 7, variant: "green"},
+  {title: "Absent consultants", amount: 3, variant: "yellow"},
+  {title: "Number of clients", amount: 7, variant: "violet"},
 ];
 
 export const consultantsData: ConsultantDataType[] = [
@@ -684,16 +684,16 @@ export const clientsData: ClientsDetailsDataType[] = [
 ];
 
 export const consultantsCalendar: ConsultantsCalendarType[] = [
-  { id: 1, title: "Stefan Hansdotter" },
-  { id: 2, title: "Astrad Rehnquist" },
-  { id: 3, title: "Josephine Ahlgren Björk" },
-  { id: 4, title: "Olof Dahlquist" },
-  { id: 5, title: "Axel Folly" },
-  { id: 6, title: "Allan Sanddahl" },
-  { id: 7, title: "Julia Roberts" },
-  { id: 8, title: "Agnes Ekbom" },
-  { id: 9, title: "Zara Larsson" },
-  { id: 10, title: "Iris Lindahl" },
+  {id: 1, title: "Stefan Hansdotter"},
+  {id: 2, title: "Astrad Rehnquist"},
+  {id: 3, title: "Josephine Ahlgren Björk"},
+  {id: 4, title: "Olof Dahlquist"},
+  {id: 5, title: "Axel Folly"},
+  {id: 6, title: "Allan Sanddahl"},
+  {id: 7, title: "Julia Roberts"},
+  {id: 8, title: "Agnes Ekbom"},
+  {id: 9, title: "Zara Larsson"},
+  {id: 10, title: "Iris Lindahl"},
 ];
 
 export const consultantItems: ConsultantItemsType[] = [
@@ -755,3 +755,42 @@ export const consultantItems: ConsultantItemsType[] = [
   //   },
   // },
 ];
+
+export const redDays = [
+  {
+    year: 2024,
+    redDays: [
+      "2024-01-01",
+      // "2024-01-06",
+      "2024-03-29",
+      // "2024-03-31",
+      "2024-04-01",
+      "2024-05-01",
+      "2024-05-09",
+      // "2024-05-19",
+      "2024-06-06",
+      // "2024-06-22",
+      // "2024-11-02",
+      "2024-12-25",
+      "2024-12-26"
+    ]
+  },
+  {
+    year: 2025,
+    redDays: [
+      "2025-01-01",
+      "2025-01-06",
+      "2025-04-18",
+      // "2025-04-20",
+      "2025-04-21",
+      "2025-05-01",
+      "2025-05-29",
+      "2025-06-06",
+      // "2025-06-08",
+      // "2025-06-21",
+      // "2025-11-01",
+      "2025-12-25",
+      "2025-12-26"
+    ]
+  }
+]
