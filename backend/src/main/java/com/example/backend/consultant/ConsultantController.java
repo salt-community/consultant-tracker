@@ -1,6 +1,7 @@
 package com.example.backend.consultant;
 
 import com.example.backend.consultant.dto.ConsultantResponseDto;
+import com.example.backend.consultant.dto.ConsultantTimeResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,7 @@ public class ConsultantController {
 
     @GetMapping
     public ResponseEntity<List<ConsultantResponseDto>> getConsultants() {
-        List<ConsultantResponseDto> consultantsResponse =  consultantService.getAllConsultants();
+        List<ConsultantResponseDto> consultantsResponse = consultantService.getAllConsultantDtos();
         return ResponseEntity.ok(consultantsResponse);
     }
 
@@ -28,8 +29,18 @@ public class ConsultantController {
     }
 
     @GetMapping("/time/{id}")
-    public ResponseEntity<Double> getConsultancyHoursByUserId(@PathVariable UUID id){
+    public ResponseEntity<Double> getConsultancyHoursByUserId(@PathVariable UUID id) {
         Double getHours = consultantService.getConsultancyHoursByUserId(id);
         return ResponseEntity.ok(getHours);
+    }
+
+    @GetMapping("/time")
+    public ResponseEntity<ConsultantTimeResponseDto> getConsultantsHours(
+            @RequestParam(name = "client", required = false) String clientId) {
+        if (clientId == null || clientId.isEmpty()) {
+            ConsultantTimeResponseDto result = new ConsultantTimeResponseDto(consultantService.getAllConsultantsTimeItems());
+            return ResponseEntity.ok(result);
+        }
+        return null;
     }
 }

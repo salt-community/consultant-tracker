@@ -77,7 +77,8 @@ public class TimekeeperClient {
                 .map(time -> {
                     return new TimekeeperConsultancyTimeResponseDto(
                             time.totalHours(),
-                            time.activityName());
+                            time.activityName(),
+                            time.startTime());
                 }).toList();
     }
 }
