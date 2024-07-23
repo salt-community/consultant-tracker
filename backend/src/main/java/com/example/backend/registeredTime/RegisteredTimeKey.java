@@ -1,0 +1,20 @@
+package com.example.backend.registeredTime;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+@Embeddable
+@Data
+public class RegisteredTimeKey implements Serializable {
+    @Column(name="consultantId")
+    private UUID consultantId;
+
+    @Column(name="start_date")
+    private LocalDateTime startDate;
+}

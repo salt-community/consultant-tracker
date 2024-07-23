@@ -1,8 +1,8 @@
 package com.example.backend.client;
 
 
-import com.example.backend.client.dto.TimekeeperConsultancyTimeListResponseDto;
-import com.example.backend.client.dto.TimekeeperConsultancyTimeResponseDto;
+import com.example.backend.client.dto.TimekeeperRegisteredTimeListResponseDto;
+import com.example.backend.client.dto.TimekeeperRegisteredTimeResponseDto;
 import com.example.backend.client.dto.TimekeeperUserListResponseDto;
 import com.example.backend.client.dto.TimekeeperUserResponseDto;
 import lombok.Data;
@@ -41,6 +41,7 @@ public class TimekeeperClient {
                             tkUser.lastName(),
                             tkUser.email(),
                             tkUser.phone(),
+                            tkUser.tags(),
                             tkUser.id());
                 }).toList().getFirst();
     }
@@ -60,22 +61,22 @@ public class TimekeeperClient {
                             tkUser.lastName(),
                             tkUser.email(),
                             tkUser.phone(),
+                            tkUser.tags(),
                             tkUser.id());
                 }).toList();
     }
 
-    public List<TimekeeperConsultancyTimeResponseDto> getConsultancyTime(Long id) {
-        TimekeeperConsultancyTimeListResponseDto dto = CLIENT_URL.get()
+    public List<TimekeeperRegisteredTimeResponseDto> getTimeRegisteredByConsultant(Long id) {
+        TimekeeperRegisteredTimeListResponseDto dto = CLIENT_URL.get()
                 .uri("api/v1/TimeRegistration?UserId={id}&PageSize=200", id)
                 .header("Authorization", HEADER)
                 .retrieve()
-                .bodyToMono(TimekeeperConsultancyTimeListResponseDto.class)
+                .bodyToMono(TimekeeperRegisteredTimeListResponseDto.class)
                 .block();
         assert dto != null;
         return dto.consultancyTime().stream()
-                .filter(time -> time.activityName().equals(CONSULTANCY_TIME.activity))
                 .map(time -> {
-                    return new TimekeeperConsultancyTimeResponseDto(
+                    return new TimekeeperRegisteredTimeResponseDto(
                             time.totalHours(),
                             time.activityName(),
                             time.startTime());
