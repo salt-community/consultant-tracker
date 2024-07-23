@@ -10,5 +10,5 @@ public record ConsultantTimeDto(RegisteredTimeKey itemId,
 //                                LocalDateTime startDate,
                                 LocalDateTime endDate,
                                 String dayType,
-                                int totalDays) {
+                                double totalHours) {
 }

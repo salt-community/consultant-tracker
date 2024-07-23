@@ -119,7 +119,7 @@ public class ConsultantService {
 //                        el.getStartDate(),
                         el.getEndDate(),
                         el.getType(),
-                        el.getTotalDays()))
+                        el.getTotalHours()))
                 .toList();
     }
 

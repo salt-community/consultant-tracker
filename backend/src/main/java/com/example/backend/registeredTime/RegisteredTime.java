@@ -19,5 +19,5 @@ public class RegisteredTime {
     private String type;
 
     private LocalDateTime endDate;
-    private int totalDays;
+    private double totalHours;
 }
