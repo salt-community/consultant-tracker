@@ -47,13 +47,19 @@ public class RegisteredTimeService {
                 endTime.set(consultantTimeDtoList.get(i).endDate());
                 activityTypePrev.set(consultantTimeDtoList.get(i).dayType());
                 if (listOfRegisteredTime.isEmpty() && i == consultantTimeDtoList.size()-1) {
-                    listOfRegisteredTime.add(new ConsultantTimeDto(new RegisteredTimeKey(),
-                            consultantTimeDtoList.get(i).consultantId(), startTime.get(), endTime.get(), activityTypePrev.get(), countDays.get()));
+                    listOfRegisteredTime.add(new ConsultantTimeDto(
+                            new RegisteredTimeKey(consultantTimeDtoList.get(i).itemId().getConsultantId(),startTime.get()),
+                            endTime.get(),
+                            activityTypePrev.get(),
+                            countDays.get()));
                 }
             } else {
-                listOfRegisteredTime.add(new ConsultantTimeDto( new RegisteredTimeKey(),
-                        consultantTimeDtoList.get(i).consultantId(), startTime.get(), endTime.get(), activityTypePrev.get(), countDays.get()));
-                startTime.set(consultantTimeDtoList.get(i).startDate());
+                listOfRegisteredTime.add(new ConsultantTimeDto(
+                        new RegisteredTimeKey(consultantTimeDtoList.get(i).itemId().getConsultantId(),startTime.get()),
+                        endTime.get(),
+                        activityTypePrev.get(),
+                        countDays.get()));
+                startTime.set(consultantTimeDtoList.get(i).itemId().getStartDate());
                 countDays.set(0);
             }
 
@@ -63,19 +69,19 @@ public class RegisteredTimeService {
 
     private void saveRegisteredTimeForConsultant(List<ConsultantTimeDto> listOfRegisteredTime) {
         listOfRegisteredTime.forEach(el -> {
-            Consultant consultant = consultantService.findConsultantById(el.consultantId());
+            Consultant consultant = consultantService.findConsultantById(el.itemId().getConsultantId());
             registeredTimeRepository.save(
                     new RegisteredTime(
-                            new RegisteredTimeKey(),
+                            new RegisteredTimeKey(el.itemId().getConsultantId(), el.itemId().getStartDate()),
                             el.dayType(),
-                            el.startDate(),
+//                            el.startDate(),
                             el.endDate(),
-                            el.totalDays(),
-                            consultant
+                            el.totalDays()
+//                            consultant
                     ));
         });
     }
     public List<RegisteredTime> getTimeByConsultantId(UUID id){
-        return registeredTimeRepository.findAllByConsultant_Id(id);
+        return registeredTimeRepository.findAllById_ConsultantId(id);
     }
 }

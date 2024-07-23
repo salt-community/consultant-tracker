@@ -8,5 +8,5 @@ import java.util.UUID;
 
 @Repository
 public interface RegisteredTimeRepository extends JpaRepository<RegisteredTime, RegisteredTimeKey> {
-     List<RegisteredTime> findAllByConsultant_Id(UUID id);
+     List<RegisteredTime> findAllById_ConsultantId(UUID id);
 }

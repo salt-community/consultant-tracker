@@ -115,8 +115,8 @@ public class ConsultantService {
                 .stream()
                 .map(el -> new ConsultantTimeDto(
                         el.getId(),
-                        el.getConsultant().getId(),
-                        el.getStartDate(),
+//                        el.getConsultant().getId(),
+//                        el.getStartDate(),
                         el.getEndDate(),
                         el.getType(),
                         el.getTotalDays()))
@@ -129,9 +129,7 @@ public class ConsultantService {
         List<ConsultantTimeDto> consultantTimeDtoList = new ArrayList<>();
         for (TimekeeperRegisteredTimeResponseDto item : consultancyTime) {
             consultantTimeDtoList.add(new ConsultantTimeDto(
-                    new RegisteredTimeKey(),
-                    consultantId,
-                    item.startTime().withHour(0).withMinute(0).withSecond(0),
+                    new RegisteredTimeKey(consultantId,item.startTime().withHour(0).withMinute(0).withSecond(0)),
                     item.startTime().withHour(23).withMinute(59).withSecond(59),
                     item.activityName(),
                     1));
