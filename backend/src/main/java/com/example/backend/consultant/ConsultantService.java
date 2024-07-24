@@ -49,7 +49,7 @@ public class ConsultantService {
                             tkUser.phone(),
                             id,
                             tkUser.isActive()
-                            );
+                    );
                     createConsultant(consultant);
                 }
             });
@@ -59,8 +59,6 @@ public class ConsultantService {
 
     private void fetchRecordedTimeForConsultant() {
         List<Consultant> consultants = getAllActiveConsultants();
-        System.out.println("consultants = " + consultants);
-        // for each consultant get start date, absences, calculate remaining time
         for (Consultant consultant : consultants) {
             List<ConsultantTimeDto> consultantRegisteredTime = getConsultantTimeDto(consultant.getId(), consultant.getTimekeeperId());
             registeredTimeService.saveConsultantTime(consultantRegisteredTime);
@@ -76,14 +74,12 @@ public class ConsultantService {
         List<Consultant> consultants = getAllConsultants();
         timekeeperUserResponseDto.forEach(tkUser -> {
             if (!consultantRepository.existsByTimekeeperId(tkUser.id())) {
-                System.out.println("No consultant found with id " + tkUser.id());
                 idsToAdd.add(tkUser.id());
-            }
-            else {
+            } else {
                 consultants.stream()
                         .filter(consultant -> consultant.getTimekeeperId().equals(tkUser.id()))
                         .forEach(consultant -> {
-                            if (consultant.isActive() != tkUser.isActive() || consultant.isActive() != tkUser.isEmployee()){
+                            if (consultant.isActive() != tkUser.isActive() || consultant.isActive() != tkUser.isEmployee()) {
                                 consultant.setActive(tkUser.isActive() && tkUser.isEmployee());
                                 consultantRepository.save(consultant);
                             }
@@ -110,7 +106,6 @@ public class ConsultantService {
     public Double getConsultancyHoursByUserId(UUID id) {
         Consultant consultant = consultantRepository.findById(id).orElseThrow(() -> new ConsultantNotFoundException("Consultant not found"));
         List<TimekeeperRegisteredTimeResponseDto> consultancyTime = timekeeperClient.getTimeRegisteredByConsultant(consultant.getTimekeeperId());
-        System.out.println("consultancyTime = " + consultancyTime);
         AtomicReference<Double> totalHoursResponse = new AtomicReference<>(0.0);
         consultancyTime.forEach(el -> totalHoursResponse.updateAndGet(v -> v + el.totalHours()));
         return totalHoursResponse.get();
@@ -146,7 +141,7 @@ public class ConsultantService {
         List<ConsultantTimeDto> consultantTimeDtoList = new ArrayList<>();
         for (TimekeeperRegisteredTimeResponseDto item : consultancyTime) {
             consultantTimeDtoList.add(new ConsultantTimeDto(
-                    new RegisteredTimeKey(consultantId,item.date().withHour(0).withMinute(0).withSecond(0)),
+                    new RegisteredTimeKey(consultantId, item.date().withHour(0).withMinute(0).withSecond(0)),
                     item.date().withHour(23).withMinute(59).withSecond(59),
                     item.activityName(),
                     1));
