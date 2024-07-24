@@ -1,12 +1,12 @@
 package com.example.backend.consultant;
 
 import com.example.backend.consultant.dto.ConsultantResponseDto;
+import com.example.backend.consultant.dto.ConsultantResponseListDto;
 import com.example.backend.consultant.dto.ConsultantTimeResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -17,8 +17,10 @@ public class ConsultantController {
     private final ConsultantService consultantService;
 
     @GetMapping
-    public ResponseEntity<List<ConsultantResponseDto>> getConsultants() {
-        List<ConsultantResponseDto> consultantsResponse = consultantService.getAllConsultantDtos();
+    public ResponseEntity<ConsultantResponseListDto> getConsultantsAndRegisteredTime(
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "pageSize", defaultValue = "10") int pageSize) {
+        ConsultantResponseListDto consultantsResponse = consultantService.getAllConsultantDtos(page, pageSize);
         return ResponseEntity.ok(consultantsResponse);
     }
 
