@@ -19,6 +19,7 @@ public class Consultant {
     private String email;
     private String phoneNumber;
     private Long timekeeperId;
+    private boolean active;
 
     @ManyToOne
     @JoinColumn(name = "saltUser_id", referencedColumnName = "id")
@@ -29,12 +30,14 @@ public class Consultant {
                       String fullName,
                       String email,
                       String phoneNumber,
-                      Long timekeeperId) {
+                      Long timekeeperId,
+                      boolean active) {
         this.id = id;
         this.fullName = fullName;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.timekeeperId = timekeeperId;
+        this.active = active;
     }
 
     public Consultant() {
