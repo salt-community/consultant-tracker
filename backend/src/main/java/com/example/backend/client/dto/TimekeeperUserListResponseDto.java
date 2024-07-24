@@ -6,6 +6,7 @@ import java.util.List;
 
 public record TimekeeperUserListResponseDto(
         @JsonProperty("results")
-        List<TimekeeperUserResponseDto> timekeeperUsers
+        List<TimekeeperUserDto> timekeeperUsers,
+        int totalPages
 ) {
 }

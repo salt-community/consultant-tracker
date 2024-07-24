@@ -5,5 +5,5 @@ import java.time.LocalDateTime;
 public record TimekeeperRegisteredTimeResponseDto(
         Float totalHours,
         String activityName,
-        LocalDateTime startTime) {
+        LocalDateTime date) {
 }
