@@ -2,7 +2,7 @@ package com.example.backend.consultant;
 
 import com.example.backend.client.TimekeeperClient;
 import com.example.backend.client.dto.TimekeeperRegisteredTimeResponseDto;
-import com.example.backend.client.dto.TimekeeperUserResponseDto;
+import com.example.backend.client.dto.TimekeeperUserDto;
 import com.example.backend.consultant.dto.ConsultantResponseDto;
 import com.example.backend.consultant.dto.ConsultantTimeDto;
 import com.example.backend.exceptions.ConsultantNotFoundException;
@@ -34,13 +34,12 @@ public class ConsultantService {
 
     //    @Scheduled(cron = "0 0 0 * * *")
     public void fetchDataFromTimekeeper() {
-        List<TimekeeperUserResponseDto> timekeeperUserResponseDto = timekeeperClient.getUsers();
-        assert timekeeperUserResponseDto != null;
-        List<Long> idsToAdd = checkTimekeeperUsersWithDatabase(timekeeperUserResponseDto);
-        if (!idsToAdd.isEmpty()) {
-            idsToAdd.forEach(id -> {
-                TimekeeperUserResponseDto tkUser = timekeeperUserResponseDto.stream()
-//                        .filter(el-> !el.tags().stream().filter(element -> element.getName().equals("På uppdrag")).toList().isEmpty())
+        List<TimekeeperUserDto> timekeeperUserDto = timekeeperClient.getUsers();
+        assert timekeeperUserDto != null;
+        List<Long> timekeeperIdsToAdd = checkTimekeeperUsersWithDatabase(timekeeperUserDto);
+        if (!timekeeperIdsToAdd.isEmpty()) {
+            timekeeperIdsToAdd.forEach(id -> {
+                TimekeeperUserDto tkUser = timekeeperUserDto.stream()
                         .filter(u -> Objects.equals(u.id(), id)).findFirst().orElse(null);
                 if (tkUser != null) {
                     Consultant consultant = new Consultant(
@@ -48,7 +47,9 @@ public class ConsultantService {
                             tkUser.firstName().concat(tkUser.lastName()),
                             tkUser.email(),
                             tkUser.phone(),
-                            id);
+                            id,
+                            tkUser.isActive()
+                            );
                     createConsultant(consultant);
                 }
             });
@@ -57,7 +58,8 @@ public class ConsultantService {
     }
 
     private void fetchRecordedTimeForConsultant() {
-        List<Consultant> consultants = getAllConsultants();
+        List<Consultant> consultants = getAllActiveConsultants();
+        System.out.println("consultants = " + consultants);
         // for each consultant get start date, absences, calculate remaining time
         for (Consultant consultant : consultants) {
             List<ConsultantTimeDto> consultantRegisteredTime = getConsultantTimeDto(consultant.getId(), consultant.getTimekeeperId());
@@ -65,12 +67,27 @@ public class ConsultantService {
         }
     }
 
-    private List<Long> checkTimekeeperUsersWithDatabase(List<TimekeeperUserResponseDto> timekeeperUserResponseDto) {
+    private List<Consultant> getAllActiveConsultants() {
+        return consultantRepository.findAllByActiveTrue();
+    }
+
+    private List<Long> checkTimekeeperUsersWithDatabase(List<TimekeeperUserDto> timekeeperUserResponseDto) {
         List<Long> idsToAdd = new ArrayList<>();
+        List<Consultant> consultants = getAllConsultants();
         timekeeperUserResponseDto.forEach(tkUser -> {
             if (!consultantRepository.existsByTimekeeperId(tkUser.id())) {
                 System.out.println("No consultant found with id " + tkUser.id());
                 idsToAdd.add(tkUser.id());
+            }
+            else {
+                consultants.stream()
+                        .filter(consultant -> consultant.getTimekeeperId().equals(tkUser.id()))
+                        .forEach(consultant -> {
+                            if (consultant.isActive() != tkUser.isActive() || consultant.isActive() != tkUser.isEmployee()){
+                                consultant.setActive(tkUser.isActive() && tkUser.isEmployee());
+                                consultantRepository.save(consultant);
+                            }
+                        });
             }
         });
         return idsToAdd;
@@ -129,8 +146,8 @@ public class ConsultantService {
         List<ConsultantTimeDto> consultantTimeDtoList = new ArrayList<>();
         for (TimekeeperRegisteredTimeResponseDto item : consultancyTime) {
             consultantTimeDtoList.add(new ConsultantTimeDto(
-                    new RegisteredTimeKey(consultantId,item.startTime().withHour(0).withMinute(0).withSecond(0)),
-                    item.startTime().withHour(23).withMinute(59).withSecond(59),
+                    new RegisteredTimeKey(consultantId,item.date().withHour(0).withMinute(0).withSecond(0)),
+                    item.date().withHour(23).withMinute(59).withSecond(59),
                     item.activityName(),
                     1));
         }
