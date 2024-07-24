@@ -4,15 +4,14 @@ package com.example.backend.client;
 import com.example.backend.client.dto.TimekeeperRegisteredTimeListResponseDto;
 import com.example.backend.client.dto.TimekeeperRegisteredTimeResponseDto;
 import com.example.backend.client.dto.TimekeeperUserListResponseDto;
-import com.example.backend.client.dto.TimekeeperUserResponseDto;
+import com.example.backend.client.dto.TimekeeperUserDto;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import static com.example.backend.client.Activity.CONSULTANCY_TIME;
 
 @Service
 @Data
@@ -26,7 +25,7 @@ public class TimekeeperClient {
         this.HEADER = HEADER;
     }
 
-    public TimekeeperUserResponseDto getUser(Long id) {
+    public TimekeeperUserDto getUser(Long id) {
         TimekeeperUserListResponseDto dto = CLIENT_URL.get()
                 .uri("api/v1/user/{id}", id)
                 .header("Authorization", HEADER)
@@ -36,34 +35,48 @@ public class TimekeeperClient {
         assert dto != null;
         return dto.timekeeperUsers().stream()
                 .map(tkUser -> {
-                    return new TimekeeperUserResponseDto(
+                    return new TimekeeperUserDto(
                             tkUser.firstName(),
                             tkUser.lastName(),
                             tkUser.email(),
                             tkUser.phone(),
                             tkUser.tags(),
-                            tkUser.id());
+                            tkUser.id(),
+                            tkUser.isActive(),
+                            tkUser.isEmployee());
                 }).toList().getFirst();
     }
 
-    public List<TimekeeperUserResponseDto> getUsers() {
-        TimekeeperUserListResponseDto dto = CLIENT_URL.get()
-                .uri("api/v1/user")
-                .header("Authorization", HEADER)
-                .retrieve()
-                .bodyToMono(TimekeeperUserListResponseDto.class)
-                .block();
-        assert dto != null;
-        return dto.timekeeperUsers().stream()
-                .map(tkUser -> {
-                    return new TimekeeperUserResponseDto(
-                            tkUser.firstName(),
-                            tkUser.lastName(),
-                            tkUser.email(),
-                            tkUser.phone(),
-                            tkUser.tags(),
-                            tkUser.id());
-                }).toList();
+    public List<TimekeeperUserDto> getUsers() {
+        int index = 0;
+        int numOfPages = 1;
+        List<TimekeeperUserDto> users = new ArrayList<>();
+        while(index < numOfPages){
+            TimekeeperUserListResponseDto dto = CLIENT_URL.get()
+                    .uri("api/v1/user?PageIndex={index}", index)
+                    .header("Authorization", HEADER)
+                    .retrieve()
+                    .bodyToMono(TimekeeperUserListResponseDto.class)
+                    .block();
+            assert dto != null;
+            users.addAll(dto.timekeeperUsers().stream()
+                    .map(tkUser -> {
+                        return new TimekeeperUserDto(
+                                tkUser.firstName(),
+                                tkUser.lastName(),
+                                tkUser.email(),
+                                tkUser.phone(),
+                                tkUser.tags(),
+                                tkUser.id(),
+                                tkUser.isActive(),
+                                tkUser.isEmployee());
+                    }).toList());
+            if (index == 0) {
+                numOfPages = dto.totalPages();
+            }
+            index++;
+        }
+        return users;
     }
 
     public List<TimekeeperRegisteredTimeResponseDto> getTimeRegisteredByConsultant(Long id) {
@@ -79,7 +92,7 @@ public class TimekeeperClient {
                     return new TimekeeperRegisteredTimeResponseDto(
                             time.totalHours(),
                             time.activityName(),
-                            time.startTime());
+                            time.date());
                 }).toList();
     }
 }
