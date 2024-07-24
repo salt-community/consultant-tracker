@@ -5,5 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 public record TimekeeperRegisteredTimeListResponseDto(@JsonProperty("results")
-                                                   List<TimekeeperRegisteredTimeResponseDto> consultancyTime) {
+                                                      List<TimekeeperRegisteredTimeResponseDto> consultancyTime,
+                                                      int totalPages) {
 }

@@ -51,9 +51,9 @@ public class TimekeeperClient {
         int index = 0;
         int numOfPages = 1;
         List<TimekeeperUserDto> users = new ArrayList<>();
-        while(index < numOfPages){
+        while (index < numOfPages) {
             TimekeeperUserListResponseDto dto = CLIENT_URL.get()
-                    .uri("api/v1/user?PageIndex={index}", index)
+                    .uri("api/v1/user?PageIndex={index}&TagIDs=8571", index)
                     .header("Authorization", HEADER)
                     .retrieve()
                     .bodyToMono(TimekeeperUserListResponseDto.class)
@@ -80,19 +80,31 @@ public class TimekeeperClient {
     }
 
     public List<TimekeeperRegisteredTimeResponseDto> getTimeRegisteredByConsultant(Long id) {
-        TimekeeperRegisteredTimeListResponseDto dto = CLIENT_URL.get()
-                .uri("api/v1/TimeRegistration?UserId={id}&PageSize=200", id)
-                .header("Authorization", HEADER)
-                .retrieve()
-                .bodyToMono(TimekeeperRegisteredTimeListResponseDto.class)
-                .block();
-        assert dto != null;
-        return dto.consultancyTime().stream()
-                .map(time -> {
-                    return new TimekeeperRegisteredTimeResponseDto(
-                            time.totalHours(),
-                            time.activityName(),
-                            time.date());
-                }).toList();
+        int index = 0;
+        int numOfPages = 1;
+        List<TimekeeperRegisteredTimeResponseDto> registeredTime = new ArrayList<>();
+        while (index < numOfPages) {
+            TimekeeperRegisteredTimeListResponseDto dto = CLIENT_URL.get()
+                    .uri("api/v1/TimeRegistration?UserId={id}&PageIndex={index}", id, index)
+                    .header("Authorization", HEADER)
+                    .retrieve()
+                    .bodyToMono(TimekeeperRegisteredTimeListResponseDto.class)
+                    .block();
+
+            assert dto != null;
+            registeredTime.addAll(dto.consultancyTime().stream()
+                    .map(time -> {
+                        return new TimekeeperRegisteredTimeResponseDto(
+                                time.totalHours(),
+                                time.activityName(),
+                                time.date());
+                    }).toList());
+
+            if (index == 0) {
+                numOfPages = dto.totalPages();
+            }
+            index++;
+        }
+        return registeredTime;
     }
 }
