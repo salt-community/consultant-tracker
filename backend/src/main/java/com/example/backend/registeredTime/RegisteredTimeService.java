@@ -1,28 +1,18 @@
 package com.example.backend.registeredTime;
 
-import com.example.backend.consultant.Consultant;
-import com.example.backend.consultant.ConsultantService;
 import com.example.backend.consultant.dto.ConsultantTimeDto;
-import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
-
-import static com.example.backend.client.Activity.CONSULTANCY_TIME;
 
 @Service
 public class RegisteredTimeService {
     private final RegisteredTimeRepository registeredTimeRepository;
-    private final ConsultantService consultantService;
 
-    public RegisteredTimeService(RegisteredTimeRepository registeredTimeRepository,
-                                 @Lazy ConsultantService consultantService) {
+    public RegisteredTimeService(RegisteredTimeRepository registeredTimeRepository) {
         this.registeredTimeRepository = registeredTimeRepository;
-        this.consultantService = consultantService;
     }
 
     public void saveConsultantTime(List<ConsultantTimeDto> consultantTimeDtoList) {
@@ -45,7 +35,6 @@ public class RegisteredTimeService {
             ));
         }
     }
-
 
     public List<RegisteredTime> getTimeByConsultantId(UUID id) {
         return registeredTimeRepository.findAllById_ConsultantId(id);
