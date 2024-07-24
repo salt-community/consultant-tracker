@@ -44,7 +44,7 @@ public class ConsultantService {
                 if (tkUser != null) {
                     Consultant consultant = new Consultant(
                             UUID.randomUUID(),
-                            tkUser.firstName().concat(tkUser.lastName()),
+                            tkUser.firstName().trim().concat(" ").concat(tkUser.lastName().trim()),
                             tkUser.email(),
                             tkUser.phone(),
                             id,
