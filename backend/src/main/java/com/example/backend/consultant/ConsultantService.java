@@ -4,12 +4,16 @@ import com.example.backend.client.TimekeeperClient;
 import com.example.backend.client.dto.TimekeeperRegisteredTimeResponseDto;
 import com.example.backend.client.dto.TimekeeperUserDto;
 import com.example.backend.consultant.dto.ConsultantResponseDto;
+import com.example.backend.consultant.dto.ConsultantResponseListDto;
 import com.example.backend.consultant.dto.ConsultantTimeDto;
 import com.example.backend.exceptions.ConsultantNotFoundException;
 import com.example.backend.registeredTime.RegisteredTime;
 import com.example.backend.registeredTime.RegisteredTimeKey;
 import com.example.backend.registeredTime.RegisteredTimeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -23,9 +27,19 @@ public class ConsultantService {
     private final TimekeeperClient timekeeperClient;
     private final RegisteredTimeService registeredTimeService;
 
-    public List<ConsultantResponseDto> getAllConsultantDtos() {
-        List<Consultant> consultantsList = getAllConsultants();
-        return consultantsList.stream().map(ConsultantResponseDto::toDto).toList();
+    public ConsultantResponseListDto getAllConsultantDtos(int page, int pageSize) {
+        Page<Consultant> consultantsList = getAllConsultantsPageable(page, pageSize);
+        List<ConsultantResponseDto> consultantItems = consultantsList.stream().map(ConsultantResponseDto::toDto).toList();
+        return new ConsultantResponseListDto(
+                page,
+                consultantsList.getTotalPages(),
+                consultantsList.getTotalElements(),
+                consultantItems);
+    }
+
+    public Page<Consultant> getAllConsultantsPageable(int page, int pageSize) {
+        Pageable pageRequest = PageRequest.of(page, pageSize);
+       return consultantRepository.findAllByActiveTrue(pageRequest);
     }
 
     public List<Consultant> getAllConsultants() {
@@ -113,13 +127,9 @@ public class ConsultantService {
 
     public List<ConsultantTimeDto> getAllConsultantsTimeItems() {
         fetchDataFromTimekeeper();
-        // get consultants from timekeeper/db
         List<Consultant> consultants = getAllConsultants();
-        // for each consultant get start date, absences, calculate remaining time
         List<RegisteredTime> consultantTimeDtoList = new ArrayList<>();
         for (Consultant consultant : consultants) {
-//            List<ConsultantTimeDto> consultantRegisteredTime = getConsultantTimeDto(consultant.getId(), consultant.getTimekeeperId());
-//            consultantTimeDtoList.addAll(consultantRegisteredTime);
             List<RegisteredTime> timeByConsultantId = registeredTimeService.getTimeByConsultantId(consultant.getId());
             consultantTimeDtoList.addAll(timeByConsultantId);
         }
@@ -127,8 +137,6 @@ public class ConsultantService {
                 .stream()
                 .map(el -> new ConsultantTimeDto(
                         el.getId(),
-//                        el.getConsultant().getId(),
-//                        el.getStartDate(),
                         el.getEndDate(),
                         el.getType(),
                         el.getTotalHours()))
