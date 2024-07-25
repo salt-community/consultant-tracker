@@ -757,10 +757,26 @@ export const consultantItems: ConsultantItemsType[] = [
     id: 6,
     group: 6,
     start_time: dayjs("2024-07-22T00:00:00"),
-    end_time: dayjs("2024-07-22T23:59:59"),
+    end_time: dayjs("2024-08-22T23:59:59"),
     itemProps: {
       style: {
         zIndex: 1,
+        outline: "none",
+        border: "none"
+      },
+    },
+  },
+  {
+    id: 21,
+    group: 6,
+    start_time: dayjs("2024-08-05T00:00:00"),
+    end_time: dayjs("2024-08-09T23:59:59"),
+    itemProps: {
+      style: {
+        zIndex: 2,
+        background: "pink",
+        outline: "none",
+        border: "none"
       },
     },
   },
@@ -772,14 +788,15 @@ export const consultantItems: ConsultantItemsType[] = [
     itemProps: {
       style: {
         zIndex: 1,
+        outline: "none"
       },
     }
   },
   {
     id: 8,
-    group: 1,
-    start_time: dayjs("2024-07-19T00:00:00"),
-    end_time: dayjs("2024-07-19T23:59:59"),
+    group: 3,
+    start_time: dayjs("2024-07-20T00:00:00"),
+    end_time: dayjs("2024-07-26T23:59:59"),
     itemProps: {
       style: {
         zIndex: 1,

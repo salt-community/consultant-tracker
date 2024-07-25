@@ -10,14 +10,19 @@ import com.example.backend.exceptions.ConsultantNotFoundException;
 import com.example.backend.registeredTime.RegisteredTime;
 import com.example.backend.registeredTime.RegisteredTimeKey;
 import com.example.backend.registeredTime.RegisteredTimeService;
+import com.example.backend.registeredTime.dto.RegisteredTimeDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+
+import static com.example.backend.client.Activity.CONSULTANCY_TIME;
 
 
 @Service
@@ -29,12 +34,57 @@ public class ConsultantService {
 
     public ConsultantResponseListDto getAllConsultantDtos(int page, int pageSize) {
         Page<Consultant> consultantsList = getAllConsultantsPageable(page, pageSize);
-        List<ConsultantResponseDto> consultantItems = consultantsList.stream().map(ConsultantResponseDto::toDto).toList();
+        List<ConsultantResponseDto> consultants = consultantsList.stream().map(el-> findConsultantDtoById(el.getId())).toList();
         return new ConsultantResponseListDto(
                 page,
                 consultantsList.getTotalPages(),
                 consultantsList.getTotalElements(),
-                consultantItems);
+                consultants);
+
+    }
+    public List<RegisteredTimeDto> getConsultantTimeDto(List<RegisteredTime> consultantTimeDtoList) {
+        List<RegisteredTimeDto> listOfRegisteredTime = new ArrayList<>();
+        AtomicReference<String> activityTypePrev = new AtomicReference<>(CONSULTANCY_TIME.activity);
+        AtomicReference<LocalDateTime> startTime = new AtomicReference<>(null);
+        AtomicReference<LocalDateTime> endTime = new AtomicReference<>();
+        AtomicInteger countDays = new AtomicInteger();
+
+        for (int i = 0; i < consultantTimeDtoList.size(); i++) {
+            RegisteredTime consultantTimeDtoEl = consultantTimeDtoList.get(i);
+            if (consultantTimeDtoEl.getType().equals(activityTypePrev.get())) {
+                if (startTime.get() == null) {
+                    startTime.set(consultantTimeDtoEl.getId().getStartDate());
+                } else {
+                    if (endTime.get().getDayOfMonth() != consultantTimeDtoEl.getId().getStartDate().getDayOfMonth() ||
+                            endTime.get().getMonth() != consultantTimeDtoEl.getId().getStartDate().getMonth() ||
+                            endTime.get().getYear() != consultantTimeDtoEl.getId().getStartDate().getYear()
+                    ) {
+                        countDays.getAndIncrement();
+                    }
+                }
+                endTime.set(consultantTimeDtoEl.getEndDate());
+                activityTypePrev.set(consultantTimeDtoEl.getType());
+                if (i == consultantTimeDtoList.size() - 1) {
+                    listOfRegisteredTime.add(new RegisteredTimeDto(
+                            UUID.randomUUID(),
+                            startTime.get(),
+                            consultantTimeDtoEl.getEndDate(),
+                            consultantTimeDtoEl.getType()));
+                }
+            } else {
+                listOfRegisteredTime.add(new RegisteredTimeDto(
+                        UUID.randomUUID(),
+                        startTime.get(),
+                        endTime.get(),
+                       activityTypePrev.get()));
+                countDays.set(0);
+                startTime.set(consultantTimeDtoEl.getId().getStartDate());
+                endTime.set(consultantTimeDtoEl.getEndDate());
+                activityTypePrev.set(consultantTimeDtoEl.getType());
+
+            }
+        }
+        return listOfRegisteredTime;
     }
 
     public Page<Consultant> getAllConsultantsPageable(int page, int pageSize) {
@@ -114,7 +164,9 @@ public class ConsultantService {
     public ConsultantResponseDto findConsultantDtoById(UUID id) {
         Consultant consultant = findConsultantById(id);
         assert consultant != null;
-        return ConsultantResponseDto.toDto(consultant);
+        List<RegisteredTime> timeByConsultantId = registeredTimeService.getTimeByConsultantId(consultant.getId());
+        List<RegisteredTimeDto> consultantTimeDto = getConsultantTimeDto(timeByConsultantId);
+        return ConsultantResponseDto.toDto(consultant, consultantTimeDto);
     }
 
     public Double getConsultancyHoursByUserId(UUID id) {
@@ -152,7 +204,8 @@ public class ConsultantService {
                     new RegisteredTimeKey(consultantId, item.date().withHour(0).withMinute(0).withSecond(0)),
                     item.date().withHour(23).withMinute(59).withSecond(59),
                     item.activityName(),
-                    1));
+                    //TODO overtime
+                    8));
         }
         return consultantTimeDtoList;
     }
