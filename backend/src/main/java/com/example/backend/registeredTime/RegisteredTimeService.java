@@ -1,11 +1,14 @@
 package com.example.backend.registeredTime;
 
 import com.example.backend.consultant.dto.ConsultantTimeDto;
+import com.example.backend.registeredTime.dto.RegisteredTimeDto;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
+
+import static com.example.backend.client.Activity.CONSULTANCY_TIME;
 
 @Service
 public class RegisteredTimeService {
@@ -46,4 +49,47 @@ public class RegisteredTimeService {
         return new ArrayList<>(Arrays.asList(startDate, endDate));
     }
 
+    public RegisteredTimeDto getRemainingConsultancyTimeByConsultantId(UUID consultantId) {
+        LocalDateTime lastRegisteredDate = registeredTimeRepository.findFirstById_ConsultantIdOrderByEndDateDesc(consultantId).getEndDate();
+        LocalDateTime startDate = lastRegisteredDate.plusDays(1).withHour(0).withMinute(0).withSecond(0);
+        LocalDateTime estimatedEndDate = getEstimatedConsultancyEndDate(consultantId, startDate);
+        if (estimatedEndDate == startDate) {
+            return null;
+        }
+        return new RegisteredTimeDto(
+                UUID.randomUUID(),
+                startDate,
+                estimatedEndDate,
+                "Remaining Days");
+    }
+
+    private LocalDateTime getEstimatedConsultancyEndDate(UUID consultantId, LocalDateTime startDate) {
+        final int REQUIRED_HOURS = 2024;
+        int countOfWorkedDays = registeredTimeRepository.countAllById_ConsultantIdAndTypeIs(consultantId, CONSULTANCY_TIME.activity);
+        int remainingConsultancyDays = REQUIRED_HOURS / 8 - countOfWorkedDays;
+        return accountForNonWorkingDays(startDate, remainingConsultancyDays);
+    }
+
+    private LocalDateTime accountForNonWorkingDays(LocalDateTime startDate, int remainingDays) {
+        if (remainingDays <= 0) {
+            return startDate;
+        }
+        int daysCountDown = remainingDays;
+        int i = 0;
+        while (daysCountDown > 0) {
+
+            if (!isWeekend(startDate.plusDays(i).getDayOfWeek().getValue()) /*&& !isRedDay(startDate.plusDays(i))*/) {
+                daysCountDown--;
+            }
+            i++;
+        }
+        LocalDateTime endingDate = startDate.plusDays(i).minusSeconds(1L);
+        return endingDate;
+    }
+
+    private boolean isWeekend(int day) {
+        final int SATURDAY = 6;
+        final int SUNDAY = 7;
+        return day == SATURDAY || day == SUNDAY;
+    }
 }

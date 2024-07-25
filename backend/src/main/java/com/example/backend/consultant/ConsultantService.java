@@ -43,13 +43,15 @@ public class ConsultantService {
     }
 
     public List<RegisteredTimeDto> getConsultantTimeDto(List<RegisteredTime> consultantTimeDtoList) {
-        // for Konsult-Tid item fetch very first and very last date
-        // for everything else we fetch from DB and iterate
-        // get count of konsult-tid days from DB
-        // create last item for the time left-over, taking into account weekends and all the rest ...
         List<RegisteredTimeDto> listOfRegisteredTime = new ArrayList<>();
-        listOfRegisteredTime.add(getConsultancyTimeItemByConsultantId(consultantTimeDtoList.getFirst().getId().getConsultantId()));
+        UUID consultantId = consultantTimeDtoList.getFirst().getId().getConsultantId();
+        listOfRegisteredTime.add(getConsultancyTimeItemByConsultantId(consultantId));
         listOfRegisteredTime.addAll(getOtherRegisteredTimeByConsultantId(consultantTimeDtoList));
+        // ACCOUNT FOR RED DAYS
+        RegisteredTimeDto remainingConsultancyTimeByConsultantId = registeredTimeService.getRemainingConsultancyTimeByConsultantId(consultantId);
+        if (remainingConsultancyTimeByConsultantId != null) {
+            listOfRegisteredTime.add(remainingConsultancyTimeByConsultantId);
+        }
 
         return listOfRegisteredTime;
     }
