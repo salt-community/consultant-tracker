@@ -44,26 +44,28 @@ public class ConsultantService {
     }
 
     public List<RegisteredTimeDto> getConsultantTimeDto(List<RegisteredTime> consultantTimeDtoList) {
+        // for Konsult-Tid item fetch very first and very last date
+        // for everything else we fetch from DB and iterate
+        // get count of konsult-tid days from DB
+        // create last item for the time left-over, taking into account weekends and all the rest ...
         List<RegisteredTimeDto> listOfRegisteredTime = new ArrayList<>();
         AtomicReference<String> activityTypePrev = new AtomicReference<>(CONSULTANCY_TIME.activity);
         AtomicReference<LocalDateTime> consultStartTime = new AtomicReference<>(null);
         AtomicReference<LocalDateTime> startTime = new AtomicReference<>(null);
         AtomicReference<LocalDateTime> endTime = new AtomicReference<>();
-        AtomicInteger countWorkedDays = new AtomicInteger();
+        AtomicInteger countWorkedDays = new AtomicInteger(0);
 
         for (int i = 0; i < consultantTimeDtoList.size(); i++) {
             RegisteredTime consultantTimeDtoEl = consultantTimeDtoList.get(i);
+            if (consultantTimeDtoEl.getType().equals(CONSULTANCY_TIME.activity)) {
+                countWorkedDays.getAndIncrement();
+            }
             if (consultantTimeDtoEl.getType().equals(activityTypePrev.get())) {
                 if (startTime.get() == null) {
                     startTime.set(consultantTimeDtoEl.getId().getStartDate());
                     consultStartTime.set(consultantTimeDtoEl.getId().getStartDate());
-                } else {
-                    if (consultantTimeDtoEl.getType().equals(CONSULTANCY_TIME.activity)) {
-                        countWorkedDays.getAndIncrement();
-                    }
                 }
                 endTime.set(consultantTimeDtoEl.getEndDate());
-                activityTypePrev.set(consultantTimeDtoEl.getType());
                 if (i == consultantTimeDtoList.size() - 1) {
                     if (!consultantTimeDtoEl.getType().equals(CONSULTANCY_TIME.activity)) {
                         listOfRegisteredTime.add(new RegisteredTimeDto(
@@ -85,13 +87,14 @@ public class ConsultantService {
                             startTime.get(),
                             endTime.get(),
                             activityTypePrev.get()));
-                    /*countWorkedDays.set(0);*/
                 }
+
                 startTime.set(consultantTimeDtoEl.getId().getStartDate());
                 endTime.set(consultantTimeDtoEl.getEndDate());
                 activityTypePrev.set(consultantTimeDtoEl.getType());
             }
         }
+        System.out.println("consultant id: " + consultantTimeDtoList.get(0).getId().getConsultantId() + ", countWorkedDays: " + countWorkedDays.get());
         return listOfRegisteredTime;
     }
 
