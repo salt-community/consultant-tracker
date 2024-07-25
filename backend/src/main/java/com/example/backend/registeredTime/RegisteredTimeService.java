@@ -37,6 +37,6 @@ public class RegisteredTimeService {
     }
 
     public List<RegisteredTime> getTimeByConsultantId(UUID id) {
-        return registeredTimeRepository.findAllById_ConsultantId(id);
+        return registeredTimeRepository.findAllById_ConsultantIdOrderById_StartDateAsc(id);
     }
 }

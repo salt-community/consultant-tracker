@@ -34,7 +34,7 @@ public class ConsultantService {
 
     public ConsultantResponseListDto getAllConsultantDtos(int page, int pageSize) {
         Page<Consultant> consultantsList = getAllConsultantsPageable(page, pageSize);
-        List<ConsultantResponseDto> consultants = consultantsList.stream().map(el-> findConsultantDtoById(el.getId())).toList();
+        List<ConsultantResponseDto> consultants = consultantsList.stream().map(el -> findConsultantDtoById(el.getId())).toList();
         return new ConsultantResponseListDto(
                 page,
                 consultantsList.getTotalPages(),
@@ -42,46 +42,54 @@ public class ConsultantService {
                 consultants);
 
     }
+
     public List<RegisteredTimeDto> getConsultantTimeDto(List<RegisteredTime> consultantTimeDtoList) {
         List<RegisteredTimeDto> listOfRegisteredTime = new ArrayList<>();
         AtomicReference<String> activityTypePrev = new AtomicReference<>(CONSULTANCY_TIME.activity);
+        AtomicReference<LocalDateTime> consultStartTime = new AtomicReference<>(null);
         AtomicReference<LocalDateTime> startTime = new AtomicReference<>(null);
         AtomicReference<LocalDateTime> endTime = new AtomicReference<>();
-        AtomicInteger countDays = new AtomicInteger();
+        AtomicInteger countWorkedDays = new AtomicInteger();
 
         for (int i = 0; i < consultantTimeDtoList.size(); i++) {
             RegisteredTime consultantTimeDtoEl = consultantTimeDtoList.get(i);
             if (consultantTimeDtoEl.getType().equals(activityTypePrev.get())) {
                 if (startTime.get() == null) {
                     startTime.set(consultantTimeDtoEl.getId().getStartDate());
+                    consultStartTime.set(consultantTimeDtoEl.getId().getStartDate());
                 } else {
-                    if (endTime.get().getDayOfMonth() != consultantTimeDtoEl.getId().getStartDate().getDayOfMonth() ||
-                            endTime.get().getMonth() != consultantTimeDtoEl.getId().getStartDate().getMonth() ||
-                            endTime.get().getYear() != consultantTimeDtoEl.getId().getStartDate().getYear()
-                    ) {
-                        countDays.getAndIncrement();
+                    if (consultantTimeDtoEl.getType().equals(CONSULTANCY_TIME.activity)) {
+                        countWorkedDays.getAndIncrement();
                     }
                 }
                 endTime.set(consultantTimeDtoEl.getEndDate());
                 activityTypePrev.set(consultantTimeDtoEl.getType());
                 if (i == consultantTimeDtoList.size() - 1) {
+                    if (!consultantTimeDtoEl.getType().equals(CONSULTANCY_TIME.activity)) {
+                        listOfRegisteredTime.add(new RegisteredTimeDto(
+                                UUID.randomUUID(),
+                                startTime.get(),
+                                consultantTimeDtoEl.getEndDate(),
+                                consultantTimeDtoEl.getType()));
+                    }
+                    listOfRegisteredTime.add(new RegisteredTimeDto(
+                            UUID.randomUUID(),
+                            consultStartTime.get(),
+                            consultantTimeDtoEl.getEndDate(),
+                            CONSULTANCY_TIME.activity));
+                }
+            } else {
+                if (!activityTypePrev.get().equals(CONSULTANCY_TIME.activity)) {
                     listOfRegisteredTime.add(new RegisteredTimeDto(
                             UUID.randomUUID(),
                             startTime.get(),
-                            consultantTimeDtoEl.getEndDate(),
-                            consultantTimeDtoEl.getType()));
+                            endTime.get(),
+                            activityTypePrev.get()));
+                    /*countWorkedDays.set(0);*/
                 }
-            } else {
-                listOfRegisteredTime.add(new RegisteredTimeDto(
-                        UUID.randomUUID(),
-                        startTime.get(),
-                        endTime.get(),
-                       activityTypePrev.get()));
-                countDays.set(0);
                 startTime.set(consultantTimeDtoEl.getId().getStartDate());
                 endTime.set(consultantTimeDtoEl.getEndDate());
                 activityTypePrev.set(consultantTimeDtoEl.getType());
-
             }
         }
         return listOfRegisteredTime;
@@ -89,7 +97,7 @@ public class ConsultantService {
 
     public Page<Consultant> getAllConsultantsPageable(int page, int pageSize) {
         Pageable pageRequest = PageRequest.of(page, pageSize);
-       return consultantRepository.findAllByActiveTrue(pageRequest);
+        return consultantRepository.findAllByActiveTrue(pageRequest);
     }
 
     public List<Consultant> getAllConsultants() {
