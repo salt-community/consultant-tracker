@@ -9,6 +9,6 @@ import java.util.UUID;
 @Repository
 public interface RegisteredTimeRepository extends JpaRepository<RegisteredTime, RegisteredTimeKey> {
      List<RegisteredTime> findAllById_ConsultantIdOrderById_StartDateAsc(UUID id);
-
-
+     RegisteredTime findFirstById_ConsultantIdOrderById_StartDateAsc(UUID id);
+     RegisteredTime findFirstById_ConsultantIdOrderByEndDateDesc(UUID id);
 }

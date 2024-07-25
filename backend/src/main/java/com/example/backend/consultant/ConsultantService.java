@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.example.backend.client.Activity.CONSULTANCY_TIME;
@@ -49,36 +48,38 @@ public class ConsultantService {
         // get count of konsult-tid days from DB
         // create last item for the time left-over, taking into account weekends and all the rest ...
         List<RegisteredTimeDto> listOfRegisteredTime = new ArrayList<>();
-        AtomicReference<String> activityTypePrev = new AtomicReference<>(CONSULTANCY_TIME.activity);
-        AtomicReference<LocalDateTime> consultStartTime = new AtomicReference<>(null);
+        listOfRegisteredTime.add(getConsultancyTimeItemByConsultantId(consultantTimeDtoList.getFirst().getId().getConsultantId()));
+        listOfRegisteredTime.addAll(getOtherRegisteredTimeByConsultantId(consultantTimeDtoList));
+
+        return listOfRegisteredTime;
+    }
+
+    private Collection<RegisteredTimeDto> getOtherRegisteredTimeByConsultantId(List<RegisteredTime> consultantTimeDtoList) {
+        List<RegisteredTimeDto> listOfRegisteredTime = new ArrayList<>();
+        AtomicReference<String> activityTypePrev = new AtomicReference<>(null);
         AtomicReference<LocalDateTime> startTime = new AtomicReference<>(null);
         AtomicReference<LocalDateTime> endTime = new AtomicReference<>();
-        AtomicInteger countWorkedDays = new AtomicInteger(0);
 
         for (int i = 0; i < consultantTimeDtoList.size(); i++) {
             RegisteredTime consultantTimeDtoEl = consultantTimeDtoList.get(i);
-            if (consultantTimeDtoEl.getType().equals(CONSULTANCY_TIME.activity)) {
-                countWorkedDays.getAndIncrement();
-            }
-            if (consultantTimeDtoEl.getType().equals(activityTypePrev.get())) {
-                if (startTime.get() == null) {
-                    startTime.set(consultantTimeDtoEl.getId().getStartDate());
-                    consultStartTime.set(consultantTimeDtoEl.getId().getStartDate());
-                }
+            if (i == 0) {
+                startTime.set(consultantTimeDtoEl.getId().getStartDate());
                 endTime.set(consultantTimeDtoEl.getEndDate());
+                activityTypePrev.set(consultantTimeDtoEl.getType());
+                continue;
+            }
+
+            if (consultantTimeDtoEl.getType().equals(activityTypePrev.get())) {
+                if (consultantTimeDtoEl.getType().equals(CONSULTANCY_TIME.activity)) {
+                    continue;
+                }
                 if (i == consultantTimeDtoList.size() - 1) {
-                    if (!consultantTimeDtoEl.getType().equals(CONSULTANCY_TIME.activity)) {
-                        listOfRegisteredTime.add(new RegisteredTimeDto(
-                                UUID.randomUUID(),
-                                startTime.get(),
-                                consultantTimeDtoEl.getEndDate(),
-                                consultantTimeDtoEl.getType()));
-                    }
                     listOfRegisteredTime.add(new RegisteredTimeDto(
                             UUID.randomUUID(),
-                            consultStartTime.get(),
+                            startTime.get(),
                             consultantTimeDtoEl.getEndDate(),
-                            CONSULTANCY_TIME.activity));
+                            consultantTimeDtoEl.getType()));
+                    continue;
                 }
             } else {
                 if (!activityTypePrev.get().equals(CONSULTANCY_TIME.activity)) {
@@ -88,14 +89,22 @@ public class ConsultantService {
                             endTime.get(),
                             activityTypePrev.get()));
                 }
-
                 startTime.set(consultantTimeDtoEl.getId().getStartDate());
-                endTime.set(consultantTimeDtoEl.getEndDate());
                 activityTypePrev.set(consultantTimeDtoEl.getType());
             }
+            endTime.set(consultantTimeDtoEl.getEndDate());
         }
-        System.out.println("consultant id: " + consultantTimeDtoList.get(0).getId().getConsultantId() + ", countWorkedDays: " + countWorkedDays.get());
         return listOfRegisteredTime;
+    }
+
+    private RegisteredTimeDto getConsultancyTimeItemByConsultantId(UUID consultantId) {
+        List<RegisteredTime> firstAndLastRegisteredDateByConsultantId =
+                registeredTimeService.getFirstAndLastDateByConsultantId(consultantId);
+        return new RegisteredTimeDto(
+                UUID.randomUUID(),
+                firstAndLastRegisteredDateByConsultantId.get(0).getId().getStartDate(),
+                firstAndLastRegisteredDateByConsultantId.get(1).getEndDate(),
+                CONSULTANCY_TIME.activity);
     }
 
     public Page<Consultant> getAllConsultantsPageable(int page, int pageSize) {
@@ -176,6 +185,7 @@ public class ConsultantService {
         Consultant consultant = findConsultantById(id);
         assert consultant != null;
         List<RegisteredTime> timeByConsultantId = registeredTimeService.getTimeByConsultantId(consultant.getId());
+        /*List<RegisteredTime> timeByConsultantId = registeredTimeService.getOtherTimeByConsultantId(consultant.getId());*/
         List<RegisteredTimeDto> consultantTimeDto = getConsultantTimeDto(timeByConsultantId);
         return ConsultantResponseDto.toDto(consultant, consultantTimeDto);
     }

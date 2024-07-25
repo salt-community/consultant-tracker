@@ -39,4 +39,11 @@ public class RegisteredTimeService {
     public List<RegisteredTime> getTimeByConsultantId(UUID id) {
         return registeredTimeRepository.findAllById_ConsultantIdOrderById_StartDateAsc(id);
     }
+
+    public List<RegisteredTime> getFirstAndLastDateByConsultantId(UUID consultantId) {
+        RegisteredTime startDate = registeredTimeRepository.findFirstById_ConsultantIdOrderById_StartDateAsc(consultantId);
+        RegisteredTime endDate = registeredTimeRepository.findFirstById_ConsultantIdOrderByEndDateDesc(consultantId);
+        return new ArrayList<>(Arrays.asList(startDate, endDate));
+    }
+
 }
