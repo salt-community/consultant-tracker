@@ -12,12 +12,12 @@
     gap: 30px;
 }
 
-.MuiInputBase-root {
+.basic-info__data .MuiInputBase-root {
     font-size: large;
     font-weight: 500;
 }
 
-.MuiInputBase-input.Mui-disabled {
+.basic-info__data .MuiInputBase-input.Mui-disabled {
     -webkit-text-fill-color: black;
 }
 

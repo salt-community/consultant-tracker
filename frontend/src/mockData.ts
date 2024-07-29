@@ -14,7 +14,7 @@ export const navLinks = [
 
 export const infographicData = [
   {title: "Total consultants", amount: 10, variant: "blue"},
-  {title: "Active consultants", amount: 7, variant: "green"},
+  {title: "Active consultants", amount: 8, variant: "green"},
   {title: "Josefin's consultants", amount: 5, variant: "violet"},
 ];
 
@@ -680,61 +680,6 @@ export const consultantsCalendar: ConsultantsCalendarType[] = [
 export const consultantItems: ConsultantItemsType[] = [
   {
     id: 1,
-    group: 1,
-    start_time: dayjs("2024-07-17T00:00:00"),
-    end_time: dayjs("2024-07-17T23:59:59"),
-    itemProps: {
-      style: {
-        zIndex: 1,
-      },
-    }
-  },
-  {
-    id: 2,
-    group: 2,
-    start_time: dayjs("2024-07-17T00:00:00"),
-    end_time: dayjs("2024-07-17T23:59:59"),
-    itemProps: {
-      style: {
-        zIndex: 1,
-      },
-    },
-  },
-  {
-    id: 3,
-    group: 3,
-    start_time: dayjs("2024-07-18T00:00:00"),
-    end_time: dayjs("2024-07-18T23:59:59"),
-    itemProps: {
-      style: {
-        zIndex: 1,
-      },
-    },
-  },
-  {
-    id: 4,
-    group: 4,
-    start_time: dayjs("2024-07-18T00:00:00"),
-    end_time: dayjs("2024-07-18T23:59:59"),
-    itemProps: {
-      style: {
-        zIndex: 1,
-      },
-    },
-  },
-  {
-    id: 5,
-    group: 5,
-    start_time: dayjs("2024-07-19T00:00:00"),
-    end_time: dayjs("2024-07-19T23:59:59"),
-    itemProps: {
-      style: {
-        zIndex: 1,
-      },
-    },
-  },
-  {
-    id: 6,
     group: 6,
     start_time: dayjs("2024-07-22T00:00:00"),
     end_time: dayjs("2024-08-22T23:59:59"),
@@ -747,7 +692,7 @@ export const consultantItems: ConsultantItemsType[] = [
     },
   },
   {
-    id: 21,
+    id: 2,
     group: 6,
     start_time: dayjs("2024-08-05T00:00:00"),
     end_time: dayjs("2024-08-09T23:59:59"),
@@ -761,39 +706,19 @@ export const consultantItems: ConsultantItemsType[] = [
     },
   },
   {
-    id: 7,
-    group: 1,
-    start_time: dayjs("2024-07-18T00:00:00"),
-    end_time: dayjs("2024-07-18T23:59:59"),
+    id: 3,
+    group: 6,
+    start_time: dayjs("2024-08-09T00:00:00"),
+    end_time: dayjs("2025-05-09T23:59:59"),
     itemProps: {
       style: {
-        zIndex: 1,
-        outline: "none"
+        zIndex: 0,
+        background: "gray",
+        outline: "none",
+        border: "none"
       },
-    }
-  },
-  {
-    id: 8,
-    group: 3,
-    start_time: dayjs("2024-07-20T00:00:00"),
-    end_time: dayjs("2024-07-26T23:59:59"),
-    itemProps: {
-      style: {
-        zIndex: 1,
-      },
-    }
-  },
-  {
-    id: 9,
-    group: 1,
-    start_time: dayjs("2024-07-22T00:00:00"),
-    end_time: dayjs("2024-07-22T23:59:59"),
-    itemProps: {
-      style: {
-        zIndex: 1,
-      },
-    }
-  },
+    },
+  }
 ];
 
 export const redDays = [
@@ -834,3 +759,5 @@ export const redDays = [
     ]
   }
 ]
+
+export const allPts = ["Anna Carlsson", "Josefin Stål"];

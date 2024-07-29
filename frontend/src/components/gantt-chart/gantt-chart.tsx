@@ -1,5 +1,6 @@
+"use client"
 import { useClientsContext } from "@/context/clients";
-import SingleConsultant from "@/components/client-detail/consultants-list/single-consultant/single-consultant";
+import SingleConsultant from "@/components/gantt-chart/single-consultant/single-consultant";
 import { usePathname } from "next/navigation";
 import Timeline from "react-calendar-timeline";
 import "react-calendar-timeline/lib/Timeline.css";
@@ -8,33 +9,33 @@ import { consultantsCalendar, consultantItems } from "@/mockData";
 import { useEffect, useState } from "react";
 import { ConsultantItemsType } from "@/types";
 import { getDatesForRemainingTime } from "@/helperMethods";
-import "./consultant-list.css";
+import "./gantt-chart.css";
 
-const ConsultantsList = () => {
+const GanttChart = () => {
   const client = useClientsContext();
   const idParam = usePathname().split("/").pop();
   const singleClient = client.data.filter((el) => el.id === idParam)[0];
   const [items, setItems] = useState<ConsultantItemsType[]>(consultantItems);
 
-  useEffect(() => {
-    const remainingTimeItem = getDatesForRemainingTime(1, items);
-    const newItem = {
-      id: 20,
-      group: 1,
-      start_time: remainingTimeItem.start_date,
-      end_time: remainingTimeItem.end_date,
-      itemProps: {
-        style: {
-          zIndex: 1,
-          backgroundColor: "grey",
-        },
-      },
-    };
-    const pushedItem = [...items, newItem];
-    setItems(pushedItem);
-  }, []);
+  // useEffect(() => {
+  //   const remainingTimeItem = getDatesForRemainingTime(1, items);
+  //   const newItem = {
+  //     id: 20,
+  //     group: 1,
+  //     start_time: remainingTimeItem.start_date,
+  //     end_time: remainingTimeItem.end_date,
+  //     itemProps: {
+  //       style: {
+  //         zIndex: 1,
+  //         backgroundColor: "grey",
+  //       },
+  //     },
+  //   };
+  //   const pushedItem = [...items, newItem];
+  //   setItems(pushedItem);
+  // }, []);
 
-  console.log("All items", items);
+ console.log(singleClient);
 
   return (
     <div>
@@ -46,12 +47,12 @@ const ConsultantsList = () => {
           defaultTimeEnd={moment().add(4, "day")}
         />
       </div>
-      {singleClient.listOfConsultants.map((consultant) => {
-        const { name, id } = consultant;
-        return <SingleConsultant name={name} id={id} key={id} />;
-      })}
+      {/*{singleClient.listOfConsultants.map((consultant) => {*/}
+      {/*  const { name, id } = consultant;*/}
+      {/*  return <SingleConsultant name={name} id={id} key={id} />;*/}
+      {/*})}*/}
     </div>
   );
 };
 
-export default ConsultantsList;
+export default GanttChart;

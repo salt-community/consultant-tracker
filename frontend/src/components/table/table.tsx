@@ -162,9 +162,6 @@ export default function EnhancedTable() {
 
   return (
     <>
-      <div className="table-top-info">
-        <p className="table-total-results">Total results: {tableData.length}</p>
-      </div>
       <Box sx={{ width: "100%" }}>
         <Paper className="paper-root__table">
           <TableContainer>

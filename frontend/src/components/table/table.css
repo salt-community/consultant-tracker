@@ -11,18 +11,6 @@
     gap: 10px;
 }
 
-.table-total-results {
-    color: var(--main-background);
-    font-weight: 400;
-    font-size: smaller;
-}
-
-.table-top-info {
-    display: flex;
-    justify-content: flex-end;
-    margin: 70px 0 15px 0;
-}
-
 .MuiPaper-root.paper-root__table {
     width: 100%;
     margin-bottom: 50px;
