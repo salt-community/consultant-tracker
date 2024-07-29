@@ -9,16 +9,13 @@ import {
 } from "./types";
 
 export const navLinks = [
-  "Create new consultant",
-  "Create new client",
   "Sign out",
 ];
 
 export const infographicData = [
   {title: "Total consultants", amount: 10, variant: "blue"},
   {title: "Active consultants", amount: 7, variant: "green"},
-  {title: "Absent consultants", amount: 3, variant: "yellow"},
-  {title: "Number of clients", amount: 7, variant: "violet"},
+  {title: "Josefin's consultants", amount: 5, variant: "violet"},
 ];
 
 export const consultantsData: ConsultantDataType[] = [
