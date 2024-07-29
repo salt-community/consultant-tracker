@@ -13,11 +13,9 @@ import Paper from "@mui/material/Paper";
 import { visuallyHidden } from "@mui/utils";
 import { headCells } from "@/mockData";
 import { ConsultantDataType } from "@/types";
-import Indicator from "./table-legend/indicator/indicator";
 import { useTableContext } from "@/context/table";
 import Link from "next/link";
 import "./table.css";
-import TableLegend from "./table-legend/table-legend";
 import { FaArrowUpRightFromSquare } from "react-icons/fa6";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -82,12 +80,12 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   return (
     <TableHead>
       <TableRow>
-        {headCells.map((headCell, index) => (
+        {headCells.map(headCell => (
           <TableCell
             key={headCell.id}
             padding="normal"
-            align={index == 0 ? "center" : "left"}
-            className={index == 0 ? "header center" : "header"}
+            align="left"
+            className="header"
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
@@ -165,7 +163,6 @@ export default function EnhancedTable() {
   return (
     <>
       <div className="table-top-info">
-        <TableLegend />
         <p className="table-total-results">Total results: {tableData.length}</p>
       </div>
       <Box sx={{ width: "100%" }}>
@@ -195,10 +192,10 @@ export default function EnhancedTable() {
                       key={row.id}
                       selected={isItemSelected}
                     >
-                      <TableCell className="outer-column">
-                        <Indicator value={row.status} />
+                      <TableCell className="column">
+                        <div className="clients-link">{row.pt} </div>
                       </TableCell>
-                      <TableCell className="middle-column">
+                      <TableCell className="column">
                         <Link
                           href={`/consultants/${row.id}`}
                           className="clients-link"
@@ -207,7 +204,7 @@ export default function EnhancedTable() {
                           <FaArrowUpRightFromSquare />
                         </Link>
                       </TableCell>
-                      <TableCell className="middle-column">
+                      <TableCell className="column">
                         <div className="clients-link">{row.client}</div>
                       </TableCell>
                     </TableRow>

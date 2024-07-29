@@ -1,65 +1,31 @@
 "use client";
-import {ChangeEvent, useState} from "react";
+import { ChangeEvent, useState } from "react";
 import "./filter.css";
-import {consultantsData} from "@/mockData";
-import {useTableContext} from "@/context/table";
-import SelectStatus from "@/components/filter/select-status/select-status";
-import {SelectChangeEvent} from "@mui/material/Select";
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import FilterBy from "@/components/filter/filter-by/filter-by";
+import { consultantsData } from "@/mockData";
+import { useTableContext } from "@/context/table";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 
 function FilterField() {
   const [filterValue, setFilterValue] = useState("");
-  const [filterBy, setFilterBy] = useState("Consultant");
-  const [status, setStatus] = useState("show all");
+  const [responsiblePt, setResponsiblePt] = useState("")
   const data = useTableContext();
-  const handleStatusChange = (e: SelectChangeEvent) => {
-    setStatus(e.target.value as string);
-    filterData(filterValue, e.target.value);
-  }
 
-  const checkFilterValue = (dataVal: string, filterVal: string) => {
-    return dataVal.toLowerCase().includes(filterVal.toLowerCase());
-  };
-
-  const checkStatus = (dataVal: string, statusVal: string) => {
-    if (statusVal === "show all") {
-      return true;
-    }
-    return dataVal === statusVal;
-  };
-
-  const filterData = (searchParam: string, selectedStatus: string) => {
+  const filterData = (value: string) => {
     const filteredData = [...consultantsData].filter((df) => {
-      if (filterBy === "Consultant") {
-        return (
-          checkFilterValue(df.name, searchParam) &&
-          checkStatus(df.status, selectedStatus)
-        );
-      }
-      return (
-        checkFilterValue(df.client, searchParam) &&
-        checkStatus(df.status, selectedStatus)
-      );
+      return df.name.toLowerCase().includes(value.toLowerCase());
     });
     data!.setData(filteredData);
   };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFilterValue(e.target.value);
-    filterData(e.target.value, status);
-  };
-
-  const handleCriteriaSelection = (e: SelectChangeEvent) => {
-    setFilterBy(e.target.value);
-    handleClear();
+    filterData(e.target.value);
   };
 
   const handleClear = () => {
     setFilterValue("");
-    setStatus("show all");
-    filterData("", "show all");
+    filterData("");
   };
 
   return (
@@ -67,16 +33,18 @@ function FilterField() {
       <fieldset className="filter-fieldset">
         <legend className="filter-section__title"> Filter</legend>
         <div className="filter-by__wrapper">
-          <TextField id="outlined-basic"
-                     label={`Type to filter by ${filterBy.toLowerCase()}`}
-                     variant="outlined"
-                     className="filter-text__input"
-                     value={filterValue}
-                     onChange={handleInputChange}/>
-          <FilterBy value={filterBy} handleChange={handleCriteriaSelection}/>
+          <TextField
+            id="outlined-basic"
+            label={`By consultant name`}
+            variant="outlined"
+            className="filter-text__input"
+            value={filterValue}
+            onChange={handleInputChange}
+          />
         </div>
-        <SelectStatus status={status} handleChange={handleStatusChange}/>
-        <Button onClick={handleClear} variant="contained">Clear filter</Button>
+        <Button onClick={handleClear} variant="contained">
+          Clear filter
+        </Button>
       </fieldset>
     </section>
   );

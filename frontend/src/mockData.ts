@@ -24,94 +24,77 @@ export const consultantsData: ConsultantDataType[] = [
     name: "Stefan Hansdotter",
     clientId: "111",
     client: "Syntronix",
-    status: "active",
+    pt: "Josefin Stål"
   },
   {
     id: "002",
     name: "Astrad Rehnquist",
     clientId: "222",
     client: "Scania",
-    status: "absence",
+    pt: "Josefin Stål"
   },
   {
     id: "003",
     name: "Josephine Ahlgren Björk",
     clientId: "333",
     client: "AstraZeneca",
-    status: "absence",
+    pt: "Josefin Stål"
   },
   {
     id: "004",
     name: "Olof Dahlquist",
     clientId: "-",
     client: "-",
-    status: "inactive",
+    pt: "Josefin Stål"
   },
   {
     id: "005",
     name: "Axel Folly",
     clientId: "444",
     client: "Spotify",
-    status: "active",
+    pt: "Josefin Stål"
   },
   {
     id: "006",
     name: "Allan Sanddahl",
     clientId: "555",
     client: "ABB",
-    status: "active",
+    pt: "Josefin Stål"
   },
   {
     id: "007",
     name: "Julia Roberts",
     clientId: "666",
     client: "Telia",
-    status: "active",
+    pt: "Anna Carlsson"
   },
   {
     id: "008",
     name: "Agnes Ekbom",
     clientId: "222",
     client: "Scania",
-    status: "absence",
+    pt: "Anna Carlsson"
   },
   {
     id: "009",
     name: "Zara Larsson",
     clientId: "-",
     client: "-",
-    status: "inactive",
+    pt: "Anna Carlsson"
   },
   {
     id: "010",
     name: "Iris Lindahl",
     clientId: "777",
     client: "Swedbank",
-    status: "active",
-  },
-];
-
-export const statusOptions = ["Show All", "Active", "Absence", "Inactive"];
-
-export const status = [
-  {
-    id: 1,
-    value: "active",
-  },
-  {
-    id: 2,
-    value: "absence",
-  },
-  {
-    id: 3,
-    value: "inactive",
+    pt: "Anna Carlsson"
   },
 ];
 
 export const headCells: HeaderCellsType[] = [
   {
-    id: "status",
-    label: "Status",
+    id: "pt",
+    label: "Responsible P&T",
   },
   {
     id: "name",
@@ -135,7 +118,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
         endDate: "2021-12-31",
       },
     ],
-    status: "active",
+    pt: "active",
     absence: [],
     github: "stefan67509",
     phone: "070-123 45 67",
@@ -177,7 +160,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
         endDate: "2021-12-31",
       },
     ],
-    status: "absence",
+    pt: "absence",
     absence: [
       {
         description: "Parental leave",
@@ -223,7 +206,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
         endDate: "2022-12-31",
       },
     ],
-    status: "absence",
+    pt: "absence",
     absence: [
       {
         description: "Vacation",
@@ -262,7 +245,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
     id: "004",
     name: "Olof Dahlquist",
     client: [],
-    status: "inactive",
+    pt: "inactive",
     absence: [],
     github: "olofdahlquist",
     phone: "070-223 45 67",
@@ -301,7 +284,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
         endDate: "2022-12-31",
       },
     ],
-    status: "active",
+    pt: "active",
     absence: [],
     github: "axelfolly",
     phone: "070-113 45 67",
@@ -340,7 +323,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
         endDate: "2022-12-31",
       },
     ],
-    status: "active",
+    pt: "active",
     absence: [],
     github: "sanddahlall",
     phone: "070-113 45 67",
@@ -379,7 +362,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
         endDate: "2022-12-31",
       },
     ],
-    status: "active",
+    pt: "active",
     absence: [],
     github: "juliaroberts",
     phone: "070-113 45 67",
@@ -418,7 +401,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
         endDate: "2022-12-31",
       },
     ],
-    status: "absence",
+    pt: "absence",
     absence: [
       {
         description: "Sick leave",
@@ -455,7 +438,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
     id: "009",
     name: "Zara Larsson",
     client: [],
-    status: "inactive",
+    pt: "inactive",
     absence: [],
     github: "zaralarsson",
     phone: "070-113 45 67",
@@ -494,7 +477,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
         endDate: "2022-12-31",
       },
     ],
-    status: "active",
+    pt: "active",
     absence: [],
     github: "irislinda",
     phone: "070-113 45 67",

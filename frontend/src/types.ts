@@ -11,7 +11,7 @@ export type ConsultantDataType = {
   name: string;
   clientId: string;
   client: string;
-  status: string;
+  pt: string
 };
 
 export type HeaderCellsType = {
@@ -44,7 +44,7 @@ export type ConsultantDetailsDataType = {
   id: string;
   name: string;
   client: ClientDataType[];
-  status: string;
+  pt: string;
   absence: AbsenceType[];
   github: string;
   phone: string;
