@@ -10,11 +10,11 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import Paper from "@mui/material/Paper";
-import {visuallyHidden} from "@mui/utils";
-import {headCells} from "@/mockData";
-import {ConsultantDataType} from "@/types";
+import { visuallyHidden } from "@mui/utils";
+import { headCells } from "@/mockData";
+import { ConsultantDataType } from "@/types";
 import Indicator from "./table-legend/indicator/indicator";
-import {useTableContext} from "@/context/table";
+import { useTableContext } from "@/context/table";
 import Link from "next/link";
 import "./table.css";
 import TableLegend from "./table-legend/table-legend";
@@ -72,12 +72,12 @@ interface EnhancedTableProps {
 }
 
 function EnhancedTableHead(props: EnhancedTableProps) {
-  const {order, orderBy, onRequestSort} = props;
+  const { order, orderBy, onRequestSort } = props;
   const createSortHandler =
     (property: keyof ConsultantDataType) =>
-      (event: React.MouseEvent<unknown>) => {
-        onRequestSort(event, property);
-      };
+    (event: React.MouseEvent<unknown>) => {
+      onRequestSort(event, property);
+    };
 
   return (
     <TableHead>
@@ -165,14 +165,14 @@ export default function EnhancedTable() {
   return (
     <>
       <div className="table-top-info">
-        <TableLegend/>
+        <TableLegend />
         <p className="table-total-results">Total results: {tableData.length}</p>
       </div>
-      <Box sx={{width: "100%"}}>
+      <Box sx={{ width: "100%" }}>
         <Paper className="paper-root__table">
           <TableContainer>
             <Table
-              sx={{minWidth: 750, background: "transparent"}}
+              sx={{ minWidth: 750, background: "transparent" }}
               aria-labelledby="tableTitle"
               size={"medium"}
             >
@@ -185,7 +185,7 @@ export default function EnhancedTable() {
                 rowCount={tableData.length}
               />
               <TableBody>
-                {visibleRows.map((row:ConsultantDataType) => {
+                {visibleRows.map((row: ConsultantDataType) => {
                   const isItemSelected = isSelected(row.id);
                   return (
                     <TableRow
@@ -196,26 +196,19 @@ export default function EnhancedTable() {
                       selected={isItemSelected}
                     >
                       <TableCell className="outer-column">
-                        <Indicator value={row.status}/>
+                        <Indicator value={row.status} />
                       </TableCell>
                       <TableCell className="middle-column">
-                        <Link href={`/consultants/${row.id}`} className="clients-link">
+                        <Link
+                          href={`/consultants/${row.id}`}
+                          className="clients-link"
+                        >
                           {row.name}
                           <FaArrowUpRightFromSquare />
                         </Link>
                       </TableCell>
                       <TableCell className="middle-column">
-                        {row.client === "-" ? (
-                          row.client
-                        ) : (
-                          <Link
-                            href={`/clients/${row.clientId}`}
-                            className="clients-link"
-                          >
-                            {row.client}
-                            <FaArrowUpRightFromSquare />
-                          </Link>
-                        )}
+                        <div className="clients-link">{row.client}</div>
                       </TableCell>
                     </TableRow>
                   );
@@ -226,7 +219,7 @@ export default function EnhancedTable() {
                       height: 53 * emptyRows,
                     }}
                   >
-                    <TableCell colSpan={6}/>
+                    <TableCell colSpan={6} />
                   </TableRow>
                 )}
               </TableBody>
