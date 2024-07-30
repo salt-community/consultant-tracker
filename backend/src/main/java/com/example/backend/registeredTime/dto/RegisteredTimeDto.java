@@ -1,14 +1,8 @@
 package com.example.backend.registeredTime.dto;
 
-import com.example.backend.registeredTime.RegisteredTimeKey;
-
 import java.time.LocalDateTime;
-import java.util.UUID;
 
-public record RegisteredTimeDto(UUID registeredTimeId,
-                                LocalDateTime startDate,
+public record RegisteredTimeDto(LocalDateTime startDate,
                                 LocalDateTime endDate,
-                                String type
-//                                String description
-) {
+                                String type) {
 }

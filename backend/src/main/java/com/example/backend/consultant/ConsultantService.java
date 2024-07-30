@@ -6,22 +6,25 @@ import com.example.backend.client.dto.TimekeeperUserDto;
 import com.example.backend.consultant.dto.ConsultantResponseDto;
 import com.example.backend.consultant.dto.ConsultantResponseListDto;
 import com.example.backend.consultant.dto.ConsultantTimeDto;
-import com.example.backend.exceptions.ConsultantNotFoundException;
 import com.example.backend.registeredTime.RegisteredTime;
 import com.example.backend.registeredTime.RegisteredTimeKey;
 import com.example.backend.registeredTime.RegisteredTimeService;
 import com.example.backend.registeredTime.dto.RegisteredTimeDto;
+import com.example.backend.registeredTime.dto.RegisteredTimeResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 import static com.example.backend.client.Activity.CONSULTANCY_TIME;
+import static java.time.temporal.ChronoUnit.DAYS;
 
 
 @Service
@@ -33,7 +36,10 @@ public class ConsultantService {
 
     public ConsultantResponseListDto getAllConsultantDtos(int page, int pageSize) {
         Page<Consultant> consultantsList = getAllConsultantsPageable(page, pageSize);
-        List<ConsultantResponseDto> consultants = consultantsList.stream().map(el -> findConsultantDtoById(el.getId())).toList();
+        //TODO remove filter later
+        List<ConsultantResponseDto> consultants = consultantsList.stream()
+//                .filter(el-> el.getTimekeeperId() == 22784)
+                .map(el -> findConsultantDtoById(el.getId())).toList();
         return new ConsultantResponseListDto(
                 page,
                 consultantsList.getTotalPages(),
@@ -42,13 +48,13 @@ public class ConsultantService {
 
     }
 
-    public List<RegisteredTimeDto> getConsultantTimeDto(List<RegisteredTime> consultantTimeDtoList) {
-        List<RegisteredTimeDto> listOfRegisteredTime = new ArrayList<>();
+    public List<RegisteredTimeResponseDto> getConsultantTimeDto(List<RegisteredTime> consultantTimeDtoList) {
+        List<RegisteredTimeResponseDto> listOfRegisteredTime = new ArrayList<>();
         UUID consultantId = consultantTimeDtoList.getFirst().getId().getConsultantId();
         listOfRegisteredTime.add(getConsultancyTimeItemByConsultantId(consultantId));
         listOfRegisteredTime.addAll(getOtherRegisteredTimeByConsultantId(consultantTimeDtoList));
         // ACCOUNT FOR RED DAYS
-        RegisteredTimeDto remainingConsultancyTimeByConsultantId = registeredTimeService.getRemainingConsultancyTimeByConsultantId(consultantId);
+        RegisteredTimeResponseDto remainingConsultancyTimeByConsultantId = registeredTimeService.getRemainingConsultancyTimeByConsultantId(consultantId);
         if (remainingConsultancyTimeByConsultantId != null) {
             listOfRegisteredTime.add(remainingConsultancyTimeByConsultantId);
         }
@@ -56,8 +62,8 @@ public class ConsultantService {
         return listOfRegisteredTime;
     }
 
-    private Collection<RegisteredTimeDto> getOtherRegisteredTimeByConsultantId(List<RegisteredTime> consultantTimeDtoList) {
-        List<RegisteredTimeDto> listOfRegisteredTime = new ArrayList<>();
+    private Collection<RegisteredTimeResponseDto> getOtherRegisteredTimeByConsultantId(List<RegisteredTime> consultantTimeDtoList) {
+        List<RegisteredTimeResponseDto> listOfRegisteredTime = new ArrayList<>();
         AtomicReference<String> activityTypePrev = new AtomicReference<>(null);
         AtomicReference<LocalDateTime> startTime = new AtomicReference<>(null);
         AtomicReference<LocalDateTime> endTime = new AtomicReference<>();
@@ -76,7 +82,7 @@ public class ConsultantService {
                     continue;
                 }
                 if (i == consultantTimeDtoList.size() - 1) {
-                    listOfRegisteredTime.add(new RegisteredTimeDto(
+                    listOfRegisteredTime.add(new RegisteredTimeResponseDto(
                             UUID.randomUUID(),
                             startTime.get(),
                             consultantTimeDtoEl.getEndDate(),
@@ -85,11 +91,19 @@ public class ConsultantService {
                 }
             } else {
                 if (!activityTypePrev.get().equals(CONSULTANCY_TIME.activity)) {
-                    listOfRegisteredTime.add(new RegisteredTimeDto(
+                    listOfRegisteredTime.add(new RegisteredTimeResponseDto(
                             UUID.randomUUID(),
                             startTime.get(),
                             endTime.get(),
                             activityTypePrev.get()));
+                }
+                if (i == consultantTimeDtoList.size() - 1) {
+                    listOfRegisteredTime.add(new RegisteredTimeResponseDto(
+                            UUID.randomUUID(),
+                            consultantTimeDtoEl.getId().getStartDate(),
+                            consultantTimeDtoEl.getEndDate(),
+                            consultantTimeDtoEl.getType()));
+                    continue;
                 }
                 startTime.set(consultantTimeDtoEl.getId().getStartDate());
                 activityTypePrev.set(consultantTimeDtoEl.getType());
@@ -99,10 +113,10 @@ public class ConsultantService {
         return listOfRegisteredTime;
     }
 
-    private RegisteredTimeDto getConsultancyTimeItemByConsultantId(UUID consultantId) {
+    private RegisteredTimeResponseDto getConsultancyTimeItemByConsultantId(UUID consultantId) {
         List<RegisteredTime> firstAndLastRegisteredDateByConsultantId =
                 registeredTimeService.getFirstAndLastDateByConsultantId(consultantId);
-        return new RegisteredTimeDto(
+        return new RegisteredTimeResponseDto(
                 UUID.randomUUID(),
                 firstAndLastRegisteredDateByConsultantId.get(0).getId().getStartDate(),
                 firstAndLastRegisteredDateByConsultantId.get(1).getEndDate(),
@@ -188,15 +202,16 @@ public class ConsultantService {
         assert consultant != null;
         List<RegisteredTime> timeByConsultantId = registeredTimeService.getTimeByConsultantId(consultant.getId());
         /*List<RegisteredTime> timeByConsultantId = registeredTimeService.getOtherTimeByConsultantId(consultant.getId());*/
-        List<RegisteredTimeDto> consultantTimeDto = getConsultantTimeDto(timeByConsultantId);
+        List<RegisteredTimeResponseDto> consultantTimeDto = getConsultantTimeDto(timeByConsultantId);
         return ConsultantResponseDto.toDto(consultant, consultantTimeDto);
     }
 
     public Double getConsultancyHoursByUserId(UUID id) {
-        Consultant consultant = consultantRepository.findById(id).orElseThrow(() -> new ConsultantNotFoundException("Consultant not found"));
-        List<TimekeeperRegisteredTimeResponseDto> consultancyTime = timekeeperClient.getTimeRegisteredByConsultant(consultant.getTimekeeperId());
+        List<RegisteredTime> consultancyTime = registeredTimeService.getTimeByConsultantId(id);
         AtomicReference<Double> totalHoursResponse = new AtomicReference<>(0.0);
-        consultancyTime.forEach(el -> totalHoursResponse.updateAndGet(v -> v + el.totalHours()));
+        consultancyTime.stream()
+                .filter(el -> el.getType().equals(CONSULTANCY_TIME.activity))
+                .forEach(el -> totalHoursResponse.updateAndGet(v -> v + el.getTotalHours()));
         return totalHoursResponse.get();
     }
 
@@ -231,5 +246,71 @@ public class ConsultantService {
                     8));
         }
         return consultantTimeDtoList;
+    }
+
+    public Map<Integer, RegisteredTimeDto> getTimeRegisteredByConsultant(UUID id) {
+        List<RegisteredTime> registeredTimeList = registeredTimeService.getTimeByConsultantId(id);
+        Map<Integer, RegisteredTimeDto> mappedRecords = new HashMap<>();
+        String prevType = registeredTimeList.get(0).getType();
+        int generatedKey = 0;
+        for (RegisteredTime registeredTime : registeredTimeList) {
+            if (mappedRecords.containsKey(generatedKey)) {
+                if (prevType.equals(registeredTime.getType())) {
+                    mappedRecords.computeIfPresent(generatedKey, (s, registeredTimeDto) ->
+                            new RegisteredTimeDto(registeredTimeDto.startDate(),
+                                    registeredTime.getEndDate(),
+                                    registeredTime.getType()
+                            ));
+                } else {
+                    generatedKey++;
+                    mappedRecords.put(generatedKey,
+                            new RegisteredTimeDto(registeredTime.getId().getStartDate(),
+                                    registeredTime.getEndDate(),
+                                    registeredTime.getType()));
+                }
+            } else {
+                mappedRecords.put(generatedKey,
+                        new RegisteredTimeDto(registeredTime.getId().getStartDate(),
+                                registeredTime.getEndDate(),
+                                registeredTime.getType()));
+            }
+            prevType = registeredTime.getType();
+        }
+        return fillRegisteredTimeGaps(sortMap(mappedRecords));
+//        return sortMap(mappedRecords);
+    }
+
+    private Map<Integer, RegisteredTimeDto> sortMap(Map<Integer, RegisteredTimeDto> resultSet) {
+        return resultSet.entrySet()
+                .stream()
+                .sorted(Comparator.comparing(e -> e.getValue().startDate()))
+                .collect(Collectors.toMap(Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (left, right) -> left,
+                        LinkedHashMap::new));
+    }
+
+    private Map<Integer, RegisteredTimeDto> fillRegisteredTimeGaps(Map<Integer, RegisteredTimeDto> resultSet) {
+        for (int i = 0; i < resultSet.size() - 1; i++) {
+            LocalDate dateBefore = resultSet.get(i).endDate().toLocalDate();
+            LocalDate dateAfter = resultSet.get(i + 1).startDate().toLocalDate();
+            long daysBetween = DAYS.between(dateBefore, dateAfter);
+            if (daysBetween > 1) {
+                for (long j = 1; j < daysBetween; j++) {
+                    int weekend = 1;
+                    if (registeredTimeService.isWeekend(dateBefore.plusDays(j).getDayOfWeek().getValue())) {
+                        weekend++;
+                        continue;
+                    }
+                    resultSet.put(resultSet.size(),
+                            new RegisteredTimeDto(dateBefore.plusDays(weekend).atStartOfDay(),
+                                    dateAfter.minusDays(1).atTime(23, 59, 59),
+                                    "PGP"));
+                    j = daysBetween;
+                }
+            }
+            System.out.println("resultSet = " + resultSet);
+        }
+        return resultSet;
     }
 }

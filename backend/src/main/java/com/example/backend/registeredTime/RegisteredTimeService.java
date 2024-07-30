@@ -1,7 +1,7 @@
 package com.example.backend.registeredTime;
 
 import com.example.backend.consultant.dto.ConsultantTimeDto;
-import com.example.backend.registeredTime.dto.RegisteredTimeDto;
+import com.example.backend.registeredTime.dto.RegisteredTimeResponseDto;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -49,14 +49,14 @@ public class RegisteredTimeService {
         return new ArrayList<>(Arrays.asList(startDate, endDate));
     }
 
-    public RegisteredTimeDto getRemainingConsultancyTimeByConsultantId(UUID consultantId) {
+    public RegisteredTimeResponseDto getRemainingConsultancyTimeByConsultantId(UUID consultantId) {
         LocalDateTime lastRegisteredDate = registeredTimeRepository.findFirstById_ConsultantIdOrderByEndDateDesc(consultantId).getEndDate();
         LocalDateTime startDate = lastRegisteredDate.plusDays(1).withHour(0).withMinute(0).withSecond(0);
         LocalDateTime estimatedEndDate = getEstimatedConsultancyEndDate(consultantId, startDate);
         if (estimatedEndDate == startDate) {
             return null;
         }
-        return new RegisteredTimeDto(
+        return new RegisteredTimeResponseDto(
                 UUID.randomUUID(),
                 startDate,
                 estimatedEndDate,
@@ -67,6 +67,10 @@ public class RegisteredTimeService {
         final int REQUIRED_HOURS = 2024;
         int countOfWorkedDays = registeredTimeRepository.countAllById_ConsultantIdAndTypeIs(consultantId, CONSULTANCY_TIME.activity);
         int remainingConsultancyDays = REQUIRED_HOURS / 8 - countOfWorkedDays;
+//        System.out.println("remainingConsultancyDays = " + remainingConsultancyDays);
+        if (remainingConsultancyDays <= 0) {
+            return startDate;
+        }
         return accountForNonWorkingDays(startDate, remainingConsultancyDays);
     }
 
@@ -87,7 +91,7 @@ public class RegisteredTimeService {
         return endingDate;
     }
 
-    private boolean isWeekend(int day) {
+    public boolean isWeekend(int day) {
         final int SATURDAY = 6;
         final int SUNDAY = 7;
         return day == SATURDAY || day == SUNDAY;
