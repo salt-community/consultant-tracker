@@ -11,48 +11,38 @@ function FilterField() {
   const [filterValue, setFilterValue] = useState("");
   const [responsiblePt, setResponsiblePt] = useState(["Josefin Stål"])
   const data = useTableContext();
-  const filterData = (value: string | string[]) => {
+  const filterData = () => {
     const filteredData = [...consultantsData].filter((df) => {
       const name =  df.name.toLowerCase();
       const searchValue = filterValue.toLowerCase();
-      switch (typeof value) {
-        case "string": {
-          const valueLowerCase = value.toLowerCase()
-          return responsiblePt.length === 0
-            ? name.includes(valueLowerCase)
-            : name.includes(valueLowerCase) && responsiblePt.includes(df.pt)
-        }
-        default: {
-          return value.length !== 0
-            ? name.includes(searchValue) && value.includes(df.pt)
-            : name.includes(searchValue)
-        }
+      if(responsiblePt.length === 0){
+        return name.includes(searchValue)
       }
+      return name.includes(searchValue) && responsiblePt.includes(df.pt)
     });
-    console.log('filteredData',filteredData)
     data!.setData(filteredData);
   };
 
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFilterValue(e.target.value);
-    filterData(e.target.value);
+    filterData();
   };
 
   const handleClear = () => {
    setFilterValue("");
    setResponsiblePt(["Josefin Stål"]);
-   filterData("");
+   filterData();
   };
 
   const handlePtsSelection = (selectionArr: string[]) => {
     setResponsiblePt(selectionArr);
-    filterData(selectionArr)
+    filterData()
   }
 
   useEffect(() => {
-    filterData("");
-  }, []);
+    filterData();
+  }, [responsiblePt, filterValue]);
 
   return (
     <section className="filter-section">

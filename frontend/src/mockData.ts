@@ -686,6 +686,7 @@ export const consultantItems: ConsultantItemsType[] = [
     itemProps: {
       style: {
         zIndex: 1,
+        background: "#29B269",
         outline: "none",
         border: "none"
       },
@@ -699,7 +700,7 @@ export const consultantItems: ConsultantItemsType[] = [
     itemProps: {
       style: {
         zIndex: 2,
-        background: "pink",
+        background: "yellow",
         outline: "none",
         border: "none"
       },
@@ -713,7 +714,7 @@ export const consultantItems: ConsultantItemsType[] = [
     itemProps: {
       style: {
         zIndex: 0,
-        background: "gray",
+        background: "#A2A2A2",
         outline: "none",
         border: "none"
       },
