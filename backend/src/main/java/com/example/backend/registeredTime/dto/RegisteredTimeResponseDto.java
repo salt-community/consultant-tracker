@@ -9,4 +9,10 @@ public record RegisteredTimeResponseDto(UUID registeredTimeId,
                                         String type
 //                                String description
 ) {
+    public static RegisteredTimeResponseDto fromRegisteredTimeDto(RegisteredTimeDto registeredTimeDto){
+        return new RegisteredTimeResponseDto(UUID.randomUUID(),
+                registeredTimeDto.startDate(),
+                registeredTimeDto.endDate(),
+                registeredTimeDto.type());
+    }
 }

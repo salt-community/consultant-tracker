@@ -93,7 +93,6 @@ public class TimekeeperClient {
                                 response->Mono.empty())
                         .bodyToMono(TimekeeperRegisteredTimeListResponseDto.class)
                         .block();
-            System.out.println("dto = " + dto);
             assert dto != null;
             if(dto.consultancyTime() == null){
                 break;
