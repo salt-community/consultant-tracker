@@ -3,12 +3,10 @@ package com.example.backend.consultant;
 import com.example.backend.consultant.dto.ConsultantResponseDto;
 import com.example.backend.consultant.dto.ConsultantResponseListDto;
 import com.example.backend.consultant.dto.ConsultantTimeResponseDto;
-import com.example.backend.registeredTime.dto.RegisteredTimeDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -26,17 +24,11 @@ public class ConsultantController {
         return ResponseEntity.ok(consultantsResponse);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ConsultantResponseDto> getConsultantById(@PathVariable UUID id) {
-        ConsultantResponseDto consultant = consultantService.findConsultantDtoById(id);
-        return ResponseEntity.ok(consultant);
-    }
-
-    @GetMapping("/time/{id}")
-    public ResponseEntity<Double> getConsultancyHoursByUserId(@PathVariable UUID id) {
-        Double getHours = consultantService.getConsultancyHoursByUserId(id);
-        return ResponseEntity.ok(getHours);
-    }
+//    @GetMapping("/{id}")
+//    public ResponseEntity<ConsultantResponseDto> getConsultantById(@PathVariable UUID id) {
+//        ConsultantResponseDto consultant = consultantService.getConsultantsRegisteredTimeItems(id);
+//        return ResponseEntity.ok(consultant);
+//    }
 
     @GetMapping("/time")
     public ResponseEntity<ConsultantTimeResponseDto> getConsultantsHours(
@@ -47,11 +39,4 @@ public class ConsultantController {
         }
         return null;
     }
-
-    @GetMapping("/test/{id}")
-    public ResponseEntity<Map<Integer, RegisteredTimeDto>> getConsultantTimeById(@PathVariable UUID id) {
-        Map<Integer, RegisteredTimeDto> consultant = consultantService.getTimeRegisteredByConsultant(id);
-        return ResponseEntity.ok(consultant);
-    }
-
 }
