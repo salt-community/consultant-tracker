@@ -1,4 +1,4 @@
-package com.example.backend.client.dto;
+package com.example.backend.client.timekeeper.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

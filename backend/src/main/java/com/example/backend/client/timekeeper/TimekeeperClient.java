@@ -1,9 +1,9 @@
-package com.example.backend.client;
+package com.example.backend.client.timekeeper;
 
-import com.example.backend.client.dto.TimekeeperRegisteredTimeListResponseDto;
-import com.example.backend.client.dto.TimekeeperRegisteredTimeResponseDto;
-import com.example.backend.client.dto.TimekeeperUserListResponseDto;
-import com.example.backend.client.dto.TimekeeperUserDto;
+import com.example.backend.client.timekeeper.dto.TimekeeperRegisteredTimeListResponseDto;
+import com.example.backend.client.timekeeper.dto.TimekeeperRegisteredTimeResponseDto;
+import com.example.backend.client.timekeeper.dto.TimekeeperUserListResponseDto;
+import com.example.backend.client.timekeeper.dto.TimekeeperUserDto;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;

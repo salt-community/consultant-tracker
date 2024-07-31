@@ -1,4 +1,4 @@
-package com.example.backend.client;
+package com.example.backend.client.timekeeper;
 
 public enum Activity {
     OWN_ADMINISTRATION("Egen administration"),
