@@ -7,5 +7,6 @@ import java.time.LocalDateTime;
 public record ConsultantTimeDto(RegisteredTimeKey itemId,
                                 LocalDateTime endDate,
                                 String dayType,
-                                double totalHours) {
+                                double totalHours,
+                                String projectName) {
 }

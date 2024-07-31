@@ -102,7 +102,8 @@ public class TimekeeperClient {
                         return new TimekeeperRegisteredTimeResponseDto(
                                 time.totalHours(),
                                 time.activityName(),
-                                time.date());
+                                time.date(),
+                                time.projectName());
                     }).toList());
 
             if (index == 0) {

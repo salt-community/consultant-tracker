@@ -34,7 +34,8 @@ public class RegisteredTimeService {
                             consultantTimeDto.itemId().getStartDate()),
                     consultantTimeDto.dayType(),
                     consultantTimeDto.endDate().withHour(23).withMinute(59).withSecond(59),
-                    8.0
+                    8.0,
+                    consultantTimeDto.projectName()
             ));
         }
     }
@@ -49,19 +50,19 @@ public class RegisteredTimeService {
         return new ArrayList<>(Arrays.asList(startDate, endDate));
     }
 
-    public RegisteredTimeResponseDto getRemainingConsultancyTimeByConsultantId(UUID consultantId) {
-        LocalDateTime lastRegisteredDate = registeredTimeRepository.findFirstById_ConsultantIdOrderByEndDateDesc(consultantId).getEndDate();
-        LocalDateTime startDate = lastRegisteredDate.plusDays(1).withHour(0).withMinute(0).withSecond(0);
-        LocalDateTime estimatedEndDate = getEstimatedConsultancyEndDate(consultantId, startDate);
-        if (estimatedEndDate == startDate) {
-            return null;
-        }
-        return new RegisteredTimeResponseDto(
-                UUID.randomUUID(),
-                startDate,
-                estimatedEndDate,
-                "Remaining Days");
-    }
+//    public RegisteredTimeResponseDto getRemainingConsultancyTimeByConsultantId(UUID consultantId) {
+//        LocalDateTime lastRegisteredDate = registeredTimeRepository.findFirstById_ConsultantIdOrderByEndDateDesc(consultantId).getEndDate();
+//        LocalDateTime startDate = lastRegisteredDate.plusDays(1).withHour(0).withMinute(0).withSecond(0);
+//        LocalDateTime estimatedEndDate = getEstimatedConsultancyEndDate(consultantId, startDate);
+//        if (estimatedEndDate == startDate) {
+//            return null;
+//        }
+//        return new RegisteredTimeResponseDto(
+//                UUID.randomUUID(),
+//                startDate,
+//                estimatedEndDate,
+//                "Remaining Days");
+//    }
 
     private LocalDateTime getEstimatedConsultancyEndDate(UUID consultantId, LocalDateTime startDate) {
         final int REQUIRED_HOURS = 2024;

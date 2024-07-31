@@ -4,5 +4,6 @@ import java.time.LocalDateTime;
 
 public record RegisteredTimeDto(LocalDateTime startDate,
                                 LocalDateTime endDate,
-                                String type) {
+                                String type,
+                                String projectName) {
 }

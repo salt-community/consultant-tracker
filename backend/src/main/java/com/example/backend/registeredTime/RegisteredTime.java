@@ -20,4 +20,5 @@ public class RegisteredTime {
 
     private LocalDateTime endDate;
     private double totalHours;
+    private String projectName;
 }
