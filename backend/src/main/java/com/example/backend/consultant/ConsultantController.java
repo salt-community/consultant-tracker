@@ -1,7 +1,5 @@
 package com.example.backend.consultant;
 
-import com.example.backend.client.dagsmart.DagsmartClient;
-import com.example.backend.consultant.dto.ConsultantResponseDto;
 import com.example.backend.consultant.dto.ConsultantResponseListDto;
 import com.example.backend.consultant.dto.ConsultantTimeResponseDto;
 import com.example.backend.redDays.RedDaysService;
@@ -9,8 +7,6 @@ import com.example.backend.registeredTime.RegisteredTimeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/consultants")

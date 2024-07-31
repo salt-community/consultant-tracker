@@ -6,7 +6,6 @@ import lombok.Data;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,7 +20,6 @@ public class RedDaysService {
 
     public List<LocalDate> getRedDays() {
         List<RedDays> allDates = redDaysRepository.findAll();
-        List<LocalDate> list = allDates.stream().map(el -> el.date).toList();
         return allDates.stream().map(el -> el.date).toList();
     }
 
