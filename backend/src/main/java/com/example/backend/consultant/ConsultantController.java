@@ -3,6 +3,7 @@ package com.example.backend.consultant;
 import com.example.backend.consultant.dto.ConsultantResponseDto;
 import com.example.backend.consultant.dto.ConsultantResponseListDto;
 import com.example.backend.consultant.dto.ConsultantTimeResponseDto;
+import com.example.backend.registeredTime.RegisteredTimeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import java.util.UUID;
 public class ConsultantController {
 
     private final ConsultantService consultantService;
+    private final RegisteredTimeService registeredTimeService;
 
     @GetMapping
     public ResponseEntity<ConsultantResponseListDto> getConsultantsAndRegisteredTime(
@@ -34,7 +36,7 @@ public class ConsultantController {
     public ResponseEntity<ConsultantTimeResponseDto> getConsultantsHours(
             @RequestParam(name = "client", required = false) String clientId) {
         if (clientId == null || clientId.isEmpty()) {
-            ConsultantTimeResponseDto result = new ConsultantTimeResponseDto(consultantService.getAllConsultantsTimeItems());
+            ConsultantTimeResponseDto result = new ConsultantTimeResponseDto(registeredTimeService.getAllConsultantsTimeItems());
             return ResponseEntity.ok(result);
         }
         return null;
