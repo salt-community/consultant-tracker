@@ -1,29 +1,17 @@
 package com.example.backend.consultant;
 
-import com.example.backend.client.TimekeeperClient;
-import com.example.backend.client.dto.TimekeeperRegisteredTimeResponseDto;
-import com.example.backend.client.dto.TimekeeperUserDto;
+import com.example.backend.client.timekeeper.TimekeeperClient;
+import com.example.backend.client.timekeeper.dto.TimekeeperUserDto;
 import com.example.backend.consultant.dto.ConsultantResponseDto;
 import com.example.backend.consultant.dto.ConsultantResponseListDto;
-import com.example.backend.consultant.dto.ConsultantTimeDto;
-import com.example.backend.registeredTime.RegisteredTime;
-import com.example.backend.registeredTime.RegisteredTimeKey;
 import com.example.backend.registeredTime.RegisteredTimeService;
-import com.example.backend.registeredTime.dto.RegisteredTimeDto;
-import com.example.backend.registeredTime.dto.RegisteredTimeResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
-
-import static com.example.backend.client.Activity.CONSULTANCY_TIME;
-import static java.time.temporal.ChronoUnit.DAYS;
 
 
 @Service

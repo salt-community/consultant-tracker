@@ -1,7 +1,7 @@
 package com.example.backend.registeredTime;
 
-import com.example.backend.client.TimekeeperClient;
-import com.example.backend.client.dto.TimekeeperRegisteredTimeResponseDto;
+import com.example.backend.client.timekeeper.TimekeeperClient;
+import com.example.backend.client.timekeeper.dto.TimekeeperRegisteredTimeResponseDto;
 import com.example.backend.consultant.Consultant;
 import com.example.backend.consultant.ConsultantService;
 import com.example.backend.consultant.dto.ConsultantResponseDto;
@@ -18,7 +18,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
-import static com.example.backend.client.Activity.CONSULTANCY_TIME;
+import static com.example.backend.client.timekeeper.Activity.CONSULTANCY_TIME;
 import static java.time.temporal.ChronoUnit.DAYS;
 
 @Service
@@ -179,8 +179,6 @@ public class RegisteredTimeService {
                     int weekend = 1;
                     var dateToCheckForRedDay = dateBefore.plusDays(j);
                     boolean isRedDay = isRedDay(dateToCheckForRedDay);
-                    System.out.println("dateToCheckForRedDay = " + dateToCheckForRedDay);
-                    System.out.println("isRedDay = " + isRedDay);
                     if (isWeekend(dateBefore.plusDays(j).getDayOfWeek().getValue())
                     || isRedDay(dateBefore.plusDays(j))) {
                         weekend++;

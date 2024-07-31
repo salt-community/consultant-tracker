@@ -1,8 +1,10 @@
 package com.example.backend.consultant;
 
+import com.example.backend.client.dagsmart.DagsmartClient;
 import com.example.backend.consultant.dto.ConsultantResponseDto;
 import com.example.backend.consultant.dto.ConsultantResponseListDto;
 import com.example.backend.consultant.dto.ConsultantTimeResponseDto;
+import com.example.backend.redDays.RedDaysService;
 import com.example.backend.registeredTime.RegisteredTimeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +19,12 @@ public class ConsultantController {
 
     private final ConsultantService consultantService;
     private final RegisteredTimeService registeredTimeService;
-
+    private final RedDaysService redDaysService;
     @GetMapping
     public ResponseEntity<ConsultantResponseListDto> getConsultantsAndRegisteredTime(
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "pageSize", defaultValue = "10") int pageSize) {
+        redDaysService.getRedDaysFromDagsmart();
         ConsultantResponseListDto consultantsResponse = consultantService.getAllConsultantDtos(page, pageSize);
         return ResponseEntity.ok(consultantsResponse);
     }
