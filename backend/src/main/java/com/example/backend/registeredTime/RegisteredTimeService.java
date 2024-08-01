@@ -4,6 +4,7 @@ import com.example.backend.client.timekeeper.TimekeeperClient;
 import com.example.backend.client.timekeeper.dto.TimekeeperRegisteredTimeResponseDto;
 import com.example.backend.consultant.Consultant;
 import com.example.backend.consultant.ConsultantService;
+import com.example.backend.consultant.TotalDaysStatistics;
 import com.example.backend.consultant.dto.ConsultantResponseDto;
 import com.example.backend.consultant.dto.ConsultantTimeDto;
 import com.example.backend.redDays.RedDaysService;
@@ -18,7 +19,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
-import static com.example.backend.client.timekeeper.Activity.CONSULTANCY_TIME;
+import static com.example.backend.client.timekeeper.Activity.*;
 import static java.time.temporal.ChronoUnit.DAYS;
 
 @Service
@@ -70,14 +71,22 @@ public class RegisteredTimeService {
 
     public ConsultantResponseDto getConsultantsRegisteredTimeItems(Consultant consultant) {
         List<RegisteredTimeResponseDto> consultantTimeDto = getGroupedConsultantsRegisteredTimeItems(consultant.getId());
-        return ConsultantResponseDto.toDto(consultant, consultantTimeDto);
+        TotalDaysStatistics totalDaysStatistics = getAllDaysStatistics(consultant.getId());
+        return ConsultantResponseDto.toDto(consultant, totalDaysStatistics, consultantTimeDto);
     }
 
-    public Double getConsultancyHoursByUserId(UUID id) {
-        List<RegisteredTime> consultancyTime = getTimeByConsultantId(id);
+    private TotalDaysStatistics getAllDaysStatistics(UUID id){
+        int totalWorkedDays = countOfWorkedDays(id);
+        int totalVacationDays = registeredTimeRepository.countAllById_ConsultantIdAndTypeIs(id, VACATION.activity);
+        int totalRemainingDays = countRemainingDays(totalWorkedDays);
+        return new TotalDaysStatistics(totalRemainingDays, totalWorkedDays, totalVacationDays);
+    }
+
+    public Double getHoursByActivityAndByUserId(UUID id, String activity) {
+        List<RegisteredTime> timeByActivity = getTimeByConsultantId(id);
         AtomicReference<Double> totalHoursResponse = new AtomicReference<>(0.0);
-        consultancyTime.stream()
-                .filter(el -> el.getType().equals(CONSULTANCY_TIME.activity))
+        timeByActivity.stream()
+                .filter(el -> el.getType().equals(activity))
                 .forEach(el -> totalHoursResponse.updateAndGet(v -> v + el.getTotalHours()));
         return totalHoursResponse.get();
     }
@@ -149,7 +158,14 @@ public class RegisteredTimeService {
         }
         Map<Integer, RegisteredTimeDto> filledGaps = fillRegisteredTimeGaps(sortMap(mappedRecords));
 
-        return convertToList(sortMap(filledGaps));
+        List<RegisteredTimeResponseDto> registeredTimeResponseDtos = convertToList(sortMap(filledGaps));
+        List<RegisteredTimeResponseDto> testList = new ArrayList<>();
+        testList.addAll(registeredTimeResponseDtos);
+        RegisteredTimeResponseDto remainingConsultancyTimeByConsultantId = getRemainingConsultancyTimeByConsultantId(id);
+        if (remainingConsultancyTimeByConsultantId != null){
+           testList.add(remainingConsultancyTimeByConsultantId);
+        }
+        return testList;
     }
 
     private List<RegisteredTimeResponseDto> convertToList(Map<Integer, RegisteredTimeDto> resultSet) {
@@ -199,34 +215,39 @@ public class RegisteredTimeService {
         return registeredTimeRepository.findAllById_ConsultantIdOrderById_StartDateAsc(id);
     }
 
-    public List<RegisteredTime> getFirstAndLastDateByConsultantId(UUID consultantId) {
-        RegisteredTime startDate = registeredTimeRepository.findFirstById_ConsultantIdOrderById_StartDateAsc(consultantId);
-        RegisteredTime endDate = registeredTimeRepository.findFirstById_ConsultantIdOrderByEndDateDesc(consultantId);
-        return new ArrayList<>(Arrays.asList(startDate, endDate));
+
+    public RegisteredTimeResponseDto getRemainingConsultancyTimeByConsultantId(UUID consultantId) {
+        LocalDateTime lastRegisteredDate = registeredTimeRepository.findFirstById_ConsultantIdOrderByEndDateDesc(consultantId).getEndDate();
+        LocalDateTime startDate = lastRegisteredDate.plusDays(1).withHour(0).withMinute(0).withSecond(0);
+        LocalDateTime estimatedEndDate = getEstimatedConsultancyEndDate(consultantId, startDate);
+        if (estimatedEndDate == startDate) {
+            return null;
+        }
+        return new RegisteredTimeResponseDto(
+                UUID.randomUUID(),
+                startDate,
+                estimatedEndDate,
+                "Remaining Days",
+                "Remaining Days");
     }
-
-
-//    public RegisteredTimeResponseDto getRemainingConsultancyTimeByConsultantId(UUID consultantId) {
-//        LocalDateTime lastRegisteredDate = registeredTimeRepository.findFirstById_ConsultantIdOrderByEndDateDesc(consultantId).getEndDate();
-//        LocalDateTime startDate = lastRegisteredDate.plusDays(1).withHour(0).withMinute(0).withSecond(0);
-//        LocalDateTime estimatedEndDate = getEstimatedConsultancyEndDate(consultantId, startDate);
-//        if (estimatedEndDate == startDate) {
-//            return null;
-//        }
-//        return new RegisteredTimeResponseDto(
-//                UUID.randomUUID(),
-//                startDate,
-//                estimatedEndDate,
-//                "Remaining Days");
-//    }
     private LocalDateTime getEstimatedConsultancyEndDate(UUID consultantId, LocalDateTime startDate) {
-        final int REQUIRED_HOURS = 2024;
-        int countOfWorkedDays = registeredTimeRepository.countAllById_ConsultantIdAndTypeIs(consultantId, CONSULTANCY_TIME.activity);
-        int remainingConsultancyDays = REQUIRED_HOURS / 8 - countOfWorkedDays;
+        int countOfWorkedDays = countOfWorkedDays(consultantId);
+        int remainingConsultancyDays = countRemainingDays(countOfWorkedDays);
         if (remainingConsultancyDays <= 0) {
             return startDate;
         }
         return accountForNonWorkingDays(startDate, remainingConsultancyDays);
+    }
+
+    private int countRemainingDays(int countOfWorkedDays){
+        final int REQUIRED_HOURS = 2024;
+        return REQUIRED_HOURS / 8 - countOfWorkedDays;
+    }
+
+    private int countOfWorkedDays(UUID consultantId){
+        int countOfWorkedDays = registeredTimeRepository.countAllById_ConsultantIdAndTypeIs(consultantId, CONSULTANCY_TIME.activity);
+        countOfWorkedDays += registeredTimeRepository.countAllById_ConsultantIdAndTypeIs(consultantId, OWN_ADMINISTRATION.activity);
+        return countOfWorkedDays;
     }
 
     private LocalDateTime accountForNonWorkingDays(LocalDateTime startDate, int remainingDays) {
@@ -236,14 +257,12 @@ public class RegisteredTimeService {
         int daysCountDown = remainingDays;
         int i = 0;
         while (daysCountDown > 0) {
-
-            if (!isWeekend(startDate.plusDays(i).getDayOfWeek().getValue()) /*&& !isRedDay(startDate.plusDays(i))*/) {
+            if (!isWeekend(startDate.plusDays(i).getDayOfWeek().getValue()) && !isRedDay(LocalDate.from(startDate.plusDays(i)))){
                 daysCountDown--;
             }
             i++;
         }
-        LocalDateTime endingDate = startDate.plusDays(i).minusSeconds(1L);
-        return endingDate;
+        return startDate.plusDays(i).minusSeconds(1L);
     }
 
     public boolean isWeekend(int day) {
