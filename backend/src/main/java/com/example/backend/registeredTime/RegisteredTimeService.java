@@ -20,6 +20,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import static com.example.backend.client.timekeeper.Activity.*;
+import static com.example.backend.registeredTime.dto.RegisteredTimeResponseDto.fromRegisteredTimeDto;
 import static java.time.temporal.ChronoUnit.DAYS;
 
 @Service
@@ -39,31 +40,67 @@ public class RegisteredTimeService {
         this.redDaysService = redDaysService;
     }
 
+    //    public void saveConsultantTime(List<ConsultantTimeDto> consultantTimeDtoList) {
+//        AtomicReference<LocalDateTime> startTime = new AtomicReference<>(consultantTimeDtoList.get(0).itemId().getStartDate());
+//        double hours = 0;
+//        for (ConsultantTimeDto consultantTimeDto : consultantTimeDtoList) {
+//            if (startTime.get().getDayOfMonth() == consultantTimeDto.itemId().getStartDate().getDayOfMonth()
+//                    && startTime.get().getMonth() == consultantTimeDto.itemId().getStartDate().getMonth()
+//                    && startTime.get().getYear() == consultantTimeDto.itemId().getStartDate().getYear()
+//            ) {
+//                hours += consultantTimeDto.totalHours();
+//                continue;
+//            } else {
+//                registeredTimeRepository.save(new RegisteredTime(
+//                        new RegisteredTimeKey(consultantTimeDto.itemId().getConsultantId(),
+//                                consultantTimeDto.itemId().getStartDate()),
+//                        consultantTimeDto.dayType(),
+//                        consultantTimeDto.endDate().withHour(23).withMinute(59).withSecond(59),
+//                        hours,
+//                        consultantTimeDto.projectName()
+//                ));
+//            }
+//            hours = 0;
+//        }
+//    }
     public void saveConsultantTime(List<ConsultantTimeDto> consultantTimeDtoList) {
-        AtomicReference<LocalDateTime> startTime = new AtomicReference<>(null);
-        for (ConsultantTimeDto consultantTimeDto : consultantTimeDtoList) {
-            if (startTime.get() == null) {
-                startTime.set(consultantTimeDto.itemId().getStartDate());
-            } else if (startTime.get().getDayOfMonth() == consultantTimeDto.itemId().getStartDate().getDayOfMonth() &&
-                    startTime.get().getMonth() == consultantTimeDto.itemId().getStartDate().getMonth() &&
-                    startTime.get().getYear() == consultantTimeDto.itemId().getStartDate().getYear()
-            ) {
-                continue;
+//        if (consultantTimeDtoList != null && !consultantTimeDtoList.isEmpty() && (consultantTimeDtoList.getFirst().itemId().getConsultantId().toString()).equals("ef2f56d0-2284-4a4d-99cf-8c8782b1495e")) {
+//            System.out.println("consultantTimeDtoList = " + consultantTimeDtoList);
+//        }
+        Map<LocalDate, ConsultantTimeDto> timeItemsMap = new HashMap<>();
+        consultantTimeDtoList.forEach(consultantTimeDto -> {
+            LocalDate startDate = consultantTimeDto.itemId().getStartDate().toLocalDate();
+            if (timeItemsMap.containsKey(startDate)) {
+                timeItemsMap.compute(startDate, (k, v) ->
+                        new ConsultantTimeDto(
+                                consultantTimeDto.itemId(),
+                                consultantTimeDto.endDate(),
+                                consultantTimeDto.dayType(),
+                                consultantTimeDto.totalHours() + timeItemsMap.get(startDate).totalHours(),
+                                consultantTimeDto.projectName()));
+            } else {
+                timeItemsMap.put(startDate, consultantTimeDto);
             }
+        });
+        List<ConsultantTimeDto> timeToSave = new ArrayList<>(timeItemsMap.values());
+        timeToSave.forEach(t -> {
             registeredTimeRepository.save(new RegisteredTime(
-                    new RegisteredTimeKey(consultantTimeDto.itemId().getConsultantId(),
-                            consultantTimeDto.itemId().getStartDate()),
-                    consultantTimeDto.dayType(),
-                    consultantTimeDto.endDate().withHour(23).withMinute(59).withSecond(59),
-                    8.0,
-                    consultantTimeDto.projectName()
+                    new RegisteredTimeKey(t.itemId().getConsultantId(),
+                            t.itemId().getStartDate()),
+                    t.dayType(),
+                    t.endDate().withHour(23).withMinute(59).withSecond(59),
+                    t.totalHours(),
+                    t.projectName()
             ));
-        }
+        });
     }
+
 
     public void fetchRecordedTimeForConsultant() {
         List<Consultant> consultants = consultantService.getAllActiveConsultants();
+        System.out.println("active consultants.size() = " + consultants.size());
         for (Consultant consultant : consultants) {
+            System.out.println("consultant.getFullName() = " + consultant.getFullName());
             List<ConsultantTimeDto> consultantRegisteredTime = getConsultantTimeDto(consultant.getId(), consultant.getTimekeeperId());
             saveConsultantTime(consultantRegisteredTime);
         }
@@ -75,7 +112,7 @@ public class RegisteredTimeService {
         return ConsultantResponseDto.toDto(consultant, totalDaysStatistics, consultantTimeDto);
     }
 
-    private TotalDaysStatistics getAllDaysStatistics(UUID id){
+    private TotalDaysStatistics getAllDaysStatistics(UUID id) {
         int totalWorkedDays = countOfWorkedDays(id);
         int totalVacationDays = registeredTimeRepository.countAllById_ConsultantIdAndTypeIs(id, VACATION.activity);
         int totalRemainingDays = countRemainingDays(totalWorkedDays);
@@ -119,8 +156,8 @@ public class RegisteredTimeService {
                     new RegisteredTimeKey(consultantId, item.date().withHour(0).withMinute(0).withSecond(0)),
                     item.date().withHour(23).withMinute(59).withSecond(59),
                     item.activityName(),
-                    //TODO overtime
-                    8, item.projectName()));
+                    item.totalHours(),
+                    item.projectName()));
         }
         return consultantTimeDtoList;
     }
@@ -158,22 +195,24 @@ public class RegisteredTimeService {
         }
         Map<Integer, RegisteredTimeDto> filledGaps = fillRegisteredTimeGaps(sortMap(mappedRecords));
 
-        List<RegisteredTimeResponseDto> registeredTimeResponseDtos = convertToList(sortMap(filledGaps));
-        List<RegisteredTimeResponseDto> testList = new ArrayList<>();
-        testList.addAll(registeredTimeResponseDtos);
+        List<RegisteredTimeDto> regTimeRespDtos = new ArrayList<>(filledGaps.values());
+//        List<RegisteredTimeResponseDto> registeredTimeResponseDtos = convertToList(sortMap(filledGaps));
+        List<RegisteredTimeResponseDto> registeredTimeResponseDtos = new ArrayList<>();
+        registeredTimeResponseDtos.addAll(regTimeRespDtos.stream().map(RegisteredTimeResponseDto::fromRegisteredTimeDto).toList());
         RegisteredTimeResponseDto remainingConsultancyTimeByConsultantId = getRemainingConsultancyTimeByConsultantId(id);
-        if (remainingConsultancyTimeByConsultantId != null){
-           testList.add(remainingConsultancyTimeByConsultantId);
+        if (remainingConsultancyTimeByConsultantId != null) {
+            registeredTimeResponseDtos.add(remainingConsultancyTimeByConsultantId);
         }
-        return testList;
+        return registeredTimeResponseDtos;
     }
 
-    private List<RegisteredTimeResponseDto> convertToList(Map<Integer, RegisteredTimeDto> resultSet) {
-        return resultSet.values()
-                .stream()
-                .map(RegisteredTimeResponseDto::fromRegisteredTimeDto)
-                .toList();
-    }
+//    private List<RegisteredTimeResponseDto> convertToList(Map<Object, Collection> resultSet) {
+//        if (resultSet.values() instanceof List<RegisteredTimeDto>) {}
+//        return resultSet.values()
+//                .stream()
+//                .map(RegisteredTimeResponseDto::fromRegisteredTimeDto)
+//                .toList();
+//    }
 
     private Map<Integer, RegisteredTimeDto> sortMap(Map<Integer, RegisteredTimeDto> resultSet) {
         return resultSet.entrySet()
@@ -196,7 +235,7 @@ public class RegisteredTimeService {
                     var dateToCheckForRedDay = dateBefore.plusDays(j);
                     boolean isRedDay = isRedDay(dateToCheckForRedDay);
                     if (isWeekend(dateBefore.plusDays(j).getDayOfWeek().getValue())
-                    || isRedDay(dateBefore.plusDays(j))) {
+                            || isRedDay(dateBefore.plusDays(j))) {
                         weekend++;
                         continue;
                     }
@@ -230,6 +269,7 @@ public class RegisteredTimeService {
                 "Remaining Days",
                 "Remaining Days");
     }
+
     private LocalDateTime getEstimatedConsultancyEndDate(UUID consultantId, LocalDateTime startDate) {
         int countOfWorkedDays = countOfWorkedDays(consultantId);
         int remainingConsultancyDays = countRemainingDays(countOfWorkedDays);
@@ -239,12 +279,12 @@ public class RegisteredTimeService {
         return accountForNonWorkingDays(startDate, remainingConsultancyDays);
     }
 
-    private int countRemainingDays(int countOfWorkedDays){
+    private int countRemainingDays(int countOfWorkedDays) {
         final int REQUIRED_HOURS = 2024;
         return REQUIRED_HOURS / 8 - countOfWorkedDays;
     }
 
-    private int countOfWorkedDays(UUID consultantId){
+    private int countOfWorkedDays(UUID consultantId) {
         int countOfWorkedDays = registeredTimeRepository.countAllById_ConsultantIdAndTypeIs(consultantId, CONSULTANCY_TIME.activity);
         countOfWorkedDays += registeredTimeRepository.countAllById_ConsultantIdAndTypeIs(consultantId, OWN_ADMINISTRATION.activity);
         return countOfWorkedDays;
@@ -257,7 +297,7 @@ public class RegisteredTimeService {
         int daysCountDown = remainingDays;
         int i = 0;
         while (daysCountDown > 0) {
-            if (!isWeekend(startDate.plusDays(i).getDayOfWeek().getValue()) && !isRedDay(LocalDate.from(startDate.plusDays(i)))){
+            if (!isWeekend(startDate.plusDays(i).getDayOfWeek().getValue()) && !isRedDay(LocalDate.from(startDate.plusDays(i)))) {
                 daysCountDown--;
             }
             i++;
