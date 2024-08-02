@@ -1,28 +1,32 @@
 "use client";
-import {ChangeEvent, useEffect, useState} from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import "./filter.css";
-import {consultantsData, allPts} from "@/mockData";
-import {useTableContext} from "@/context/table";
+import { consultantsData, allPts } from "@/mockData";
+import { useTableContext } from "@/context/table";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Multiselect from "@/components/filter/multiselect/multiselect";
 
 function FilterField() {
   const [filterValue, setFilterValue] = useState("");
-  const [responsiblePt, setResponsiblePt] = useState(["Josefin Stål"])
+  const [responsiblePt, setResponsiblePt] = useState(["Josefin Stål"]);
   const data = useTableContext();
   const filterData = () => {
-    const filteredData = [...consultantsData].filter((df) => {
-      const name =  df.name.toLowerCase();
+    const filteredData = [...data.data.consultants].filter((df) => {
+      const name = df.fullName.toLowerCase();
       const searchValue = filterValue.toLowerCase();
-      if(responsiblePt.length === 0){
-        return name.includes(searchValue)
+      if (responsiblePt.length === 0) {
+        return name.includes(searchValue);
       }
-      return name.includes(searchValue) && responsiblePt.includes(df.pt)
+      return name.includes(searchValue) && responsiblePt.includes("Josefin Stål");
     });
-    data!.setData(filteredData);
+    data!.setFilteredData({
+      pageNumber: 0,
+      totalPages: 0,
+      totalConsultants: 0,
+      consultants: filteredData,
+    });
   };
-
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFilterValue(e.target.value);
@@ -30,15 +34,15 @@ function FilterField() {
   };
 
   const handleClear = () => {
-   setFilterValue("");
-   setResponsiblePt(["Josefin Stål"]);
-   filterData();
+    setFilterValue("");
+    setResponsiblePt(["Josefin Stål"]);
+    filterData();
   };
 
   const handlePtsSelection = (selectionArr: string[]) => {
     setResponsiblePt(selectionArr);
-    filterData()
-  }
+    filterData();
+  };
 
   useEffect(() => {
     filterData();
@@ -58,10 +62,12 @@ function FilterField() {
             onChange={handleInputChange}
           />
         </div>
-        <Multiselect allPts={allPts}
-                     handlePtsSelection={handlePtsSelection}
-                     setResponsiblePt={setResponsiblePt}
-                     responsiblePt={responsiblePt}/>
+        <Multiselect
+          allPts={allPts}
+          handlePtsSelection={handlePtsSelection}
+          setResponsiblePt={setResponsiblePt}
+          responsiblePt={responsiblePt}
+        />
         <Button onClick={handleClear} variant="contained">
           Clear filter
         </Button>
