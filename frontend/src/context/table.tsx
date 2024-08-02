@@ -1,6 +1,6 @@
 "use client";
 import { ConsultantCalendarType } from "@/types";
-import dayjs, { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 import {
   Dispatch,
   ReactNode,
@@ -13,6 +13,8 @@ import {
 type TableContextType = {
   data: ConsultantCalendarType;
   setData: Dispatch<SetStateAction<ConsultantCalendarType>>;
+  filteredData: ConsultantCalendarType,
+  setFilteredData: Dispatch<SetStateAction<ConsultantCalendarType>>;
 };
 
 const initialData = {
@@ -45,9 +47,9 @@ const initialData = {
 
 const TableContext = createContext<TableContextType>({
   data: initialData,
-  setData: () => {
-    initialData;
-  },
+  setData: () => {},
+  filteredData: initialData,
+  setFilteredData: () => {}
 });
 
 type ContextProviderProps = {
@@ -56,7 +58,8 @@ type ContextProviderProps = {
 
 export const TableContextProvider = ({ children }: ContextProviderProps) => {
   const [data, setData] = useState<ConsultantCalendarType>(initialData);
-  const value = { data, setData };
+  const [filteredData, setFilteredData] = useState<ConsultantCalendarType>(initialData)
+  const value = { data, setData, filteredData, setFilteredData };
 
   return (
     <TableContext.Provider value={value}>{children}</TableContext.Provider>

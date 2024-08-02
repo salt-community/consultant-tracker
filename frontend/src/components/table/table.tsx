@@ -12,7 +12,7 @@ import TableSortLabel from "@mui/material/TableSortLabel";
 import Paper from "@mui/material/Paper";
 import { visuallyHidden } from "@mui/utils";
 import { headCells } from "@/mockData";
-import { ConsultantDataType } from "@/types";
+import { ConsultantCalendarType, ConsultantFetchType } from "@/types";
 import { useTableContext } from "@/context/table";
 import Link from "next/link";
 import "./table.css";
@@ -61,7 +61,7 @@ interface EnhancedTableProps {
   numSelected: number;
   onRequestSort: (
     event: React.MouseEvent<unknown>,
-    property: keyof ConsultantDataType
+    property: keyof ConsultantFetchType
   ) => void;
   onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
   order: Order;
@@ -72,7 +72,7 @@ interface EnhancedTableProps {
 function EnhancedTableHead(props: EnhancedTableProps) {
   const { order, orderBy, onRequestSort } = props;
   const createSortHandler =
-    (property: keyof ConsultantDataType) =>
+    (property: keyof ConsultantFetchType) =>
     (event: React.MouseEvent<unknown>) => {
       onRequestSort(event, property);
     };
@@ -80,7 +80,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   return (
     <TableHead>
       <TableRow>
-        {headCells.map(headCell => (
+        {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
             padding="normal"
@@ -110,16 +110,16 @@ function EnhancedTableHead(props: EnhancedTableProps) {
 export default function EnhancedTable() {
   const [order, setOrder] = React.useState<Order>("asc");
   const [orderBy, setOrderBy] =
-    React.useState<keyof ConsultantDataType>("name");
+    React.useState<keyof ConsultantFetchType>("fullName");
   const [selected, setSelected] = React.useState<readonly string[]>([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-  const tableData = useTableContext().data;
+  const tableData = useTableContext();
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
-    property: keyof ConsultantDataType
+    property: keyof ConsultantFetchType
   ) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -128,7 +128,7 @@ export default function EnhancedTable() {
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelected = tableData.map((n) => n.id);
+      const newSelected = tableData.filteredData.consultants.map((n) => n.id);
       setSelected(newSelected);
       return;
     }
@@ -149,87 +149,92 @@ export default function EnhancedTable() {
   const isSelected = (id: string) => selected.indexOf(id) !== -1;
 
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - tableData.length) : 0;
+    page > 0
+      ? Math.max(0, (1 + page) * rowsPerPage - tableData.filteredData.consultants.length)
+      : 0;
 
   const visibleRows = React.useMemo(
     () =>
-      stableSort(tableData, getComparator(order, orderBy)).slice(
-        page * rowsPerPage,
-        page * rowsPerPage + rowsPerPage
-      ),
-    [order, orderBy, page, rowsPerPage, tableData]
+      tableData.filteredData.consultants &&
+      stableSort(
+        [...tableData.filteredData.consultants],
+        getComparator(order, orderBy)
+      ).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
+    [order, orderBy, page, rowsPerPage, tableData.filteredData.consultants]
   );
 
   return (
     <>
-      <Box sx={{ width: "100%" }}>
-        <Paper className="paper-root__table">
-          <TableContainer>
-            <Table
-              sx={{ minWidth: 750, background: "transparent" }}
-              aria-labelledby="tableTitle"
-              size={"medium"}
-            >
-              <EnhancedTableHead
-                numSelected={selected.length}
-                order={order}
-                orderBy={orderBy}
-                onSelectAllClick={handleSelectAllClick}
-                onRequestSort={handleRequestSort}
-                rowCount={tableData.length}
-              />
-              <TableBody>
-                {visibleRows.map((row: ConsultantDataType) => {
-                  const isItemSelected = isSelected(row.id);
-                  return (
+      {tableData.filteredData.consultants && (
+        <Box sx={{ width: "100%" }}>
+          <Paper className="paper-root__table">
+            <TableContainer>
+              <Table
+                sx={{ minWidth: 750, background: "transparent" }}
+                aria-labelledby="tableTitle"
+                size={"medium"}
+              >
+                <EnhancedTableHead
+                  numSelected={selected.length}
+                  order={order}
+                  orderBy={orderBy}
+                  onSelectAllClick={handleSelectAllClick}
+                  onRequestSort={handleRequestSort}
+                  rowCount={tableData.filteredData.consultants.length}
+                />
+                <TableBody>
+                  {visibleRows.map((row: ConsultantFetchType) => {
+                    const isItemSelected = isSelected(row.id);
+                    return (
+                      <TableRow
+                        hover
+                        aria-checked={isItemSelected}
+                        tabIndex={-1}
+                        key={row.id}
+                        selected={isItemSelected}
+                      >
+                        <TableCell className="column">
+                          <div className="clients-link">{"Josefin Stål"} </div>
+                        </TableCell>
+                        <TableCell className="column">
+                          <Link
+                            href={`/consultants/${row.id}`}
+                            className="clients-link"
+                          >
+                            {row.fullName}
+                            <FaArrowUpRightFromSquare />
+                          </Link>
+                        </TableCell>
+                        <TableCell className="column">
+                          <div className="clients-link">{"AstraZeneca"}</div>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                  {emptyRows > 0 && (
                     <TableRow
-                      hover
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={row.id}
-                      selected={isItemSelected}
+                      style={{
+                        height: 53 * emptyRows,
+                      }}
                     >
-                      <TableCell className="column">
-                        <div className="clients-link">{row.pt} </div>
-                      </TableCell>
-                      <TableCell className="column">
-                        <Link
-                          href={`/consultants/${row.id}`}
-                          className="clients-link"
-                        >
-                          {row.name}
-                          <FaArrowUpRightFromSquare />
-                        </Link>
-                      </TableCell>
-                      <TableCell className="column">
-                        <div className="clients-link">{row.client}</div>
-                      </TableCell>
+                      <TableCell colSpan={6} />
                     </TableRow>
-                  );
-                })}
-                {emptyRows > 0 && (
-                  <TableRow
-                    style={{
-                      height: 53 * emptyRows,
-                    }}
-                  >
-                    <TableCell colSpan={6} />
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={tableData.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-        </Paper>
-      </Box>
+                  )}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <TablePagination
+              rowsPerPageOptions={[5, 10, 25]}
+              component="div"
+              count={tableData.filteredData.consultants.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+          </Paper>
+        </Box>
+      )}
     </>
   );
 }
