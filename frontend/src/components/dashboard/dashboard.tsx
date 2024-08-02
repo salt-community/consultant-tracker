@@ -1,16 +1,26 @@
-'use client'
+"use client";
 import Infographic from "./infographic/infographic";
 import "./dashboard.css";
 import { infographicData } from "@/mockData";
 import FilterField from "../filter/filter";
 import EnhancedTable from "../table/table";
-import * as React from "react";
 import ViewSwitch from "@/components/view-switch/view-switch";
 import GanttChart from "@/components/gantt-chart/gantt-chart";
-import {useState} from "react";
+import { useState, useEffect } from "react";
+import { getDashboardData } from "@/api";
+import { ConsultantCalendarType } from "@/types";
+import { useTableContext } from "@/context/table";
 
 const Dashboard = () => {
   const [view, setView] = useState<string>("table");
+  const tableData = useTableContext();
+
+
+  useEffect(() => {
+ getDashboardData()
+ .then(data=> tableData.setData(data))
+  }, [tableData]);
+
   return (
     <>
       <div className="dashboard-infographic__card">
@@ -27,8 +37,8 @@ const Dashboard = () => {
         })}
       </div>
       <FilterField />
-      <ViewSwitch  setView={setView} view={view}/>
-      {view === "timeline" && <GanttChart/>}
+      <ViewSwitch setView={setView} view={view} />
+      {view === "timeline" && <GanttChart />}
       {view === "table" && <EnhancedTable />}
     </>
   );
