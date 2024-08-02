@@ -102,8 +102,8 @@ export type ConsultantCalendarType = {
 export type ConsultantFetchType = {
   id: string,
   fullName: string,
-  // email: string,
-  // phoneNumber: string,
+  email: string,
+  phoneNumber: string,
   // totalDaysStatistics: TotalDaysStatisticsType,
   // registeredTimeDtoList: RegisteredTimeItemType[]
 }
