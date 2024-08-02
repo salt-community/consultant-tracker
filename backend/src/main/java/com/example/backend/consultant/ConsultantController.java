@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/consultants")
 @RequiredArgsConstructor
+@CrossOrigin
 public class ConsultantController {
 
     private final ConsultantService consultantService;
@@ -20,7 +21,7 @@ public class ConsultantController {
     public ResponseEntity<ConsultantResponseListDto> getConsultantsAndRegisteredTime(
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "pageSize", defaultValue = "10") int pageSize) {
-        redDaysService.getRedDaysFromDagsmart();
+//        redDaysService.getRedDaysFromDagsmart();
         ConsultantResponseListDto consultantsResponse = consultantService.getAllConsultantDtos(page, pageSize);
         return ResponseEntity.ok(consultantsResponse);
     }
