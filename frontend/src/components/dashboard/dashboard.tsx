@@ -8,18 +8,17 @@ import ViewSwitch from "@/components/view-switch/view-switch";
 import GanttChart from "@/components/gantt-chart/gantt-chart";
 import { useState, useEffect } from "react";
 import { getDashboardData } from "@/api";
-import { ConsultantCalendarType } from "@/types";
 import { useTableContext } from "@/context/table";
 
 const Dashboard = () => {
   const [view, setView] = useState<string>("table");
   const tableData = useTableContext();
 
-
   useEffect(() => {
- getDashboardData()
- .then(data=> tableData.setData(data))
-  }, [tableData]);
+    getDashboardData().then((data) => {
+      tableData.setData(data), tableData.setFilteredData(data);
+    });
+  }, []);
 
   return (
     <>
