@@ -1,4 +1,4 @@
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import React from "react";
 
 export type InfographicType = {
@@ -15,7 +15,7 @@ export type ConsultantDataType = {
 };
 
 export type HeaderCellsType = {
-  id: keyof ConsultantDataType;
+  id: keyof ConsultantFetchType;
   label: string;
 };
 
@@ -91,3 +91,33 @@ export type ConsultantItemsType = {
   style?: React.CSSProperties | undefined;
   itemProps?: React.HTMLAttributes<HTMLDivElement> | undefined;
 };
+
+export type ConsultantCalendarType = {
+  pageNumber: number,
+  totalPages: number,
+  totalConsultants: number,
+  consultants: ConsultantFetchType[]
+};
+
+export type ConsultantFetchType = {
+  id: string,
+  fullName: string,
+  // email: string,
+  // phoneNumber: string,
+  // totalDaysStatistics: TotalDaysStatisticsType,
+  // registeredTimeDtoList: RegisteredTimeItemType[]
+}
+
+  export type TotalDaysStatisticsType = {
+    totalRemainingDays: number,
+    totalWorkedDays: number,
+    totalVacationDaysUsed: number
+}
+
+export type RegisteredTimeItemType = {
+  registeredTimeId: string,
+  startDate: dayjs.Dayjs,
+  endDate: dayjs.Dayjs,
+  type: string,
+  projectName: string
+}
