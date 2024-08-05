@@ -225,6 +225,7 @@ public class RegisteredTimeService {
     }
 
     private Map<Integer, RegisteredTimeDto> fillRegisteredTimeGaps(Map<Integer, RegisteredTimeDto> resultSet) {
+        Map<Integer, RegisteredTimeDto> filledGapsMap = new HashMap<>(resultSet);
         for (int i = 0; i < resultSet.size() - 1; i++) {
             LocalDate dateBefore = resultSet.get(i).endDate().toLocalDate();
             LocalDate dateAfter = resultSet.get(i + 1).startDate().toLocalDate();
@@ -239,7 +240,7 @@ public class RegisteredTimeService {
                         weekend++;
                         continue;
                     }
-                    resultSet.put(resultSet.size(),
+                    filledGapsMap.put(filledGapsMap.size(),
                             new RegisteredTimeDto(dateBefore.plusDays(weekend).atStartOfDay(),
                                     dateAfter.minusDays(1).atTime(23, 59, 59),
                                     "No Registered Time", "No Registered Time"));
@@ -247,7 +248,7 @@ public class RegisteredTimeService {
                 }
             }
         }
-        return resultSet;
+        return filledGapsMap;
     }
 
     public List<RegisteredTime> getTimeByConsultantId(UUID id) {
