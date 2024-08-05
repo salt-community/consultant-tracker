@@ -19,16 +19,17 @@ const GanttChart = ({itemsProps, groupsProps}: Props) => {
     console.log(itemsProps.filter(el=>el.id == itemId));
   }
   const handleItemSelect =(itemId,e,time)=>{
-    itemsProps.forEach(el=>{
-      if(el.id !== itemId){
-        if (el.itemProps && "border" in el.itemProps.style) {
-            el.itemProps.style.borderWidth = "0"
-        }
-      }
-    })
-    e.target.itemProps.style.borderColor = "red"
-    e.target.itemProps.style.borderWidth = '5px'
-    e.target.itemProps.style.borderStyle = 'solid'
+    // itemsProps.forEach(el=>{
+    //   if(el.id !== itemId){
+    //     if (el.itemProps && "border" in el.itemProps.style) {
+    //         el.itemProps.style.borderWidth = "0"
+    //     }
+    //   }
+    // })
+
+    e.target.style.borderColor = "red"
+    e.target.style.borderWidth = '5px'
+    e.target.style.borderStyle = 'solid'
     console.log(itemsProps.filter(el=>el.id == itemId));
   }
   useEffect(() => {
