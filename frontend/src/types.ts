@@ -85,6 +85,8 @@ export type ConsultantItemsType = {
   start_time: Dayjs;
   end_time: Dayjs;
   canMove?: boolean | undefined;
+  onDoubleClick?: (()=> void) |undefined
+  onItemClick?: (()=> void) |undefined
   canResize?: boolean | "left" | "right" | "both" | undefined;
   canChangeGroup?: boolean | undefined;
   className?: string | undefined;
