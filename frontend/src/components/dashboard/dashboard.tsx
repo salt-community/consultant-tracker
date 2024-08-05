@@ -33,12 +33,13 @@ const Dashboard = () => {
               group: el.id,
               start_time: dayjs(item.startDate),
               end_time: dayjs(item.endDate),
+              className: "",
               itemProps: {
                 style: {
                   zIndex: 1,
                   background: selectColor(item.type),
                   outline: "none",
-                  border: "none",
+                  borderColor: selectColor(item.type),
                   borderRightWidth: "0"
                 },
               },
@@ -59,15 +60,15 @@ const Dashboard = () => {
   const selectColor = (type: string) => {
     switch (type) {
       case "Konsult-tid":
-        return "blue";
+        return "#6EACDA";
       case "Semester":
-        return "yellow";
+        return "#F3FEB8";
       case "Sjuk":
-        return "red";
+        return "#FFAAAA";
       case "Remaining Days":
-        return "gray";
+        return "#405D72";
       default:
-        return "pink"
+        return "#A0937D"
     }
   }
 

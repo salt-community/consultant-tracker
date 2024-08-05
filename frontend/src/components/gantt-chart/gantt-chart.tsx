@@ -4,7 +4,6 @@ import "react-calendar-timeline/lib/Timeline.css";
 import moment from "moment";
 import {ConsultantItemsType, ConsultantsCalendarType} from "@/types";
 import "./gantt-chart.css";
-import {useEffect, useState} from "react";
 
 type Props = {
   itemsProps: ConsultantItemsType[],
@@ -12,28 +11,36 @@ type Props = {
 }
 const GanttChart = ({itemsProps, groupsProps}: Props) => {
   const handleItemClick =(itemId,e,time)=>{
-    console.log('test')
-    // e.target.style.borderColor = "red"
-    // e.target.style.borderWidth = '5px'
-    // e.target.style.borderStyle = 'solid'
     console.log(itemsProps.filter(el=>el.id == itemId));
   }
   const handleItemSelect =(itemId,e,time)=>{
-    // itemsProps.forEach(el=>{
-    //   if(el.id !== itemId){
-    //     if (el.itemProps && "border" in el.itemProps.style) {
-    //         el.itemProps.style.borderWidth = "0"
-    //     }
-    //   }
-    // })
-
-    e.target.style.borderColor = "red"
-    e.target.style.borderWidth = '5px'
-    e.target.style.borderStyle = 'solid'
-    console.log(itemsProps.filter(el=>el.id == itemId));
+    console.log(e.target)
   }
-  useEffect(() => {
-  }, [itemsProps]);
+  const itemRenderer = ({
+                    item,
+                    itemContext,
+                    getItemProps,
+                  }) => {
+    const backgroundColor = itemContext.selected ? "pink" : item.itemProps.style.background;
+    const borderColor = itemContext.selected ? "pink" : item.itemProps.style.borderColor;
+    return (
+      <div
+        {...getItemProps({
+          style: {
+            backgroundColor,
+            color: item.color,
+            borderColor,
+            borderStyle: 'solid',
+            borderWidth: 1,
+            borderRadius: 4,
+            borderLeftWidth: itemContext.selected ? 3 : 1,
+            borderRightWidth: itemContext.selected ? 3 : 1,
+          }
+        }) }
+      >
+      </div>
+    )
+  }
   return (
     groupsProps.length > 0 && itemsProps.length > 0 &&
     <div>
@@ -43,7 +50,8 @@ const GanttChart = ({itemsProps, groupsProps}: Props) => {
               items={itemsProps}
               itemTouchSendsClick={false}
               onItemSelect={handleItemSelect}
-              // canMove={false}
+              itemRenderer={itemRenderer}
+              canMove={false}
               onItemClick={(itemId, e, time)=>handleItemClick(itemId,e,time)}
               defaultTimeStart={moment().add(-17, "day")}
               defaultTimeEnd={moment().add(4, "day")}
