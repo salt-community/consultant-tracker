@@ -10,6 +10,7 @@ import React, {useState, useEffect} from "react";
 import {getDashboardData} from "@/api";
 import {useTableContext} from "@/context/table";
 import dayjs from "dayjs";
+import {selectColor} from "@/utils/utils";
 
 const Dashboard = () => {
   const [view, setView] = useState<string>("table");
@@ -31,6 +32,15 @@ const Dashboard = () => {
             return {
               id: item.registeredTimeId,
               group: el.id,
+              title: item.type,
+              details:{
+                name: item.fullName,
+                totalRemainingDays: item.totalRemainingDays,
+                totalWorkedDays: item.totalWorkedDays,
+                totalVacationDaysUsed: item.totalVacationDaysUsed,
+                //TODO change to recent client
+                projectName: item.projectName
+              },
               start_time: dayjs(item.startDate),
               end_time: dayjs(item.endDate),
               className: "",
@@ -56,21 +66,6 @@ const Dashboard = () => {
         setGroups(data);
       })
   }, []);
-
-  const selectColor = (type: string) => {
-    switch (type) {
-      case "Konsult-tid":
-        return "#6EACDA";
-      case "Semester":
-        return "#F3FEB8";
-      case "Sjuk":
-        return "#FFAAAA";
-      case "Remaining Days":
-        return "#405D72";
-      default:
-        return "#A0937D"
-    }
-  }
 
   return (
     <>

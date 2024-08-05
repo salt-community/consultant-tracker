@@ -6,3 +6,12 @@
 .react-calendar-timeline .rct-vertical-lines .rct-vl{
     z-index: 1;
 }
+
+.gantt-chart__overlay{
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: var(--main-background-opacity);
+}

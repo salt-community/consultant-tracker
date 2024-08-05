@@ -85,6 +85,7 @@ export type ConsultantItemsType = {
   start_time: Dayjs;
   end_time: Dayjs;
   canMove?: boolean | undefined;
+  details: detailsType,
   onDoubleClick?: (()=> void) |undefined
   onItemClick?: (()=> void) |undefined
   canResize?: boolean | "left" | "right" | "both" | undefined;
@@ -93,6 +94,13 @@ export type ConsultantItemsType = {
   style?: React.CSSProperties | undefined;
   itemProps?: React.HTMLAttributes<HTMLDivElement> | undefined;
 };
+export type detailsType={
+  name: string,
+  totalRemainingDays: number,
+  totalWorkedDays: number,
+  totalVacationDaysUsed: number,
+  projectName: string
+}
 
 export type ConsultantCalendarType = {
   pageNumber: number,
