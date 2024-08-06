@@ -230,21 +230,30 @@ public class RegisteredTimeService {
             LocalDate dateBefore = resultSet.get(i).endDate().toLocalDate();
             LocalDate dateAfter = resultSet.get(i + 1).startDate().toLocalDate();
             long daysBetween = DAYS.between(dateBefore, dateAfter);
+            int weekend = 1;
             if (daysBetween > 1) {
                 for (long j = 1; j < daysBetween; j++) {
-                    int weekend = 1;
-                    var dateToCheckForRedDay = dateBefore.plusDays(j);
-                    boolean isRedDay = isRedDay(dateToCheckForRedDay);
-                    if (isWeekend(dateBefore.plusDays(j).getDayOfWeek().getValue())
-                            || isRedDay(dateBefore.plusDays(j))) {
+                    var dateToCheck = dateBefore.plusDays(j);
+                    if (isWeekend(dateToCheck.getDayOfWeek().getValue())
+                            || isRedDay(dateToCheck)) {
                         weekend++;
                         continue;
                     }
+                    j = daysBetween;
+                }
+                if (weekend == daysBetween) {
+                    int finalWeekend = weekend;
+                    filledGapsMap.computeIfPresent(i, (key, value) ->
+                            new RegisteredTimeDto(value.startDate(),
+                                    value.endDate().plusDays(finalWeekend),
+                                    value.type(),
+                                    value.projectName()));
+                }
+                else{
                     filledGapsMap.put(filledGapsMap.size(),
                             new RegisteredTimeDto(dateBefore.plusDays(weekend).atStartOfDay(),
                                     dateAfter.minusDays(1).atTime(23, 59, 59),
                                     "No Registered Time", "No Registered Time"));
-                    j = daysBetween;
                 }
             }
         }
