@@ -11,9 +11,10 @@ import {getDashboardData} from "@/api";
 import {useTableContext} from "@/context/table";
 import dayjs from "dayjs";
 import {selectColor} from "@/utils/utils";
+import { ConsultantFetchType, RegisteredTimeItemType } from "@/types";
 
 const Dashboard = () => {
-  const [view, setView] = useState<string>("table");
+  const [view, setView] = useState<string>("timeline");
   const tableData = useTableContext();
   const [items, setItems] = useState<any[]>([]);
   const [groups, setGroups] = useState([])
@@ -27,17 +28,18 @@ const Dashboard = () => {
     fetch("http://localhost:8080/api/consultants")
       .then(res => res.json())
       .then(res => {
-        const data = res.consultants.flatMap((el) => {
-          return el.registeredTimeDtoList.map(item => {
+        const data = res.consultants.flatMap((el: ConsultantFetchType) => {
+          console.log("flat mapped", el);
+          return el.registeredTimeDtoList.map((item: RegisteredTimeItemType) => {
             return {
               id: item.registeredTimeId,
               group: el.id,
               title: item.type,
               details:{
-                name: item.fullName,
-                totalRemainingDays: item.totalRemainingDays,
-                totalWorkedDays: item.totalWorkedDays,
-                totalVacationDaysUsed: item.totalVacationDaysUsed,
+                name: el.fullName,
+                totalRemainingDays: el.totalDaysStatistics.totalRemainingDays,
+                totalWorkedDays: el.totalDaysStatistics.totalWorkedDays,
+                totalVacationDaysUsed: el.totalDaysStatistics.totalVacationDaysUsed,
                 //TODO change to recent client
                 projectName: item.projectName
               },
@@ -85,7 +87,7 @@ const Dashboard = () => {
       <FilterField/>
       <ViewSwitch setView={setView} view={view}/>
       {view === "timeline" && <GanttChart itemsProps={items} groupsProps={groups}/>}
-      {view === "table" && <EnhancedTable/>}
+      {/* {view === "table" && <EnhancedTable/>} */}
     </>
   );
 };

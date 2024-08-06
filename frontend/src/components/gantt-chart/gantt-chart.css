@@ -1,17 +1,44 @@
 .react-calendar-timeline .rct-header-root {
-    background: #575957;
-    border-bottom: 1px solid #bbb;
+  background: #575957;
+  border-bottom: 1px solid #bbb;
 }
 
-.react-calendar-timeline .rct-vertical-lines .rct-vl{
-    z-index: 1;
+.react-calendar-timeline .rct-vertical-lines .rct-vl {
+  z-index: 1;
 }
 
-.gantt-chart__overlay{
-    position: absolute;
-    top: 60px;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background: var(--main-background-opacity);
+.gantt-chart__overlay {
+  position: absolute;
+  top: 60px;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: var(--main-background-opacity);
+}
+
+.Popover {
+  width: max-content;
+  max-width: calc(100vw - 20px);
+  background-color: white;
+  border: 1px solid #ddd;
+  font-size: 90%;
+  padding: 4px 8px;
+  border-radius: 4px;
+  text-align: left;
+  z-index: 100;
+  position: absolute;
+}
+
+.popover-descr__basic-details {
+    border: 1px solid teal;
+    border-radius: 4px;
+    margin: 10px 0;
+    padding: 10px 5px;
+}
+
+.popover-descr__item {
+    border: 1px solid teal;
+    border-radius: 4px;
+    margin: 10px 0;
+    padding: 10px 5px;
 }
