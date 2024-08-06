@@ -45,14 +45,14 @@ const GanttChart = ({ itemsProps, groupsProps }: Props) => {
             borderColor,
             borderStyle: "solid",
             borderWidth: 1,
-            borderRadius: 4,
+            borderRadius: 0,
             borderLeftWidth: itemContext.selected ? 3 : 1,
             borderRightWidth: itemContext.selected ? 3 : 1,
           },
         })}
       >
         <Popover>
-          <PopoverTrigger>.</PopoverTrigger>
+          <PopoverTrigger/>
           <PopoverContent className="Popover">
             <PopoverHeading>{item.details.name}</PopoverHeading>
             <PopoverDescription>

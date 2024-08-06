@@ -110,8 +110,6 @@ export function Popover({
 }: {
   children: React.ReactNode;
 } & PopoverOptions) {
-  // This can accept any props as options, e.g. `placement`,
-  // or other positioning options.
   const popover = usePopover({ modal, ...restOptions });
   return (
     <PopoverContext.Provider value={popover}>
@@ -128,34 +126,18 @@ interface PopoverTriggerProps {
 export const PopoverTrigger = React.forwardRef<
   HTMLElement,
   React.HTMLProps<HTMLElement> & PopoverTriggerProps
->(function PopoverTrigger({ children, asChild = false, ...props }, propRef) {
+>(function PopoverTrigger({asChild = false, ...props }, propRef) {
   const context = usePopoverContext();
-  const childrenRef = (children as any).ref;
-  const ref = useMergeRefs([context.refs.setReference, propRef, childrenRef]);
-
-  // `asChild` allows the user to pass any element as the anchor
-  if (asChild && React.isValidElement(children)) {
-    return React.cloneElement(
-      children,
-      context.getReferenceProps({
-        ref,
-        ...props,
-        ...children.props,
-        "data-state": context.open ? "open" : "closed"
-      })
-    );
-  }
+  const ref = useMergeRefs([context.refs.setReference, propRef]);
 
   return (
     <button
       ref={ref}
       type="button"
-      // The user can style the trigger based on the state
-      style={{background: "transparent", border: "none", width: "100%", opacity: 0}}
+      style={{width: "100%", height: "100%", opacity: 0}}
       data-state={context.open ? "open" : "closed"}
       {...context.getReferenceProps(props)}
     >
-      {children}
     </button>
   );
 });

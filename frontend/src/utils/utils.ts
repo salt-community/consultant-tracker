@@ -1,13 +1,16 @@
 export const selectColor = (type: string) => {
   switch (type) {
     case "Konsult-tid":
+    case "Egen administration":
       return "#6EACDA";
     case "Semester":
-      return "#F3FEB8";
+      return "#7bc46e";
     case "Sjuk":
-      return "#99df8d";
+      return "#F3FEB8";
+    case "Tjänstledig":
+      return "#8ddfc2";
     case "Remaining Days":
-      return "#405D72";
+      return "#a4a4a4";
     default:
       return "#EF5A6F"
   }
