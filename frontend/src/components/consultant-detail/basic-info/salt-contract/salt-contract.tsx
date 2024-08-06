@@ -43,7 +43,6 @@ const SaltContract = ({ startDate, remainingHours }: Props) => {
     });
   };
   const filterData = () => {
-    console.log("details.data", details.data);
     return details.data.filter((el) => el.id === idParam)[0];
   };
 
@@ -51,7 +50,6 @@ const SaltContract = ({ startDate, remainingHours }: Props) => {
     setReadonly(v);
     if (v) {
       const filteredData = filterData();
-      console.log("filteredData", filteredData);
       const data = {
         startDate: filteredData.startDate,
         remainingHours: filteredData.remainingHours,
@@ -62,7 +60,6 @@ const SaltContract = ({ startDate, remainingHours }: Props) => {
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    console.log("value", value);
     setSaltContractData({
       ...saltContractData,
       [name]: value,

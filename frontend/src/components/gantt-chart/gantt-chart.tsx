@@ -28,7 +28,6 @@ const GanttChart = ({ itemsProps, groupsProps }: Props) => {
   };
   useEffect(() => {}, [modalData]);
   const itemRenderer = ({ item, itemContext, getItemProps }) => {
-    console.log("This is the item you're looking for: ", item);
     const chosenColor = selectColor(item.title);
     const background = itemContext.selected
       ? chosenColor

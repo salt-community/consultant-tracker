@@ -21,7 +21,7 @@ export const getDatesForRemainingTime = (
     .set("hours", 0)
     .set("minutes", 0)
     .set("seconds", 0);
-  console.log("first startDate", startDate);
+
 
   const tempStartDate = startDate;
   const tempEndDate = dayjs(startDate)
@@ -43,7 +43,6 @@ const accountForNonWorkingDays = (
   startDate: dayjs.Dayjs,
   tempEndDate: dayjs.Dayjs
 ) => {
-  console.log("Startdate in nonWorkingCheck: ", startDate)
   let nonWorkDaysCount = 0;
   const daysDiff = tempEndDate.diff(startDate, "day");
   for (let i = 0; i <= daysDiff + 1; i++) {

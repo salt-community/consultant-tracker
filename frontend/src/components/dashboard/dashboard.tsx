@@ -29,7 +29,6 @@ const Dashboard = () => {
       .then(res => res.json())
       .then(res => {
         const data = res.consultants.flatMap((el: ConsultantFetchType) => {
-          console.log("flat mapped", el);
           return el.registeredTimeDtoList.map((item: RegisteredTimeItemType) => {
             return {
               id: item.registeredTimeId,

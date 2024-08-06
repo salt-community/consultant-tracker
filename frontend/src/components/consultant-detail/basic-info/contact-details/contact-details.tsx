@@ -39,14 +39,12 @@ const ContactDetails = ({ email, phone, github }: Props) => {
   };
 
   const filterData = () => {
-    console.log("details.data", details.data);
     return details.data.filter((el) => el.id === idParam)[0];
   };
   const handleClick = (v: boolean) => {
     setReadonly(v);
     if (v) {
       const filteredData = filterData();
-      console.log("filteredData", filteredData);
       const data = {
         email: filteredData.email,
         phone: filteredData.phone,
