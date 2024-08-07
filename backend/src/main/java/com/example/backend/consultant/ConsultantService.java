@@ -33,33 +33,9 @@ public class ConsultantService {
                 consultantsDto);
     }
 
-//    public List<RegisteredTimeResponseDto> getConsultantTimeDto(List<RegisteredTime> consultantTimeDtoList) {
-//        List<RegisteredTimeResponseDto> listOfRegisteredTime = new ArrayList<>();
-//        UUID consultantId = consultantTimeDtoList.getFirst().getId().getConsultantId();
-//        listOfRegisteredTime.add(getConsultancyTimeItemByConsultantId(consultantId));
-//        consultantTimeDtoList.stream().map(el -> getGroupedConsultantsRegisteredTimeItems(el.getId().getConsultantId()));
-//        // ACCOUNT FOR RED DAYS
-//        RegisteredTimeResponseDto remainingConsultancyTimeByConsultantId = registeredTimeService.getRemainingConsultancyTimeByConsultantId(consultantId);
-//        if (remainingConsultancyTimeByConsultantId != null) {
-//            listOfRegisteredTime.add(remainingConsultancyTimeByConsultantId);
-//        }
-//        return listOfRegisteredTime;
-//    }
-
-//    private RegisteredTimeResponseDto getConsultancyTimeItemByConsultantId(UUID consultantId) {
-//        List<RegisteredTime> firstAndLastRegisteredDateByConsultantId =
-//                registeredTimeService.getFirstAndLastDateByConsultantId(consultantId);
-//        return new RegisteredTimeResponseDto(
-//                UUID.randomUUID(),
-//                firstAndLastRegisteredDateByConsultantId.get(0).getId().getStartDate(),
-//                firstAndLastRegisteredDateByConsultantId.get(1).getEndDate(),
-//                CONSULTANCY_TIME.activity,
-//                );
-//    }
-
     public Page<Consultant> getAllConsultantsPageable(int page, int pageSize, String name, String pt, String client) {
         Pageable pageRequest = PageRequest.of(page, pageSize);
-        return consultantRepository.findAllByActiveTrueAndFilterByName(name,pageRequest);
+        return consultantRepository.findAllByActiveTrueAndFilterByName(name, pageRequest);
     }
 
     public List<Consultant> getAllConsultants() {
@@ -76,7 +52,7 @@ public class ConsultantService {
                 TimekeeperUserDto tkUser = timekeeperUserDto.stream()
                         .filter(u -> Objects.equals(u.id(), id)).findFirst().orElse(null);
                 if (tkUser != null) {
-                    List<Tag> countryTagList = tkUser.tags().stream().filter(el-> el.getName().trim().equals("Norge") || el.getName().trim().equals("Sverige")).toList();
+                    List<Tag> countryTagList = tkUser.tags().stream().filter(el -> el.getName().trim().equals("Norge") || el.getName().trim().equals("Sverige")).toList();
                     String countryTag = !countryTagList.isEmpty() ? countryTagList.get(0).getName() : "";
                     Consultant consultant = new Consultant(
                             UUID.randomUUID(),
@@ -88,7 +64,7 @@ public class ConsultantService {
                             tkUser.client(),
                             countryTag,
                             tkUser.isActive()
-                            );
+                    );
                     createConsultant(consultant);
                 }
             });
