@@ -61,7 +61,7 @@ const Dashboard = () => {
         return res;
       })
       .then(res => {
-        const data = res.consultants.map((el) => {
+        const data = res.consultants.map((el: ConsultantFetchType) => {
           return {id: el.id, title: el.fullName}
         })
         setGroups(data);
