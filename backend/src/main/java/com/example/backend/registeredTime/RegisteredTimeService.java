@@ -249,10 +249,6 @@ public class RegisteredTimeService {
     }
 
     private void addFilledGapsToMap(int nonWorkingDays, Long daysBetween, Map<Integer, RegisteredTimeDto> filledGapsMap, LocalDate dateBefore, LocalDate dateAfter, int i) {
-        System.out.println("dateBefore = " + dateBefore);
-        System.out.println("dateAfter = " + dateAfter);
-        System.out.println("daysBetween = " + daysBetween);
-        System.out.println("nonWorkingDays = " + nonWorkingDays);
         if (nonWorkingDays != 0) {
             filledGapsMap.computeIfPresent(i, (key, value) ->
                     new RegisteredTimeDto(value.startDate(),
