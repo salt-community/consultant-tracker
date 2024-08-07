@@ -1,5 +1,6 @@
 package com.example.backend.consultant;
 
+import com.example.backend.consultant.dto.ConsultantResponseDto;
 import com.example.backend.consultant.dto.ConsultantResponseListDto;
 import com.example.backend.consultant.dto.ConsultantTimeResponseDto;
 import com.example.backend.redDays.RedDaysService;
@@ -7,6 +8,8 @@ import com.example.backend.registeredTime.RegisteredTimeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/consultants")
@@ -20,17 +23,18 @@ public class ConsultantController {
     @GetMapping
     public ResponseEntity<ConsultantResponseListDto> getConsultantsAndRegisteredTime(
             @RequestParam(name = "page", defaultValue = "0") int page,
-            @RequestParam(name = "pageSize", defaultValue = "10") int pageSize) {
-//        redDaysService.getRedDaysFromDagsmart();
-        ConsultantResponseListDto consultantsResponse = consultantService.getAllConsultantDtos(page, pageSize);
+            @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
+            @RequestParam(defaultValue = "", required = false) String name,
+            @RequestParam(defaultValue = "", required = false) String client,
+            @RequestParam(defaultValue = "", required = false) String pt) {
+        ConsultantResponseListDto consultantsResponse = consultantService.getAllConsultantDtos(page, pageSize, name, pt, client);
         return ResponseEntity.ok(consultantsResponse);
     }
 
-//    @GetMapping("/{id}")
-//    public ResponseEntity<ConsultantResponseDto> getConsultantById(@PathVariable UUID id) {
-//        ConsultantResponseDto consultant = consultantService.getConsultantsRegisteredTimeItems(id);
-//        return ResponseEntity.ok(consultant);
-//    }
+    @GetMapping("/redDays")
+    public void getConsultantById() {
+        redDaysService.getRedDaysFromDagsmart();
+    }
 
     @GetMapping("/time")
     public ResponseEntity<ConsultantTimeResponseDto> getConsultantsHours(

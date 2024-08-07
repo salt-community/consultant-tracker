@@ -5,6 +5,7 @@ import com.example.backend.client.timekeeper.dto.TimekeeperUserDto;
 import com.example.backend.consultant.dto.ConsultantResponseDto;
 import com.example.backend.consultant.dto.ConsultantResponseListDto;
 import com.example.backend.registeredTime.RegisteredTimeService;
+import com.example.backend.tag.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,8 +22,8 @@ public class ConsultantService {
     private final TimekeeperClient timekeeperClient;
     private final RegisteredTimeService registeredTimeService;
 
-    public ConsultantResponseListDto getAllConsultantDtos(int page, int pageSize) {
-        Page<Consultant> consultantsList = getAllConsultantsPageable(page, pageSize);
+    public ConsultantResponseListDto getAllConsultantDtos(int page, int pageSize, String name, String pt, String client) {
+        Page<Consultant> consultantsList = getAllConsultantsPageable(page, pageSize, name, pt, client);
         List<ConsultantResponseDto> consultantsDto = consultantsList.stream()
                 .map(registeredTimeService::getConsultantsRegisteredTimeItems).toList();
         return new ConsultantResponseListDto(
@@ -56,9 +57,9 @@ public class ConsultantService {
 //                );
 //    }
 
-    public Page<Consultant> getAllConsultantsPageable(int page, int pageSize) {
+    public Page<Consultant> getAllConsultantsPageable(int page, int pageSize, String name, String pt, String client) {
         Pageable pageRequest = PageRequest.of(page, pageSize);
-        return consultantRepository.findAllByActiveTrue(pageRequest);
+        return consultantRepository.findAllByActiveTrueAndFilterByName(name,pageRequest);
     }
 
     public List<Consultant> getAllConsultants() {
@@ -75,14 +76,19 @@ public class ConsultantService {
                 TimekeeperUserDto tkUser = timekeeperUserDto.stream()
                         .filter(u -> Objects.equals(u.id(), id)).findFirst().orElse(null);
                 if (tkUser != null) {
+                    List<Tag> countryTagList = tkUser.tags().stream().filter(el-> el.getName().trim().equals("Norge") || el.getName().trim().equals("Sverige")).toList();
+                    String countryTag = !countryTagList.isEmpty() ? countryTagList.get(0).getName() : "";
                     Consultant consultant = new Consultant(
                             UUID.randomUUID(),
                             tkUser.firstName().trim().concat(" ").concat(tkUser.lastName().trim()),
                             tkUser.email(),
                             tkUser.phone(),
                             id,
+                            tkUser.responsiblePT(),
+                            tkUser.client(),
+                            countryTag,
                             tkUser.isActive()
-                    );
+                            );
                     createConsultant(consultant);
                 }
             });

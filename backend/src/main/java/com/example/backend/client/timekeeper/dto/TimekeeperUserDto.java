@@ -11,5 +11,7 @@ public record TimekeeperUserDto(String firstName,
                                 List<Tag> tags,
                                 Long id,
                                 boolean isActive,
+                                String client,
+                                String responsiblePT,
                                 boolean isEmployee) {
 }

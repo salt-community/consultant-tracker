@@ -44,6 +44,8 @@ public class TimekeeperClient {
                             tkUser.tags(),
                             tkUser.id(),
                             tkUser.isActive(),
+                            null,
+                            null,
                             tkUser.isEmployee());
                 }).toList().getFirst();
     }
@@ -70,6 +72,8 @@ public class TimekeeperClient {
                                 tkUser.tags(),
                                 tkUser.id(),
                                 tkUser.isActive(),
+                                tkUser.client(),
+                                tkUser.responsiblePT(),
                                 tkUser.isEmployee());
                     }).toList());
             if (index == 0) {

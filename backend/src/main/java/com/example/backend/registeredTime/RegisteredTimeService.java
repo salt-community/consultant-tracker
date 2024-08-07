@@ -20,7 +20,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import static com.example.backend.client.timekeeper.Activity.*;
-import static com.example.backend.registeredTime.dto.RegisteredTimeResponseDto.fromRegisteredTimeDto;
 import static java.time.temporal.ChronoUnit.DAYS;
 
 @Service
@@ -89,7 +88,7 @@ public class RegisteredTimeService {
                             t.itemId().getStartDate()),
                     t.dayType(),
                     t.endDate().withHour(23).withMinute(59).withSecond(59),
-                    t.totalHours(),
+                    Math.round(t.totalHours()*10.0)/10.0,
                     t.projectName()
             ));
         });
@@ -230,34 +229,42 @@ public class RegisteredTimeService {
             LocalDate dateBefore = resultSet.get(i).endDate().toLocalDate();
             LocalDate dateAfter = resultSet.get(i + 1).startDate().toLocalDate();
             long daysBetween = DAYS.between(dateBefore, dateAfter);
-            int weekend = 1;
             if (daysBetween > 1) {
-                for (long j = 1; j < daysBetween; j++) {
-                    var dateToCheck = dateBefore.plusDays(j);
-                    if (isWeekend(dateToCheck.getDayOfWeek().getValue())
-                            || isRedDay(dateToCheck)) {
-                        weekend++;
-                        continue;
-                    }
-                    j = daysBetween;
-                }
-                if (weekend == daysBetween) {
-                    int finalWeekend = weekend;
-                    filledGapsMap.computeIfPresent(i, (key, value) ->
-                            new RegisteredTimeDto(value.startDate(),
-                                    value.endDate().plusDays(finalWeekend),
-                                    value.type(),
-                                    value.projectName()));
-                }
-                else{
-                    filledGapsMap.put(filledGapsMap.size(),
-                            new RegisteredTimeDto(dateBefore.plusDays(weekend).atStartOfDay(),
-                                    dateAfter.minusDays(1).atTime(23, 59, 59),
-                                    "No Registered Time", "No Registered Time"));
-                }
+                int nonWorkingDays = checkRedDaysOrWeekend(daysBetween, dateBefore);
+                addFilledGapsToMap(nonWorkingDays, daysBetween, filledGapsMap, dateBefore, dateAfter, i);
             }
         }
+        System.out.println("filledGapsMap = " + filledGapsMap);
         return filledGapsMap;
+    }
+    private int checkRedDaysOrWeekend(Long daysBetween, LocalDate dateBefore){
+        int nonWorkingDays = 0;
+        for (long j = 1; j < daysBetween; j++) {
+            var dateToCheck = dateBefore.plusDays(j);
+            if (isWeekend(dateToCheck.getDayOfWeek().getValue())
+                    || isRedDay(dateToCheck)) {
+                nonWorkingDays++;
+                continue;
+            }
+            j = daysBetween;
+        }
+        return nonWorkingDays;
+    }
+
+    private void addFilledGapsToMap(int nonWorkingDays, Long daysBetween, Map<Integer, RegisteredTimeDto> filledGapsMap, LocalDate dateBefore, LocalDate dateAfter, int i){
+        if (nonWorkingDays == daysBetween-1) {
+            filledGapsMap.computeIfPresent(i, (key, value) ->
+                    new RegisteredTimeDto(value.startDate(),
+                            value.endDate().plusDays(nonWorkingDays),
+                            value.type(),
+                            value.projectName()));
+        }
+        else{
+            filledGapsMap.put(filledGapsMap.size(),
+                    new RegisteredTimeDto(dateBefore.plusDays(nonWorkingDays).atStartOfDay(),
+                            dateAfter.minusDays(1).atTime(23, 59, 59),
+                            "No Registered Time", "No Registered Time"));
+        }
     }
 
     public List<RegisteredTime> getTimeByConsultantId(UUID id) {

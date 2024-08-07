@@ -20,6 +20,9 @@ public class Consultant {
     private String phoneNumber;
     private Long timekeeperId;
     private boolean active;
+    private String client;
+    private String responsiblePT;
+    private String country;
 
     @ManyToOne
     @JoinColumn(name = "saltUser_id", referencedColumnName = "id")
@@ -31,6 +34,9 @@ public class Consultant {
                       String email,
                       String phoneNumber,
                       Long timekeeperId,
+                      String responsiblePT,
+                      String client,
+                      String country,
                       boolean active) {
         this.id = id;
         this.fullName = fullName;
@@ -38,6 +44,9 @@ public class Consultant {
         this.phoneNumber = phoneNumber;
         this.timekeeperId = timekeeperId;
         this.active = active;
+        this.client = client;
+        this.responsiblePT = responsiblePT;
+        this.country = country;
     }
 
     public Consultant() {
