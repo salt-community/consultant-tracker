@@ -25,7 +25,7 @@ const Dashboard = () => {
       tableData.setFilteredData(data);
     });
 
-    fetch("http://localhost:8080/api/consultants?page=1")
+    fetch("http://localhost:8080/api/consultants?page=3")
       .then(res => res.json())
       .then(res => {
         const data = res.consultants.flatMap((el: ConsultantFetchType) => {
