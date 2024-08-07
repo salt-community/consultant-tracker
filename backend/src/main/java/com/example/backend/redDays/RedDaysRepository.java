@@ -8,5 +8,5 @@ import java.util.UUID;
 
 @Repository
 public interface RedDaysRepository extends JpaRepository<RedDays, UUID> {
-    List<RedDays> findAll();
+    List<RedDays> findAllByCountry(String country);
 }

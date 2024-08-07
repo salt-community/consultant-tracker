@@ -53,7 +53,7 @@ public class ConsultantService {
                         .filter(u -> Objects.equals(u.id(), id)).findFirst().orElse(null);
                 if (tkUser != null) {
                     List<Tag> countryTagList = tkUser.tags().stream().filter(el -> el.getName().trim().equals("Norge") || el.getName().trim().equals("Sverige")).toList();
-                    String countryTag = !countryTagList.isEmpty() ? countryTagList.get(0).getName() : "";
+                    String countryTag = !countryTagList.isEmpty() ? countryTagList.getFirst().getName() : "";
                     Consultant consultant = new Consultant(
                             UUID.randomUUID(),
                             tkUser.firstName().trim().concat(" ").concat(tkUser.lastName().trim()),
@@ -98,6 +98,10 @@ public class ConsultantService {
 
     private void createConsultant(Consultant consultant) {
         consultantRepository.save(consultant);
+    }
+
+    public String getCountryCodeByConsultantId(UUID consultantId) {
+        return consultantRepository.findCountryById(consultantId);
     }
 
 }

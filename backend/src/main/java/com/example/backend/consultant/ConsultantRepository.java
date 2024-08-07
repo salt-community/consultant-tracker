@@ -1,6 +1,5 @@
 package com.example.backend.consultant;
 
-import com.example.backend.registeredTime.RegisteredTime;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,4 +15,7 @@ public interface ConsultantRepository extends JpaRepository<Consultant, UUID> {
     List<Consultant> findAllByActiveTrue();
     @Query("SELECT t FROM Consultant t WHERE t.active = true AND t.fullName iLIKE %:fullName%")
     Page<Consultant> findAllByActiveTrueAndFilterByName(String fullName, Pageable pageable);
+    @Query("SELECT t.country FROM Consultant t WHERE t.id = (:id)")
+//    @Query("SELECT t.country FROM Consultant t WHERE (:id) IS NOT NULL AND IN (:id)")
+    String findCountryById(UUID id);
 }
