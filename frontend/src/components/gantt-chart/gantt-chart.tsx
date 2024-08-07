@@ -36,6 +36,7 @@ const GanttChart = ({ itemsProps, groupsProps }: Props) => {
       ? "black"
       : item.itemProps.style.borderColor;
 
+
     return (
       <div
         {...getItemProps({
@@ -76,6 +77,27 @@ const GanttChart = ({ itemsProps, groupsProps }: Props) => {
       </div>
     );
   };
+  //TODO update holidays / fetch from backend
+  const holidays = [
+    moment("01.01.2024"),
+    moment("06.01.2024"),
+  ];
+  const verticalLineClassNamesForTime = (timeStart, timeEnd) => {
+    const currentTimeStart = moment(timeStart);
+    const currentTimeEnd = moment(timeEnd);
+
+    let classes = [];
+    for (let holiday of holidays) {
+      if (
+        holiday.isSame(currentTimeStart, "day") &&
+        holiday.isSame(currentTimeEnd, "day")
+      ) {
+        classes.push("holiday");
+      }
+    }
+
+    return classes;
+  };
   return (
     groupsProps.length > 0 &&
     itemsProps.length > 0 && (
@@ -89,6 +111,7 @@ const GanttChart = ({ itemsProps, groupsProps }: Props) => {
             canMove={false}
             defaultTimeStart={moment().add(-17, "day")}
             defaultTimeEnd={moment().add(4, "day")}
+            verticalLineClassNamesForTime={verticalLineClassNamesForTime}
           />
         </div>
       </div>

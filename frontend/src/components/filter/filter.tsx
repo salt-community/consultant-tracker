@@ -1,7 +1,7 @@
 "use client";
 import { ChangeEvent, useEffect, useState } from "react";
 import "./filter.css";
-import { consultantsData, allPts } from "@/mockData";
+import { allPts } from "@/mockData";
 import { useTableContext } from "@/context/table";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";

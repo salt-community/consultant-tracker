@@ -7,6 +7,15 @@
   z-index: 1;
 }
 
+.holiday{
+    background: #f8cfcb;
+}
+
+.react-calendar-timeline .rct-vertical-lines .rct-vl.rct-day-6,
+.react-calendar-timeline .rct-vertical-lines .rct-vl.rct-day-0{
+    background: #f5d1d7;
+}
+
 .gantt-chart__overlay {
   position: absolute;
   top: 60px;
