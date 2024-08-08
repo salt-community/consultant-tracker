@@ -25,7 +25,7 @@ public class ConsultantService {
     public ConsultantResponseListDto getAllConsultantDtos(int page, int pageSize, String name, String pt, String client) {
         Page<Consultant> consultantsList = getAllConsultantsPageable(page, pageSize, name, pt, client);
         List<ConsultantResponseDto> consultantsDto = consultantsList.stream()
-                .map(registeredTimeService::getConsultantsRegisteredTimeItems).toList();
+                .map(registeredTimeService::getConsultantTimelineItems).toList();
         return new ConsultantResponseListDto(
                 page,
                 consultantsList.getTotalPages(),
@@ -70,7 +70,7 @@ public class ConsultantService {
                 }
             });
         }
-        registeredTimeService.fetchRecordedTimeForConsultant();
+        registeredTimeService.getTimeRegisteredByConsultant();
         fillClientAndResponsiblePt();
     }
 

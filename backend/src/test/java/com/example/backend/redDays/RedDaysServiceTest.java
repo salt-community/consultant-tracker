@@ -1,7 +1,6 @@
 package com.example.backend.redDays;
 
 import com.example.backend.client.nager.NagerClient;
-import com.example.backend.consultant.ConsultantRepository;
 import com.example.backend.consultant.ConsultantService;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
