@@ -7,14 +7,15 @@ public record RegisteredTimeResponseDto(UUID registeredTimeId,
                                         LocalDateTime startDate,
                                         LocalDateTime endDate,
                                         String type,
-                                        String projectName
-//                                String description
+                                        String projectName,
+                                        int days
 ) {
     public static RegisteredTimeResponseDto fromRegisteredTimeDto(RegisteredTimeDto registeredTimeDto) {
         return new RegisteredTimeResponseDto(UUID.randomUUID(),
                 registeredTimeDto.startDate(),
                 registeredTimeDto.endDate(),
                 registeredTimeDto.type(),
-                registeredTimeDto.projectName());
+                registeredTimeDto.projectName(),
+                registeredTimeDto.days());
     }
 }
