@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import static com.example.backend.client.timekeeper.Activity.*;
@@ -40,29 +39,6 @@ public class RegisteredTimeService {
         this.redDaysService = redDaysService;
     }
 
-    //    public void saveConsultantTime(List<ConsultantTimeDto> consultantTimeDtoList) {
-//        AtomicReference<LocalDateTime> startTime = new AtomicReference<>(consultantTimeDtoList.get(0).itemId().getStartDate());
-//        double hours = 0;
-//        for (ConsultantTimeDto consultantTimeDto : consultantTimeDtoList) {
-//            if (startTime.get().getDayOfMonth() == consultantTimeDto.itemId().getStartDate().getDayOfMonth()
-//                    && startTime.get().getMonth() == consultantTimeDto.itemId().getStartDate().getMonth()
-//                    && startTime.get().getYear() == consultantTimeDto.itemId().getStartDate().getYear()
-//            ) {
-//                hours += consultantTimeDto.totalHours();
-//                continue;
-//            } else {
-//                registeredTimeRepository.save(new RegisteredTime(
-//                        new RegisteredTimeKey(consultantTimeDto.itemId().getConsultantId(),
-//                                consultantTimeDto.itemId().getStartDate()),
-//                        consultantTimeDto.dayType(),
-//                        consultantTimeDto.endDate().withHour(23).withMinute(59).withSecond(59),
-//                        hours,
-//                        consultantTimeDto.projectName()
-//                ));
-//            }
-//            hours = 0;
-//        }
-//    }
     public void saveConsultantTime(List<ConsultantTimeDto> consultantTimeDtoList) {
 //        if (consultantTimeDtoList != null && !consultantTimeDtoList.isEmpty() && (consultantTimeDtoList.getFirst().itemId().getConsultantId().toString()).equals("ef2f56d0-2284-4a4d-99cf-8c8782b1495e")) {
 //            System.out.println("consultantTimeDtoList = " + consultantTimeDtoList);
@@ -97,8 +73,15 @@ public class RegisteredTimeService {
     public void fetchRecordedTimeForConsultant() {
         List<Consultant> consultants = consultantService.getAllActiveConsultants();
         for (Consultant consultant : consultants) {
-            System.out.println("consultant.getFullName() = " + consultant.getFullName());
-            List<ConsultantTimeDto> consultantRegisteredTime = getConsultantTimeDto(consultant.getId(), consultant.getTimekeeperId());
+            List<ConsultantTimeDto> consultantRegisteredTime = getConsultantTimeDto(consultant.getId(), consultant.getTimekeeperId())
+                    .stream()
+                    .filter(el -> {
+                                if (el.totalHours() == 0) {
+                                    return !el.dayType().equals(CONSULTANCY_TIME.activity) || (!isRedDay(el.itemId().getStartDate().toLocalDate(), el.itemId().getConsultantId()) && !isWeekend(el.itemId().getStartDate().getDayOfWeek().getValue()));
+                                }
+                                return true;
+                            }
+                    ).toList();
             saveConsultantTime(consultantRegisteredTime);
         }
     }
@@ -106,14 +89,34 @@ public class RegisteredTimeService {
     public ConsultantResponseDto getConsultantsRegisteredTimeItems(Consultant consultant) {
         List<RegisteredTimeResponseDto> consultantTimeDto = getGroupedConsultantsRegisteredTimeItems(consultant.getId());
         TotalDaysStatistics totalDaysStatistics = getAllDaysStatistics(consultant.getId());
+        if(consultantTimeDto == null){
+            return ConsultantResponseDto.toDto(consultant,
+                    totalDaysStatistics,
+                    new ArrayList<>());
+        }
         return ConsultantResponseDto.toDto(consultant, totalDaysStatistics, consultantTimeDto);
     }
 
     private TotalDaysStatistics getAllDaysStatistics(UUID id) {
+        String countryCode = consultantService.getCountryCodeByConsultantId(id);
+        boolean isSweden = countryCode.equals("Sverige");
         int totalWorkedDays = countOfWorkedDays(id);
-        int totalVacationDays = registeredTimeRepository.countAllById_ConsultantIdAndTypeIs(id, VACATION.activity);
-        int totalRemainingDays = countRemainingDays(totalWorkedDays);
-        return new TotalDaysStatistics(totalRemainingDays, totalWorkedDays, totalVacationDays);
+        int totalVacationDays = registeredTimeRepository.countAllById_ConsultantIdAndTypeIs(id, VACATION.activity).orElse(0);
+        double totalRemainingDays = isSweden ? 253 : 254;
+        double totalRemainingHours = isSweden ? 2024 : 1905;
+        double totalWorkedHours = 0.0;
+        if (totalWorkedDays != 0) {
+            totalWorkedHours = getAllHoursByActivity(id);
+            totalRemainingDays = Math.round(countRemainingDays(getAllHoursByActivity(id), countryCode) * 100.0) / 100.0;
+            totalRemainingHours = isSweden ? Math.round(totalRemainingDays * 8 * 10.0) / 10.0 : Math.round(totalRemainingDays * 7.5 * 10.0) / 10.0;
+        }
+        return new TotalDaysStatistics(totalRemainingDays, totalWorkedDays, totalVacationDays, totalRemainingHours, Math.round(totalWorkedHours * 10.0) / 10.0);
+    }
+
+    private Double getAllHoursByActivity(UUID consultantId) {
+        Double getTotalConsultancyHour = registeredTimeRepository.getSumOfTotalHoursByConsultantIdAndProjectName(consultantId, CONSULTANCY_TIME.activity).orElse(0.0);
+        Double getTotalAdministrationHour = registeredTimeRepository.getSumOfTotalHoursByConsultantIdAndProjectName(consultantId, OWN_ADMINISTRATION.activity).orElse(0.0);
+        return getTotalAdministrationHour + getTotalConsultancyHour;
     }
 
     public List<ConsultantTimeDto> getAllConsultantsTimeItems() {
@@ -151,9 +154,12 @@ public class RegisteredTimeService {
     }
 
     public List<RegisteredTimeResponseDto> getGroupedConsultantsRegisteredTimeItems(UUID id) {
-        if (id.toString().equals("cc77ba1c-cdae-4b71-9bbf-8f6c2fad22db")) {
+//        if (id.toString().equals("06a1f254-7cdb-4713-9481-ed0e61067ec6")) {
 
         List<RegisteredTime> registeredTimeList = getTimeByConsultantId(id);
+        if(registeredTimeList.isEmpty()){
+            return null;
+        }
         Map<Integer, RegisteredTimeDto> mappedRecords = new HashMap<>();
         String prevType = registeredTimeList.getFirst().getType();
         int generatedKey = 0;
@@ -176,8 +182,8 @@ public class RegisteredTimeService {
                             new RegisteredTimeDto(registeredTime.getId().getStartDate(),
                                     registeredTime.getEndDate(),
                                     registeredTime.getType(),
-                                    registeredTime.getProjectName(),1)
-                            );
+                                    registeredTime.getProjectName(), 1)
+                    );
                 }
             } else {
                 mappedRecords.put(generatedKey,
@@ -198,8 +204,8 @@ public class RegisteredTimeService {
             registeredTimeResponseDtos.add(remainingConsultancyTimeByConsultantId);
         }
         return registeredTimeResponseDtos;
-        }
-        return null;
+//        }
+//        return null;
     }
 
     private Map<Integer, RegisteredTimeDto> sortMap(Map<Integer, RegisteredTimeDto> resultSet) {
@@ -235,7 +241,7 @@ public class RegisteredTimeService {
                 nonWorkingDays++;
                 continue;
             }
-            if(variant.equals("check first")){
+            if (variant.equals("check first")) {
                 j = daysBetween;
             }
         }
@@ -283,22 +289,25 @@ public class RegisteredTimeService {
     }
 
     private RemainingDaysDto getEstimatedConsultancyEndDate(UUID consultantId, LocalDateTime startDate) {
-        int countOfWorkedDays = countOfWorkedDays(consultantId);
-        int remainingConsultancyDays = countRemainingDays(countOfWorkedDays);
+        Double countOfWorkedHours = getAllHoursByActivity(consultantId);
+        String countryCode = consultantService.getCountryCodeByConsultantId(consultantId);
+        int remainingConsultancyDays = (int) countRemainingDays(countOfWorkedHours, countryCode);
         if (remainingConsultancyDays <= 0) {
             return new RemainingDaysDto(startDate, remainingConsultancyDays);
         }
         return new RemainingDaysDto(accountForNonWorkingDays(startDate, remainingConsultancyDays, consultantId), remainingConsultancyDays);
     }
 
-    private int countRemainingDays(int countOfWorkedDays) {
-        final int REQUIRED_HOURS = 2024;
-        return REQUIRED_HOURS / 8 - countOfWorkedDays;
+    private double countRemainingDays(Double countOfWorkedHours, String countryCode) {
+        boolean isSweden = countryCode.equals("Sverige");
+        double standardWorkingHours = isSweden ? 8 : 7.5;
+        final int REQUIRED_HOURS = isSweden ? 2024 : 1905;
+        return (REQUIRED_HOURS - countOfWorkedHours) / standardWorkingHours;
     }
 
     private int countOfWorkedDays(UUID consultantId) {
-        int countOfWorkedDays = registeredTimeRepository.countAllById_ConsultantIdAndTypeIs(consultantId, CONSULTANCY_TIME.activity);
-        countOfWorkedDays += registeredTimeRepository.countAllById_ConsultantIdAndTypeIs(consultantId, OWN_ADMINISTRATION.activity);
+       int countOfWorkedDays = registeredTimeRepository.countAllById_ConsultantIdAndTypeIs(consultantId, CONSULTANCY_TIME.activity).orElse(0);
+        countOfWorkedDays += registeredTimeRepository.countAllById_ConsultantIdAndTypeIs(consultantId, OWN_ADMINISTRATION.activity).orElse(0);
         return countOfWorkedDays;
     }
 
@@ -325,8 +334,16 @@ public class RegisteredTimeService {
     }
 
     private boolean isRedDay(LocalDate date, UUID consultantId) {
-        String countryCode = consultantService.getCountryCodeByConsultantId(consultantId).trim().equals("Sverige") ? "SE" : "NO";
+        String countryCode = consultantService.getCountryCodeByConsultantId(consultantId).equals("Sverige") ? "SE" : "NO";
         List<LocalDate> redDays = redDaysService.getRedDays(countryCode);
         return redDays.contains(date);
+    }
+
+    public String getCurrentClient(UUID consultantId) {
+        RegisteredTime firstByIdConsultantIdAndTypeIsOrderByEndDateDesc = registeredTimeRepository.findFirstById_ConsultantIdAndTypeIsOrderByEndDateDesc(consultantId, CONSULTANCY_TIME.activity);
+        if (firstByIdConsultantIdAndTypeIsOrderByEndDateDesc != null) {
+            return firstByIdConsultantIdAndTypeIsOrderByEndDateDesc.getProjectName();
+        }
+        return "PGP";
     }
 }

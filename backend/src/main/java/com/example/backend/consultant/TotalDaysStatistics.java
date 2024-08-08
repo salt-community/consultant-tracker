@@ -8,7 +8,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class TotalDaysStatistics {
-    private int totalRemainingDays;
+    private double totalRemainingDays;
     private int totalWorkedDays;
     private int totalVacationDaysUsed;
+    private double totalRemainingHours;
+    private double totalWorkedHours;
 }

@@ -11,6 +11,8 @@ public record ConsultantResponseDto(UUID id,
                                     String fullName,
                                     String email,
                                     String phoneNumber,
+                                    String responsiblePt,
+                                    String client,
                                     TotalDaysStatistics totalDaysStatistics,
                                     List<RegisteredTimeResponseDto> registeredTimeDtoList) {
 
@@ -20,6 +22,8 @@ public record ConsultantResponseDto(UUID id,
                 consultant.getFullName(),
                 consultant.getEmail(),
                 consultant.getPhoneNumber(),
+                consultant.getResponsiblePT(),
+                consultant.getClient(),
                 totalDaysStatistics,
                 registeredTimeDtoList
                 );

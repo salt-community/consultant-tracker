@@ -32,7 +32,6 @@ public class ConsultantService {
                 consultantsList.getTotalElements(),
                 consultantsDto);
     }
-
     public Page<Consultant> getAllConsultantsPageable(int page, int pageSize, String name, String pt, String client) {
         Pageable pageRequest = PageRequest.of(page, pageSize);
         return consultantRepository.findAllByActiveTrueAndFilterByName(name, pageRequest);
@@ -52,8 +51,10 @@ public class ConsultantService {
                 TimekeeperUserDto tkUser = timekeeperUserDto.stream()
                         .filter(u -> Objects.equals(u.id(), id)).findFirst().orElse(null);
                 if (tkUser != null) {
-                    List<Tag> countryTagList = tkUser.tags().stream().filter(el -> el.getName().trim().equals("Norge") || el.getName().trim().equals("Sverige")).toList();
-                    String countryTag = !countryTagList.isEmpty() ? countryTagList.getFirst().getName() : "";
+                    List<Tag> countryTagList = tkUser.tags()
+                            .stream()
+                            .filter(el -> el.getName().trim().equals("Norge") || el.getName().trim().equals("Sverige")).toList();
+                    String countryTag = !countryTagList.isEmpty() ? countryTagList.getFirst().getName().trim() : "Sverige";
                     Consultant consultant = new Consultant(
                             UUID.randomUUID(),
                             tkUser.firstName().trim().concat(" ").concat(tkUser.lastName().trim()),
@@ -70,6 +71,7 @@ public class ConsultantService {
             });
         }
         registeredTimeService.fetchRecordedTimeForConsultant();
+        fillClientAndResponsiblePt();
     }
 
     public List<Consultant> getAllActiveConsultants() {
@@ -102,6 +104,18 @@ public class ConsultantService {
 
     public String getCountryCodeByConsultantId(UUID consultantId) {
         return consultantRepository.findCountryById(consultantId);
+    }
+
+    public void fillClientAndResponsiblePt(){
+        String[] responsiblePts = {"Josefin Stål", "Anna Carlsson"};
+        Random rand = new Random();
+        List<Consultant> allActiveConsultants = getAllActiveConsultants();
+        allActiveConsultants.forEach(el->{
+            int rand_int1 = rand.nextInt(2);
+            el.setClient(registeredTimeService.getCurrentClient(el.getId()));
+            el.setResponsiblePT(responsiblePts[rand_int1]);
+            consultantRepository.save(el);
+        });
     }
 
 }
