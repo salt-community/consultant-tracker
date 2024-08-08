@@ -21,12 +21,10 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(MockitoExtension.class)
 class RedDaysServiceTest {
     private RedDaysService redDaysService;
-
+    @Mock
     private NagerClient workingDaysClient;
     @Mock
     private ConsultantService consultantService;
-    @Mock
-    private ConsultantRepository consultantRepository;
     @Mock
     private RedDaysRepository redDaysRepository;
 
@@ -92,5 +90,4 @@ class RedDaysServiceTest {
                 UUID.fromString("45ec353f-b0f5-4a51-867e-8d0d84d11573"));
         assertFalse(actualResult);
     }
-
 }

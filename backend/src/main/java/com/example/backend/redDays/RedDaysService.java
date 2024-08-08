@@ -46,8 +46,7 @@ public class RedDaysService {
             redDaysRepository.save(new RedDays(UUID.randomUUID(), redDays.date(), redDays.name(), redDays.countryCode()));
         }
     }
-
-    public String getCountryCode(UUID consultantId) {
+    private String getCountryCode(UUID consultantId) {
         return consultantService.getCountryCodeByConsultantId(consultantId).equals("Sverige") ? "SE" : "NO";
     }
 
