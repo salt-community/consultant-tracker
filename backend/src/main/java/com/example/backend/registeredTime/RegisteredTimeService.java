@@ -11,6 +11,7 @@ import com.example.backend.redDays.RedDaysService;
 import com.example.backend.registeredTime.dto.RegisteredTimeDto;
 import com.example.backend.registeredTime.dto.RegisteredTimeResponseDto;
 import com.example.backend.registeredTime.dto.RemainingDaysDto;
+import com.example.backend.utils.Utilities;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
@@ -77,7 +78,7 @@ public class RegisteredTimeService {
                     .stream()
                     .filter(el -> {
                                 if (el.totalHours() == 0) {
-                                    return !el.dayType().equals(CONSULTANCY_TIME.activity) || (!isRedDay(el.itemId().getStartDate().toLocalDate(), el.itemId().getConsultantId()) && !isWeekend(el.itemId().getStartDate().getDayOfWeek().getValue()));
+                                    return !el.dayType().equals(CONSULTANCY_TIME.activity) || (!redDaysService.isRedDay(el.itemId().getStartDate().toLocalDate(), el.itemId().getConsultantId()) && !Utilities.isWeekend(el.itemId().getStartDate().getDayOfWeek().getValue()));
                                 }
                                 return true;
                             }
@@ -236,8 +237,8 @@ public class RegisteredTimeService {
         int nonWorkingDays = 0;
         for (long j = 1; j < daysBetween; j++) {
             var dateToCheck = dateBefore.plusDays(j);
-            if (isWeekend(dateToCheck.getDayOfWeek().getValue())
-                    || isRedDay(dateToCheck, consultantId)) {
+            if (Utilities.isWeekend(dateToCheck.getDayOfWeek().getValue())
+                    || redDaysService.isRedDay(dateToCheck, consultantId)) {
                 nonWorkingDays++;
                 continue;
             }
@@ -318,8 +319,8 @@ public class RegisteredTimeService {
         int daysCountDown = remainingDays;
         int i = 0;
         while (daysCountDown > 0) {
-            if (!isWeekend(startDate.plusDays(i).getDayOfWeek().getValue())
-                    && !isRedDay(LocalDate.from(startDate.plusDays(i)), consultantId)) {
+            if (!Utilities.isWeekend(startDate.plusDays(i).getDayOfWeek().getValue())
+                    && !redDaysService.isRedDay(LocalDate.from(startDate.plusDays(i)), consultantId)) {
                 daysCountDown--;
             }
             i++;
@@ -327,17 +328,6 @@ public class RegisteredTimeService {
         return startDate.plusDays(i).minusSeconds(1L);
     }
 
-    public boolean isWeekend(int day) {
-        final int SATURDAY = 6;
-        final int SUNDAY = 7;
-        return day == SATURDAY || day == SUNDAY;
-    }
-
-    private boolean isRedDay(LocalDate date, UUID consultantId) {
-        String countryCode = consultantService.getCountryCodeByConsultantId(consultantId).equals("Sverige") ? "SE" : "NO";
-        List<LocalDate> redDays = redDaysService.getRedDays(countryCode);
-        return redDays.contains(date);
-    }
 
     public String getCurrentClient(UUID consultantId) {
         RegisteredTime firstByIdConsultantIdAndTypeIsOrderByEndDateDesc = registeredTimeRepository.findFirstById_ConsultantIdAndTypeIsOrderByEndDateDesc(consultantId, CONSULTANCY_TIME.activity);
@@ -346,4 +336,6 @@ public class RegisteredTimeService {
         }
         return "PGP";
     }
+
+
 }

@@ -34,6 +34,7 @@ public class ConsultantController {
         redDaysService.getRedDaysFromNager();
     }
 
+
     @GetMapping("/time")
     public ResponseEntity<ConsultantTimeResponseDto> getConsultantsHours(
             @RequestParam(name = "client", required = false) String clientId) {

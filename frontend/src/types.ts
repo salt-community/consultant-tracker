@@ -121,7 +121,9 @@ export type ConsultantFetchType = {
   export type TotalDaysStatisticsType = {
     totalRemainingDays: number,
     totalWorkedDays: number,
-    totalVacationDaysUsed: number
+    totalVacationDaysUsed: number,
+    totalRemainingHours: number,
+    totalWorkedHours: number
 }
 
 export type RegisteredTimeItemType = {
@@ -129,5 +131,6 @@ export type RegisteredTimeItemType = {
   startDate: dayjs.Dayjs,
   endDate: dayjs.Dayjs,
   type: string,
+  days: number,
   projectName: string
 }

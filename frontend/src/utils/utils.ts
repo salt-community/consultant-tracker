@@ -2,7 +2,6 @@ export const selectColor = (type: string) => {
   switch (type) {
     case "Konsult-tid":
     case "Egen administration":
-    case "VAB":
       return "#6EACDA";
     case "Semester":
       return "#7bc46e";
@@ -13,6 +12,7 @@ export const selectColor = (type: string) => {
     case "Remaining Days":
       return "#a4a4a4";
     case "Föräldraledig":
+    case "VAB":
       return "#000000";
     default:
       return "#EF5A6F";

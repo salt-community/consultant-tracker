@@ -25,7 +25,7 @@ const Dashboard = () => {
       tableData.setFilteredData(data);
     });
 
-    fetch("http://localhost:8080/api/consultants?page=3")
+    fetch("http://localhost:8080/api/consultants?page=2")
       .then(res => res.json())
       .then(res => {
         const data = res.consultants.flatMap((el: ConsultantFetchType) => {
@@ -39,6 +39,9 @@ const Dashboard = () => {
                 totalRemainingDays: el.totalDaysStatistics.totalRemainingDays,
                 totalWorkedDays: el.totalDaysStatistics.totalWorkedDays,
                 totalVacationDaysUsed: el.totalDaysStatistics.totalVacationDaysUsed,
+                totalDays: item.days,
+                totalWorkedHours: el.totalDaysStatistics.totalWorkedHours,
+                totalRemainingHours: el.totalDaysStatistics.totalRemainingHours,
                 //TODO change to recent client
                 projectName: item.projectName
               },
