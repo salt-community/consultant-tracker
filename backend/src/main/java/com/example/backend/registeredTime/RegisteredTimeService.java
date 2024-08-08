@@ -41,7 +41,7 @@ public class RegisteredTimeService {
     }
 
 
-    public void getTimeRegisteredByConsultant() {
+    public void fetchAndSaveTimeRegisteredByConsultant() {
         List<Consultant> activeConsultants = consultantService.getAllActiveConsultants();
         for (Consultant consultant : activeConsultants) {
             List<ConsultantTimeDto> consultantRegisteredTime = fetchTimeFromTimekeeper(consultant.getId(), consultant.getTimekeeperId());
