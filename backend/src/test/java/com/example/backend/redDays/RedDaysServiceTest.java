@@ -1,5 +1,6 @@
 package com.example.backend.redDays;
 
+import com.example.backend.ApplicationTestConfig;
 import com.example.backend.client.nager.NagerClient;
 import com.example.backend.consultant.ConsultantService;
 import org.assertj.core.util.Lists;
@@ -10,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -18,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
+@ContextConfiguration(classes = ApplicationTestConfig.class)
 class RedDaysServiceTest {
     private RedDaysService redDaysService;
     @Mock

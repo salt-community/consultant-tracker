@@ -3,7 +3,10 @@ package com.example.backend.redDays;
 import com.example.backend.client.nager.NagerClient;
 import com.example.backend.client.nager.dto.RedDaysFromNagerDto;
 import com.example.backend.consultant.ConsultantService;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
