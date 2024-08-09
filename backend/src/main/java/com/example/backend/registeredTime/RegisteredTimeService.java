@@ -39,6 +39,7 @@ public class RegisteredTimeService {
         this.timekeeperClient = timekeeperClient;
         this.redDaysService = redDaysService;
     }
+
     //-----------------------------COVERED BY TESTS ---------------------------------
     public List<RegisteredTime> getTimeByConsultantId(UUID id) {
         return registeredTimeRepository.findAllById_ConsultantIdOrderById_StartDateAsc(id);
@@ -67,6 +68,7 @@ public class RegisteredTimeService {
         }
         return consultantTimeDtoList;
     }
+
     //-----------------------------COVERED BY TESTS ---------------------------------
     public List<ConsultantTimeDto> filterOutIncorrectlyRegisteredTime(List<ConsultantTimeDto> consultantRegisteredTime) {
         return consultantRegisteredTime
@@ -76,6 +78,7 @@ public class RegisteredTimeService {
                         && !Utilities.isWeekend(el.itemId().getStartDate().getDayOfWeek().getValue())))
                 .toList();
     }
+
     //-----------------------------COVERED BY TESTS ---------------------------------
     private void saveConsultantTime(List<ConsultantTimeDto> consultantTimeDtoList) {
         Map<LocalDate, ConsultantTimeDto> timelineItemsMap = createTimeItems(consultantTimeDtoList);
@@ -120,22 +123,21 @@ public class RegisteredTimeService {
     }
 
     private TotalDaysStatistics getAllDaysStatistics(UUID id) {
-        String countryCode = consultantService.getCountryCodeByConsultantId(id);
-        boolean isSweden = countryCode.equals("Sverige");
+        String country = consultantService.getCountryCodeByConsultantId(id);
         int totalWorkedDays = countOfWorkedDays(id);
-        int totalVacationDays = registeredTimeRepository.countAllById_ConsultantIdAndTypeIs(id, VACATION.activity).orElse(0);
-        double totalRemainingDays = isSweden ? 253 : 254;
-        double totalRemainingHours = isSweden ? 2024 : 1905;
+        double totalRemainingDays = Utilities.getTotalDaysByCountry(country);
+        double totalRemainingHours = Utilities.getTotalHours(country);
         double totalWorkedHours = 0.0;
         if (totalWorkedDays != 0) {
-            totalWorkedHours = getAllHoursByActivity(id);
-            totalRemainingDays = Math.round(Utilities.countRemainingDays(getAllHoursByActivity(id), countryCode) * 100.0) / 100.0;
-            totalRemainingHours = isSweden ? Math.round(totalRemainingDays * 8 * 10.0) / 10.0 : Math.round(totalRemainingDays * 7.5 * 10.0) / 10.0;
+            totalWorkedHours = countTotalWorkedHours(id);
+            totalRemainingDays = Utilities.roundToTwoDecimalPoints(Utilities.countRemainingDays(totalWorkedHours, country));
+            totalRemainingHours = Utilities.roundToOneDecimalPoint(totalRemainingDays * Utilities.getStandardWorkingHours(country));
         }
-        return new TotalDaysStatistics(totalRemainingDays, totalWorkedDays, totalVacationDays, totalRemainingHours, Math.round(totalWorkedHours * 10.0) / 10.0);
+        int totalVacationDays = registeredTimeRepository.countAllById_ConsultantIdAndTypeIs(id, VACATION.activity).orElse(0);
+        return new TotalDaysStatistics(totalRemainingDays, totalWorkedDays, totalVacationDays, totalRemainingHours, Utilities.roundToOneDecimalPoint(totalWorkedHours));
     }
 
-    private Double getAllHoursByActivity(UUID consultantId) {
+    public Double countTotalWorkedHours(UUID consultantId) {
         Double getTotalConsultancyHour = registeredTimeRepository.getSumOfTotalHoursByConsultantIdAndProjectName(consultantId, CONSULTANCY_TIME.activity).orElse(0.0);
         Double getTotalAdministrationHour = registeredTimeRepository.getSumOfTotalHoursByConsultantIdAndProjectName(consultantId, OWN_ADMINISTRATION.activity).orElse(0.0);
         return getTotalAdministrationHour + getTotalConsultancyHour;
@@ -272,8 +274,6 @@ public class RegisteredTimeService {
     }
 
 
-
-
     public RegisteredTimeResponseDto getRemainingConsultancyTimeByConsultantId(UUID consultantId) {
         LocalDateTime lastRegisteredDate = registeredTimeRepository.findFirstById_ConsultantIdOrderByEndDateDesc(consultantId).getEndDate();
         LocalDateTime startDate = lastRegisteredDate.plusDays(1).withHour(0).withMinute(0).withSecond(0);
@@ -291,7 +291,7 @@ public class RegisteredTimeService {
     }
 
     private RemainingDaysDto getEstimatedConsultancyEndDate(UUID consultantId, LocalDateTime startDate) {
-        Double countOfWorkedHours = getAllHoursByActivity(consultantId);
+        Double countOfWorkedHours = countTotalWorkedHours(consultantId);
         String countryCode = consultantService.getCountryCodeByConsultantId(consultantId);
         int remainingConsultancyDays = (int) Utilities.countRemainingDays(countOfWorkedHours, countryCode);
         if (remainingConsultancyDays <= 0) {
