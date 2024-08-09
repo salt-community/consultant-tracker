@@ -45,6 +45,15 @@ public class RegisteredTimeService {
         return registeredTimeRepository.findAllById_ConsultantIdOrderById_StartDateAsc(id);
     }
 
+    //-----------------------------COVERED BY TESTS ---------------------------------
+    public String getCurrentClient(UUID consultantId) {
+        RegisteredTime lastWorkTimeRegistered = registeredTimeRepository.findFirstById_ConsultantIdAndTypeIsOrderByEndDateDesc(consultantId, CONSULTANCY_TIME.activity);
+        if (lastWorkTimeRegistered != null) {
+            return lastWorkTimeRegistered.getProjectName();
+        }
+        return PGP.activity;
+    }
+
     public void fetchAndSaveTimeRegisteredByConsultantDB() {
         List<Consultant> activeConsultants = consultantService.getAllActiveConsultants();
         for (Consultant consultant : activeConsultants) {
@@ -122,7 +131,7 @@ public class RegisteredTimeService {
 
     private TotalDaysStatistics getAllDaysStatistics(UUID id) {
         String country = consultantService.getCountryCodeByConsultantId(id);
-        int totalWorkedDays = countOfWorkedDays(id);
+        int totalWorkedDays = countTotalWorkedDays(id);
         double totalRemainingDays = Utilities.getTotalDaysByCountry(country);
         double totalRemainingHours = Utilities.getTotalHours(country);
         double totalWorkedHours = 0.0;
@@ -140,6 +149,12 @@ public class RegisteredTimeService {
         Double getTotalConsultancyHour = registeredTimeRepository.getSumOfTotalHoursByConsultantIdAndProjectName(consultantId, CONSULTANCY_TIME.activity).orElse(0.0);
         Double getTotalAdministrationHour = registeredTimeRepository.getSumOfTotalHoursByConsultantIdAndProjectName(consultantId, OWN_ADMINISTRATION.activity).orElse(0.0);
         return getTotalAdministrationHour + getTotalConsultancyHour;
+    }
+
+    private int countTotalWorkedDays(UUID consultantId) {
+        int countOfWorkedDays = registeredTimeRepository.countAllById_ConsultantIdAndTypeIs(consultantId, CONSULTANCY_TIME.activity).orElse(0);
+        countOfWorkedDays += registeredTimeRepository.countAllById_ConsultantIdAndTypeIs(consultantId, OWN_ADMINISTRATION.activity).orElse(0);
+        return countOfWorkedDays;
     }
 
     //-----------------------------COVERED BY TESTS ---------------------------------
@@ -295,12 +310,6 @@ public class RegisteredTimeService {
     }
 
 
-    private int countOfWorkedDays(UUID consultantId) {
-        int countOfWorkedDays = registeredTimeRepository.countAllById_ConsultantIdAndTypeIs(consultantId, CONSULTANCY_TIME.activity).orElse(0);
-        countOfWorkedDays += registeredTimeRepository.countAllById_ConsultantIdAndTypeIs(consultantId, OWN_ADMINISTRATION.activity).orElse(0);
-        return countOfWorkedDays;
-    }
-
     private LocalDateTime accountForNonWorkingDays(LocalDateTime startDate, int remainingDays, UUID consultantId) {
         if (remainingDays <= 0) {
             return startDate;
@@ -315,14 +324,5 @@ public class RegisteredTimeService {
             i++;
         }
         return startDate.plusDays(i).minusSeconds(1L);
-    }
-
-
-    public String getCurrentClient(UUID consultantId) {
-        RegisteredTime firstByIdConsultantIdAndTypeIsOrderByEndDateDesc = registeredTimeRepository.findFirstById_ConsultantIdAndTypeIsOrderByEndDateDesc(consultantId, CONSULTANCY_TIME.activity);
-        if (firstByIdConsultantIdAndTypeIsOrderByEndDateDesc != null) {
-            return firstByIdConsultantIdAndTypeIsOrderByEndDateDesc.getProjectName();
-        }
-        return "PGP";
     }
 }

@@ -33,6 +33,17 @@ public class RegisteredTimeServiceMockedData {
         return Lists.newArrayList(mockedTimeItem, mockedTimeItem2);
     }
 
+    public static RegisteredTime createMockedLasWorkTimeRegistered() {
+        return new RegisteredTime(
+                new RegisteredTimeKey(
+                        UUID.fromString("589256b4-c5db-4d77-9d50-49c0636a4c52"),
+                        LocalDateTime.parse("2024-01-02 00:00", formatter)),
+                "Konsult-tid",
+                LocalDateTime.parse("2024-01-05 23:59", formatter),
+                8D,
+                "H&M");
+    }
+
     public static List<ConsultantTimeDto> createAllWronglyRegisteredTimeMockedData() {
         ConsultantTimeDto mockedConsultantTimeDto = new ConsultantTimeDto(
                 new RegisteredTimeKey(UUID.fromString("589256b4-c5db-4d77-9d50-49c0636a4c52"),
