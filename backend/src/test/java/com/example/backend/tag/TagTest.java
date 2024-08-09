@@ -29,7 +29,7 @@ class TagTest {
                 true
         );
         String expectedResult = "Sverige";
-        String actualResult = Tag.extractCountryTagFromTkUser(tkUserTest);
+        String actualResult = Tag.extractCountryTagFromTimekeeperUserDto(tkUserTest);
         assertEquals(expectedResult, actualResult);
     }
 
@@ -52,7 +52,7 @@ class TagTest {
                 true
         );
         String expectedResult = "Norge";
-        String actualResult = Tag.extractCountryTagFromTkUser(tkUserTest);
+        String actualResult = Tag.extractCountryTagFromTimekeeperUserDto(tkUserTest);
         assertEquals(expectedResult, actualResult);
     }
     @Test
@@ -70,7 +70,7 @@ class TagTest {
                 true
         );
         String expectedResult = "Sverige";
-        String actualResult = Tag.extractCountryTagFromTkUser(tkUserTest);
+        String actualResult = Tag.extractCountryTagFromTimekeeperUserDto(tkUserTest);
         assertEquals(expectedResult, actualResult);
     }
 
@@ -93,7 +93,7 @@ class TagTest {
                 true
         );
         String expectedResult = "Sverige";
-        String actualResult = Tag.extractCountryTagFromTkUser(tkUserTest);
+        String actualResult = Tag.extractCountryTagFromTimekeeperUserDto(tkUserTest);
         assertEquals(expectedResult, actualResult);
     }
 }
