@@ -70,7 +70,7 @@ public class ConsultantService {
                 }
             });
         }
-        registeredTimeService.fetchAndSaveTimeRegisteredByConsultant();
+        registeredTimeService.fetchAndSaveTimeRegisteredByConsultantDB();
         fillClientAndResponsiblePt();
     }
 

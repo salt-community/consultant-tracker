@@ -3,6 +3,7 @@ package com.example.backend.registeredTime;
 import com.example.backend.ApplicationTestConfig;
 import com.example.backend.client.timekeeper.TimekeeperClient;
 import com.example.backend.consultant.ConsultantService;
+import com.example.backend.consultant.dto.ConsultantTimeDto;
 import com.example.backend.redDays.RedDaysService;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -68,5 +69,21 @@ class RegisteredTimeServiceTest {
         double actualResult = registeredTimeService.countTotalWorkedHours(UUID.fromString("68c670d6-3038-4fca-95be-2669aaf0b549"));
         assertEquals(250D, actualResult);
     }
+
+    @Test
+    public void shouldGetAllConsultantsTimeItems() {
+        Mockito.lenient().when(consultantService.getAllConsultants()).thenReturn(RegisteredTimeServiceMockedData.createMockedListOfConsultants());
+        Mockito.lenient().when(registeredTimeRepository.findAllById_ConsultantIdOrderById_StartDateAsc(
+                        UUID.fromString("68c670d6-3038-4fca-95be-2669aaf0b549")))
+                .thenReturn(RegisteredTimeServiceMockedData.generateMockedRegisteredTimeData());
+        Mockito.lenient().when(registeredTimeRepository.findAllById_ConsultantIdOrderById_StartDateAsc(
+                        UUID.fromString("0239ceac-5e65-40a6-a949-5492c22b22e3")))
+                .thenReturn(RegisteredTimeServiceMockedData.generateMockedRegisteredTimeData());
+        List<ConsultantTimeDto> expectedResult = RegisteredTimeServiceMockedData.generateMockedExpectedResult();
+        List<ConsultantTimeDto> actualResult = registeredTimeService.getAllConsultantsTimeItems();
+        assertEquals(expectedResult.size(), actualResult.size());
+        assertEquals(expectedResult, actualResult);
+    }
+
 
 }
