@@ -40,6 +40,9 @@ public class RegisteredTimeService {
         this.redDaysService = redDaysService;
     }
 
+    public List<RegisteredTime> getTimeByConsultantId(UUID id) {
+        return registeredTimeRepository.findAllById_ConsultantIdOrderById_StartDateAsc(id);
+    }
 
     public void fetchAndSaveTimeRegisteredByConsultant() {
         List<Consultant> activeConsultants = consultantService.getAllActiveConsultants();
@@ -268,9 +271,6 @@ public class RegisteredTimeService {
     }
 
 
-    public List<RegisteredTime> getTimeByConsultantId(UUID id) {
-        return registeredTimeRepository.findAllById_ConsultantIdOrderById_StartDateAsc(id);
-    }
 
 
     public RegisteredTimeResponseDto getRemainingConsultancyTimeByConsultantId(UUID consultantId) {
