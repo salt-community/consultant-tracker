@@ -46,50 +46,45 @@ public class ConsultantService {
     public void fetchDataFromTimekeeper() {
         List<TimekeeperUserDto> timekeeperUserDto = timekeeperClient.getUsers();
         assert timekeeperUserDto != null;
-        List<TimekeeperUserDto> consultantsToAdd = checkTimekeeperUsersWithDatabase(timekeeperUserDto);
-        if (!consultantsToAdd.isEmpty()) {
-            consultantsToAdd.forEach(consultant -> {
-                String countryTag = Tag.extractCountryTagFromTimekeeperUserDto(consultant);
-                Consultant newConsultant = new Consultant(
-                        UUID.randomUUID(),
-                        consultant.firstName().trim().concat(" ").concat(consultant.lastName().trim()),
-                        consultant.email(),
-                        consultant.phone(),
-                        consultant.id(),
-                        consultant.responsiblePT(),
-                        consultant.client(),
-                        countryTag,
-                        consultant.isActive()
-                );
-                createConsultant(newConsultant);
-            });
-        }
+        updateConsultantTable(timekeeperUserDto);
         registeredTimeService.fetchAndSaveTimeRegisteredByConsultant();
         fillClientAndResponsiblePt();
+    }
+
+    private void updateConsultantTable(List<TimekeeperUserDto> timekeeperUserDto) {
+        timekeeperUserDto.forEach(tkUser -> {
+            if (!consultantRepository.existsByTimekeeperId(tkUser.id())) {
+                String countryTag = Tag.extractCountryTagFromTimekeeperUserDto(tkUser);
+                createConsultant(new Consultant(
+                        UUID.randomUUID(),
+                        tkUser.firstName().trim().concat(" ").concat(tkUser.lastName().trim()),
+                        tkUser.email(),
+                        tkUser.phone(),
+                        tkUser.id(),
+                        tkUser.responsiblePT(),
+                        tkUser.client(),
+                        countryTag,
+                        tkUser.isActive()));
+            } else {
+                updateIsActiveForExistingConsultant(tkUser);
+            }
+        });
     }
 
     public List<Consultant> getAllActiveConsultants() {
         return consultantRepository.findAllByActiveTrue();
     }
 
-    private List<TimekeeperUserDto> checkTimekeeperUsersWithDatabase(List<TimekeeperUserDto> timekeeperUserResponseDto) {
-        List<TimekeeperUserDto> consultantsToAdd = new ArrayList<>();
+    private void updateIsActiveForExistingConsultant(TimekeeperUserDto tkUser) {
         List<Consultant> consultants = getAllConsultants();
-        timekeeperUserResponseDto.forEach(tkUser -> {
-            if (!consultantRepository.existsByTimekeeperId(tkUser.id())) {
-                consultantsToAdd.add(tkUser);
-            } else {
-                consultants.stream()
-                        .filter(consultant -> consultant.getTimekeeperId().equals(tkUser.id()))
-                        .forEach(consultant -> {
-                            if (consultant.isActive() != tkUser.isActive() || consultant.isActive() != tkUser.isEmployee()) {
-                                consultant.setActive(tkUser.isActive() && tkUser.isEmployee());
-                                consultantRepository.save(consultant);
-                            }
-                        });
-            }
-        });
-        return consultantsToAdd;
+        consultants.stream()
+                .filter(consultant -> consultant.getTimekeeperId().equals(tkUser.id()))
+                .forEach(consultant -> {
+                    if (consultant.isActive() != tkUser.isActive() || consultant.isActive() != tkUser.isEmployee()) {
+                        consultant.setActive(tkUser.isActive() && tkUser.isEmployee());
+                        consultantRepository.save(consultant);
+                    }
+                });
     }
 
     private void createConsultant(Consultant consultant) {
