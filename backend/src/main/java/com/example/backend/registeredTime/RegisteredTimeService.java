@@ -4,7 +4,7 @@ import com.example.backend.client.timekeeper.TimekeeperClient;
 import com.example.backend.client.timekeeper.dto.TimekeeperRegisteredTimeResponseDto;
 import com.example.backend.consultant.Consultant;
 import com.example.backend.consultant.ConsultantService;
-import com.example.backend.consultant.TotalDaysStatistics;
+import com.example.backend.consultant.dto.TotalDaysStatisticsDto;
 import com.example.backend.consultant.dto.ConsultantResponseDto;
 import com.example.backend.consultant.dto.ConsultantTimeDto;
 import com.example.backend.redDays.RedDaysService;
@@ -111,11 +111,11 @@ public class RegisteredTimeService {
 
     public ConsultantResponseDto getConsultantTimelineItems(Consultant consultant) {
         List<RegisteredTimeResponseDto> consultantTimeDto = getGroupedConsultantsRegisteredTimeItems(consultant.getId());
-        TotalDaysStatistics totalDaysStatistics = getAllDaysStatistics(consultant.getId());
+        TotalDaysStatisticsDto totalDaysStatistics = getAllDaysStatistics(consultant.getId());
         return ConsultantResponseDto.toDto(consultant, totalDaysStatistics, Objects.requireNonNullElseGet(consultantTimeDto, ArrayList::new));
     }
 
-    private TotalDaysStatistics getAllDaysStatistics(UUID id) {
+    private TotalDaysStatisticsDto getAllDaysStatistics(UUID id) {
         String countryCode = consultantService.getCountryCodeByConsultantId(id);
         boolean isSweden = countryCode.equals("Sverige");
         int totalWorkedDays = countOfWorkedDays(id);
@@ -128,7 +128,7 @@ public class RegisteredTimeService {
             totalRemainingDays = Math.round(countRemainingDays(getAllHoursByActivity(id), countryCode) * 100.0) / 100.0;
             totalRemainingHours = isSweden ? Math.round(totalRemainingDays * 8 * 10.0) / 10.0 : Math.round(totalRemainingDays * 7.5 * 10.0) / 10.0;
         }
-        return new TotalDaysStatistics(totalRemainingDays, totalWorkedDays, totalVacationDays, totalRemainingHours, Math.round(totalWorkedHours * 10.0) / 10.0);
+        return new TotalDaysStatisticsDto(totalRemainingDays, totalWorkedDays, totalVacationDays, totalRemainingHours, Math.round(totalWorkedHours * 10.0) / 10.0);
     }
 
     private Double getAllHoursByActivity(UUID consultantId) {

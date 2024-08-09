@@ -1,7 +1,6 @@
 package com.example.backend.consultant.dto;
 
 import com.example.backend.consultant.Consultant;
-import com.example.backend.consultant.TotalDaysStatistics;
 import com.example.backend.registeredTime.dto.RegisteredTimeResponseDto;
 
 import java.util.List;
@@ -13,10 +12,10 @@ public record ConsultantResponseDto(UUID id,
                                     String phoneNumber,
                                     String responsiblePt,
                                     String client,
-                                    TotalDaysStatistics totalDaysStatistics,
+                                    TotalDaysStatisticsDto totalDaysStatistics,
                                     List<RegisteredTimeResponseDto> registeredTimeDtoList) {
 
-    public static ConsultantResponseDto toDto(Consultant consultant, TotalDaysStatistics totalDaysStatistics, List<RegisteredTimeResponseDto> registeredTimeDtoList) {
+    public static ConsultantResponseDto toDto(Consultant consultant, TotalDaysStatisticsDto totalDaysStatistics, List<RegisteredTimeResponseDto> registeredTimeDtoList) {
         return new ConsultantResponseDto(
                 consultant.getId(),
                 consultant.getFullName(),
