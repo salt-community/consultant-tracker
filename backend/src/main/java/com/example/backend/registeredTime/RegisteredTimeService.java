@@ -39,16 +39,17 @@ public class RegisteredTimeService {
         this.timekeeperClient = timekeeperClient;
         this.redDaysService = redDaysService;
     }
-
+    //-----------------------------COVERED BY TESTS ---------------------------------
     public List<RegisteredTime> getTimeByConsultantId(UUID id) {
         return registeredTimeRepository.findAllById_ConsultantIdOrderById_StartDateAsc(id);
     }
+    //-----------------------------COVERED BY TESTS ---------------------------------
 
     public void fetchAndSaveTimeRegisteredByConsultant() {
         List<Consultant> activeConsultants = consultantService.getAllActiveConsultants();
         for (Consultant consultant : activeConsultants) {
             List<ConsultantTimeDto> consultantRegisteredTime = fetchTimeFromTimekeeper(consultant.getId(), consultant.getTimekeeperId());
-            consultantRegisteredTime = deleteIncorrectlyRegisteredTime(consultantRegisteredTime);
+            consultantRegisteredTime = filterOutIncorrectlyRegisteredTime(consultantRegisteredTime);
             saveConsultantTime(consultantRegisteredTime);
         }
     }
@@ -67,7 +68,7 @@ public class RegisteredTimeService {
         return consultantTimeDtoList;
     }
 
-    private List<ConsultantTimeDto> deleteIncorrectlyRegisteredTime(List<ConsultantTimeDto> consultantRegisteredTime) {
+    public List<ConsultantTimeDto> filterOutIncorrectlyRegisteredTime(List<ConsultantTimeDto> consultantRegisteredTime) {
         return consultantRegisteredTime
                 .stream()
                 .filter(el -> el.totalHours() != 0 || !el.dayType().equals(CONSULTANCY_TIME.activity)

@@ -4,8 +4,7 @@ import com.example.backend.ApplicationTestConfig;
 import com.example.backend.client.timekeeper.TimekeeperClient;
 import com.example.backend.consultant.ConsultantService;
 import com.example.backend.redDays.RedDaysService;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -45,11 +44,11 @@ class RegisteredTimeServiceTest {
     public void shouldReturnTwoTimeItems() {
         Mockito.when(registeredTimeRepository.findAllById_ConsultantIdOrderById_StartDateAsc(
                         UUID.fromString("68c670d6-3038-4fca-95be-2669aaf0b549")))
-                .thenReturn(RegisteredTimeMockedData.generateMockedRegisteredTimeData());
+                .thenReturn(RegisteredTimeServiceMockedData.generateMockedRegisteredTimeData());
         List<RegisteredTime> actualResult = registeredTimeService.getTimeByConsultantId(
                 UUID.fromString("68c670d6-3038-4fca-95be-2669aaf0b549"));
-        assertEquals(actualResult.size(), 2);
-
+        assertEquals(2, actualResult.size());
     }
+
 
 }
