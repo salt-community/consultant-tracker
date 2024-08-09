@@ -9,7 +9,7 @@ import java.util.List;
 public class Tag {
     private String name;
 
-    public static String extractCountryTagFromTkUser(TimekeeperUserDto tkUser) {
+    public static String extractCountryTagFromTimekeeperUserDto(TimekeeperUserDto tkUser) {
         List<Tag> countryTagList = tkUser.tags()
                 .stream()
                 .filter(el -> el.getName().trim().equals("Norge")
