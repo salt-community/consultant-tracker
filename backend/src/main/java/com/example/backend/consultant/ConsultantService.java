@@ -46,26 +46,22 @@ public class ConsultantService {
     public void fetchDataFromTimekeeper() {
         List<TimekeeperUserDto> timekeeperUserDto = timekeeperClient.getUsers();
         assert timekeeperUserDto != null;
-        List<Long> timekeeperIdsToAdd = checkTimekeeperUsersWithDatabase(timekeeperUserDto);
-        if (!timekeeperIdsToAdd.isEmpty()) {
-            timekeeperIdsToAdd.forEach(id -> {
-                TimekeeperUserDto tkUser = timekeeperUserDto.stream()
-                        .filter(u -> Objects.equals(u.id(), id)).findFirst().orElse(null);
-                if (tkUser != null) {
-                    String countryTag = Tag.extractCountryTagFromTkUser(tkUser);
-                    Consultant consultant = new Consultant(
-                            UUID.randomUUID(),
-                            tkUser.firstName().trim().concat(" ").concat(tkUser.lastName().trim()),
-                            tkUser.email(),
-                            tkUser.phone(),
-                            id,
-                            tkUser.responsiblePT(),
-                            tkUser.client(),
-                            countryTag,
-                            tkUser.isActive()
-                    );
-                    createConsultant(consultant);
-                }
+        List<TimekeeperUserDto> consultantsToAdd = checkTimekeeperUsersWithDatabase(timekeeperUserDto);
+        if (!consultantsToAdd.isEmpty()) {
+            consultantsToAdd.forEach(consultant -> {
+                String countryTag = Tag.extractCountryTagFromTimekeeperUserDto(consultant);
+                Consultant newConsultant = new Consultant(
+                        UUID.randomUUID(),
+                        consultant.firstName().trim().concat(" ").concat(consultant.lastName().trim()),
+                        consultant.email(),
+                        consultant.phone(),
+                        consultant.id(),
+                        consultant.responsiblePT(),
+                        consultant.client(),
+                        countryTag,
+                        consultant.isActive()
+                );
+                createConsultant(newConsultant);
             });
         }
         registeredTimeService.fetchAndSaveTimeRegisteredByConsultant();
@@ -76,12 +72,12 @@ public class ConsultantService {
         return consultantRepository.findAllByActiveTrue();
     }
 
-    private List<Long> checkTimekeeperUsersWithDatabase(List<TimekeeperUserDto> timekeeperUserResponseDto) {
-        List<Long> idsToAdd = new ArrayList<>();
+    private List<TimekeeperUserDto> checkTimekeeperUsersWithDatabase(List<TimekeeperUserDto> timekeeperUserResponseDto) {
+        List<TimekeeperUserDto> consultantsToAdd = new ArrayList<>();
         List<Consultant> consultants = getAllConsultants();
         timekeeperUserResponseDto.forEach(tkUser -> {
             if (!consultantRepository.existsByTimekeeperId(tkUser.id())) {
-                idsToAdd.add(tkUser.id());
+                consultantsToAdd.add(tkUser);
             } else {
                 consultants.stream()
                         .filter(consultant -> consultant.getTimekeeperId().equals(tkUser.id()))
@@ -93,7 +89,7 @@ public class ConsultantService {
                         });
             }
         });
-        return idsToAdd;
+        return consultantsToAdd;
     }
 
     private void createConsultant(Consultant consultant) {
@@ -104,12 +100,12 @@ public class ConsultantService {
         return consultantRepository.findCountryById(consultantId);
     }
 
-    public void fillClientAndResponsiblePt(){
+    public void fillClientAndResponsiblePt() {
         String[] responsiblePts = {"Josefin Stål", "Anna Carlsson"};
 //        String[] responsiblePts = {"00ae7ec3-bbf8-4926-aadb-b8e7e4378341", "3ecb112d-d85d-40c4-a81f-762c9f2e5abc"};
         Random rand = new Random();
         List<Consultant> allActiveConsultants = getAllActiveConsultants();
-        allActiveConsultants.forEach(el->{
+        allActiveConsultants.forEach(el -> {
             int rand_int1 = rand.nextInt(2);
             el.setClient(registeredTimeService.getCurrentClient(el.getId()));
             el.setResponsiblePT(responsiblePts[rand_int1]);
