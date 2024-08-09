@@ -32,6 +32,7 @@ public class ConsultantService {
                 consultantsList.getTotalElements(),
                 consultantsDto);
     }
+
     public Page<Consultant> getAllConsultantsPageable(int page, int pageSize, String name, String pt, String client) {
         Pageable pageRequest = PageRequest.of(page, pageSize);
         return consultantRepository.findAllByActiveTrueAndFilterByName(name, pageRequest);
@@ -51,10 +52,7 @@ public class ConsultantService {
                 TimekeeperUserDto tkUser = timekeeperUserDto.stream()
                         .filter(u -> Objects.equals(u.id(), id)).findFirst().orElse(null);
                 if (tkUser != null) {
-                    List<Tag> countryTagList = tkUser.tags()
-                            .stream()
-                            .filter(el -> el.getName().trim().equals("Norge") || el.getName().trim().equals("Sverige")).toList();
-                    String countryTag = !countryTagList.isEmpty() ? countryTagList.getFirst().getName().trim() : "Sverige";
+                    String countryTag = Tag.extractCountryTagFromTkUser(tkUser);
                     Consultant consultant = new Consultant(
                             UUID.randomUUID(),
                             tkUser.firstName().trim().concat(" ").concat(tkUser.lastName().trim()),
@@ -108,6 +106,7 @@ public class ConsultantService {
 
     public void fillClientAndResponsiblePt(){
         String[] responsiblePts = {"Josefin Stål", "Anna Carlsson"};
+//        String[] responsiblePts = {"00ae7ec3-bbf8-4926-aadb-b8e7e4378341", "3ecb112d-d85d-40c4-a81f-762c9f2e5abc"};
         Random rand = new Random();
         List<Consultant> allActiveConsultants = getAllActiveConsultants();
         allActiveConsultants.forEach(el->{
