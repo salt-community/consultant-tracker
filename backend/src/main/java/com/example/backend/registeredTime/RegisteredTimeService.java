@@ -185,7 +185,7 @@ public class RegisteredTimeService {
             if (mappedRecords.containsKey(generatedKey)) {
                 LocalDate startDateBefore = mappedRecords.get(generatedKey).endDate().toLocalDate();
                 long daysBetween = DAYS.between(startDateBefore, registeredTime.getId().getStartDate().toLocalDate());
-                boolean onlyRedsAndWeekendsBetween = redDaysService.checkRedDaysOrWeekend(daysBetween, startDateBefore, id, "check first") == (daysBetween - 1);
+                boolean onlyRedsAndWeekendsBetween = redDaysService.checkRedDaysOrWeekend(daysBetween, startDateBefore, id, "single check") == (daysBetween - 1);
                 if (prevType.equals(registeredTime.getType()) && onlyRedsAndWeekendsBetween) {
                     mappedRecords.computeIfPresent(generatedKey, (key, registeredTimeDto) ->
                             new RegisteredTimeDto(registeredTimeDto.startDate(),
@@ -215,13 +215,13 @@ public class RegisteredTimeService {
         }
         Map<Integer, RegisteredTimeDto> filledGaps = fillRegisteredTimeGaps(sortMap(mappedRecords), id);
 
-        List<RegisteredTimeDto> regTimeRespDtos = new ArrayList<>(filledGaps.values());
-        List<RegisteredTimeResponseDto> registeredTimeResponseDtos = new ArrayList<>(regTimeRespDtos.stream().map(RegisteredTimeResponseDto::fromRegisteredTimeDto).toList());
+        List<RegisteredTimeDto> regTimeRespDto = new ArrayList<>(filledGaps.values());
+        List<RegisteredTimeResponseDto> registeredTimeResponseDto = new ArrayList<>(regTimeRespDto.stream().map(RegisteredTimeResponseDto::fromRegisteredTimeDto).toList());
         RegisteredTimeResponseDto remainingConsultancyTimeByConsultantId = getRemainingConsultancyTimeByConsultantId(id);
         if (remainingConsultancyTimeByConsultantId != null) {
-            registeredTimeResponseDtos.add(remainingConsultancyTimeByConsultantId);
+            registeredTimeResponseDto.add(remainingConsultancyTimeByConsultantId);
         }
-        return registeredTimeResponseDtos;
+        return registeredTimeResponseDto;
     }
 
     private Map<Integer, RegisteredTimeDto> sortMap(Map<Integer, RegisteredTimeDto> resultSet) {
@@ -241,7 +241,7 @@ public class RegisteredTimeService {
             LocalDate dateAfter = resultSet.get(i + 1).startDate().toLocalDate();
             long daysBetween = DAYS.between(dateBefore, dateAfter);
             if (daysBetween > 1) {
-                int nonWorkingDays = redDaysService.checkRedDaysOrWeekend(daysBetween, dateBefore, consultantId, "check first");
+                int nonWorkingDays = redDaysService.checkRedDaysOrWeekend(daysBetween, dateBefore, consultantId, "multiple check");
                 addFilledGapsToMap(nonWorkingDays, daysBetween, filledGapsMap, dateBefore, dateAfter, i, consultantId);
             }
         }
@@ -258,7 +258,7 @@ public class RegisteredTimeService {
                             value.days()));
         }
         if (nonWorkingDays != daysBetween - 1) {
-            int totalNonWorkingDays = redDaysService.checkRedDaysOrWeekend(daysBetween, dateBefore, id, "check all");
+            int totalNonWorkingDays = redDaysService.checkRedDaysOrWeekend(daysBetween, dateBefore, id, "multiple check");
             filledGapsMap.put(filledGapsMap.size(),
                     new RegisteredTimeDto(dateBefore.plusDays(nonWorkingDays + 1).atStartOfDay(),
                             dateAfter.minusDays(1).atTime(23, 59, 59),

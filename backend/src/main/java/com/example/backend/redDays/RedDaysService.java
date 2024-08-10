@@ -56,7 +56,7 @@ public class RedDaysService {
         List<LocalDate> redDays = getRedDays(getCountryCode(consultantId));
         return redDays.contains(date);
     }
-// TODO test for methods below
+
     public LocalDateTime removeNonWorkingDays(LocalDateTime startDate, int remainingDays, UUID consultantId) {
         if (remainingDays <= 0) {
             return startDate;
@@ -72,6 +72,7 @@ public class RedDaysService {
         }
         return startDate.plusDays(i).minusSeconds(1L);
     }
+
     public int checkRedDaysOrWeekend(Long daysBetween, LocalDate dateBefore, UUID consultantId, String variant) {
         int nonWorkingDays = 0;
         for (long j = 1; j < daysBetween; j++) {
@@ -81,7 +82,7 @@ public class RedDaysService {
                 nonWorkingDays++;
                 continue;
             }
-            if (variant.equals("check first")) {
+            if (variant.equals("single check")) {
                 j = daysBetween;
             }
         }
