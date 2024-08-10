@@ -4,7 +4,6 @@ import com.example.backend.ApplicationTestConfig;
 import com.example.backend.client.nager.NagerClient;
 import com.example.backend.consultant.ConsultantService;
 import com.example.backend.utils.Utilities;
-import org.aspectj.lang.annotation.Before;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -101,9 +100,7 @@ class RedDaysServiceTest {
 
     @Test
     public void shouldReturn5WhenStartDay2JanAndDaysBetween15VariantMultiple() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-        Mockito.lenient().when(consultantService.getCountryCodeByConsultantId(
+                Mockito.lenient().when(consultantService.getCountryCodeByConsultantId(
                         UUID.fromString("45ec353f-b0f5-4a51-867e-8d0d84d11573")))
                 .thenReturn("Sverige");
         Mockito.lenient().when(redDaysRepository.findAllByCountry("SE"))
@@ -124,9 +121,7 @@ class RedDaysServiceTest {
 
     @Test
     public void shouldReturn1WhenStartDay2JanAndDaysBetween15VariantSingle() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-        Mockito.lenient().when(consultantService.getCountryCodeByConsultantId(
+            Mockito.lenient().when(consultantService.getCountryCodeByConsultantId(
                         UUID.fromString("45ec353f-b0f5-4a51-867e-8d0d84d11573")))
                 .thenReturn("Sverige");
         Mockito.lenient().when(redDaysRepository.findAllByCountry("SE"))
