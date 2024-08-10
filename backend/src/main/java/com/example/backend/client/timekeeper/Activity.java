@@ -11,7 +11,7 @@ public enum Activity {
     ON_CALL("Jourtid"),
     PGP("PGP");
     public final String activity;
-    private Activity(String activity) {
+    Activity(String activity) {
         this.activity = activity;
     }
 }
