@@ -185,7 +185,7 @@ public class RegisteredTimeService {
             if (mappedRecords.containsKey(generatedKey)) {
                 LocalDate startDateBefore = mappedRecords.get(generatedKey).endDate().toLocalDate();
                 long daysBetween = DAYS.between(startDateBefore, registeredTime.getId().getStartDate().toLocalDate());
-                boolean onlyRedsAndWeekendsBetween = checkRedDaysOrWeekend(daysBetween, startDateBefore, id, "check first") == (daysBetween - 1);
+                boolean onlyRedsAndWeekendsBetween = redDaysService.checkRedDaysOrWeekend(daysBetween, startDateBefore, id, "check first") == (daysBetween - 1);
                 if (prevType.equals(registeredTime.getType()) && onlyRedsAndWeekendsBetween) {
                     mappedRecords.computeIfPresent(generatedKey, (key, registeredTimeDto) ->
                             new RegisteredTimeDto(registeredTimeDto.startDate(),
@@ -241,27 +241,11 @@ public class RegisteredTimeService {
             LocalDate dateAfter = resultSet.get(i + 1).startDate().toLocalDate();
             long daysBetween = DAYS.between(dateBefore, dateAfter);
             if (daysBetween > 1) {
-                int nonWorkingDays = checkRedDaysOrWeekend(daysBetween, dateBefore, consultantId, "check first");
+                int nonWorkingDays = redDaysService.checkRedDaysOrWeekend(daysBetween, dateBefore, consultantId, "check first");
                 addFilledGapsToMap(nonWorkingDays, daysBetween, filledGapsMap, dateBefore, dateAfter, i, consultantId);
             }
         }
         return filledGapsMap;
-    }
-
-    private int checkRedDaysOrWeekend(Long daysBetween, LocalDate dateBefore, UUID consultantId, String variant) {
-        int nonWorkingDays = 0;
-        for (long j = 1; j < daysBetween; j++) {
-            var dateToCheck = dateBefore.plusDays(j);
-            if (Utilities.isWeekend(dateToCheck.getDayOfWeek().getValue())
-                    || redDaysService.isRedDay(dateToCheck, consultantId)) {
-                nonWorkingDays++;
-                continue;
-            }
-            if (variant.equals("check first")) {
-                j = daysBetween;
-            }
-        }
-        return nonWorkingDays;
     }
 
     private void addFilledGapsToMap(int nonWorkingDays, Long daysBetween, Map<Integer, RegisteredTimeDto> filledGapsMap, LocalDate dateBefore, LocalDate dateAfter, int i, UUID id) {
@@ -274,7 +258,7 @@ public class RegisteredTimeService {
                             value.days()));
         }
         if (nonWorkingDays != daysBetween - 1) {
-            int totalNonWorkingDays = checkRedDaysOrWeekend(daysBetween, dateBefore, id, "check all");
+            int totalNonWorkingDays = redDaysService.checkRedDaysOrWeekend(daysBetween, dateBefore, id, "check all");
             filledGapsMap.put(filledGapsMap.size(),
                     new RegisteredTimeDto(dateBefore.plusDays(nonWorkingDays + 1).atStartOfDay(),
                             dateAfter.minusDays(1).atTime(23, 59, 59),
@@ -285,6 +269,7 @@ public class RegisteredTimeService {
 
     public RegisteredTimeResponseDto getRemainingConsultancyTimeByConsultantId(UUID consultantId) {
         LocalDateTime lastRegisteredDate = registeredTimeRepository.findFirstById_ConsultantIdOrderByEndDateDesc(consultantId).getEndDate();
+        //TODO fix PGP
         LocalDateTime startDate = lastRegisteredDate.plusDays(1).withHour(0).withMinute(0).withSecond(0);
         RemainingDaysDto estimatedEndDate = getEstimatedConsultancyEndDate(consultantId, startDate);
         if (estimatedEndDate.endDate() == startDate) {
@@ -300,29 +285,12 @@ public class RegisteredTimeService {
     }
 
     private RemainingDaysDto getEstimatedConsultancyEndDate(UUID consultantId, LocalDateTime startDate) {
-        Double countOfWorkedHours = countTotalWorkedHours(consultantId);
+        Double totalWorkedHours = countTotalWorkedHours(consultantId);
         String countryCode = consultantService.getCountryCodeByConsultantId(consultantId);
-        int remainingConsultancyDays = (int) Utilities.countRemainingDays(countOfWorkedHours, countryCode);
+        int remainingConsultancyDays = (int) Utilities.countRemainingDays(totalWorkedHours, countryCode);
         if (remainingConsultancyDays <= 0) {
             return new RemainingDaysDto(startDate, remainingConsultancyDays);
         }
-        return new RemainingDaysDto(accountForNonWorkingDays(startDate, remainingConsultancyDays, consultantId), remainingConsultancyDays);
-    }
-
-
-    private LocalDateTime accountForNonWorkingDays(LocalDateTime startDate, int remainingDays, UUID consultantId) {
-        if (remainingDays <= 0) {
-            return startDate;
-        }
-        int daysCountDown = remainingDays;
-        int i = 0;
-        while (daysCountDown > 0) {
-            if (!Utilities.isWeekend(startDate.plusDays(i).getDayOfWeek().getValue())
-                    && !redDaysService.isRedDay(LocalDate.from(startDate.plusDays(i)), consultantId)) {
-                daysCountDown--;
-            }
-            i++;
-        }
-        return startDate.plusDays(i).minusSeconds(1L);
+        return new RemainingDaysDto(redDaysService.removeNonWorkingDays(startDate, remainingConsultancyDays, consultantId), remainingConsultancyDays);
     }
 }

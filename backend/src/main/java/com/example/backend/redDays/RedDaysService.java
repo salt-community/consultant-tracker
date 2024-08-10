@@ -3,14 +3,13 @@ package com.example.backend.redDays;
 import com.example.backend.client.nager.NagerClient;
 import com.example.backend.client.nager.dto.RedDaysFromNagerDto;
 import com.example.backend.consultant.ConsultantService;
-import lombok.AllArgsConstructor;
+import com.example.backend.utils.Utilities;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -56,5 +55,36 @@ public class RedDaysService {
     public boolean isRedDay(LocalDate date, UUID consultantId) {
         List<LocalDate> redDays = getRedDays(getCountryCode(consultantId));
         return redDays.contains(date);
+    }
+// TODO test for methods below
+    public LocalDateTime removeNonWorkingDays(LocalDateTime startDate, int remainingDays, UUID consultantId) {
+        if (remainingDays <= 0) {
+            return startDate;
+        }
+        int daysCountDown = remainingDays;
+        int i = 0;
+        while (daysCountDown > 0) {
+            if (!Utilities.isWeekend(startDate.plusDays(i).getDayOfWeek().getValue())
+                    && !isRedDay(LocalDate.from(startDate.plusDays(i)), consultantId)) {
+                daysCountDown--;
+            }
+            i++;
+        }
+        return startDate.plusDays(i).minusSeconds(1L);
+    }
+    public int checkRedDaysOrWeekend(Long daysBetween, LocalDate dateBefore, UUID consultantId, String variant) {
+        int nonWorkingDays = 0;
+        for (long j = 1; j < daysBetween; j++) {
+            var dateToCheck = dateBefore.plusDays(j);
+            if (Utilities.isWeekend(dateToCheck.getDayOfWeek().getValue())
+                    || isRedDay(dateToCheck, consultantId)) {
+                nonWorkingDays++;
+                continue;
+            }
+            if (variant.equals("check first")) {
+                j = daysBetween;
+            }
+        }
+        return nonWorkingDays;
     }
 }
