@@ -2,15 +2,19 @@ package com.example.backend.registeredTime;
 
 import com.example.backend.consultant.Consultant;
 import com.example.backend.consultant.dto.ConsultantTimeDto;
+import com.example.backend.registeredTime.dto.RegisteredTimeDto;
+import com.example.backend.registeredTime.dto.RegisteredTimeResponseDto;
 import org.assertj.core.util.Lists;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 public class RegisteredTimeServiceMockedData {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    private static final DateTimeFormatter formatterSeconds = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     public static List<RegisteredTime> generateMockedRegisteredTimeData() {
         RegisteredTime mockedTimeItem = new RegisteredTime(
@@ -146,6 +150,197 @@ public class RegisteredTimeServiceMockedData {
                 el.getTotalHours(),
                 el.getProjectName())).toList();
 
+    }
+
+    public static List<RegisteredTime> createMockedRegisteredTimeList() {
+        RegisteredTime mockedRegisteredTime = new RegisteredTime(new RegisteredTimeKey(
+                UUID.fromString("68c670d6-3038-4fca-95be-2669aaf0b549"),
+                LocalDateTime.parse("2024-05-20 00:00:00", formatterSeconds)),
+                "Konsult-tid",
+                LocalDateTime.parse("2024-05-20 23:59:59", formatterSeconds),
+                8D,
+                "AstraZeneca");
+        RegisteredTime mockedRegisteredTime2 = new RegisteredTime(new RegisteredTimeKey(
+                UUID.fromString("68c670d6-3038-4fca-95be-2669aaf0b549"),
+                LocalDateTime.parse("2024-05-21 00:00:00", formatterSeconds)),
+                "Konsult-tid",
+                LocalDateTime.parse("2024-05-21 23:59:59", formatterSeconds),
+                8D,
+                "AstraZeneca");
+        RegisteredTime mockedRegisteredTime3 = new RegisteredTime(new RegisteredTimeKey(
+                UUID.fromString("68c670d6-3038-4fca-95be-2669aaf0b549"),
+                LocalDateTime.parse("2024-05-22 00:00:00", formatterSeconds)),
+                "Konsult-tid",
+                LocalDateTime.parse("2024-05-22 23:59:59", formatterSeconds),
+                8D,
+                "AstraZeneca");
+        RegisteredTime mockedRegisteredTime4 = new RegisteredTime(new RegisteredTimeKey(
+                UUID.fromString("68c670d6-3038-4fca-95be-2669aaf0b549"),
+                LocalDateTime.parse("2024-05-23 00:00:00", formatterSeconds)),
+                "Konsult-tid",
+                LocalDateTime.parse("2024-05-23 23:59:59", formatterSeconds),
+                8D,
+                "AstraZeneca");
+        RegisteredTime mockedRegisteredTime5 = new RegisteredTime(new RegisteredTimeKey(
+                UUID.fromString("68c670d6-3038-4fca-95be-2669aaf0b549"),
+                LocalDateTime.parse("2024-05-24 00:00:00", formatterSeconds)),
+                "Konsult-tid",
+                LocalDateTime.parse("2024-05-24 23:59:59", formatterSeconds),
+                8D,
+                "AstraZeneca");
+        RegisteredTime mockedRegisteredTime6 = new RegisteredTime(new RegisteredTimeKey(
+                UUID.fromString("68c670d6-3038-4fca-95be-2669aaf0b549"),
+                LocalDateTime.parse("2024-05-27 00:00:00", formatterSeconds)),
+                "Konsult-tid",
+                LocalDateTime.parse("2024-05-27 23:59:59", formatterSeconds),
+                8D,
+                "AstraZeneca");
+        RegisteredTime mockedRegisteredTime7 = new RegisteredTime(new RegisteredTimeKey(
+                UUID.fromString("68c670d6-3038-4fca-95be-2669aaf0b549"),
+                LocalDateTime.parse("2024-06-28 00:00:00", formatterSeconds)),
+                "Sjuk",
+                LocalDateTime.parse("2024-06-28 23:59:59", formatterSeconds),
+                8D,
+                "PGP");
+        RegisteredTime mockedRegisteredTime8 = new RegisteredTime(new RegisteredTimeKey(
+                UUID.fromString("68c670d6-3038-4fca-95be-2669aaf0b549"),
+                LocalDateTime.parse("2024-07-01 00:00:00", formatterSeconds)),
+                "Semester",
+                LocalDateTime.parse("2024-07-01 23:59:59", formatterSeconds),
+                8D,
+                "PGP");
+        RegisteredTime mockedRegisteredTime9 = new RegisteredTime(new RegisteredTimeKey(
+                UUID.fromString("68c670d6-3038-4fca-95be-2669aaf0b549"),
+                LocalDateTime.parse("2024-07-02 00:00:00", formatterSeconds)),
+                "Semester",
+                LocalDateTime.parse("2024-07-02 23:59:59", formatterSeconds),
+                8D,
+                "PGP");
+        RegisteredTime mockedRegisteredTime10 = new RegisteredTime(new RegisteredTimeKey(
+                UUID.fromString("68c670d6-3038-4fca-95be-2669aaf0b549"),
+                LocalDateTime.parse("2024-08-01 00:00:00", formatterSeconds)),
+                "Konsult-tid",
+                LocalDateTime.parse("2024-08-01 23:59:59", formatterSeconds),
+                8D,
+                "Swedbank");
+        RegisteredTime mockedRegisteredTime11 = new RegisteredTime(new RegisteredTimeKey(
+                UUID.fromString("68c670d6-3038-4fca-95be-2669aaf0b549"),
+                LocalDateTime.parse("2024-08-02 00:00:00", formatterSeconds)),
+                "Konsult-tid",
+                LocalDateTime.parse("2024-08-02 23:59:59", formatterSeconds),
+                8D,
+                "Swedbank");
+        RegisteredTime mockedRegisteredTime12 = new RegisteredTime(new RegisteredTimeKey(
+                UUID.fromString("68c670d6-3038-4fca-95be-2669aaf0b549"),
+                LocalDateTime.parse("2024-08-02 00:00:00", formatterSeconds)),
+                "Konsult-tid",
+                LocalDateTime.parse("2024-08-02 23:59:59", formatterSeconds),
+                8D,
+                "Swedbank");
+        RegisteredTime mockedRegisteredTime13 = new RegisteredTime(new RegisteredTimeKey(
+                UUID.fromString("68c670d6-3038-4fca-95be-2669aaf0b549"),
+                LocalDateTime.parse("2024-08-05 00:00:00", formatterSeconds)),
+                "Konsult-tid",
+                LocalDateTime.parse("2024-08-05 23:59:59", formatterSeconds),
+                8D,
+                "Swedbank");
+        RegisteredTime mockedRegisteredTime14 = new RegisteredTime(new RegisteredTimeKey(
+                UUID.fromString("68c670d6-3038-4fca-95be-2669aaf0b549"),
+                LocalDateTime.parse("2024-08-06 00:00:00", formatterSeconds)),
+                "Konsult-tid",
+                LocalDateTime.parse("2024-08-06 23:59:59", formatterSeconds),
+                8D,
+                "Swedbank");
+        RegisteredTime mockedRegisteredTime15 = new RegisteredTime(new RegisteredTimeKey(
+                UUID.fromString("68c670d6-3038-4fca-95be-2669aaf0b549"),
+                LocalDateTime.parse("2024-08-07 00:00:00", formatterSeconds)),
+                "Konsult-tid",
+                LocalDateTime.parse("2024-08-07 23:59:59", formatterSeconds),
+                8D,
+                "Swedbank");
+        RegisteredTime mockedRegisteredTime16 = new RegisteredTime(new RegisteredTimeKey(
+                UUID.fromString("68c670d6-3038-4fca-95be-2669aaf0b549"),
+                LocalDateTime.parse("2024-08-08 00:00:00", formatterSeconds)),
+                "Konsult-tid",
+                LocalDateTime.parse("2024-08-08 23:59:59", formatterSeconds),
+                8D,
+                "Swedbank");
+        RegisteredTime mockedRegisteredTime17 = new RegisteredTime(new RegisteredTimeKey(
+                UUID.fromString("68c670d6-3038-4fca-95be-2669aaf0b549"),
+                LocalDateTime.parse("2024-08-09 00:00:00", formatterSeconds)),
+                "Konsult-tid",
+                LocalDateTime.parse("2024-08-09 23:59:59", formatterSeconds),
+                8D,
+                "Swedbank");
+        return Lists.newArrayList(mockedRegisteredTime,
+                mockedRegisteredTime2,
+                mockedRegisteredTime3,
+                mockedRegisteredTime4,
+                mockedRegisteredTime5,
+                mockedRegisteredTime6,
+                mockedRegisteredTime7,
+                mockedRegisteredTime8,
+                mockedRegisteredTime9,
+                mockedRegisteredTime10,
+                mockedRegisteredTime11,
+                mockedRegisteredTime12,
+                mockedRegisteredTime13,
+                mockedRegisteredTime14,
+                mockedRegisteredTime15,
+                mockedRegisteredTime16,
+                mockedRegisteredTime17);
+    }
+
+    public static List<RegisteredTimeResponseDto> createGroupedRegisteredTimeDtoResponse(){
+        RegisteredTimeResponseDto mockedRegisteredTimeResult = new RegisteredTimeResponseDto(
+                UUID.randomUUID(),
+                LocalDateTime.parse("2024-05-20 00:00:00",formatterSeconds),
+                LocalDateTime.parse("2024-05-27 23:59:59",formatterSeconds),
+                "Konsult-tid",
+                "AstraZeneca",
+                6);
+        RegisteredTimeResponseDto mockedRegisteredTimeResult2 = new RegisteredTimeResponseDto(
+                UUID.randomUUID(),
+                LocalDateTime.parse("2024-05-28 00:00:00",formatterSeconds),
+                LocalDateTime.parse("2024-06-27 23:59:59",formatterSeconds),
+                "No Registered Time",
+                "No Registered Time",
+                21);
+        RegisteredTimeResponseDto mockedRegisteredTimeResult3 = new RegisteredTimeResponseDto(
+                UUID.randomUUID(),
+                LocalDateTime.parse("2024-06-28 00:00:00",formatterSeconds),
+                LocalDateTime.parse("2024-06-30 23:59:59",formatterSeconds),
+                "Sjuk",
+                "PGP",
+                1);
+        RegisteredTimeResponseDto mockedRegisteredTimeResult4 = new RegisteredTimeResponseDto(
+                UUID.randomUUID(),
+                LocalDateTime.parse("2024-07-01 00:00:00",formatterSeconds),
+                LocalDateTime.parse("2024-07-02 23:59:59",formatterSeconds),
+                "Semester",
+                "PGP",
+                2);
+        RegisteredTimeResponseDto mockedRegisteredTimeResult5 = new RegisteredTimeResponseDto(
+                UUID.randomUUID(),
+                LocalDateTime.parse("2024-07-03 00:00:00",formatterSeconds),
+                LocalDateTime.parse("2024-07-31 23:59:59",formatterSeconds),
+                "No Registered Time",
+                "No Registered Time",
+                21);
+        RegisteredTimeResponseDto mockedRegisteredTimeResult6 = new RegisteredTimeResponseDto(
+                UUID.randomUUID(),
+                LocalDateTime.parse("2024-08-01 00:00:00",formatterSeconds),
+                LocalDateTime.parse("2024-08-09 23:59:59",formatterSeconds),
+                "No Registered Time",
+                "No Registered Time",
+                7);
+        return Lists.newArrayList(mockedRegisteredTimeResult,
+                mockedRegisteredTimeResult2,
+                mockedRegisteredTimeResult3,
+                mockedRegisteredTimeResult4,
+                mockedRegisteredTimeResult5,
+                mockedRegisteredTimeResult6
+                );
     }
 
 }
