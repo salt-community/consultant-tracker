@@ -3,10 +3,14 @@ package com.example.backend.consultant;
 import com.example.backend.consultant.dto.ConsultantResponseListDto;
 import com.example.backend.consultant.dto.ConsultantTimeResponseDto;
 import com.example.backend.redDays.RedDaysService;
+import com.example.backend.registeredTime.RegisteredTime;
 import com.example.backend.registeredTime.RegisteredTimeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/consultants")
@@ -44,4 +48,10 @@ public class ConsultantController {
         }
         return null;
     }
+    @GetMapping("/registeredTimeByConsultantId")
+    public ResponseEntity<List<RegisteredTime>> getConsultantsRegisteredTimeById(
+            @RequestParam UUID id) {
+        return ResponseEntity.ok(registeredTimeService.getRegisteredTime(id));
+    }
+
 }

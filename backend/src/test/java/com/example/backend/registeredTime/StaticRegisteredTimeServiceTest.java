@@ -81,7 +81,6 @@ public class StaticRegisteredTimeServiceTest {
                 UUID.fromString("589256b4-c5db-4d77-9d50-49c0636a4c52"))).thenReturn(true);
 
         mockUtilities.when(() -> Utilities.isWeekend(6)).thenReturn(true);
-
         List<ConsultantTimeDto> mockedTimeItemsList = RegisteredTimeServiceMockedData.createSemesterRegisteredWithOHours();
         List<ConsultantTimeDto> actualResult = registeredTimeService.filterOutIncorrectlyRegisteredTimeDB(mockedTimeItemsList);
         assertEquals(3, actualResult.size());

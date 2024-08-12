@@ -53,6 +53,7 @@ public class RegisteredTimeService {
         }
         return PGP.activity;
     }
+
     //-----------------------------------MOVE TO SEPARATE SERVICE--------------------------------------------
     public void fetchAndSaveTimeRegisteredByConsultantDB() {
         List<Consultant> activeConsultants = consultantService.getAllActiveConsultants();
@@ -173,6 +174,11 @@ public class RegisteredTimeService {
                 .toList();
     }
 
+    // to remove after testing
+    public List<RegisteredTime> getRegisteredTime(UUID id) {
+        return getTimeByConsultantId(id);
+    }
+    // to remove after testing
     public List<RegisteredTimeResponseDto> getGroupedConsultantsRegisteredTimeItems(UUID id) {
         List<RegisteredTime> registeredTimeList = getTimeByConsultantId(id);
         if (registeredTimeList.isEmpty()) {
@@ -280,7 +286,6 @@ public class RegisteredTimeService {
 
     public RegisteredTimeResponseDto getRemainingConsultancyTimeByConsultantId(UUID consultantId) {
         LocalDateTime lastRegisteredDate = registeredTimeRepository.findFirstById_ConsultantIdOrderByEndDateDesc(consultantId).getEndDate();
-        //TODO fix PGP
         LocalDateTime startDate = lastRegisteredDate.plusDays(1).withHour(0).withMinute(0).withSecond(0);
         RemainingDaysDto estimatedEndDate = getEstimatedConsultancyEndDate(consultantId, startDate);
         if (estimatedEndDate.endDate() == startDate) {

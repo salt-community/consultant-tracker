@@ -14,6 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -52,7 +53,7 @@ class RegisteredTimeServiceTest {
     @Test
     public void shouldReturnTwoTimeItems() {
         Mockito.when(registeredTimeRepository.findAllById_ConsultantIdOrderById_StartDateAsc(
-                listOfConsultantIds.get(0)))
+                        listOfConsultantIds.get(0)))
                 .thenReturn(RegisteredTimeServiceMockedData.generateMockedRegisteredTimeData());
         List<RegisteredTime> actualResult = registeredTimeService.getTimeByConsultantId(
                 listOfConsultantIds.get(0));
@@ -60,7 +61,7 @@ class RegisteredTimeServiceTest {
     }
 
     @Test
-    public void shouldReturnPGPWhenConsultantDidNotWorkYet(){
+    public void shouldReturnPGPWhenConsultantDidNotWorkYet() {
         Mockito.when(registeredTimeRepository.findFirstById_ConsultantIdAndTypeIsOrderByEndDateDesc(
                         listOfConsultantIds.get(0), CONSULTANCY_TIME.activity))
                 .thenReturn(null);
@@ -69,7 +70,7 @@ class RegisteredTimeServiceTest {
     }
 
     @Test
-    public void shouldReturnCurrentClientWhenConsultantWorked(){
+    public void shouldReturnCurrentClientWhenConsultantWorked() {
         Mockito.when(registeredTimeRepository.findFirstById_ConsultantIdAndTypeIsOrderByEndDateDesc(
                         listOfConsultantIds.get(0), CONSULTANCY_TIME.activity))
                 .thenReturn(RegisteredTimeServiceMockedData.createMockedLasWorkTimeRegistered());
@@ -93,7 +94,8 @@ class RegisteredTimeServiceTest {
 
     @Test
     public void shouldGetAllConsultantsTimeItems() {
-        Mockito.lenient().when(consultantService.getAllConsultants()).thenReturn(RegisteredTimeServiceMockedData.createMockedListOfConsultants());
+        Mockito.lenient().when(consultantService.getAllConsultants()).thenReturn(
+                RegisteredTimeServiceMockedData.createMockedListOfConsultants());
         Mockito.lenient().when(registeredTimeRepository.findAllById_ConsultantIdOrderById_StartDateAsc(
                         listOfConsultantIds.get(0)))
                 .thenReturn(RegisteredTimeServiceMockedData.generateMockedRegisteredTimeData());
@@ -107,7 +109,7 @@ class RegisteredTimeServiceTest {
     }
 
     @Test
-    public void shouldReturnNullWhenRegisteredTimeListIsEmpty(){
+    public void shouldReturnNullWhenRegisteredTimeListIsEmpty() {
         Mockito.lenient().when(registeredTimeRepository.findAllById_ConsultantIdOrderById_StartDateAsc(
                         listOfConsultantIds.get(0)))
                 .thenReturn(new ArrayList<>());
@@ -116,8 +118,8 @@ class RegisteredTimeServiceTest {
     }
 
     @Test
-    public void shouldReturnGroupedConsultantsRegisteredTimeItems(){
-       DateTimeFormatter formatterSeconds = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    public void shouldReturnGroupedConsultantsRegisteredTimeItems() {
+        DateTimeFormatter formatterSeconds = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         Mockito.lenient().when(registeredTimeRepository.findAllById_ConsultantIdOrderById_StartDateAsc(
                         listOfConsultantIds.get(0)))
                 .thenReturn(RegisteredTimeServiceMockedData.createMockedRegisteredTimeList());
@@ -125,17 +127,23 @@ class RegisteredTimeServiceTest {
                         listOfConsultantIds.get(0)))
                 .thenReturn(new RegisteredTime(new RegisteredTimeKey(
                         UUID.fromString("68c670d6-3038-4fca-95be-2669aaf0b549"),
-                        LocalDateTime.parse("2024-08-09 00:00:00", formatterSeconds)),
+                        LocalDateTime.parse("2024-06-28 00:00:00", formatterSeconds)),
                         "Konsult-tid",
-                        LocalDateTime.parse("2024-08-09 23:59:59", formatterSeconds),
+                        LocalDateTime.parse("2024-06-28 23:59:59", formatterSeconds),
                         8D,
                         "Swedbank"));
         Mockito.lenient().when(consultantService.getCountryCodeByConsultantId(
                         UUID.fromString("68c670d6-3038-4fca-95be-2669aaf0b549")))
                 .thenReturn("SE");
+        Mockito.lenient().when(redDaysService.checkRedDaysOrWeekend(3L, LocalDate.parse("2024-05-24"),
+                        UUID.fromString("68c670d6-3038-4fca-95be-2669aaf0b549"),"single check"))
+                .thenReturn(2);
+        Mockito.lenient().when(redDaysService.checkRedDaysOrWeekend(32L, LocalDate.parse("2024-05-27"),
+                        UUID.fromString("68c670d6-3038-4fca-95be-2669aaf0b549"),"multiple check"))
+                .thenReturn(10);
         List<RegisteredTimeResponseDto> actualResult = registeredTimeService.getGroupedConsultantsRegisteredTimeItems(
                 UUID.fromString("68c670d6-3038-4fca-95be-2669aaf0b549"));
-        System.out.println("actualResult = " + actualResult);
+        actualResult.forEach(el->System.out.println("el= " + el));
         List<RegisteredTimeResponseDto> expectedResult = RegisteredTimeServiceMockedData.createGroupedRegisteredTimeDtoResponse();
         assertEquals(expectedResult, actualResult);
     }

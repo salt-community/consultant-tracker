@@ -278,17 +278,18 @@ public class RegisteredTimeServiceMockedData {
                 mockedRegisteredTime4,
                 mockedRegisteredTime5,
                 mockedRegisteredTime6,
-                mockedRegisteredTime7,
-                mockedRegisteredTime8,
-                mockedRegisteredTime9,
-                mockedRegisteredTime10,
-                mockedRegisteredTime11,
-                mockedRegisteredTime12,
-                mockedRegisteredTime13,
-                mockedRegisteredTime14,
-                mockedRegisteredTime15,
-                mockedRegisteredTime16,
-                mockedRegisteredTime17);
+                mockedRegisteredTime7
+//                mockedRegisteredTime8,
+//                mockedRegisteredTime9,27
+//                mockedRegisteredTime10,
+//                mockedRegisteredTime11,
+//                mockedRegisteredTime12,
+//                mockedRegisteredTime13,
+//                mockedRegisteredTime14,
+//                mockedRegisteredTime15,
+//                mockedRegisteredTime16,
+//                mockedRegisteredTime17);
+        );
     }
 
     public static List<RegisteredTimeResponseDto> createGroupedRegisteredTimeDtoResponse(){
