@@ -1,27 +1,43 @@
 package com.example.backend.tag;
 
+import com.example.backend.ApplicationTestConfig;
 import com.example.backend.client.timekeeper.dto.TimekeeperUserDto;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
+@SpringBootTest
+@ExtendWith(MockitoExtension.class)
+@ContextConfiguration(classes = ApplicationTestConfig.class)
 class TagTest {
+    private static Tag tagTest = new Tag();
+    private static Tag tagSverige = new Tag();
+    private static Tag tagNorge = new Tag();
+
+    @BeforeAll
+    static void setUp() {
+        tagTest.setName("TestTag");
+        tagSverige.setName("Sverige");
+        tagNorge.setName("Norge");
+    }
+
     @Test
     void shouldReturnSverige() {
-        Tag tag1 = new Tag();
-        tag1.setName("TestTag");
-        Tag tag2 = new Tag();
-        tag2.setName("Sverige");
+
         TimekeeperUserDto tkUserTest = new TimekeeperUserDto(
                 "Test Name",
                 "Test Last Name",
                 "email@test.mk",
                 null,
-                List.of(tag1, tag2),
+                List.of(tagTest, tagSverige),
                 null,
                 true,
                 "test client",
@@ -35,16 +51,12 @@ class TagTest {
 
     @Test
     void shouldReturnNorge() {
-        Tag tag1 = new Tag();
-        tag1.setName("TestTag");
-        Tag tag2 = new Tag();
-        tag2.setName("Norge");
         TimekeeperUserDto tkUserTest = new TimekeeperUserDto(
                 "Test Name",
                 "Test Last Name",
                 "email@test.mk",
                 null,
-                List.of(tag1, tag2),
+                List.of(tagTest, tagNorge),
                 null,
                 true,
                 "test client",
@@ -55,6 +67,7 @@ class TagTest {
         String actualResult = Tag.extractCountryTagFromTimekeeperUserDto(tkUserTest);
         assertEquals(expectedResult, actualResult);
     }
+
     @Test
     void shouldReturnSverigeForEmptyList() {
         TimekeeperUserDto tkUserTest = new TimekeeperUserDto(
@@ -76,16 +89,12 @@ class TagTest {
 
     @Test
     void shouldReturnSverigeForListWithoutCountry() {
-        Tag tag1 = new Tag();
-        tag1.setName("TestTag1");
-        Tag tag2 = new Tag();
-        tag2.setName("TestTag2");
         TimekeeperUserDto tkUserTest = new TimekeeperUserDto(
                 "Test Name",
                 "Test Last Name",
                 "email@test.mk",
                 null,
-                List.of(tag1, tag2),
+                List.of(tagTest, tagSverige),
                 null,
                 true,
                 "test client",
