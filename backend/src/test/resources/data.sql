@@ -1,0 +1,1 @@
+INSERT INTO red_days(id, country, date, name) values ('01438d07-91cb-4f4d-adab-aa050462779e','SE', null ,'New Year');

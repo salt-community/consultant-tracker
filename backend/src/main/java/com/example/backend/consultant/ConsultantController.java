@@ -2,6 +2,7 @@ package com.example.backend.consultant;
 
 import com.example.backend.consultant.dto.ConsultantResponseListDto;
 import com.example.backend.consultant.dto.ConsultantTimeResponseDto;
+import com.example.backend.redDays.RedDays;
 import com.example.backend.redDays.RedDaysService;
 import com.example.backend.registeredTime.RegisteredTime;
 import com.example.backend.registeredTime.RegisteredTimeService;
@@ -34,8 +35,8 @@ public class ConsultantController {
     }
 
     @GetMapping("/redDays")
-    public void getConsultantById() {
-        redDaysService.getRedDaysFromNager();
+    public ResponseEntity<List<RedDays>> getConsultantById() {
+        return ResponseEntity.ok(redDaysService.getRedDaysFromNager(2018,2030));
     }
 
 

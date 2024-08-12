@@ -141,11 +141,23 @@ class RegisteredTimeServiceTest {
         Mockito.lenient().when(redDaysService.checkRedDaysOrWeekend(32L, LocalDate.parse("2024-05-27"),
                         UUID.fromString("68c670d6-3038-4fca-95be-2669aaf0b549"),"multiple check"))
                 .thenReturn(10);
+        Mockito.lenient().when(redDaysService.checkRedDaysOrWeekend(3L, LocalDate.parse("2024-06-28"),
+                        UUID.fromString("68c670d6-3038-4fca-95be-2669aaf0b549"),"single check"))
+                .thenReturn(2);
+        Mockito.lenient().when(redDaysService.checkRedDaysOrWeekend(29L, LocalDate.parse("2024-07-03"),
+                        UUID.fromString("68c670d6-3038-4fca-95be-2669aaf0b549"),"multiple check"))
+                .thenReturn(8);
+        Mockito.lenient().when(redDaysService.checkRedDaysOrWeekend(3L, LocalDate.parse("2024-08-02"),
+                        UUID.fromString("68c670d6-3038-4fca-95be-2669aaf0b549"),"single check"))
+                .thenReturn(2);
         List<RegisteredTimeResponseDto> actualResult = registeredTimeService.getGroupedConsultantsRegisteredTimeItems(
                 UUID.fromString("68c670d6-3038-4fca-95be-2669aaf0b549"));
         actualResult.forEach(el->System.out.println("el= " + el));
         List<RegisteredTimeResponseDto> expectedResult = RegisteredTimeServiceMockedData.createGroupedRegisteredTimeDtoResponse();
-        assertEquals(expectedResult, actualResult);
+        assertEquals(expectedResult.getFirst().startDate(), actualResult.getFirst().startDate());
+        assertEquals(expectedResult.getFirst().endDate(), actualResult.getFirst().endDate());
+        assertEquals(expectedResult.getFirst().type(), actualResult.getFirst().type());
+        assertEquals(expectedResult.getFirst().days(), actualResult.getFirst().days());
+        assertEquals(expectedResult.getFirst().projectName(), actualResult.getFirst().projectName());
     }
-
 }

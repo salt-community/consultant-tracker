@@ -178,6 +178,7 @@ public class RegisteredTimeService {
     public List<RegisteredTime> getRegisteredTime(UUID id) {
         return getTimeByConsultantId(id);
     }
+
     // to remove after testing
     public List<RegisteredTimeResponseDto> getGroupedConsultantsRegisteredTimeItems(UUID id) {
         List<RegisteredTime> registeredTimeList = getTimeByConsultantId(id);

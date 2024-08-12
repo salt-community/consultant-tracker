@@ -10,11 +10,11 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Service
-@Data
 public class RedDaysService {
     private final RedDaysRepository redDaysRepository;
     private final NagerClient workingDaysClient;
@@ -28,25 +28,28 @@ public class RedDaysService {
         this.redDaysRepository = redDaysRepository;
         this.workingDaysClient = workingDaysClient;
     }
-
+    //-----------------------------COVERED BY TESTS ---------------------------------
     public List<LocalDate> getRedDays(String countryCode) {
         List<RedDays> allDates = redDaysRepository.findAllByCountry(countryCode);
         return allDates.stream().map(el -> el.date).toList();
     }
 
-    public void getRedDaysFromNager() {
-        int year2018 = 2018;
-        int year2030 = 2030;
-        for (int i = 0; year2018 + i < year2030; i++) {
-            List<RedDaysFromNagerDto> currentYearRedDaysArray = workingDaysClient.getRedDaysPerYear(year2018 + i, new String[]{"SE", "NO"});
-            saveRedDays(currentYearRedDaysArray);
+    public List<RedDays> getRedDaysFromNager(int startYear, int endYear) {
+        List<RedDays> savedRedDaysDB = new ArrayList<>();
+        for (int i = 0; startYear + i < endYear; i++) {
+            List<RedDaysFromNagerDto> currentYearRedDaysArray = workingDaysClient.getRedDaysPerYear(startYear + i, new String[]{"SE", "NO"});
+            savedRedDaysDB.addAll(saveRedDays(currentYearRedDaysArray));
         }
+        return savedRedDaysDB;
     }
 
-    private void saveRedDays(List<RedDaysFromNagerDto> redDaysArray) {
+    private List<RedDays> saveRedDays(List<RedDaysFromNagerDto> redDaysArray) {
+        List<RedDays> savedRedDays = new ArrayList<>();
         for (RedDaysFromNagerDto redDays : redDaysArray) {
-            redDaysRepository.save(new RedDays(UUID.randomUUID(), redDays.date(), redDays.name(), redDays.countryCode()));
+            RedDays save = redDaysRepository.save(new RedDays(UUID.randomUUID(), redDays.date(), redDays.name(), redDays.countryCode()));
+            savedRedDays.add(save);
         }
+        return savedRedDays;
     }
     private String getCountryCode(UUID consultantId) {
         return consultantService.getCountryCodeByConsultantId(consultantId).equals("Sverige") ? "SE" : "NO";

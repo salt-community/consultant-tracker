@@ -2,9 +2,12 @@ package com.example.backend.redDays;
 
 import com.example.backend.ApplicationTestConfig;
 import com.example.backend.client.nager.NagerClient;
+import com.example.backend.client.nager.dto.RedDaysFromNagerDto;
 import com.example.backend.consultant.ConsultantService;
 import com.example.backend.utils.Utilities;
+import lombok.SneakyThrows;
 import org.assertj.core.util.Lists;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -56,7 +59,6 @@ class RedDaysServiceTest {
         var expectedResult = Lists.newArrayList(LocalDate.parse("2024-01-01"), LocalDate.parse("2024-12-24"));
         Mockito.when(redDaysRepository.findAllByCountry("NO"))
                 .thenReturn(RedDaysServiceMockedData.createMockedRedDaysList());
-        Mockito.when(redDaysRepository.findAllByCountry("NO")).thenReturn(RedDaysServiceMockedData.createMockedRedDaysDataNO());
         List<LocalDate> actualResult = redDaysService.getRedDays("NO");
         assertEquals(actualResult.size(), 2);
         assertEquals(actualResult.get(1), expectedResult.get(1));
@@ -73,6 +75,26 @@ class RedDaysServiceTest {
                 LocalDate.parse("2024-01-02"),
                 UUID.fromString("45ec353f-b0f5-4a51-867e-8d0d84d11573"));
         assertFalse(actualResult);
+    }
+
+    @Test
+    public void shouldReturnStartDateWhenRemainingDays0() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime actualResult = redDaysService.removeNonWorkingDays(
+                LocalDateTime.parse("2024-01-01 00:00:00", formatter),
+                0,
+                UUID.fromString("45ec353f-b0f5-4a51-867e-8d0d84d11573"));
+        assertEquals( LocalDateTime.parse("2024-01-01 00:00:00", formatter), actualResult);
+    }
+
+    @Test
+    public void shouldReturnStartDateWhenRemainingDaysNegative() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime actualResult = redDaysService.removeNonWorkingDays(
+                LocalDateTime.parse("2024-01-01 00:00:00", formatter),
+                -30,
+                UUID.fromString("45ec353f-b0f5-4a51-867e-8d0d84d11573"));
+        assertEquals( LocalDateTime.parse("2024-01-01 00:00:00", formatter), actualResult);
     }
 
 
@@ -95,13 +117,12 @@ class RedDaysServiceTest {
                 LocalDateTime.parse("2024-01-01 00:00:00", formatter),
                 5,
                 UUID.fromString("45ec353f-b0f5-4a51-867e-8d0d84d11573"));
-
         assertEquals(expectedResult, actualResult);
     }
 
     @Test
     public void shouldReturn5WhenStartDay2JanAndDaysBetween15VariantMultiple() {
-                Mockito.lenient().when(consultantService.getCountryCodeByConsultantId(
+        Mockito.lenient().when(consultantService.getCountryCodeByConsultantId(
                         UUID.fromString("45ec353f-b0f5-4a51-867e-8d0d84d11573")))
                 .thenReturn("Sverige");
         Mockito.lenient().when(redDaysRepository.findAllByCountry("SE"))
@@ -112,17 +133,16 @@ class RedDaysServiceTest {
         mockUtilities.close();
 
         int actualResult = redDaysService.checkRedDaysOrWeekend(
-               15L,
+                15L,
                 LocalDate.parse("2023-12-31"),
                 UUID.fromString("45ec353f-b0f5-4a51-867e-8d0d84d11573"),
                 "multiple check");
-
         assertEquals(5, actualResult);
     }
 
     @Test
     public void shouldReturn1WhenStartDay2JanAndDaysBetween15VariantSingle() {
-            Mockito.lenient().when(consultantService.getCountryCodeByConsultantId(
+        Mockito.lenient().when(consultantService.getCountryCodeByConsultantId(
                         UUID.fromString("45ec353f-b0f5-4a51-867e-8d0d84d11573")))
                 .thenReturn("Sverige");
         Mockito.lenient().when(redDaysRepository.findAllByCountry("SE"))
@@ -137,9 +157,42 @@ class RedDaysServiceTest {
                 LocalDate.parse("2023-12-31"),
                 UUID.fromString("45ec353f-b0f5-4a51-867e-8d0d84d11573"),
                 "single check");
-
         assertEquals(1, actualResult);
     }
 
+    @Test
+    public void shouldReturnSavedRedDaysFromAPI(){
+        RedDaysFromNagerDto mockedRedDaysFromNagerDto = new RedDaysFromNagerDto(
+                LocalDate.parse("2018-12-31"),
+                "New Years Eve",
+                "SE" );
+        RedDays mockedRedDayResponseRepository = new RedDays(UUID.fromString("45ec353f-b0f5-4a51-867e-8d0d84d11573"),
+                LocalDate.parse("2018-12-31"),
+                "New Years Eve",
+                "SE");
+        List<RedDaysFromNagerDto> mockedRedDaysFromNagerDtoList = new ArrayList<>();
+        mockedRedDaysFromNagerDtoList.add(mockedRedDaysFromNagerDto);
+        Mockito.lenient().when(workingDaysClient.getRedDaysPerYear(2018, new String[]{"SE", "NO"}))
+                .thenReturn(mockedRedDaysFromNagerDtoList);
+        Mockito.lenient().when(redDaysRepository.save(Mockito.any(RedDays.class)))
+                .thenReturn(mockedRedDayResponseRepository);
+        List<RedDays> actualResult = redDaysService.getRedDaysFromNager(2018,2019);
+        assertEquals("New Years Eve", actualResult.get(0).getName());
+    }
+
+    //----------------------------- PRIVATE METHODS TESTS ---------------------------------
+    @Test
+    @SneakyThrows
+    public void shouldReturnSEWhenSweden() {
+        var redDaysServiceInstance = redDaysService;
+        var getCountryCode = redDaysServiceInstance.getClass().getDeclaredMethod("getCountryCode", UUID.class);
+        getCountryCode.setAccessible(true);
+        Mockito.lenient().when(consultantService.getCountryCodeByConsultantId(
+                        UUID.fromString("45ec353f-b0f5-4a51-867e-8d0d84d11573")))
+                .thenReturn("Sverige");
+        Assertions.assertEquals("SE",
+                getCountryCode.invoke(redDaysServiceInstance,
+                        UUID.fromString("45ec353f-b0f5-4a51-867e-8d0d84d11573")));
+    }
 
 }
