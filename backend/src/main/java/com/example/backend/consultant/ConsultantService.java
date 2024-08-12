@@ -25,7 +25,7 @@ public class ConsultantService {
     private TimekeeperClient timekeeperClient;
     private RegisteredTimeService registeredTimeService;
 
-
+    //-----------------------------COVERED BY TESTS ---------------------------------
     public ConsultantResponseListDto getAllConsultantDtos(int page, int pageSize, String name, String pt, String client) {
         Page<Consultant> consultantsList = getAllConsultantsPageable(page, pageSize, name, pt, client);
 
@@ -41,7 +41,7 @@ public class ConsultantService {
         Pageable pageRequest = PageRequest.of(page, pageSize);
         return consultantRepository.findAllByActiveTrueAndFilterByName(name, pageRequest);
     }
-
+    //-----------------------------COVERED BY TESTS ---------------------------------
     public List<Consultant> getAllConsultants() {
         return consultantRepository.findAll();
     }
@@ -61,6 +61,7 @@ public class ConsultantService {
 // Test in integration tests
 
     private void updateConsultantTable(List<TimekeeperUserDto> timekeeperUserDto) {
+        System.out.println("timekeeperUserDto = " + timekeeperUserDto);
         timekeeperUserDto.forEach(tkUser -> {
             if (!consultantRepository.existsByTimekeeperId(tkUser.id())) {
                 String countryTag = Tag.extractCountryTagFromTimekeeperUserDto(tkUser);
