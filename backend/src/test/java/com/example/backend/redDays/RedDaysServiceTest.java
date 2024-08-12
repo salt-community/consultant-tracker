@@ -56,6 +56,7 @@ class RedDaysServiceTest {
         var expectedResult = Lists.newArrayList(LocalDate.parse("2024-01-01"), LocalDate.parse("2024-12-24"));
         Mockito.when(redDaysRepository.findAllByCountry("NO"))
                 .thenReturn(RedDaysServiceMockedData.createMockedRedDaysList());
+        Mockito.when(redDaysRepository.findAllByCountry("NO")).thenReturn(RedDaysServiceMockedData.createMockedRedDaysDataNO());
         List<LocalDate> actualResult = redDaysService.getRedDays("NO");
         assertEquals(actualResult.size(), 2);
         assertEquals(actualResult.get(1), expectedResult.get(1));
