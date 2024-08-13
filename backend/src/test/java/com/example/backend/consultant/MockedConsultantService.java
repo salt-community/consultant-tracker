@@ -17,4 +17,8 @@ public class MockedConsultantService {
     public static List<Consultant> mockedGetConsultantsList() {
         return mockConsultantList;
     }
+
+    public static void clearList() {
+        MockedConsultantService. mockConsultantList.clear();
+    }
 }

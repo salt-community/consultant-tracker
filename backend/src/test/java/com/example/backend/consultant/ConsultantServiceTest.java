@@ -10,6 +10,7 @@ import com.example.backend.tag.Tag;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -56,7 +57,7 @@ class ConsultantServiceTest extends ApplicationTestConfig {
     private TimekeeperClient timekeeperClient;
 
     @BeforeAll
-    static void setUp() {
+    static void setUpBeforeAll() {
         // mock consultants
         mockedConsultant1 = new Consultant(
                 UUID.fromString("68c670d6-3038-4fca-95be-2669aaf0b549"),
@@ -88,6 +89,11 @@ class ConsultantServiceTest extends ApplicationTestConfig {
                 "H&M",
                 "Sverige",
                 true);
+    }
+
+    @BeforeEach
+    void setUpBeforeEach() {
+        MockedConsultantService.clearList();
     }
 
     @Test
@@ -241,9 +247,33 @@ class ConsultantServiceTest extends ApplicationTestConfig {
         UUID actualResult = MockedConsultantService.mockedGetConsultantsList()
                 .stream()
                 .filter(c -> !c.isActive()).toList().get(0).getId();
-
         assertEquals(expectedResult, actualResult);
     }
+
+    // this test might not be useful if the responsible PT is taken
+    // from Lucca later on
+    @Test
+    void shouldUpdateResponsiblePtForAllConsultants() {
+        // public void fillClientAndResponsiblePt()
+
+        /* ARRANGE */
+        Mockito.when(mockedConsultantRepo.findAllByActiveTrue()).thenReturn(List.of(mockedConsultant1));
+        Mockito.when(mockedConsultantRepo.save(any(Consultant.class)))
+                .thenReturn(MockedConsultantService.mockedCreateConsultant(mockedConsultant1));
+        String possibleExpected1 = "Josefin Stål";
+        String possibleExpected2 = "Anna Carlsson";
+
+        /* ACT */
+        consultantService.fillClientAndResponsiblePt();
+
+        /* ASSERT */
+        List<Consultant> resultList = MockedConsultantService.mockedGetConsultantsList();
+        Consultant actualResult = resultList.stream().filter(c -> (c.getId() == mockedConsultant1.getId())
+        && (c.getResponsiblePT().equals(possibleExpected1) || c.getResponsiblePT().equals(possibleExpected2))).toList().get(0);
+        assertNotNull(actualResult);
+        assertEquals(mockedConsultant1.getId(), actualResult.getId());
+    }
+
     // the way the methods are set up this test doesn't make sense in unit testing
 //    @Test
 //    void shouldAddNewConsultant() {
