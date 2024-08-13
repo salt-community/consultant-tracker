@@ -41,4 +41,19 @@ public class ObjectConstructor {
                 "Sverige",
                 true);
     }
+
+    public static TimekeeperUserDto convertConsultantToTimekeeperUserDto(Consultant consultant) {
+        String[] firstAndLastName = consultant.getFullName().split(" ");
+        return new TimekeeperUserDto(
+                firstAndLastName[0],
+                firstAndLastName[1],
+                consultant.getEmail(),
+                consultant.getPhoneNumber(),
+                null,
+                consultant.getTimekeeperId(),
+                consultant.isActive(),
+                consultant.getClient(),
+                consultant.getResponsiblePT(),
+                true);
+    }
 }

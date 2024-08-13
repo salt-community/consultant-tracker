@@ -11,13 +11,13 @@ import com.example.backend.tag.Tag;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -26,8 +26,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ContextConfiguration;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -50,11 +48,9 @@ class ConsultantServiceTest extends ApplicationTestConfig {
     private static Consultant mockedConsultant1;
     private static Consultant mockedConsultant2;
     private static Consultant mockedConsultant3;
-    @Autowired
-    private TimekeeperClient timekeeperClient;
 
-    @BeforeAll
-    static void setUpBeforeAll() {
+    @BeforeEach
+    void setUpBeforeAll() {
         // mock consultants
         mockedConsultant1 = new Consultant(
                 UUID.fromString("68c670d6-3038-4fca-95be-2669aaf0b549"),
@@ -89,8 +85,9 @@ class ConsultantServiceTest extends ApplicationTestConfig {
     }
 
     @AfterEach
-    void setUpBeforeEach() {
+    void setUpAfterEach() {
         MockedConsultantService.clearList();
+        System.out.println("Mock list after @AfterEach clearing " + MockedConsultantService.mockedGetConsultantsList());
     }
 
     @Test
@@ -98,8 +95,10 @@ class ConsultantServiceTest extends ApplicationTestConfig {
         /* ARRANGE */
         List<Consultant> mockedList = List.of(mockedConsultant1, mockedConsultant2);
         Mockito.when(mockedConsultantRepo.findAll()).thenReturn(mockedList);
+
         /* ACT */
         List<Consultant> consultantList = consultantService.getAllConsultants();
+
         /* ASSERT */
         assertFalse(consultantList.isEmpty());
     }
@@ -109,8 +108,10 @@ class ConsultantServiceTest extends ApplicationTestConfig {
         /* ARRANGE */
         Mockito.when(mockedConsultantRepo.findCountryById(any(UUID.class))).thenReturn("Sverige");
         String expectedResult = "Sverige";
+
         /* ACT */
         String result = consultantService.getCountryCodeByConsultantId(UUID.fromString("223152ac-6af6-4a4b-b86b-53c0707f433c"));
+
         /* ASSERT */
         assertEquals(expectedResult, result);
     }
@@ -123,8 +124,10 @@ class ConsultantServiceTest extends ApplicationTestConfig {
         Mockito.when(mockedRegisteredTimeService
                 .getConsultantTimelineItems(any(Consultant.class))).thenReturn(MockedRegisteredTimeService.getConsultantTimelineItemsMocked(mockedConsultant1));
         int expectedConsultantsFound = 1;
+
         /* ACT */
         ConsultantResponseListDto mockedResult = consultantService.getAllConsultantDtos(0, 8, "mockJohn", "mockPt", "mockClient");
+
         /* ASSERT */
         assertEquals(expectedConsultantsFound, mockedResult.consultants().size());
     }
@@ -134,40 +137,17 @@ class ConsultantServiceTest extends ApplicationTestConfig {
         /* ARRANGE */
         Mockito.when(mockedConsultantRepo.findAllByActiveTrue()).thenReturn(List.of(mockedConsultant1, mockedConsultant2));
         int expectedListSize = 2;
+
         /* ACT */
         int actualListSize = consultantService.getAllActiveConsultants().size();
+
         /* ASSERT */
         assertEquals(expectedListSize, actualListSize);
     }
 
     @Test
     @SneakyThrows
-    void shouldAddNewConsultant() {
-        /* ARRANGE */
-        int listSizeBeforeAdding = MockedConsultantService.mockedGetConsultantsList().size();
-        List<TimekeeperUserDto> mockedListTimekeeperUser = ObjectConstructor.getListOfTimekeeperUserDto(1);
-        Mockito.when(mockedConsultantRepo.existsByTimekeeperId(anyLong())).thenReturn(false);
-        try (MockedStatic<Tag> mockTag = mockStatic(Tag.class)) {
-            mockTag.when(() -> Tag.extractCountryTagFromTimekeeperUserDto(any(TimekeeperUserDto.class))).thenReturn("Sverige");
-        }
-        Mockito.when(mockedConsultantRepo.save(any(Consultant.class)))
-                .thenReturn(MockedConsultantService.mockedCreateConsultant(
-                        ObjectConstructor.convertTimekeeperUserDtoToConsultant(mockedListTimekeeperUser.getFirst())
-                ));
-
-        var consultantServiceClass = new ConsultantService(mockedConsultantRepo, mockedTkClient, mockedRegisteredTimeService);
-        var updateConsultantTableMethod = consultantServiceClass.getClass().getDeclaredMethod("updateConsultantTable", List.class);
-        updateConsultantTableMethod.setAccessible(true);
-        /* ACT */
-        updateConsultantTableMethod.invoke(consultantServiceClass, mockedListTimekeeperUser);
-
-        /* ASSERT */
-        int listSizeAfterAdding = MockedConsultantService.mockedGetConsultantsList().size();
-        assertEquals(1, listSizeAfterAdding - listSizeBeforeAdding);
-    }
-
-    @Test
-    void shouldAddConsultantToList() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    void shouldAddConsultantToList() {
         /* ARRANGE */
         var consultantServiceClass = new ConsultantService(mockedConsultantRepo, mockedTkClient, mockedRegisteredTimeService);
         var createConsultantMethod = consultantServiceClass.getClass().getDeclaredMethod("createConsultant", Consultant.class);
@@ -175,8 +155,10 @@ class ConsultantServiceTest extends ApplicationTestConfig {
         var listSizeBefore = MockedConsultantService.mockedGetConsultantsList().size();
         Mockito.when(mockedConsultantRepo.save(any(Consultant.class)))
                 .thenReturn(MockedConsultantService.mockedCreateConsultant(mockedConsultant1));
+
         /* ACT */
         createConsultantMethod.invoke(consultantServiceClass, any(Consultant.class));
+
         /* ASSERT */
         var listSizeAfter = MockedConsultantService.mockedGetConsultantsList().size();
         int actualResult = listSizeAfter - listSizeBefore;
@@ -184,19 +166,20 @@ class ConsultantServiceTest extends ApplicationTestConfig {
     }
 
     @Test
-    void shouldUpdateConsultantActiveStatusToFalse() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    @SneakyThrows
+    void should_UpdateConsultantActiveStatus_ToFalse() {
         /* ARRANGE */
         List<Consultant> mockedList = List.of(mockedConsultant1, mockedConsultant2, mockedConsultant3);
         for (var consultant : mockedList) {
             MockedConsultantService.mockedCreateConsultant(consultant);
         }
         Mockito.when(mockedConsultantRepo.findAll()).thenReturn(MockedConsultantService.mockedGetConsultantsList());
-        mockedConsultant3.setActive(true);
 
         UUID expectedResult = mockedConsultant3.getId();
-
+        mockedConsultant3.setActive(false);
+        
         Mockito.when(mockedConsultantRepo.save(any(Consultant.class)))
-                .thenReturn(MockedConsultantService.mockedCreateConsultant(mockedConsultant3));
+                .thenReturn(MockedConsultantService.mockedUpdateConsultant(mockedConsultant3));
 
         var consultantServiceClass = new ConsultantService(mockedConsultantRepo, mockedTkClient, mockedRegisteredTimeService);
         var updateIsActiveForExistingConsultantMethod = consultantServiceClass
@@ -207,28 +190,20 @@ class ConsultantServiceTest extends ApplicationTestConfig {
         /* ACT */
         updateIsActiveForExistingConsultantMethod.invoke(
                 consultantServiceClass,
-                new TimekeeperUserDto(
-                        "John",
-                        "Doe3",
-                        mockedConsultant3.getEmail(),
-                        mockedConsultant3.getPhoneNumber(),
-                        null,
-                        mockedConsultant3.getTimekeeperId(),
-                        false,
-                        mockedConsultant3.getClient(),
-                        mockedConsultant3.getResponsiblePT(),
-                        true
-                ));
+                ObjectConstructor.convertConsultantToTimekeeperUserDto(mockedConsultant3)
+                );
 
         /* ASSERT */
         UUID actualResult = MockedConsultantService.mockedGetConsultantsList()
                 .stream()
                 .filter(c -> !c.isActive()).toList().get(0).getId();
+        System.out.println("MockedConsultantService.mockedGetConsultantsList() = " + MockedConsultantService.mockedGetConsultantsList());
         assertEquals(expectedResult, actualResult);
     }
 
     /* this test might not be useful if the
      responsible PT is taken from Lucca later on */
+
     @Test
     void shouldUpdateResponsiblePtForAllConsultants() {
         /* ARRANGE */
@@ -244,8 +219,88 @@ class ConsultantServiceTest extends ApplicationTestConfig {
         /* ASSERT */
         List<Consultant> resultList = MockedConsultantService.mockedGetConsultantsList();
         Consultant actualResult = resultList.stream().filter(c -> (c.getId() == mockedConsultant1.getId())
-        && (c.getResponsiblePT().equals(possibleExpected1) || c.getResponsiblePT().equals(possibleExpected2))).toList().get(0);
+                && (c.getResponsiblePT().equals(possibleExpected1) || c.getResponsiblePT().equals(possibleExpected2))).toList().get(0);
         assertNotNull(actualResult);
         assertEquals(mockedConsultant1.getId(), actualResult.getId());
+    }
+
+    @Test
+    @SneakyThrows
+    void should_AddNewConsultant_FromTimekeeperUser() {
+        /* ARRANGE */
+        int listSizeBeforeAdding = MockedConsultantService.mockedGetConsultantsList().size();
+        List<TimekeeperUserDto> mockedListTimekeeperUser = ObjectConstructor.getListOfTimekeeperUserDto(1);
+        Mockito.when(mockedConsultantRepo.existsByTimekeeperId(anyLong())).thenReturn(false);
+        try (MockedStatic<Tag> mockTag = mockStatic(Tag.class)) {
+            mockTag.when(() -> Tag.extractCountryTagFromTimekeeperUserDto(any(TimekeeperUserDto.class))).thenReturn("Sverige");
+        }
+        Mockito.when(mockedConsultantRepo.save(any(Consultant.class)))
+                .thenReturn(MockedConsultantService.mockedCreateConsultant(
+                        ObjectConstructor.convertTimekeeperUserDtoToConsultant(mockedListTimekeeperUser.getFirst())
+                ));
+
+        var consultantServiceClass = new ConsultantService(mockedConsultantRepo, mockedTkClient, mockedRegisteredTimeService);
+        var updateConsultantTableMethod = consultantServiceClass.getClass().getDeclaredMethod("updateConsultantTable", List.class);
+        updateConsultantTableMethod.setAccessible(true);
+
+        /* ACT */
+        updateConsultantTableMethod.invoke(consultantServiceClass, mockedListTimekeeperUser);
+
+        /* ASSERT */
+        int listSizeAfterAdding = MockedConsultantService.mockedGetConsultantsList().size();
+        assertEquals(1, listSizeAfterAdding - listSizeBeforeAdding);
+    }
+
+    @Test
+    @SneakyThrows
+    void should_UpdateActiveStatus_ForTimekeeperUser_ToFalse() {
+        /* ARRANGE */
+        MockedConsultantService.mockedCreateConsultant(mockedConsultant1);
+        boolean statusBeforeChange = MockedConsultantService.mockedGetConsultantsList().getFirst().isActive();
+        mockedConsultant1.setActive(false);
+        List<TimekeeperUserDto> mockedListTimekeeperUser = List.of(
+                ObjectConstructor.convertConsultantToTimekeeperUserDto(mockedConsultant1));
+
+        Mockito.when(mockedConsultantRepo.existsByTimekeeperId(anyLong())).thenReturn(true);
+        Mockito.when(mockedConsultantRepo.findAll()).thenReturn(MockedConsultantService.mockedGetConsultantsList());
+        Mockito.when(mockedConsultantRepo.save(any(Consultant.class)))
+                .thenReturn(MockedConsultantService.mockedUpdateConsultant(mockedConsultant1));
+        var consultantServiceClass = new ConsultantService(mockedConsultantRepo, mockedTkClient, mockedRegisteredTimeService);
+        var updateConsultantTableMethod = consultantServiceClass.getClass().getDeclaredMethod("updateConsultantTable", List.class);
+        updateConsultantTableMethod.setAccessible(true);
+
+        /* ACT */
+        updateConsultantTableMethod.invoke(consultantServiceClass, mockedListTimekeeperUser);
+
+        /* ASSERT */
+        boolean statusAfterChange = MockedConsultantService.mockedGetConsultantsList().getFirst().isActive();
+        assertNotEquals(statusBeforeChange, statusAfterChange);
+    }
+
+    // check case when active status is not changed
+
+    @Test
+    @SneakyThrows
+    void should_NotUpdateActiveStatus_ForTimekeeperUser() {
+        /* ARRANGE */
+        MockedConsultantService.mockedCreateConsultant(mockedConsultant1);
+        boolean statusBeforeChange = MockedConsultantService.mockedGetConsultantsList().getFirst().isActive();
+        List<TimekeeperUserDto> mockedListTimekeeperUser = List.of(
+                ObjectConstructor.convertConsultantToTimekeeperUserDto(mockedConsultant1));
+
+        Mockito.when(mockedConsultantRepo.existsByTimekeeperId(anyLong())).thenReturn(true);
+        Mockito.when(mockedConsultantRepo.findAll()).thenReturn(MockedConsultantService.mockedGetConsultantsList());
+        Mockito.when(mockedConsultantRepo.save(any(Consultant.class)))
+                .thenReturn(MockedConsultantService.mockedUpdateConsultant(mockedConsultant1));
+        var consultantServiceClass = new ConsultantService(mockedConsultantRepo, mockedTkClient, mockedRegisteredTimeService);
+        var updateConsultantTableMethod = consultantServiceClass.getClass().getDeclaredMethod("updateConsultantTable", List.class);
+        updateConsultantTableMethod.setAccessible(true);
+
+        /* ACT */
+        updateConsultantTableMethod.invoke(consultantServiceClass, mockedListTimekeeperUser);
+
+        /* ASSERT */
+        boolean statusAfterChange = MockedConsultantService.mockedGetConsultantsList().getFirst().isActive();
+        assertEquals(statusBeforeChange, statusAfterChange);
     }
 }
