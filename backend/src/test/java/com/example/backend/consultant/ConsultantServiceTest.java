@@ -26,6 +26,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ContextConfiguration;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -157,17 +158,15 @@ class ConsultantServiceTest extends ApplicationTestConfig {
     }
 
     @Test
-    void shouldAddConsultantToList() throws NoSuchMethodException {
+    void shouldAddConsultantToList() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException {
         // testing private void createConsultant(Consultant consultant)
         var consultantServiceClass = ConsultantService.class;
         var createConsultantMethod = consultantServiceClass.getDeclaredMethod("createConsultant", Consultant.class);
         createConsultantMethod.setAccessible(true);
         var listBeforeAdding = MockedConsultantService.mockedGetConsultantsList();
         System.out.println("listBeforeAdding = " + listBeforeAdding);
-        Mockito.when(mockedConsultantRepo.save(any(Consultant.class))).thenAnswer((Answer<Void>) invocationOnMock -> {
-            MockedConsultantService.mockedCreateConsultant(mockedConsultant1);
-            return null;
-        });
+        Mockito.when(mockedConsultantRepo.save(any(Consultant.class))).thenReturn(MockedConsultantService.mockedCreateConsultant(mockedConsultant1));
+        createConsultantMethod.invoke(consultantServiceClass.getDeclaredConstructor().newInstance(), any(Consultant.class));
         var listAfterAdding = MockedConsultantService.mockedGetConsultantsList();
         System.out.println("listAfterAdding = " + listAfterAdding);
         assertEquals(1, listAfterAdding.size() - listBeforeAdding.size());
