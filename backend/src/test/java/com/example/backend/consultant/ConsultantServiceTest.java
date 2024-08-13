@@ -19,7 +19,9 @@ import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -39,17 +41,20 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 @ContextConfiguration(classes = ApplicationTestConfig.class)
 class ConsultantServiceTest extends ApplicationTestConfig {
-    @Mock
+    @MockBean
     TimekeeperClient mockedTkClient;
-    @Mock
+    @MockBean
     ConsultantRepository mockedConsultantRepo;
-    @Mock
+    @MockBean
     RegisteredTimeService mockedRegisteredTimeService;
     @InjectMocks
     ConsultantService consultantService;
     private MockedStatic<Tag> mockTag;
     private static Consultant mockedConsultant1;
     private static Consultant mockedConsultant2;
+    private static Consultant mockedConsultant3;
+    @Autowired
+    private TimekeeperClient timekeeperClient;
 
     @BeforeAll
     static void setUp() {
@@ -71,7 +76,17 @@ class ConsultantServiceTest extends ApplicationTestConfig {
                 null,
                 2222L,
                 "Jane Doe2",
-                "H&M2",
+                "H&M",
+                "Sverige",
+                true);
+        mockedConsultant3 = new Consultant(
+                UUID.fromString("1239cead-5e65-40a6-a949-5492c22b22a4"),
+                "John Doe3",
+                "john.doe3@gmail.com",
+                null,
+                3333L,
+                "Jane Doe3",
+                "H&M",
                 "Sverige",
                 true);
     }
@@ -89,7 +104,6 @@ class ConsultantServiceTest extends ApplicationTestConfig {
     void getCountryCodeByConsultantId() {
         Mockito.when(mockedConsultantRepo.findCountryById(any(UUID.class))).thenReturn("Sverige");
         String result = consultantService.getCountryCodeByConsultantId(UUID.fromString("223152ac-6af6-4a4b-b86b-53c0707f433c"));
-        System.out.println("result = " + result);
         assertEquals("Sverige", result);
     }
 
@@ -158,20 +172,64 @@ class ConsultantServiceTest extends ApplicationTestConfig {
     }
 
     @Test
-    void shouldAddConsultantToList() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException {
-        // testing private void createConsultant(Consultant consultant)
-        var consultantServiceClass = ConsultantService.class;
-        var createConsultantMethod = consultantServiceClass.getDeclaredMethod("createConsultant", Consultant.class);
+    void shouldAddConsultantToList() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        var consultantServiceClass = new ConsultantService(mockedConsultantRepo, mockedTkClient, mockedRegisteredTimeService);
+        var createConsultantMethod = consultantServiceClass.getClass().getDeclaredMethod("createConsultant", Consultant.class);
         createConsultantMethod.setAccessible(true);
-        var listBeforeAdding = MockedConsultantService.mockedGetConsultantsList();
-        System.out.println("listBeforeAdding = " + listBeforeAdding);
-        Mockito.when(mockedConsultantRepo.save(any(Consultant.class))).thenReturn(MockedConsultantService.mockedCreateConsultant(mockedConsultant1));
-        createConsultantMethod.invoke(consultantServiceClass.getDeclaredConstructor().newInstance(), any(Consultant.class));
-        var listAfterAdding = MockedConsultantService.mockedGetConsultantsList();
-        System.out.println("listAfterAdding = " + listAfterAdding);
-        assertEquals(1, listAfterAdding.size() - listBeforeAdding.size());
+        var listSizeBefore = MockedConsultantService.mockedGetConsultantsList().size();
+        Mockito.when(mockedConsultantRepo.save(any(Consultant.class)))
+                .thenReturn(MockedConsultantService.mockedCreateConsultant(mockedConsultant1));
+        createConsultantMethod.invoke(consultantServiceClass, any(Consultant.class));
+        var listSizeAfter = MockedConsultantService.mockedGetConsultantsList().size();
+        int actualResult = listSizeAfter - listSizeBefore;
+        assertEquals(1, actualResult);
     }
 
+    @Test
+    void shouldUpdateConsultantActiveStatusToFalse() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        //private void updateIsActiveForExistingConsultant(TimekeeperUserDto tkUser)
+        /* ARRANGE */
+        List<Consultant> mockedList = List.of(mockedConsultant1, mockedConsultant2, mockedConsultant3);
+        for (var consultant: mockedList) {
+            MockedConsultantService.mockedCreateConsultant(consultant);
+        }
+        Mockito.when(mockedConsultantRepo.findAll()).thenReturn(MockedConsultantService.mockedGetConsultantsList());
+        mockedConsultant3.setActive(true);
+
+        UUID expectedResult = mockedConsultant3.getId();
+
+        Mockito.when(mockedConsultantRepo.save(any(Consultant.class)))
+                .thenReturn(MockedConsultantService.mockedCreateConsultant(mockedConsultant3));
+
+        var consultantServiceClass = new ConsultantService(mockedConsultantRepo, mockedTkClient, mockedRegisteredTimeService);
+        var updateIsActiveForExistingConsultantMethod = consultantServiceClass
+                .getClass()
+                .getDeclaredMethod("updateIsActiveForExistingConsultant", TimekeeperUserDto.class);
+        updateIsActiveForExistingConsultantMethod.setAccessible(true);
+
+        /* ACT */
+        updateIsActiveForExistingConsultantMethod.invoke(
+                consultantServiceClass,
+                new TimekeeperUserDto(
+                        "John",
+                        "Doe3",
+                        mockedConsultant3.getEmail(),
+                        mockedConsultant3.getPhoneNumber(),
+                        null,
+                        mockedConsultant3.getTimekeeperId(),
+                        false,
+                        mockedConsultant3.getClient(),
+                        mockedConsultant3.getResponsiblePT(),
+                        true
+                ));
+
+        UUID actualResult = MockedConsultantService.mockedGetConsultantsList()
+                .stream()
+                .filter(c -> !c.isActive()).toList().get(0).getId();
+
+        /* ASSERT */
+        assertEquals(expectedResult, actualResult);
+    }
     // the way the methods are set up this test doesn't make sense in unit testing
 //    @Test
 //    void shouldAddNewConsultant() {
