@@ -1,6 +1,7 @@
 package com.example.backend.consultant;
 
 import com.example.backend.ApplicationTestConfig;
+import com.example.backend.ObjectConstructor;
 import com.example.backend.client.timekeeper.TimekeeperClient;
 import com.example.backend.client.timekeeper.dto.TimekeeperUserDto;
 import com.example.backend.consultant.dto.ConsultantResponseListDto;
@@ -10,14 +11,11 @@ import com.example.backend.tag.Tag;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +23,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ContextConfiguration;
 
@@ -91,7 +88,7 @@ class ConsultantServiceTest extends ApplicationTestConfig {
                 true);
     }
 
-    @BeforeEach
+    @AfterEach
     void setUpBeforeEach() {
         MockedConsultantService.clearList();
     }
@@ -145,45 +142,26 @@ class ConsultantServiceTest extends ApplicationTestConfig {
 
     @Test
     @SneakyThrows
-    void shouldReturn1ConsultantAdded() {
-        // testing updateConsultantTable(List<TimekeeperUserDto> timekeeperUserDto)
-
-        TimekeeperUserDto mockedUserToAdd = new TimekeeperUserDto(
-                "mock First Name",
-                "mock Last Name",
-                "mock email",
-                null,
-                new ArrayList<>(),
-                300L,
-                true,
-                "mock client",
-                "mock responsiblePT",
-                true
-        );
-        List<TimekeeperUserDto> mockedList = List.of(mockedUserToAdd);
-        var consultantServiceClass = ConsultantService.class;
-//        var createConsultantMethod = consultantServiceClass.getDeclaredMethod("createConsultant", Consultant.class);
-//        createConsultantMethod.setAccessible(true);
-        var updateConsultantTableMethod = consultantServiceClass.getDeclaredMethod("updateConsultantTable", List.class);
-        updateConsultantTableMethod.setAccessible(true);
-        Mockito.when(mockedConsultantRepo.existsByTimekeeperId(anyLong())).thenReturn(false);
-//        Mockito.when(mockedConsultantRepo.findCountryById(any(UUID.class))).thenReturn("Sverige");
-//        Mockito.when(mockedConsultantRepo.save(any(Consultant.class))).then(MockedConsultantService.mockedCreateConsultant(mockedConsultant1));
-        MockedStatic<Tag> mockTag = mockStatic(Tag.class);
-        mockTag.when(() -> Tag.extractCountryTagFromTimekeeperUserDto(any(TimekeeperUserDto.class))).thenReturn("Sverige");
-
-//        doAnswer((Answer<Void>) invocationOnMock -> {
-//            MockedConsultantService.mockedCreateConsultant(mockedConsultant1);
-//            return null;
-//        }).when(createConsultantMethod.invoke(consultantServiceClass.getDeclaredConstructor().newInstance(), any(Consultant.class))).notify();
-
-        doAnswer((Answer<Void>) invocationOnMock -> {
-            MockedConsultantService.mockedCreateConsultant(mockedConsultant1);
-            return null;
-        }).when(mockedConsultantRepo).save(any(Consultant.class));
-
+    void shouldAddNewConsultant() {
+        /* ARRANGE */
         int listSizeBeforeAdding = MockedConsultantService.mockedGetConsultantsList().size();
-        updateConsultantTableMethod.invoke(consultantServiceClass.getDeclaredConstructor().newInstance(), mockedList);
+        List<TimekeeperUserDto> mockedListTimekeeperUser = ObjectConstructor.getListOfTimekeeperUserDto(1);
+        Mockito.when(mockedConsultantRepo.existsByTimekeeperId(anyLong())).thenReturn(false);
+        try (MockedStatic<Tag> mockTag = mockStatic(Tag.class)) {
+            mockTag.when(() -> Tag.extractCountryTagFromTimekeeperUserDto(any(TimekeeperUserDto.class))).thenReturn("Sverige");
+        }
+        Mockito.when(mockedConsultantRepo.save(any(Consultant.class)))
+                .thenReturn(MockedConsultantService.mockedCreateConsultant(
+                        ObjectConstructor.convertTimekeeperUserDtoToConsultant(mockedListTimekeeperUser.getFirst())
+                ));
+
+        var consultantServiceClass = new ConsultantService(mockedConsultantRepo, mockedTkClient, mockedRegisteredTimeService);
+        var updateConsultantTableMethod = consultantServiceClass.getClass().getDeclaredMethod("updateConsultantTable", List.class);
+        updateConsultantTableMethod.setAccessible(true);
+        /* ACT */
+        updateConsultantTableMethod.invoke(consultantServiceClass, mockedListTimekeeperUser);
+
+        /* ASSERT */
         int listSizeAfterAdding = MockedConsultantService.mockedGetConsultantsList().size();
         assertEquals(1, listSizeAfterAdding - listSizeBeforeAdding);
     }
@@ -207,7 +185,6 @@ class ConsultantServiceTest extends ApplicationTestConfig {
 
     @Test
     void shouldUpdateConsultantActiveStatusToFalse() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        //private void updateIsActiveForExistingConsultant(TimekeeperUserDto tkUser)
         /* ARRANGE */
         List<Consultant> mockedList = List.of(mockedConsultant1, mockedConsultant2, mockedConsultant3);
         for (var consultant : mockedList) {
@@ -250,12 +227,10 @@ class ConsultantServiceTest extends ApplicationTestConfig {
         assertEquals(expectedResult, actualResult);
     }
 
-    // this test might not be useful if the responsible PT is taken
-    // from Lucca later on
+    /* this test might not be useful if the
+     responsible PT is taken from Lucca later on */
     @Test
     void shouldUpdateResponsiblePtForAllConsultants() {
-        // public void fillClientAndResponsiblePt()
-
         /* ARRANGE */
         Mockito.when(mockedConsultantRepo.findAllByActiveTrue()).thenReturn(List.of(mockedConsultant1));
         Mockito.when(mockedConsultantRepo.save(any(Consultant.class)))
@@ -273,32 +248,4 @@ class ConsultantServiceTest extends ApplicationTestConfig {
         assertNotNull(actualResult);
         assertEquals(mockedConsultant1.getId(), actualResult.getId());
     }
-
-    // the way the methods are set up this test doesn't make sense in unit testing
-//    @Test
-//    void shouldAddNewConsultant() {
-//        Tag mockTag = new Tag();
-//        mockTag.setName("mock-tag");
-//        List<TimekeeperUserDto> mockedTkUserList = List.of(
-//                new TimekeeperUserDto(
-//                        "MockFirstName",
-//                        "MockLastName",
-//                        "mockEmail",
-//                        "mockPhone",
-//                        List.of(mockTag),
-//                        1000L,
-//                        true,
-//                        "mockClient",
-//                        "mockResponsiblePT",
-//                        true
-//                )
-//        );
-//        Mockito.when(tkClient.getUsers()).thenReturn(mockedTkUserList);
-//        int totalConsultantsBefore = consultantService.getAllConsultants().size();
-//        consultantService.fetchDataFromTimekeeper();
-//        int totalConsultantsAfter = consultantService.getAllConsultants().size();
-//        System.out.println("2nd test: totalConsultantsAfter = " + totalConsultantsAfter);
-//        int actualResult = totalConsultantsAfter - totalConsultantsBefore;
-//        assertEquals(1, actualResult);
-//    }
 }
