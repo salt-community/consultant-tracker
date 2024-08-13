@@ -2,13 +2,13 @@ package com.example.backend.redDays;
 
 import com.example.backend.ApplicationTestConfig;
 import com.example.backend.client.nager.NagerClient;
-import com.example.backend.client.nager.dto.RedDaysFromNagerDto;
 import com.example.backend.consultant.ConsultantService;
 import com.example.backend.utils.Utilities;
 import lombok.SneakyThrows;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -46,26 +46,29 @@ class RedDaysServiceTest {
     }
 
     @Test
-    public void shouldReturnOneAnd1JanuaryWhenCountrySE() {
+    @DisplayName("getRedDays")
+    public void givenCountryCodeSE__whenGetRedDays__then1January2024() {
         Mockito.when(redDaysRepository.findAllByCountry("SE"))
                 .thenReturn(RedDaysServiceMockedData.createMockedRedDayList());
         List<LocalDate> actualResult = redDaysService.getRedDays("SE");
         assertEquals(actualResult.size(), 1);
-        assertEquals(actualResult.getFirst(), LocalDate.parse("2024-01-01"));
+        assertEquals(LocalDate.parse("2024-01-01"), actualResult.getFirst());
     }
 
     @Test
-    public void shouldReturnTwoAnd24DecemberWhenCountryNO() {
+    @DisplayName("getRedDays")
+    public void givenCountryCodeNO__whenGetRedDays__then1Jan2024And24Dec2024() {
         var expectedResult = Lists.newArrayList(LocalDate.parse("2024-01-01"), LocalDate.parse("2024-12-24"));
         Mockito.when(redDaysRepository.findAllByCountry("NO"))
                 .thenReturn(RedDaysServiceMockedData.createMockedRedDaysList());
         List<LocalDate> actualResult = redDaysService.getRedDays("NO");
-        assertEquals(actualResult.size(), 2);
-        assertEquals(actualResult.get(1), expectedResult.get(1));
+        assertEquals(2, actualResult.size());
+        assertEquals(expectedResult.get(1), actualResult.get(1));
     }
 
     @Test
-    public void shouldReturnFalseFor2JanuaryWhenCountrySE() {
+    @DisplayName("isRedDay")
+    public void given2Jan2024__whenIsRedDay__thenFalse() {
         Mockito.lenient().when(consultantService.getCountryCodeByConsultantId(
                         UUID.fromString("45ec353f-b0f5-4a51-867e-8d0d84d11573")))
                 .thenReturn("SE");
@@ -78,28 +81,31 @@ class RedDaysServiceTest {
     }
 
     @Test
-    public void shouldReturnStartDateWhenRemainingDays0() {
+    @DisplayName("removeNonWorkingDays")
+    public void given0RemainingDays__whenRemoveNonWorkingDays__thenReturnStartDate() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime actualResult = redDaysService.removeNonWorkingDays(
                 LocalDateTime.parse("2024-01-01 00:00:00", formatter),
                 0,
                 UUID.fromString("45ec353f-b0f5-4a51-867e-8d0d84d11573"));
-        assertEquals( LocalDateTime.parse("2024-01-01 00:00:00", formatter), actualResult);
+        assertEquals(LocalDateTime.parse("2024-01-01 00:00:00", formatter), actualResult);
     }
 
     @Test
-    public void shouldReturnStartDateWhenRemainingDaysNegative() {
+    @DisplayName("removeNonWorkingDays")
+    public void givenNegativeRemainingDays__whenRemoveNonWorkingDays__thenReturnStartDate() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime actualResult = redDaysService.removeNonWorkingDays(
-                LocalDateTime.parse("2024-01-01 00:00:00", formatter),
+                LocalDateTime.parse("2024-02-01 00:00:00", formatter),
                 -30,
                 UUID.fromString("45ec353f-b0f5-4a51-867e-8d0d84d11573"));
-        assertEquals( LocalDateTime.parse("2024-01-01 00:00:00", formatter), actualResult);
+        assertEquals(LocalDateTime.parse("2024-02-01 00:00:00", formatter), actualResult);
     }
 
 
     @Test
-    public void shouldReturn8JanuaryWhen5DaysRemainingAndStart1January() {
+    @DisplayName("removeNonWorkingDays")
+    public void given5RemainingDaysAnd3NonWorkingDays__whenRemoveNonWorkingDays__thenReturn8Jan2024() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
         Mockito.lenient().when(consultantService.getCountryCodeByConsultantId(
@@ -121,7 +127,8 @@ class RedDaysServiceTest {
     }
 
     @Test
-    public void shouldReturn5WhenStartDay2JanAndDaysBetween15VariantMultiple() {
+    @DisplayName("checkRedDaysOrWeekend")
+    public void given15DaysBetweenAndStartDay2Jan2024AndMultipleCheck__whenCheckRedDaysOrWeekend__thenReturn5Days() {
         Mockito.lenient().when(consultantService.getCountryCodeByConsultantId(
                         UUID.fromString("45ec353f-b0f5-4a51-867e-8d0d84d11573")))
                 .thenReturn("Sverige");
@@ -141,7 +148,8 @@ class RedDaysServiceTest {
     }
 
     @Test
-    public void shouldReturn1WhenStartDay2JanAndDaysBetween15VariantSingle() {
+    @DisplayName("checkRedDaysOrWeekend")
+    public void given15DaysBetweenAndStartDay31DecAndSingleCheck__whenCheckRedDaysOrWeekend__thenReturn1Day() {
         Mockito.lenient().when(consultantService.getCountryCodeByConsultantId(
                         UUID.fromString("45ec353f-b0f5-4a51-867e-8d0d84d11573")))
                 .thenReturn("Sverige");
@@ -161,29 +169,22 @@ class RedDaysServiceTest {
     }
 
     @Test
-    public void shouldReturnSavedRedDaysFromAPI(){
-        RedDaysFromNagerDto mockedRedDaysFromNagerDto = new RedDaysFromNagerDto(
-                LocalDate.parse("2018-12-31"),
-                "New Years Eve",
-                "SE" );
-        RedDays mockedRedDayResponseRepository = new RedDays(UUID.fromString("45ec353f-b0f5-4a51-867e-8d0d84d11573"),
-                LocalDate.parse("2018-12-31"),
-                "New Years Eve",
-                "SE");
-        List<RedDaysFromNagerDto> mockedRedDaysFromNagerDtoList = new ArrayList<>();
-        mockedRedDaysFromNagerDtoList.add(mockedRedDaysFromNagerDto);
+    @DisplayName("getRedDaysFromNager")
+    public void given2018__whenGetRedDaysFromNager__thenShouldSaveNewYearsEve() {
         Mockito.lenient().when(workingDaysClient.getRedDaysPerYear(2018, new String[]{"SE", "NO"}))
-                .thenReturn(mockedRedDaysFromNagerDtoList);
+                .thenReturn(RedDaysServiceMockedData.createMockedRedDaysFromNager());
         Mockito.lenient().when(redDaysRepository.save(Mockito.any(RedDays.class)))
-                .thenReturn(mockedRedDayResponseRepository);
-        List<RedDays> actualResult = redDaysService.getRedDaysFromNager(2018,2019);
+                .thenReturn(RedDaysServiceMockedData.createMockedRedDaysFromRepository());
+        List<RedDays> actualResult = redDaysService.getRedDaysFromNager(2018, 2019);
         assertEquals("New Years Eve", actualResult.get(0).getName());
     }
 
     //----------------------------- PRIVATE METHODS TESTS ---------------------------------
+
     @Test
     @SneakyThrows
-    public void shouldReturnSEWhenSweden() {
+    @DisplayName("getCountryCode")
+    public void givenSweden_whenGetCountryCode_thenSE() {
         var redDaysServiceInstance = redDaysService;
         var getCountryCode = redDaysServiceInstance.getClass().getDeclaredMethod("getCountryCode", UUID.class);
         getCountryCode.setAccessible(true);
@@ -194,5 +195,4 @@ class RedDaysServiceTest {
                 getCountryCode.invoke(redDaysServiceInstance,
                         UUID.fromString("45ec353f-b0f5-4a51-867e-8d0d84d11573")));
     }
-
 }
