@@ -108,7 +108,6 @@ public class ConsultantService {
 
     public void fillClientAndResponsiblePt() {
         String[] responsiblePts = {"Josefin Stål", "Anna Carlsson"};
-//        String[] responsiblePts = {"00ae7ec3-bbf8-4926-aadb-b8e7e4378341", "3ecb112d-d85d-40c4-a81f-762c9f2e5abc"};
         Random rand = new Random();
         List<Consultant> allActiveConsultants = getAllActiveConsultants();
         allActiveConsultants.forEach(el -> {
