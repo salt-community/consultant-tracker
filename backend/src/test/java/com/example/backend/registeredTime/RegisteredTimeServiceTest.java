@@ -80,16 +80,30 @@ class RegisteredTimeServiceTest {
 
     @Test
     public void shouldReturnTotalWorkedHours() {
-        Mockito.lenient().when(registeredTimeRepository.getSumOfTotalHoursByConsultantIdAndProjectName(
+        Mockito.lenient().when(registeredTimeRepository.getSumOfTotalHoursByConsultantIdAndType(
                         listOfConsultantIds.get(0),
                         CONSULTANCY_TIME.activity))
                 .thenReturn(Optional.of(150D));
-        Mockito.lenient().when(registeredTimeRepository.getSumOfTotalHoursByConsultantIdAndProjectName(
+        Mockito.lenient().when(registeredTimeRepository.getSumOfTotalHoursByConsultantIdAndType(
                         listOfConsultantIds.get(0),
                         OWN_ADMINISTRATION.activity))
                 .thenReturn(Optional.of(100D));
         double actualResult = registeredTimeService.countTotalWorkedHours(listOfConsultantIds.get(0));
         assertEquals(250D, actualResult);
+    }
+
+    @Test
+    public void shouldReturnNoItemsWhenListIncludesOnlyWronglyRegisteredTime(){
+        List<ConsultantTimeDto> mockedTimeItemsList = RegisteredTimeServiceMockedData.createAllWronglyRegisteredTimeMockedData();
+        List<ConsultantTimeDto> actualResult = registeredTimeService.filterOutIncorrectlyRegisteredTimeDB(mockedTimeItemsList);
+        assertEquals(0, actualResult.size());
+    }
+
+    @Test
+    public void shouldReturnThreeTimeItemsWhenListIncludesIncorrectlyRegisteredItemButTypeSemester() {
+        List<ConsultantTimeDto> mockedTimeItemsList = RegisteredTimeServiceMockedData.createSomeWronglyRegisteredTimeMockedData();
+        List<ConsultantTimeDto> actualResult = registeredTimeService.filterOutIncorrectlyRegisteredTimeDB(mockedTimeItemsList);
+        assertEquals(2, actualResult.size());
     }
 
     @Test

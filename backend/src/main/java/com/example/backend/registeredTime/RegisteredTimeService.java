@@ -82,9 +82,9 @@ public class RegisteredTimeService {
     public List<ConsultantTimeDto> filterOutIncorrectlyRegisteredTimeDB(List<ConsultantTimeDto> consultantRegisteredTime) {
         return consultantRegisteredTime
                 .stream()
-                .filter(el -> el.totalHours() != 0 || !el.dayType().equals(CONSULTANCY_TIME.activity)
-                        || (!redDaysService.isRedDay(el.itemId().getStartDate().toLocalDate(), el.itemId().getConsultantId())
-                        && !Utilities.isWeekend(el.itemId().getStartDate().getDayOfWeek().getValue())))
+                .filter(el -> el.totalHours() != 0
+                        || (!el.dayType().equals(CONSULTANCY_TIME.activity)
+                        && !el.dayType().equals(OWN_ADMINISTRATION.activity)))
                 .toList();
     }
 
@@ -127,7 +127,8 @@ public class RegisteredTimeService {
     public ConsultantResponseDto getConsultantTimelineItems(Consultant consultant) {
         List<RegisteredTimeResponseDto> consultantTimeDto = getGroupedConsultantsRegisteredTimeItems(consultant.getId());
         TotalDaysStatistics totalDaysStatistics = getAllDaysStatistics(consultant.getId());
-        return ConsultantResponseDto.toDto(consultant, totalDaysStatistics, Objects.requireNonNullElseGet(consultantTimeDto, ArrayList::new));
+        return ConsultantResponseDto.toDto(consultant, totalDaysStatistics,
+                Objects.requireNonNullElseGet(consultantTimeDto, ArrayList::new));
     }
 
 
@@ -148,8 +149,8 @@ public class RegisteredTimeService {
 
     //-----------------------------COVERED BY TESTS ---------------------------------
     public Double countTotalWorkedHours(UUID consultantId) {
-        Double getTotalConsultancyHour = registeredTimeRepository.getSumOfTotalHoursByConsultantIdAndProjectName(consultantId, CONSULTANCY_TIME.activity).orElse(0.0);
-        Double getTotalAdministrationHour = registeredTimeRepository.getSumOfTotalHoursByConsultantIdAndProjectName(consultantId, OWN_ADMINISTRATION.activity).orElse(0.0);
+        Double getTotalConsultancyHour = registeredTimeRepository.getSumOfTotalHoursByConsultantIdAndType(consultantId, CONSULTANCY_TIME.activity).orElse(0.0);
+        Double getTotalAdministrationHour = registeredTimeRepository.getSumOfTotalHoursByConsultantIdAndType(consultantId, OWN_ADMINISTRATION.activity).orElse(0.0);
         return getTotalAdministrationHour + getTotalConsultancyHour;
     }
 

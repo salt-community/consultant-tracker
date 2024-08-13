@@ -25,6 +25,7 @@ public class RegisteredTimeServiceMockedData {
                 LocalDateTime.parse("2024-01-05 23:59", formatter),
                 8D,
                 "H&M");
+
         RegisteredTime mockedTimeItem2 = new RegisteredTime(
                 new RegisteredTimeKey(
                         UUID.fromString("68c670d6-3038-4fca-95be-2669aaf0b549"),
@@ -75,19 +76,45 @@ public class RegisteredTimeServiceMockedData {
                 "H&M");
         ConsultantTimeDto mockedConsultantTimeDto2 = new ConsultantTimeDto(
                 new RegisteredTimeKey(UUID.fromString("589256b4-c5db-4d77-9d50-49c0636a4c52"),
+                        LocalDateTime.parse("2024-03-29 00:00", formatter)),
+                LocalDateTime.parse("2024-03-29 23:59", formatter),
+                "Konsult-tid",
+                6D,
+                "H&M");
+        ConsultantTimeDto mockedConsultantTimeDto3 = new ConsultantTimeDto(
+                new RegisteredTimeKey(UUID.fromString("589256b4-c5db-4d77-9d50-49c0636a4c52"),
                         LocalDateTime.parse("2024-03-30 00:00", formatter)),
                 LocalDateTime.parse("2024-03-30 23:59", formatter),
                 "Konsult-tid",
                 0D,
                 "H&M");
-        ConsultantTimeDto mockedConsultantTimeDto3 = new ConsultantTimeDto(
+        ConsultantTimeDto mockedConsultantTimeDto4 = new ConsultantTimeDto(
                 new RegisteredTimeKey(UUID.fromString("589256b4-c5db-4d77-9d50-49c0636a4c52"),
                         LocalDateTime.parse("2024-03-28 00:00", formatter)),
                 LocalDateTime.parse("2024-03-28 23:59", formatter),
                 "Konsult-tid",
                 0D,
                 "H&M");
-        return Lists.newArrayList(mockedConsultantTimeDto, mockedConsultantTimeDto2, mockedConsultantTimeDto3);
+        ConsultantTimeDto mockedConsultantTimeDto5 = new ConsultantTimeDto(
+                new RegisteredTimeKey(UUID.fromString("589256b4-c5db-4d77-9d50-49c0636a4c52"),
+                        LocalDateTime.parse("2024-03-28 00:00", formatter)),
+                LocalDateTime.parse("2024-03-28 23:59", formatter),
+                "Semester",
+                8D,
+                "H&M");
+        ConsultantTimeDto mockedConsultantTimeDto6 = new ConsultantTimeDto(
+                new RegisteredTimeKey(UUID.fromString("589256b4-c5db-4d77-9d50-49c0636a4c52"),
+                        LocalDateTime.parse("2024-03-28 00:00", formatter)),
+                LocalDateTime.parse("2024-03-28 23:59", formatter),
+                "Egen administration",
+                0D,
+                "H&M");
+        return Lists.newArrayList(mockedConsultantTimeDto,
+                mockedConsultantTimeDto2,
+                mockedConsultantTimeDto3,
+                mockedConsultantTimeDto4,
+                mockedConsultantTimeDto5,
+                mockedConsultantTimeDto6);
     }
 
     public static List<ConsultantTimeDto> createSemesterRegisteredWithOHours() {

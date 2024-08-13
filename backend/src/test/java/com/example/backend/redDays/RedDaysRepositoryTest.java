@@ -1,11 +1,9 @@
 package com.example.backend.redDays;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 import java.time.LocalDate;
 
@@ -21,8 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class RedDaysRepositoryTest {
     @Autowired
     RedDaysRepository redDaysRepository;
-    @Autowired
-    TestEntityManager entityManager;
     RedDays redDay;
     UUID mockedId = UUID.fromString("01438d07-91cb-4f4d-adab-aa050462779e");
     UUID id;
