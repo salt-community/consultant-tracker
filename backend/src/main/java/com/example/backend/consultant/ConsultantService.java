@@ -20,6 +20,7 @@ import java.util.UUID;
 @Service
 @Data
 @RequiredArgsConstructor
+@AllArgsConstructor
 public class ConsultantService {
     private ConsultantRepository consultantRepository;
     private TimekeeperClient timekeeperClient;
@@ -58,13 +59,16 @@ public class ConsultantService {
         registeredTimeService.fetchAndSaveTimeRegisteredByConsultant();
         fillClientAndResponsiblePt();
     }
-// Test in integration tests
 
+// Test in integration tests
     private void updateConsultantTable(List<TimekeeperUserDto> timekeeperUserDto) {
         System.out.println("timekeeperUserDto = " + timekeeperUserDto);
         timekeeperUserDto.forEach(tkUser -> {
+            // method below is tested
             if (!consultantRepository.existsByTimekeeperId(tkUser.id())) {
+                // method below is tested
                 String countryTag = Tag.extractCountryTagFromTimekeeperUserDto(tkUser);
+                // method below is tested
                 createConsultant(new Consultant(
                         UUID.randomUUID(),
                         tkUser.firstName().trim().concat(" ").concat(tkUser.lastName().trim()),
