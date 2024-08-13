@@ -1,6 +1,7 @@
 package com.example.backend.redDays;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -34,7 +35,8 @@ public class RedDaysRepositoryTest {
     }
 
     @Test
-    public void shouldSuccessWhenSave() {
+    @DisplayName("save")
+    public void givenRedDay__whenSave__thenSuccessful() {
         redDay = new RedDays(mockedId,
                 LocalDate.parse("2024-01-01"),
                 "New Year",
@@ -46,19 +48,27 @@ public class RedDaysRepositoryTest {
     }
 
     @Test
-    public void shouldReturnOneWhenFindAll() {
+    @DisplayName("findAll")
+    public void  whenFindAll__thenListSize2() {
+        var mockedRedDays =  new RedDays(UUID.randomUUID(),
+                LocalDate.parse("2024-01-01"),
+                "New Year",
+                "SE");
+        redDaysRepository.save(mockedRedDays);
         List<RedDays> actualResult = redDaysRepository.findAll();
-        assertEquals(1, actualResult.size());
+        assertEquals(2, actualResult.size());
     }
 
     @Test
-    public void shouldFindOneWhenFindAllByCountry() {
+    @DisplayName("findAllByCountry")
+    public void givenSE__whenFindAllByCountry__thenListSize1() {
         List<RedDays> actualResult = redDaysRepository.findAllByCountry("SE");
         assertEquals(1, actualResult.size());
     }
 
     @Test
-    public void shouldReturnEmptyWhenFindAllByCountry() {
+    @DisplayName("findAllByCountry")
+    public void givenNO__whenFindAllByCountry__thenEmptyList() {
         List<RedDays> actualResult = redDaysRepository.findAllByCountry("NO");
         assertTrue(actualResult.isEmpty());
     }
