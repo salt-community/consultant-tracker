@@ -44,7 +44,6 @@ class ConsultantRepositoryTest {
 
     @Test
     void shouldReturnSverigeForCountry() {
-        System.out.println("THE UUID: " + savedId);
         String actualResult = repo.findCountryById(savedId);
         assertEquals("Sverige", actualResult);
     }
@@ -52,7 +51,6 @@ class ConsultantRepositoryTest {
     @Test
     void shouldReturnListOfSize2() {
         var finaAllActive = repo.findAllByActiveTrue();
-        System.out.println("finaAllActive = " + finaAllActive);
         assertEquals(2, finaAllActive.size());
     }
 
