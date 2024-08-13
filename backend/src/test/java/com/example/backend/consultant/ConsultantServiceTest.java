@@ -49,7 +49,6 @@ class ConsultantServiceTest extends ApplicationTestConfig {
     RegisteredTimeService mockedRegisteredTimeService;
     @InjectMocks
     ConsultantService consultantService;
-    private MockedStatic<Tag> mockTag;
     private static Consultant mockedConsultant1;
     private static Consultant mockedConsultant2;
     private static Consultant mockedConsultant3;
@@ -93,36 +92,48 @@ class ConsultantServiceTest extends ApplicationTestConfig {
 
     @Test
     void resultShouldNotBeEmptyList() {
+        /* ARRANGE */
         List<Consultant> mockedList = List.of(mockedConsultant1, mockedConsultant2);
         Mockito.when(mockedConsultantRepo.findAll()).thenReturn(mockedList);
+        /* ACT */
         List<Consultant> consultantList = consultantService.getAllConsultants();
-        System.out.println("consultantList = " + consultantList);
+        /* ASSERT */
         assertFalse(consultantList.isEmpty());
     }
 
     @Test
     void getCountryCodeByConsultantId() {
+        /* ARRANGE */
         Mockito.when(mockedConsultantRepo.findCountryById(any(UUID.class))).thenReturn("Sverige");
+        String expectedResult = "Sverige";
+        /* ACT */
         String result = consultantService.getCountryCodeByConsultantId(UUID.fromString("223152ac-6af6-4a4b-b86b-53c0707f433c"));
-        assertEquals("Sverige", result);
+        /* ASSERT */
+        assertEquals(expectedResult, result);
     }
 
     @Test
     void shouldReturnConsultantResponseListDto() {
+        /* ARRANGE */
         Page<Consultant> pageableConsultantsList = new PageImpl<>(List.of(mockedConsultant1));
         Mockito.when(mockedConsultantRepo.findAllByActiveTrueAndFilterByName(anyString(), any(Pageable.class))).thenReturn(pageableConsultantsList);
         Mockito.when(mockedRegisteredTimeService
                 .getConsultantTimelineItems(any(Consultant.class))).thenReturn(MockedRegisteredTimeService.getConsultantTimelineItemsMocked(mockedConsultant1));
-        ConsultantResponseListDto mockedResult = consultantService.getAllConsultantDtos(0, 8, "mockJohn", "mockPt", "mockClient");
         int expectedConsultantsFound = 1;
+        /* ACT */
+        ConsultantResponseListDto mockedResult = consultantService.getAllConsultantDtos(0, 8, "mockJohn", "mockPt", "mockClient");
+        /* ASSERT */
         assertEquals(expectedConsultantsFound, mockedResult.consultants().size());
     }
 
     @Test
     void shouldReturn2ActiveConsultants() {
+        /* ARRANGE */
         Mockito.when(mockedConsultantRepo.findAllByActiveTrue()).thenReturn(List.of(mockedConsultant1, mockedConsultant2));
         int expectedListSize = 2;
+        /* ACT */
         int actualListSize = consultantService.getAllActiveConsultants().size();
+        /* ASSERT */
         assertEquals(expectedListSize, actualListSize);
     }
 
@@ -152,7 +163,7 @@ class ConsultantServiceTest extends ApplicationTestConfig {
         Mockito.when(mockedConsultantRepo.existsByTimekeeperId(anyLong())).thenReturn(false);
 //        Mockito.when(mockedConsultantRepo.findCountryById(any(UUID.class))).thenReturn("Sverige");
 //        Mockito.when(mockedConsultantRepo.save(any(Consultant.class))).then(MockedConsultantService.mockedCreateConsultant(mockedConsultant1));
-        mockTag = mockStatic(Tag.class);
+        MockedStatic<Tag> mockTag = mockStatic(Tag.class);
         mockTag.when(() -> Tag.extractCountryTagFromTimekeeperUserDto(any(TimekeeperUserDto.class))).thenReturn("Sverige");
 
 //        doAnswer((Answer<Void>) invocationOnMock -> {
@@ -173,13 +184,16 @@ class ConsultantServiceTest extends ApplicationTestConfig {
 
     @Test
     void shouldAddConsultantToList() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        /* ARRANGE */
         var consultantServiceClass = new ConsultantService(mockedConsultantRepo, mockedTkClient, mockedRegisteredTimeService);
         var createConsultantMethod = consultantServiceClass.getClass().getDeclaredMethod("createConsultant", Consultant.class);
         createConsultantMethod.setAccessible(true);
         var listSizeBefore = MockedConsultantService.mockedGetConsultantsList().size();
         Mockito.when(mockedConsultantRepo.save(any(Consultant.class)))
                 .thenReturn(MockedConsultantService.mockedCreateConsultant(mockedConsultant1));
+        /* ACT */
         createConsultantMethod.invoke(consultantServiceClass, any(Consultant.class));
+        /* ASSERT */
         var listSizeAfter = MockedConsultantService.mockedGetConsultantsList().size();
         int actualResult = listSizeAfter - listSizeBefore;
         assertEquals(1, actualResult);
@@ -190,7 +204,7 @@ class ConsultantServiceTest extends ApplicationTestConfig {
         //private void updateIsActiveForExistingConsultant(TimekeeperUserDto tkUser)
         /* ARRANGE */
         List<Consultant> mockedList = List.of(mockedConsultant1, mockedConsultant2, mockedConsultant3);
-        for (var consultant: mockedList) {
+        for (var consultant : mockedList) {
             MockedConsultantService.mockedCreateConsultant(consultant);
         }
         Mockito.when(mockedConsultantRepo.findAll()).thenReturn(MockedConsultantService.mockedGetConsultantsList());
@@ -223,11 +237,11 @@ class ConsultantServiceTest extends ApplicationTestConfig {
                         true
                 ));
 
+        /* ASSERT */
         UUID actualResult = MockedConsultantService.mockedGetConsultantsList()
                 .stream()
                 .filter(c -> !c.isActive()).toList().get(0).getId();
 
-        /* ASSERT */
         assertEquals(expectedResult, actualResult);
     }
     // the way the methods are set up this test doesn't make sense in unit testing
