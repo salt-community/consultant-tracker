@@ -15,6 +15,5 @@ public interface RegisteredTimeRepository extends JpaRepository<RegisteredTime, 
      Optional<Integer> countAllById_ConsultantIdAndTypeIs(UUID id, String type);
      @Query("SELECT SUM(t.totalHours) FROM RegisteredTime t WHERE t.id.consultantId = (:id) AND t.type LIKE %:type%")
      Optional<Double> getSumOfTotalHoursByConsultantIdAndType(UUID id, String type);
-
      RegisteredTime findFirstById_ConsultantIdAndTypeIsOrderByEndDateDesc(UUID id, String type);
 }
