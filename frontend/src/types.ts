@@ -114,6 +114,7 @@ export type ConsultantFetchType = {
   fullName: string,
   email: string,
   phoneNumber: string,
+  responsiblePt: string,
   totalDaysStatistics: TotalDaysStatisticsType,
   registeredTimeDtoList: RegisteredTimeItemType[],
   client: string
@@ -134,4 +135,9 @@ export type RegisteredTimeItemType = {
   type: string,
   days: number,
   projectName: string
+}
+
+export type AllClientsAndResponsiblePtResponse ={
+  pts: string[],
+  clients: string[]
 }

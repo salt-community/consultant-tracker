@@ -1,5 +1,6 @@
 package com.example.backend.consultant;
 
+import com.example.backend.consultant.dto.ClientsAndPtsListDto;
 import com.example.backend.consultant.dto.ConsultantResponseListDto;
 import com.example.backend.consultant.dto.ConsultantTimeResponseDto;
 import com.example.backend.redDays.RedDays;
@@ -10,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,8 +31,8 @@ public class ConsultantController {
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
             @RequestParam(defaultValue = "", required = false) String name,
-            @RequestParam(defaultValue = "", required = false) String client,
-            @RequestParam(defaultValue = "", required = false) String pt) {
+            @RequestParam(defaultValue = "", required = false) String[] client,
+            @RequestParam(defaultValue = "", required = false) String[] pt) {
         ConsultantResponseListDto consultantsResponse = consultantService.getAllConsultantDtos(page, pageSize, name, pt, client);
         return ResponseEntity.ok(consultantsResponse);
     }
@@ -48,5 +51,9 @@ public class ConsultantController {
             return ResponseEntity.ok(result);
         }
         return null;
+    }
+    @GetMapping("/getAllClientsAndPts")
+    public ResponseEntity<ClientsAndPtsListDto> getAllClientsAndPts(){
+        return ResponseEntity.ok(consultantService.getAllClientsAndPts());
     }
 }

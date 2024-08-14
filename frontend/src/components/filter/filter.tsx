@@ -1,52 +1,63 @@
 "use client";
-import { ChangeEvent, useEffect, useState } from "react";
+import {ChangeEvent, Dispatch, SetStateAction, useEffect, useState} from "react";
 import "./filter.css";
-import { allPts } from "@/mockData";
 import { useTableContext } from "@/context/table";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Multiselect from "@/components/filter/multiselect/multiselect";
-
-function FilterField() {
+type Props ={
+  lisOfResponsiblePt: string[],
+  listOfClients: string[],
+  setListOfResponsiblePt: Dispatch<SetStateAction<string[]>>
+  setListOfClients: Dispatch<SetStateAction<string[]>>
+}
+function FilterField({lisOfResponsiblePt, listOfClients, setListOfResponsiblePt, setListOfClients}:Props) {
   const [filterValue, setFilterValue] = useState("");
-  const [responsiblePt, setResponsiblePt] = useState(["Josefin Stål"]);
+  const [responsiblePts, setResponsiblePts] = useState(["Josefin Stål"]);
+  const [clients, setClients] = useState([]);
   const data = useTableContext();
-  const filterData = () => {
-    const filteredData = [...data.data.consultants].filter((df) => {
-      const name = df.fullName.toLowerCase();
-      const searchValue = filterValue.toLowerCase();
-      if (responsiblePt.length === 0) {
-        return name.includes(searchValue);
-      }
-      return name.includes(searchValue) && responsiblePt.includes("Josefin Stål");
-    });
-    data!.setFilteredData({
-      pageNumber: 0,
-      totalPages: 0,
-      totalConsultants: 0,
-      consultants: filteredData,
-    });
-  };
+  // const filterData = () => {
+
+  //   const filteredData = [...data.data.consultants].filter((df) => {
+  //     const name = df.fullName.toLowerCase();
+  //     const searchValue = filterValue.toLowerCase();
+  //     if (responsiblePts.length === 0) {
+  //       return name.includes(searchValue);
+  //     }
+  //     return name.includes(searchValue) && responsiblePts.includes("Josefin Stål");
+  //   });
+  //   data!.setFilteredData({
+  //     pageNumber: 0,
+  //     totalPages: 0,
+  //     totalConsultants: 0,
+  //     consultants: filteredData,
+  //   });
+  // };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFilterValue(e.target.value);
-    filterData();
+    // filterData();
   };
 
   const handleClear = () => {
     setFilterValue("");
-    setResponsiblePt(["Josefin Stål"]);
-    filterData();
+    setResponsiblePts(["Josefin Stål"]);
+    setClients([])
   };
 
   const handlePtsSelection = (selectionArr: string[]) => {
-    setResponsiblePt(selectionArr);
-    filterData();
+    setResponsiblePts(selectionArr);
+    // filterData();
+  };
+
+  const handleClientSelection = (selectionArr: string[]) => {
+    // setListOfClients(selectionArr);
+    // filterData();
   };
 
   useEffect(() => {
-    filterData();
-  }, [responsiblePt, filterValue]);
+    // filterData();
+  }, [responsiblePts, filterValue]);
 
   return (
     <section className="filter-section">
@@ -63,10 +74,18 @@ function FilterField() {
           />
         </div>
         <Multiselect
-          allPts={allPts}
-          handlePtsSelection={handlePtsSelection}
-          setResponsiblePt={setResponsiblePt}
-          responsiblePt={responsiblePt}
+          fullList={listOfClients}
+          handleSelection={handleClientSelection}
+          setSelection={setClients}
+          selected={clients}
+          label="Filter by client"
+        />
+        <Multiselect
+          fullList={lisOfResponsiblePt}
+          handleSelection={handlePtsSelection}
+          setSelection={setResponsiblePts}
+          selected={responsiblePts}
+          label="Filter by responsible pt"
         />
         <Button onClick={handleClear} variant="contained">
           Clear filter

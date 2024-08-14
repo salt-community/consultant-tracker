@@ -14,13 +14,18 @@ import {
   PopoverHeading,
   PopoverTrigger,
 } from "../popover/popover";
+import TablePagination from "@mui/material/TablePagination";
+import * as React from "react";
 
 type Props = {
   itemsProps: ConsultantItemsType[];
   groupsProps: ConsultantsCalendarType[];
+  totalItems: number
 };
-const GanttChart = ({ itemsProps, groupsProps }: Props) => {
+const GanttChart = ({ itemsProps, groupsProps, totalItems }: Props) => {
   const [modalData, setModalData] = useState<ConsultantItemsType>();
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const handleItemSelect = (itemId, e, time) => {
     const consultantItems = itemsProps.filter((el) => itemId == el.id)[0];
@@ -101,6 +106,16 @@ const GanttChart = ({ itemsProps, groupsProps }: Props) => {
 
     return classes;
   };
+  const handleChangePage = (event: unknown, newPage: number) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
   return (
     groupsProps.length > 0 &&
     itemsProps.length > 0 && (
@@ -117,6 +132,15 @@ const GanttChart = ({ itemsProps, groupsProps }: Props) => {
             verticalLineClassNamesForTime={verticalLineClassNamesForTime}
           />
         </div>
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={totalItems}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
       </div>
     )
   );
