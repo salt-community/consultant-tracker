@@ -65,13 +65,12 @@ public class ConsultantService {
 
     // Test in integration tests
     private void updateConsultantTable(List<TimekeeperUserDto> timekeeperUserDto) {
-//        System.out.println("timekeeperUserDto = " + timekeeperUserDto);
         timekeeperUserDto.forEach(tkUser -> {
-            /* *** METHOD BELOW IS TESTED *** */
+            /* *** METHOD BELOW IS TESTED SEPARATELY *** */
             if (!consultantRepository.existsByTimekeeperId(tkUser.id())) {
-                /* *** METHOD BELOW IS TESTED *** */
+                /* *** METHOD BELOW IS TESTED SEPARATELY *** */
                 String countryTag = Tag.extractCountryTagFromTimekeeperUserDto(tkUser);
-                /* *** METHOD BELOW IS TESTED *** */
+                /* *** METHOD BELOW IS TESTED SEPARATELY *** */
                 createConsultant(new Consultant(
                         UUID.randomUUID(),
                         tkUser.firstName().trim().concat(" ").concat(tkUser.lastName().trim()),
@@ -83,7 +82,7 @@ public class ConsultantService {
                         countryTag,
                         tkUser.isActive()));
             } else {
-                /* *** METHOD BELOW IS TESTED *** */
+                /* *** METHOD BELOW IS TESTED SEPARATELY *** */
                 updateIsActiveForExistingConsultant(tkUser);
             }
         });
