@@ -4,9 +4,9 @@ import com.example.backend.client.timekeeper.TimekeeperClient;
 import com.example.backend.client.timekeeper.dto.TimekeeperRegisteredTimeResponseDto;
 import com.example.backend.consultant.Consultant;
 import com.example.backend.consultant.ConsultantService;
-import com.example.backend.consultant.TotalDaysStatistics;
 import com.example.backend.consultant.dto.ConsultantResponseDto;
 import com.example.backend.consultant.dto.ConsultantTimeDto;
+import com.example.backend.consultant.dto.TotalDaysStatisticsDto;
 import com.example.backend.redDays.RedDaysService;
 import com.example.backend.registeredTime.dto.RegisteredTimeDto;
 import com.example.backend.registeredTime.dto.RegisteredTimeResponseDto;
@@ -127,13 +127,13 @@ public class RegisteredTimeService {
 
     public ConsultantResponseDto getConsultantTimelineItems(Consultant consultant) {
         List<RegisteredTimeResponseDto> consultantTimeDto = getGroupedConsultantsRegisteredTimeItems(consultant.getId());
-        TotalDaysStatistics totalDaysStatistics = getAllDaysStatistics(consultant.getId());
+        TotalDaysStatisticsDto totalDaysStatistics = getAllDaysStatistics(consultant.getId());
         return ConsultantResponseDto.toDto(consultant, totalDaysStatistics,
                 Objects.requireNonNullElseGet(consultantTimeDto, ArrayList::new));
     }
 
 
-    private TotalDaysStatistics getAllDaysStatistics(UUID id) {
+    private TotalDaysStatisticsDto getAllDaysStatistics(UUID id) {
         String country = consultantService.getCountryCodeByConsultantId(id);
         int totalWorkedDays = countTotalWorkedDays(id);
         double totalRemainingDays = Utilities.getTotalDaysByCountry(country);
@@ -145,7 +145,7 @@ public class RegisteredTimeService {
             totalRemainingHours = Utilities.roundToOneDecimalPoint(totalRemainingDays * Utilities.getStandardWorkingHours(country));
         }
         int totalVacationDays = registeredTimeRepository.countAllById_ConsultantIdAndTypeIs(id, VACATION.activity).orElse(0);
-        return new TotalDaysStatistics(totalRemainingDays, totalWorkedDays, totalVacationDays, totalRemainingHours, Utilities.roundToOneDecimalPoint(totalWorkedHours));
+        return new TotalDaysStatisticsDto(totalRemainingDays, totalWorkedDays, totalVacationDays, totalRemainingHours, Utilities.roundToOneDecimalPoint(totalWorkedHours));
     }
 
     //-----------------------------COVERED BY TESTS ---------------------------------

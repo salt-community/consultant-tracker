@@ -15,7 +15,7 @@ public interface ConsultantRepository extends JpaRepository<Consultant, UUID> {
     List<Consultant> findAllByActiveTrue();
     @Query("SELECT t FROM Consultant t WHERE t.active = true AND t.fullName iLIKE %:fullName%")
     Page<Consultant> findAllByActiveTrueAndFilterByName(String fullName, Pageable pageable);
+
     @Query("SELECT t.country FROM Consultant t WHERE t.id = (:id)")
-//    @Query("SELECT t.country FROM Consultant t WHERE (:id) IS NOT NULL AND IN (:id)")
     String findCountryById(UUID id);
 }

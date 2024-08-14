@@ -21,6 +21,7 @@ public class Consultant {
     private Long timekeeperId;
     private boolean active;
     private String client;
+// remove and use salt_user_id
     private String responsiblePT;
     private String country;
 
