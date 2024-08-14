@@ -16,7 +16,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.stubbing.Answer;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
@@ -24,6 +26,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ContextConfiguration;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -117,16 +120,13 @@ class ConsultantServiceTest extends ApplicationTestConfig {
     void shouldReturnConsultantResponseListDto() {
         /* ARRANGE */
         Page<Consultant> pageableConsultantsList = new PageImpl<>(List.of(mockedConsultant1));
-        Mockito.when(mockedRegisteredTimeService
-                .getConsultantTimelineItems(any(Consultant.class))).thenReturn(MockedRegisteredTimeService.getConsultantTimelineItemsMocked(mockedConsultant1));
+        Mockito.when(mockedRegisteredTimeService.getConsultantTimelineItems(any(Consultant.class)))
+                .thenReturn(MockedRegisteredTimeService.getConsultantTimelineItemsMocked(mockedConsultant1));
         int expectedConsultantsFound = 1;
 
         /* ARRANGE FOR HELPER METHOD  getAllConsultantsPageable() */
         Mockito.when(mockedConsultantRepo.findAllByActiveTrueAndFilterByName(anyString(), any(Pageable.class))).thenReturn(pageableConsultantsList);
 
-        /* ARRANGE FOR HELPER METHOD registeredTimeService.fetchAndSaveTimeRegisteredByConsultant() */
-        Mockito.when(mockedRegisteredTimeService.fetchAndSaveTimeRegisteredByConsultant()).then()
-        mockedFetchAndSaveTimeRegisteredByConsultant
         /* ACT */
         ConsultantResponseListDto mockedResult = consultantService.getAllConsultantDtos(0, 8, "mockJohn", "mockPt", "mockClient");
 
@@ -313,12 +313,12 @@ class ConsultantServiceTest extends ApplicationTestConfig {
 
     @Test
     @SneakyThrows
-    void should_AddNewConsultant_ForTimekeeperUser_FetchDataFromTimekeeper() {
+    void should_Save3KonsultTidDays_InOneTimeItem_FetchDataFromTimekeeper() {
         /* ARRANGE */
         var consultantServiceClass = new ConsultantService(mockedConsultantRepo, mockedTkClient, mockedRegisteredTimeService);
         List<TimekeeperUserDto> mockedTkList = ObjectConstructor.getListOfTimekeeperUserDto(1);
         Mockito.when(mockedTkClient.getUsers()).thenReturn(mockedTkList);
-        System.out.println("mockedTkList = " + mockedTkList);
+//        System.out.println("mockedTkList = " + mockedTkList);
 
         /* ARRANGE FOR HELPER METHOD - updateConsultantTable() */
         Mockito.when(mockedConsultantRepo.existsByTimekeeperId(anyLong())).thenReturn(true);
@@ -328,9 +328,80 @@ class ConsultantServiceTest extends ApplicationTestConfig {
         /* ARRANGE FOR HELPER TO THE HELPER METHOD - createConsultant() */
         Mockito.when(mockedConsultantRepo.save(any(Consultant.class)))
                 .thenReturn(MockedConsultantService.mockedCreateConsultant(ObjectConstructor.convertTimekeeperUserDtoToConsultant(mockedTkList.getFirst())));
+        UUID createdConsultantId = MockedConsultantService.mockedGetConsultantsList().getFirst().getId();
+
+        /* ARRANGE FOR HELPER METHOD registeredTimeService.fetchAndSaveTimeRegisteredByConsultant() */
+        doAnswer(new Answer<Void>() {
+            public Void answer(InvocationOnMock invocation) throws Throwable {
+                Object[] args = invocation.getArguments();
+                MockedRegisteredTimeService.mockedFetchAndSaveTimeRegisteredByConsultant();
+                return null;
+            }
+        }).when(mockedRegisteredTimeService).fetchAndSaveTimeRegisteredByConsultant();
+
+        /* ARRANGE FOR HELPER METHOD fillClientAndResponsiblePt() */
+        List<Consultant> activeConsultants = MockedConsultantService.mockedGetConsultantsList();
+        Mockito.when(mockedConsultantRepo.save(any(Consultant.class)))
+                .thenReturn(MockedConsultantService.mockedUpdateConsultant(activeConsultants.getFirst()));
+        String possibleExpectedPt1 = "Josefin Stål";
+        String possibleExpectedPt2 = "Anna Carlsson";
+
+        /* ARRANGE FOR HELPER TO HELPER METHOD getAllActiveConsultants() */
+        Mockito.when(mockedConsultantRepo.findAllByActiveTrue()).thenReturn(activeConsultants);
+
+        /* ACT */
+        consultantService.fetchDataFromTimekeeper();
 
         /* ASSERT */
-        assertTrue(false);
+        String actualResultPt = activeConsultants.getFirst().getResponsiblePT();
+        boolean isAsExpected = actualResultPt.equals(possibleExpectedPt1) || actualResultPt.equals(possibleExpectedPt2);
+        assertTrue(isAsExpected);
+    }
+
+    @Test
+    @SneakyThrows
+    void should_UpdateResponsiblePt_AfterUserAndTimeAreAdded_FetchDataFromTimekeeper() {
+        /* ARRANGE */
+        var consultantServiceClass = new ConsultantService(mockedConsultantRepo, mockedTkClient, mockedRegisteredTimeService);
+        List<TimekeeperUserDto> mockedTkList = ObjectConstructor.getListOfTimekeeperUserDto(1);
+        Mockito.when(mockedTkClient.getUsers()).thenReturn(mockedTkList);
+
+        /* ARRANGE FOR HELPER METHOD - updateConsultantTable() */
+        Mockito.when(mockedConsultantRepo.existsByTimekeeperId(anyLong())).thenReturn(true);
+        try (MockedStatic<Tag> mockTag = mockStatic(Tag.class)) {
+            mockTag.when(() -> Tag.extractCountryTagFromTimekeeperUserDto(any(TimekeeperUserDto.class))).thenReturn("Sverige");
+        }
+        /* ARRANGE FOR HELPER TO THE HELPER METHOD - createConsultant() */
+        Mockito.when(mockedConsultantRepo.save(any(Consultant.class)))
+                .thenReturn(MockedConsultantService.mockedCreateConsultant(ObjectConstructor.convertTimekeeperUserDtoToConsultant(mockedTkList.getFirst())));
+        UUID createdConsultantId = MockedConsultantService.mockedGetConsultantsList().getFirst().getId();
+
+        /* ARRANGE FOR HELPER METHOD registeredTimeService.fetchAndSaveTimeRegisteredByConsultant() */
+        doAnswer(new Answer<Void>() {
+            public Void answer(InvocationOnMock invocation) throws Throwable {
+                Object[] args = invocation.getArguments();
+                MockedRegisteredTimeService.mockedFetchAndSaveTimeRegisteredByConsultant();
+                return null;
+            }
+        }).when(mockedRegisteredTimeService).fetchAndSaveTimeRegisteredByConsultant();
+
+        /* ARRANGE FOR HELPER METHOD fillClientAndResponsiblePt() */
+        List<Consultant> activeConsultants = MockedConsultantService.mockedGetConsultantsList();
+        Mockito.when(mockedConsultantRepo.save(any(Consultant.class)))
+                .thenReturn(MockedConsultantService.mockedUpdateConsultant(activeConsultants.getFirst()));
+        String possibleExpectedPt1 = "Josefin Stål";
+        String possibleExpectedPt2 = "Anna Carlsson";
+
+        /* ARRANGE FOR HELPER TO HELPER METHOD getAllActiveConsultants() */
+        Mockito.when(mockedConsultantRepo.findAllByActiveTrue()).thenReturn(activeConsultants);
+
+        /* ACT */
+        consultantService.fetchDataFromTimekeeper();
+
+        /* ASSERT */
+        String actualResultPt = activeConsultants.getFirst().getResponsiblePT();
+        boolean isAsExpected = actualResultPt.equals(possibleExpectedPt1) || actualResultPt.equals(possibleExpectedPt2);
+        assertTrue(isAsExpected);
     }
 
 }

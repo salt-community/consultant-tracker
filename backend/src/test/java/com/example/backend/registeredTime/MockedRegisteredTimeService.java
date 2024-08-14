@@ -362,7 +362,7 @@ public class MockedRegisteredTimeService {
                 mockedTimeItems);
     }
 
-    public void mockedFetchAndSaveTimeRegisteredByConsultant() {
+    public static void mockedFetchAndSaveTimeRegisteredByConsultant() {
         List<Consultant> activeConsultants = MockedConsultantService.mockedGetConsultantsList()
                 .stream()
                 .filter(Consultant::isActive)
