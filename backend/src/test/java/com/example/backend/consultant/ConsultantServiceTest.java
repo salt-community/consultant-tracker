@@ -96,7 +96,6 @@ class ConsultantServiceTest extends ApplicationTestConfig {
         List<Consultant> mockedList = List.of(mockedConsultant1, mockedConsultant2);
         Mockito.when(mockedConsultantRepo.findAll()).thenReturn(mockedList);
         List<Consultant> consultantList = consultantService.getAllConsultants();
-        System.out.println("consultantList = " + consultantList);
         assertFalse(consultantList.isEmpty());
     }
 

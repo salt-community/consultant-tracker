@@ -61,7 +61,6 @@ public class ConsultantService {
 
 // Test in integration tests
     private void updateConsultantTable(List<TimekeeperUserDto> timekeeperUserDto) {
-        System.out.println("timekeeperUserDto = " + timekeeperUserDto);
         timekeeperUserDto.forEach(tkUser -> {
             // method below is tested
             if (!consultantRepository.existsByTimekeeperId(tkUser.id())) {
