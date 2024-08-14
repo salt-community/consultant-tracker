@@ -38,15 +38,7 @@ public class ConsultantService {
     //-----------------------------COVERED BY TESTS ---------------------------------
     public Page<Consultant> getAllConsultantsPageable(int page, int pageSize, String name, String[] pt, String[] client) {
         Pageable pageRequest = PageRequest.of(page, pageSize);
-
-//        return consultantRepository.findAllByActiveTrueAndFilterByName(name, pageRequest);
-
-        System.out.println("name = " + name);
-        System.out.println("listOfPt = " + List.of(pt));
-        Page<Consultant> test = consultantRepository.findAllByActiveTrueAndFilterByName(name, pageRequest, List.of(pt));
-        System.out.println("test = " + test);
-        return test;
-//        return consultantRepository.findAllByActiveTrueAndFullNameIsLikeIgnoreCaseAndResponsiblePTIn(name, pageRequest, List.of(pt));
+        return consultantRepository.findAllByActiveTrueAndFilterByNameAndResponsiblePt(name, pageRequest, List.of(pt));
     }
 
     //-----------------------------COVERED BY TESTS ---------------------------------

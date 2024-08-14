@@ -14,14 +14,7 @@ public interface ConsultantRepository extends JpaRepository<Consultant, UUID> {
     boolean existsByTimekeeperId(Long id);
     List<Consultant> findAllByActiveTrue();
     @Query("SELECT t FROM Consultant t WHERE t.active = true AND t.fullName iLIKE %:fullName% AND t.responsiblePT IN :ptList")
-    Page<Consultant> findAllByActiveTrueAndFilterByName(String fullName, Pageable pageable, List<String> ptList);
-
-//    @Query("SELECT t FROM Consultant t WHERE t.active = true AND t.fullName iLIKE %:fullName%")
-
-//    Page<Consultant> findAllByActiveTrueAndResponsiblePTIn(Pageable pageable, List<String> responsiblePT);
-//    Page<Consultant> findAllByFullNameIsLikeIgnoreCase(String fullName, Pageable pageable);
-//    Page<Consultant> findAllByActiveTrueAndFullNameIsLikeIgnoreCase(String fullName, Pageable pageable);
-
+    Page<Consultant> findAllByActiveTrueAndFilterByNameAndResponsiblePt(String fullName, Pageable pageable, List<String> ptList);
     @Query("SELECT t.country FROM Consultant t WHERE t.id = (:id)")
     String findCountryById(UUID id);
 
