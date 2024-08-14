@@ -175,13 +175,6 @@ public class RegisteredTimeService {
                 .map(ConsultantTimeDto::toConsultantTimeDto)
                 .toList();
     }
-
-    // to remove after testing
-    public List<RegisteredTime> getRegisteredTime(UUID id) {
-        return getTimeByConsultantId(id);
-    }
-
-    // to remove after testing
     public List<RegisteredTimeResponseDto> getGroupedConsultantsRegisteredTimeItems(UUID id) {
         List<RegisteredTime> registeredTimeList = getTimeByConsultantId(id);
         if (registeredTimeList.isEmpty()) {
