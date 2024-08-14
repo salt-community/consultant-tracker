@@ -18,7 +18,6 @@ const ViewSwitch = ({setView, view}: Props) => {
         {view === "timeline" &&
             <Button color="primary" variant="contained" onClick={() => setView("table")}>Table view</Button>}
       </div>
-      <p className="total-results">Total results: {tableData.length}</p>
     </div>
   );
 };

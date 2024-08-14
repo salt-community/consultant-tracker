@@ -8,36 +8,37 @@ import {Checkbox, ListItemText} from "@mui/material";
 import {Dispatch, SetStateAction} from "react";
 
 type Props = {
-  allPts: string[];
-  handlePtsSelection: (el: string[]) => void,
-  responsiblePt: string[],
-  setResponsiblePt: Dispatch<SetStateAction<string[]>>
+  fullList: string[];
+  handleSelection: (el: string[]) => void,
+  selected: string[],
+  setSelection: Dispatch<SetStateAction<string[]>>,
+  label: string
 }
-const Multiselect = ({allPts, handlePtsSelection, setResponsiblePt, responsiblePt}: Props) => {
-  const handleChange = (event: SelectChangeEvent<typeof responsiblePt>) => {
+const Multiselect = ({fullList, handleSelection, selected, setSelection, label}: Props) => {
+  const handleChange = (event: SelectChangeEvent<string[]>) => {
     const {
       target: {value},
     } = event;
     const selectionArray = typeof value === 'string' ? value.split(',') : value;
-    setResponsiblePt(selectionArray);
-    handlePtsSelection(selectionArray);
+    setSelection(selectionArray);
+    handleSelection(selectionArray);
   };
   return (
     <div>
       <FormControl sx={{m: 1, width: 300}}>
-        <InputLabel id="demo-multiple-checkbox-label">Choose pts</InputLabel>
+        <InputLabel id="demo-multiple-checkbox-label">{label}</InputLabel>
         <Select
           labelId="demo-multiple-checkbox-label"
           id="demo-multiple-checkbox"
           multiple
-          value={responsiblePt}
+          value={selected}
           onChange={handleChange}
-          input={<OutlinedInput label="Choose pts"/>}
+          input={<OutlinedInput label={label}/>}
           renderValue={(selected) => selected.join(', ')}
         >
-          {allPts.map((name) => (
+          {fullList.map((name) => (
             <MenuItem key={name} value={name}>
-              <Checkbox checked={responsiblePt.indexOf(name) > -1}/>
+              <Checkbox checked={selected.indexOf(name) > -1}/>
               <ListItemText primary={name}/>
             </MenuItem>
           ))}

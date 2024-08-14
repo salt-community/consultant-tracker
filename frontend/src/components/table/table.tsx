@@ -107,7 +107,11 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   );
 }
 
-export default function EnhancedTable() {
+type Props ={
+  totalItems: number;
+}
+
+export default function EnhancedTable({totalItems}:Props) {
   const [order, setOrder] = React.useState<Order>("asc");
   const [orderBy, setOrderBy] =
     React.useState<keyof ConsultantFetchType>("fullName");
@@ -226,7 +230,7 @@ export default function EnhancedTable() {
             <TablePagination
               rowsPerPageOptions={[5, 10, 25]}
               component="div"
-              count={tableData.filteredData.consultants.length}
+              count={totalItems}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}
