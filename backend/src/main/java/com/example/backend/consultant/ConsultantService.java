@@ -24,7 +24,7 @@ public class ConsultantService {
     private RegisteredTimeService registeredTimeService;
 
     //-----------------------------COVERED BY TESTS ---------------------------------
-    public ConsultantResponseListDto getAllConsultantDtos(int page, int pageSize, String name, String[] pt, String[] client) {
+    public ConsultantResponseListDto getAllConsultantDtos(int page, int pageSize, String name, List<String> pt, List<String> client) {
         Page<Consultant> consultantsList = getAllConsultantsPageable(page, pageSize, name, pt, client);
 
         return new ConsultantResponseListDto(
@@ -36,9 +36,16 @@ public class ConsultantService {
     }
 
     //-----------------------------COVERED BY TESTS ---------------------------------
-    public Page<Consultant> getAllConsultantsPageable(int page, int pageSize, String name, String[] pt, String[] client) {
+    public Page<Consultant> getAllConsultantsPageable(int page, int pageSize, String name, List<String> pt, List<String> client) {
         Pageable pageRequest = PageRequest.of(page, pageSize);
-        return consultantRepository.findAllByActiveTrueAndFilterByNameAndResponsiblePt(name, pageRequest, List.of(pt));
+        ClientsAndPtsListDto allClientsAndPts = getAllClientsAndPts();
+        if(pt.isEmpty()){
+           pt.addAll(allClientsAndPts.pts().stream().toList());
+        }
+        if(client.isEmpty()){
+            client.addAll(allClientsAndPts.clients().stream().toList());
+        }
+        return consultantRepository.findAllByActiveTrueAndFilterByNameAndResponsiblePtAndClients(name, pageRequest, pt, client);
     }
 
     //-----------------------------COVERED BY TESTS ---------------------------------

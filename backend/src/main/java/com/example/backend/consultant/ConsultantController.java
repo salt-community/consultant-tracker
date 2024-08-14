@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.lang.reflect.Array;
+import java.sql.Array;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -25,14 +25,13 @@ public class ConsultantController {
     private final ConsultantService consultantService;
     private final RegisteredTimeService registeredTimeService;
     private final RedDaysService redDaysService;
-
     @GetMapping
     public ResponseEntity<ConsultantResponseListDto> getConsultantsAndRegisteredTime(
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
             @RequestParam(defaultValue = "", required = false) String name,
-            @RequestParam(defaultValue = "", required = false) String[] client,
-            @RequestParam(defaultValue = "", required = false) String[] pt) {
+            @RequestParam(defaultValue = "", required = false) List<String> client,
+            @RequestParam(defaultValue = "", required = false) List<String> pt) {
         ConsultantResponseListDto consultantsResponse = consultantService.getAllConsultantDtos(page, pageSize, name, pt, client);
         return ResponseEntity.ok(consultantsResponse);
     }
