@@ -49,10 +49,4 @@ public class ConsultantController {
         }
         return null;
     }
-    @GetMapping("/registeredTimeByConsultantId")
-    public ResponseEntity<List<RegisteredTime>> getConsultantsRegisteredTimeById(
-            @RequestParam UUID id) {
-        return ResponseEntity.ok(registeredTimeService.getRegisteredTime(id));
-    }
-
 }
