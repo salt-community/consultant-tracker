@@ -18,9 +18,9 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(MockitoExtension.class)
 @ContextConfiguration(classes = ApplicationTestConfig.class)
 class TagTest {
-    private static Tag tagTest = new Tag();
-    private static Tag tagSverige = new Tag();
-    private static Tag tagNorge = new Tag();
+    private static final Tag tagTest = new Tag();
+    private static final Tag tagSverige = new Tag();
+    private static final Tag tagNorge = new Tag();
 
     @BeforeAll
     static void setUp() {

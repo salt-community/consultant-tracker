@@ -1,6 +1,8 @@
 package com.example.backend.registeredTime;
 
+import com.example.backend.ObjectConstructor;
 import com.example.backend.consultant.Consultant;
+import com.example.backend.consultant.MockedConsultantService;
 import com.example.backend.consultant.dto.ConsultantResponseDto;
 import com.example.backend.consultant.dto.ConsultantTimeDto;
 import com.example.backend.consultant.dto.TotalDaysStatisticsDto;
@@ -9,12 +11,14 @@ import org.assertj.core.util.Lists;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 public class MockedRegisteredTimeService {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     private static final DateTimeFormatter formatterSeconds = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    public static final List<RegisteredTime> registeredTimeList = new ArrayList<>();
 
     public static List<RegisteredTime> generateMockedRegisteredTimeData() {
         RegisteredTime mockedTimeItem = new RegisteredTime(
@@ -292,46 +296,46 @@ public class MockedRegisteredTimeService {
         );
     }
 
-    public static List<RegisteredTimeResponseDto> createGroupedRegisteredTimeDtoResponse(){
+    public static List<RegisteredTimeResponseDto> createGroupedRegisteredTimeDtoResponse() {
         RegisteredTimeResponseDto mockedRegisteredTimeResult = new RegisteredTimeResponseDto(
                 UUID.randomUUID(),
-                LocalDateTime.parse("2024-05-20 00:00:00",formatterSeconds),
-                LocalDateTime.parse("2024-05-27 23:59:59",formatterSeconds),
+                LocalDateTime.parse("2024-05-20 00:00:00", formatterSeconds),
+                LocalDateTime.parse("2024-05-27 23:59:59", formatterSeconds),
                 "Konsult-tid",
                 "AstraZeneca",
                 6);
         RegisteredTimeResponseDto mockedRegisteredTimeResult2 = new RegisteredTimeResponseDto(
                 UUID.randomUUID(),
-                LocalDateTime.parse("2024-05-28 00:00:00",formatterSeconds),
-                LocalDateTime.parse("2024-06-27 23:59:59",formatterSeconds),
+                LocalDateTime.parse("2024-05-28 00:00:00", formatterSeconds),
+                LocalDateTime.parse("2024-06-27 23:59:59", formatterSeconds),
                 "No Registered Time",
                 "No Registered Time",
                 21);
         RegisteredTimeResponseDto mockedRegisteredTimeResult3 = new RegisteredTimeResponseDto(
                 UUID.randomUUID(),
-                LocalDateTime.parse("2024-06-28 00:00:00",formatterSeconds),
-                LocalDateTime.parse("2024-06-30 23:59:59",formatterSeconds),
+                LocalDateTime.parse("2024-06-28 00:00:00", formatterSeconds),
+                LocalDateTime.parse("2024-06-30 23:59:59", formatterSeconds),
                 "Sjuk",
                 "PGP",
                 1);
         RegisteredTimeResponseDto mockedRegisteredTimeResult4 = new RegisteredTimeResponseDto(
                 UUID.randomUUID(),
-                LocalDateTime.parse("2024-07-01 00:00:00",formatterSeconds),
-                LocalDateTime.parse("2024-07-02 23:59:59",formatterSeconds),
+                LocalDateTime.parse("2024-07-01 00:00:00", formatterSeconds),
+                LocalDateTime.parse("2024-07-02 23:59:59", formatterSeconds),
                 "Semester",
                 "PGP",
                 2);
         RegisteredTimeResponseDto mockedRegisteredTimeResult5 = new RegisteredTimeResponseDto(
                 UUID.randomUUID(),
-                LocalDateTime.parse("2024-07-03 00:00:00",formatterSeconds),
-                LocalDateTime.parse("2024-07-31 23:59:59",formatterSeconds),
+                LocalDateTime.parse("2024-07-03 00:00:00", formatterSeconds),
+                LocalDateTime.parse("2024-07-31 23:59:59", formatterSeconds),
                 "No Registered Time",
                 "No Registered Time",
                 21);
         RegisteredTimeResponseDto mockedRegisteredTimeResult6 = new RegisteredTimeResponseDto(
                 UUID.randomUUID(),
-                LocalDateTime.parse("2024-08-01 00:00:00",formatterSeconds),
-                LocalDateTime.parse("2024-08-09 23:59:59",formatterSeconds),
+                LocalDateTime.parse("2024-08-01 00:00:00", formatterSeconds),
+                LocalDateTime.parse("2024-08-09 23:59:59", formatterSeconds),
                 "No Registered Time",
                 "No Registered Time",
                 7);
@@ -356,5 +360,28 @@ public class MockedRegisteredTimeService {
                 consultant.getClient(),
                 mockedStatistics,
                 mockedTimeItems);
+    }
+
+    public static void mockedFetchAndSaveTimeRegisteredByConsultant() {
+        List<Consultant> activeConsultants = MockedConsultantService.mockedGetConsultantsList()
+                .stream()
+                .filter(Consultant::isActive)
+                .toList();
+        List<ConsultantTimeDto> finalList = new ArrayList<>();
+        for (Consultant consultant : activeConsultants) {
+            finalList.addAll(ObjectConstructor.getTimekeeperRegisteredTime(consultant.getId()));
+        }
+        MockedRegisteredTimeService.registeredTimeList.addAll(
+                finalList.stream()
+                        .map(t -> new RegisteredTime(
+                                        new RegisteredTimeKey(
+                                                t.itemId().getConsultantId(),
+                                                t.itemId().getStartDate()),
+                                        t.dayType(),
+                                        t.endDate().withHour(23).withMinute(59).withSecond(59),
+                                        Math.round(t.totalHours() * 10.0) / 10.0,
+                                        t.projectName()
+                                )
+                        ).toList());
     }
 }

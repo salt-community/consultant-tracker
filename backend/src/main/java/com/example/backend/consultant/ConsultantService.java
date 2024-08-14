@@ -37,15 +37,18 @@ public class ConsultantService {
                         .map(registeredTimeService::getConsultantTimelineItems).toList()));
     }
 
+    //-----------------------------COVERED BY TESTS ---------------------------------
     public Page<Consultant> getAllConsultantsPageable(int page, int pageSize, String name, String pt, String client) {
         Pageable pageRequest = PageRequest.of(page, pageSize);
         return consultantRepository.findAllByActiveTrueAndFilterByName(name, pageRequest);
     }
+
     //-----------------------------COVERED BY TESTS ---------------------------------
     public List<Consultant> getAllConsultants() {
         return consultantRepository.findAll();
     }
 
+    //-----------------------------COVERED BY TESTS ---------------------------------
     public List<Consultant> getAllActiveConsultants() {
         return consultantRepository.findAllByActiveTrue();
     }
@@ -59,14 +62,14 @@ public class ConsultantService {
         fillClientAndResponsiblePt();
     }
 
-// Test in integration tests
+    // Test in integration tests
     private void updateConsultantTable(List<TimekeeperUserDto> timekeeperUserDto) {
         timekeeperUserDto.forEach(tkUser -> {
-            // method below is tested
+            /* *** METHOD BELOW IS TESTED SEPARATELY *** */
             if (!consultantRepository.existsByTimekeeperId(tkUser.id())) {
-                // method below is tested
+                /* *** METHOD BELOW IS TESTED SEPARATELY *** */
                 String countryTag = Tag.extractCountryTagFromTimekeeperUserDto(tkUser);
-                // method below is tested
+                /* *** METHOD BELOW IS TESTED SEPARATELY *** */
                 createConsultant(new Consultant(
                         UUID.randomUUID(),
                         tkUser.firstName().trim().concat(" ").concat(tkUser.lastName().trim()),
@@ -78,12 +81,13 @@ public class ConsultantService {
                         countryTag,
                         tkUser.isActive()));
             } else {
+                /* *** METHOD BELOW IS TESTED SEPARATELY *** */
                 updateIsActiveForExistingConsultant(tkUser);
             }
         });
     }
 
-    // Test in integration tests
+    //-----------------------------COVERED BY TESTS ---------------------------------
     private void updateIsActiveForExistingConsultant(TimekeeperUserDto tkUser) {
         List<Consultant> consultants = getAllConsultants();
         consultants.stream()
@@ -96,17 +100,19 @@ public class ConsultantService {
                 });
     }
 
+    //-----------------------------COVERED BY TESTS ---------------------------------
     private void createConsultant(Consultant consultant) {
         consultantRepository.save(consultant);
     }
 
+    //-----------------------------COVERED BY TESTS ---------------------------------
     public String getCountryCodeByConsultantId(UUID consultantId) {
         return consultantRepository.findCountryById(consultantId);
     }
 
+    //-----------------------------COVERED BY TESTS ---------------------------------
     public void fillClientAndResponsiblePt() {
         String[] responsiblePts = {"Josefin Stål", "Anna Carlsson"};
-//        String[] responsiblePts = {"00ae7ec3-bbf8-4926-aadb-b8e7e4378341", "3ecb112d-d85d-40c4-a81f-762c9f2e5abc"};
         Random rand = new Random();
         List<Consultant> allActiveConsultants = getAllActiveConsultants();
         allActiveConsultants.forEach(el -> {

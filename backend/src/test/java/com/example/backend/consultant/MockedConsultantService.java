@@ -17,4 +17,17 @@ public class MockedConsultantService {
     public static List<Consultant> mockedGetConsultantsList() {
         return mockConsultantList;
     }
+
+    public static void clearList() {
+        MockedConsultantService. mockConsultantList.clear();
+    }
+
+    public static Consultant mockedUpdateConsultant(Consultant consultant) {
+        for (Consultant c: MockedConsultantService.mockConsultantList) {
+            if (c.getId() == consultant.getId()) {
+                c.setActive(consultant.isActive());
+            }
+        }
+        return consultant;
+    }
 }

@@ -47,12 +47,12 @@ class RedDaysServiceTest {
 
     @Test
     @DisplayName("getRedDays")
-    public void givenCountryCodeSE__whenGetRedDays__then1January2024() {
+    public void givenCountryCodeSE__whenGetRedDays__then31December2023() {
         Mockito.when(redDaysRepository.findAllByCountry("SE"))
                 .thenReturn(RedDaysServiceMockedData.createMockedRedDayList());
         List<LocalDate> actualResult = redDaysService.getRedDays("SE");
-        assertEquals(actualResult.size(), 1);
-        assertEquals(LocalDate.parse("2024-01-01"), actualResult.getFirst());
+        assertEquals(2, actualResult.size());
+        assertEquals(LocalDate.parse("2023-12-31"), actualResult.getFirst());
     }
 
     @Test

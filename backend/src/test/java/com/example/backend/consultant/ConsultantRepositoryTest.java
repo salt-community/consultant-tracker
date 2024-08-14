@@ -38,7 +38,7 @@ class ConsultantRepositoryTest {
     }
 
     @Test
-    void shouldReturnTrueFortimekeeperId() {
+    void shouldReturnTrueForTimekeeperId() {
         assertTrue(repo.existsByTimekeeperId(1111L));
     }
 
