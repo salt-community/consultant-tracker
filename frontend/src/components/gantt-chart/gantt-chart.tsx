@@ -58,7 +58,7 @@ const GanttChart = ({ itemsProps, groupsProps }: Props) => {
             <PopoverHeading>{item.details.name}</PopoverHeading>
             <PopoverDescription>
               <div className="popover-descr__basic-details">
-                <p>Client: {item.details.projectName}</p>
+                <p>Client: {item.details.client}</p>
                 <p>Total Days Worked: {item.details.totalWorkedDays}</p>
                 <p>Remaining Days: {item.details.totalRemainingDays}</p>
                 <p>Total worked hours: {item.details.totalWorkedHours}</p>
@@ -69,6 +69,7 @@ const GanttChart = ({ itemsProps, groupsProps }: Props) => {
               </div>
               <div className="popover-descr__item">
                 <h3>{item.title} - {item.details.totalDays} days</h3>
+                <p>{item.details.projectName}</p>
                 <p>Start: {item.start_time.format('ddd, DD-MMM-YY')}</p>
                 <p>End: {item.end_time.format('ddd, DD-MMM-YY')}</p>
               </div>

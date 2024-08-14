@@ -58,7 +58,7 @@ public class ConsultantService {
         List<TimekeeperUserDto> timekeeperUserDto = timekeeperClient.getUsers();
         assert timekeeperUserDto != null;
         updateConsultantTable(timekeeperUserDto);
-        registeredTimeService.fetchAndSaveTimeRegisteredByConsultant();
+        registeredTimeService.fetchAndSaveTimeRegisteredByConsultantDB();
         fillClientAndResponsiblePt();
     }
 

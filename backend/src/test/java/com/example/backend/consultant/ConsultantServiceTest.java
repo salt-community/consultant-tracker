@@ -332,7 +332,7 @@ class ConsultantServiceTest extends ApplicationTestConfig {
         doAnswer((Answer<Void>) invocation -> {
             MockedRegisteredTimeService.mockedFetchAndSaveTimeRegisteredByConsultant();
             return null;
-        }).when(mockedRegisteredTimeService).fetchAndSaveTimeRegisteredByConsultant();
+        }).when(mockedRegisteredTimeService).fetchAndSaveTimeRegisteredByConsultantDB();
 
         /* ARRANGE FOR HELPER METHOD - fillClientAndResponsiblePt() */
         List<Consultant> activeConsultants = MockedConsultantService.mockedGetConsultantsList();
@@ -387,7 +387,7 @@ class ConsultantServiceTest extends ApplicationTestConfig {
         doAnswer((Answer<Void>) invocation -> {
                 MockedRegisteredTimeService.mockedFetchAndSaveTimeRegisteredByConsultant();
                 return null;
-        }).when(mockedRegisteredTimeService).fetchAndSaveTimeRegisteredByConsultant();
+        }).when(mockedRegisteredTimeService).fetchAndSaveTimeRegisteredByConsultantDB();
 
         /* ARRANGE FOR HELPER METHOD - fillClientAndResponsiblePt() */
         List<Consultant> activeConsultants = MockedConsultantService.mockedGetConsultantsList();

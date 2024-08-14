@@ -8,9 +8,10 @@ public enum Activity {
     PARENTAL_LEAVE("Föräldraledig"),
     LEAVE_OF_ABSENCE("Tjänstledig"),
     CONSULTANCY_TIME("Konsult-tid"),
-    ON_CALL("Jourtid");
+    ON_CALL("Jourtid"),
+    PGP("PGP");
     public final String activity;
-    private Activity(String activity) {
+    Activity(String activity) {
         this.activity = activity;
     }
 }
