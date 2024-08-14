@@ -27,7 +27,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ContextConfiguration;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -200,7 +199,7 @@ class ConsultantServiceTest extends ApplicationTestConfig {
         /* ASSERT */
         UUID actualResult = MockedConsultantService.mockedGetConsultantsList()
                 .stream()
-                .filter(c -> !c.isActive()).toList().get(0).getId();
+                .filter(c -> !c.isActive()).toList().getFirst().getId();
         System.out.println("MockedConsultantService.mockedGetConsultantsList() = " + MockedConsultantService.mockedGetConsultantsList());
         assertEquals(expectedResult, actualResult);
     }
@@ -224,7 +223,7 @@ class ConsultantServiceTest extends ApplicationTestConfig {
         /* ASSERT */
         List<Consultant> resultList = MockedConsultantService.mockedGetConsultantsList();
         Consultant actualResult = resultList.stream().filter(c -> (c.getId() == mockedConsultant1.getId())
-                && (c.getResponsiblePT().equals(possibleExpected1) || c.getResponsiblePT().equals(possibleExpected2))).toList().get(0);
+                && (c.getResponsiblePT().equals(possibleExpected1) || c.getResponsiblePT().equals(possibleExpected2))).toList().getFirst();
         assertNotNull(actualResult);
         assertEquals(mockedConsultant1.getId(), actualResult.getId());
     }
@@ -330,15 +329,11 @@ class ConsultantServiceTest extends ApplicationTestConfig {
         /* ARRANGE FOR HELPER TO THE HELPER METHOD - createConsultant() */
         Mockito.when(mockedConsultantRepo.save(any(Consultant.class)))
                 .thenReturn(MockedConsultantService.mockedCreateConsultant(ObjectConstructor.convertTimekeeperUserDtoToConsultant(mockedTkList.getFirst())));
-        UUID createdConsultantId = MockedConsultantService.mockedGetConsultantsList().getFirst().getId();
 
         /* ARRANGE FOR HELPER METHOD registeredTimeService.fetchAndSaveTimeRegisteredByConsultant() */
-        doAnswer(new Answer<Void>() {
-            public Void answer(InvocationOnMock invocation) throws Throwable {
-                Object[] args = invocation.getArguments();
-                MockedRegisteredTimeService.mockedFetchAndSaveTimeRegisteredByConsultant();
-                return null;
-            }
+        doAnswer((Answer<Void>) invocation -> {
+            MockedRegisteredTimeService.mockedFetchAndSaveTimeRegisteredByConsultant();
+            return null;
         }).when(mockedRegisteredTimeService).fetchAndSaveTimeRegisteredByConsultant();
 
         /* ARRANGE FOR HELPER METHOD fillClientAndResponsiblePt() */
@@ -378,7 +373,6 @@ class ConsultantServiceTest extends ApplicationTestConfig {
     @SneakyThrows
     void should_AddNewConsultantAnd_UpdateResponsiblePt_AfterUserAndTimeAreAdded_FetchDataFromTimekeeper() {
         /* ARRANGE */
-        var consultantServiceClass = new ConsultantService(mockedConsultantRepo, mockedTkClient, mockedRegisteredTimeService);
         List<TimekeeperUserDto> mockedTkList = ObjectConstructor.getListOfTimekeeperUserDto(1);
         Mockito.when(mockedTkClient.getUsers()).thenReturn(mockedTkList);
 
@@ -393,12 +387,9 @@ class ConsultantServiceTest extends ApplicationTestConfig {
         UUID createdConsultantId = MockedConsultantService.mockedGetConsultantsList().getFirst().getId();
 
         /* ARRANGE FOR HELPER METHOD registeredTimeService.fetchAndSaveTimeRegisteredByConsultant() */
-        doAnswer(new Answer<Void>() {
-            public Void answer(InvocationOnMock invocation) throws Throwable {
-                Object[] args = invocation.getArguments();
+        doAnswer((Answer<Void>) invocation -> {
                 MockedRegisteredTimeService.mockedFetchAndSaveTimeRegisteredByConsultant();
                 return null;
-            }
         }).when(mockedRegisteredTimeService).fetchAndSaveTimeRegisteredByConsultant();
 
         /* ARRANGE FOR HELPER METHOD fillClientAndResponsiblePt() */
