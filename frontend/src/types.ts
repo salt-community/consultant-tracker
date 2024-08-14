@@ -115,7 +115,8 @@ export type ConsultantFetchType = {
   email: string,
   phoneNumber: string,
   totalDaysStatistics: TotalDaysStatisticsType,
-  registeredTimeDtoList: RegisteredTimeItemType[]
+  registeredTimeDtoList: RegisteredTimeItemType[],
+  client: string
 }
 
   export type TotalDaysStatisticsType = {
