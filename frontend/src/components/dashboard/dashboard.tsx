@@ -36,7 +36,7 @@ const Dashboard = () => {
         setListOfClients(res.clients)
       })
 
-    fetch(`http://localhost:8080/api/consultants?page=3&pt=${filterPts}&client=${clients}`)
+    fetch(`http://localhost:8080/api/consultants?page=3&pt=${filterPts}`)
       .then(res => res.json())
       .then(res => {
         const data = res.consultants.flatMap((el: ConsultantFetchType) => {
