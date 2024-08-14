@@ -6,6 +6,7 @@ import com.example.backend.client.timekeeper.TimekeeperClient;
 import com.example.backend.client.timekeeper.dto.TimekeeperUserDto;
 import com.example.backend.consultant.dto.ConsultantResponseListDto;
 import com.example.backend.registeredTime.MockedRegisteredTimeService;
+import com.example.backend.registeredTime.RegisteredTime;
 import com.example.backend.registeredTime.RegisteredTimeService;
 import com.example.backend.tag.Tag;
 import lombok.SneakyThrows;
@@ -313,18 +314,19 @@ class ConsultantServiceTest extends ApplicationTestConfig {
 
     @Test
     @SneakyThrows
-    void should_Save3KonsultTidDays_InOneTimeItem_FetchDataFromTimekeeper() {
+    void should_AddNewConsultantAnd_Save3KonsultTidDays_With8HoursEach_FetchDataFromTimekeeper() {
         /* ARRANGE */
         var consultantServiceClass = new ConsultantService(mockedConsultantRepo, mockedTkClient, mockedRegisteredTimeService);
         List<TimekeeperUserDto> mockedTkList = ObjectConstructor.getListOfTimekeeperUserDto(1);
         Mockito.when(mockedTkClient.getUsers()).thenReturn(mockedTkList);
-//        System.out.println("mockedTkList = " + mockedTkList);
 
         /* ARRANGE FOR HELPER METHOD - updateConsultantTable() */
         Mockito.when(mockedConsultantRepo.existsByTimekeeperId(anyLong())).thenReturn(true);
         try (MockedStatic<Tag> mockTag = mockStatic(Tag.class)) {
             mockTag.when(() -> Tag.extractCountryTagFromTimekeeperUserDto(any(TimekeeperUserDto.class))).thenReturn("Sverige");
         }
+        int consultantListSizeBefore = MockedConsultantService.mockedGetConsultantsList().size();
+
         /* ARRANGE FOR HELPER TO THE HELPER METHOD - createConsultant() */
         Mockito.when(mockedConsultantRepo.save(any(Consultant.class)))
                 .thenReturn(MockedConsultantService.mockedCreateConsultant(ObjectConstructor.convertTimekeeperUserDtoToConsultant(mockedTkList.getFirst())));
@@ -343,8 +345,6 @@ class ConsultantServiceTest extends ApplicationTestConfig {
         List<Consultant> activeConsultants = MockedConsultantService.mockedGetConsultantsList();
         Mockito.when(mockedConsultantRepo.save(any(Consultant.class)))
                 .thenReturn(MockedConsultantService.mockedUpdateConsultant(activeConsultants.getFirst()));
-        String possibleExpectedPt1 = "Josefin Stål";
-        String possibleExpectedPt2 = "Anna Carlsson";
 
         /* ARRANGE FOR HELPER TO HELPER METHOD getAllActiveConsultants() */
         Mockito.when(mockedConsultantRepo.findAllByActiveTrue()).thenReturn(activeConsultants);
@@ -353,14 +353,30 @@ class ConsultantServiceTest extends ApplicationTestConfig {
         consultantService.fetchDataFromTimekeeper();
 
         /* ASSERT */
-        String actualResultPt = activeConsultants.getFirst().getResponsiblePT();
-        boolean isAsExpected = actualResultPt.equals(possibleExpectedPt1) || actualResultPt.equals(possibleExpectedPt2);
-        assertTrue(isAsExpected);
+        int expectedDifferenceInListSize = 1;
+        int consultantListSizeAfter = MockedConsultantService.mockedGetConsultantsList().size();
+        List<RegisteredTime> registeredTimeList = MockedRegisteredTimeService.registeredTimeList;
+        int expectedNumberOfKonsultTidEntries = 3;
+        double expectedSumOfHoursRegistered = 24.0;
+        int actualNumberOfKonsultTidEntries = 0;
+        double actualSumOfHoursRegistered = 0.0;
+
+        for (var time: registeredTimeList) {
+            actualSumOfHoursRegistered += time.getTotalHours();
+            System.out.println("time.getType() = " + time.getType());
+            if (time.getType().equalsIgnoreCase("Konsult-Tid")) {
+                actualNumberOfKonsultTidEntries++;
+            }
+        }
+        assertEquals(expectedDifferenceInListSize, consultantListSizeAfter - consultantListSizeBefore);
+        assertEquals(3, registeredTimeList.size());
+        assertEquals(expectedNumberOfKonsultTidEntries, actualNumberOfKonsultTidEntries);
+        assertEquals(expectedSumOfHoursRegistered, actualSumOfHoursRegistered);
     }
 
     @Test
     @SneakyThrows
-    void should_UpdateResponsiblePt_AfterUserAndTimeAreAdded_FetchDataFromTimekeeper() {
+    void should_AddNewConsultantAnd_UpdateResponsiblePt_AfterUserAndTimeAreAdded_FetchDataFromTimekeeper() {
         /* ARRANGE */
         var consultantServiceClass = new ConsultantService(mockedConsultantRepo, mockedTkClient, mockedRegisteredTimeService);
         List<TimekeeperUserDto> mockedTkList = ObjectConstructor.getListOfTimekeeperUserDto(1);
