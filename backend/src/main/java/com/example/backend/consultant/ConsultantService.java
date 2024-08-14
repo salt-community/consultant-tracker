@@ -19,7 +19,6 @@ import java.util.UUID;
 
 @Service
 @Data
-@RequiredArgsConstructor
 @AllArgsConstructor
 public class ConsultantService {
     private ConsultantRepository consultantRepository;
