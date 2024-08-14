@@ -1,6 +1,8 @@
 package com.example.backend.registeredTime;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -32,13 +34,15 @@ class RegisteredTimeRepositoryTest {
     }
 
     @Test
-    public void shouldSuccessfullySaveRegisteredTime() {
+    @DisplayName("save")
+    public void whenSave__thenSuccessful() {
         RegisteredTime actualResult = registeredTimeRepository.save(registeredTime);
         assertNotNull(actualResult);
     }
 
     @Test
-    public void shouldReturn2TimeItemsInAscOrder() {
+    @DisplayName("findAllById_ConsultantIdOrderById_StartDateAsc")
+    public void givenRegisteredTimeList__whenFindAllByStartDateAsc__then2ItemsWhere04FebIsFirstItem() {
         var mockedDataList = new RegisteredTime(new RegisteredTimeKey(mockedId, LocalDateTime.parse("2024-02-04 00:00:00", formatterSeconds)),
                 "Konsult-tid",
                 LocalDateTime.parse("2024-02-04 23:59:59", formatterSeconds),
@@ -52,7 +56,8 @@ class RegisteredTimeRepositoryTest {
     }
 
     @Test
-    public void shouldReturnFirstWhenDescOrder() {
+    @DisplayName("findFirstById_ConsultantIdOrderByEndDateDesc")
+    public void givenRegisteredTimeList__whenFindAllByEndDateDesc__thenReturn06Feb() {
         var mockedDataList = new RegisteredTime(new RegisteredTimeKey(mockedId,
                 LocalDateTime.parse("2024-02-06 00:00:00",
                         formatterSeconds)),
@@ -66,12 +71,14 @@ class RegisteredTimeRepositoryTest {
     }
 
     @Test
-    public void shouldReturn0WhenNoVacationTaken(){
+    @DisplayName("countAllById_ConsultantIdAndTypeIs")
+    public void givenNoSemesterRegistered__whenCountAllByTypeSemester__thenReturn0(){
         Integer actualResult = registeredTimeRepository.countAllById_ConsultantIdAndTypeIs(mockedId, "Semester").orElse(0);
         assertEquals(0,actualResult);
     }
     @Test
-    public void shouldReturn1WhenVacationTaken(){
+    @DisplayName("countAllById_ConsultantIdAndTypeIs")
+    public void givenSemesterRegistered__whenCountAllBySemester__thenReturn1(){
         var mockedRegisteredTime2 =  new RegisteredTime(new RegisteredTimeKey(mockedId, LocalDateTime.parse("2024-03-07 00:00:00", formatterSeconds)),
                 "Semester",
                 LocalDateTime.parse("2024-03-07 23:59:59", formatterSeconds),
@@ -89,7 +96,8 @@ class RegisteredTimeRepositoryTest {
     }
 
     @Test
-    public void shouldReturn16HoursWhenTypeSemester(){
+    @DisplayName("getSumOfTotalHoursByConsultantIdAndType")
+    public void givenRegisteredTimeListAndSemester__whenGetSumOfTotalHoursByType__thenReturn16H(){
         var mockedRegisteredTime2 =  new RegisteredTime(new RegisteredTimeKey(mockedId, LocalDateTime.parse("2024-03-07 00:00:00", formatterSeconds)),
                 "Semester",
                 LocalDateTime.parse("2024-03-07 23:59:59", formatterSeconds),
@@ -113,7 +121,8 @@ class RegisteredTimeRepositoryTest {
     }
 
     @Test
-    public void shouldReturn16HoursWhenTypeKonsultTid(){
+    @DisplayName("getSumOfTotalHoursByConsultantIdAndType")
+    public void givenRegisteredTimeListAndKonsultTid__whenGetSumOfTotalHoursByType__thenReturn16H(){
         var mockedRegisteredTime2 =  new RegisteredTime(new RegisteredTimeKey(mockedId, LocalDateTime.parse("2024-03-07 00:00:00", formatterSeconds)),
                 "Semester",
                 LocalDateTime.parse("2024-03-07 23:59:59", formatterSeconds),
@@ -136,7 +145,8 @@ class RegisteredTimeRepositoryTest {
         assertEquals(16D, actualResult);
     }
     @Test
-    public void shouldReturn16HoursWhenTypeEgenAdministration(){
+    @DisplayName("getSumOfTotalHoursByConsultantIdAndType")
+    public void givenRegisteredTimeListAndEgenAdministration__whenGetSumOfTotalHoursByType__thenReturn0H(){
         var mockedRegisteredTime2 =  new RegisteredTime(new RegisteredTimeKey(mockedId, LocalDateTime.parse("2024-03-07 00:00:00", formatterSeconds)),
                 "Semester",
                 LocalDateTime.parse("2024-03-07 23:59:59", formatterSeconds),
@@ -160,7 +170,8 @@ class RegisteredTimeRepositoryTest {
     }
 
     @Test
-    public void shouldReturn04AprWhenTypeSemesterAndDesc(){
+    @DisplayName("findFirstById_ConsultantIdAndTypeIsOrderByEndDateDesc")
+    public void givenRegisteredTimeListAndTypeSemester__whenFindFirstByTypeAndEndDateDesc__then05Apr(){
         var mockedRegisteredTime2 =  new RegisteredTime(new RegisteredTimeKey(mockedId, LocalDateTime.parse("2024-03-07 00:00:00", formatterSeconds)),
                 "Semester",
                 LocalDateTime.parse("2024-03-07 23:59:59", formatterSeconds),

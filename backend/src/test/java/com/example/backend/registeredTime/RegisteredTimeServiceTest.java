@@ -51,6 +51,7 @@ class RegisteredTimeServiceTest {
     }
 
     @Test
+    @DisplayName("getTimeByConsultantId")
     public void shouldReturnTwoTimeItems() {
         Mockito.when(registeredTimeRepository.findAllById_ConsultantIdOrderById_StartDateAsc(
                         listOfConsultantIds.get(0)))
@@ -61,6 +62,7 @@ class RegisteredTimeServiceTest {
     }
 
     @Test
+    @DisplayName("getCurrentClient")
     public void shouldReturnPGPWhenConsultantDidNotWorkYet() {
         Mockito.when(registeredTimeRepository.findFirstById_ConsultantIdAndTypeIsOrderByEndDateDesc(
                         listOfConsultantIds.get(0), CONSULTANCY_TIME.activity))
