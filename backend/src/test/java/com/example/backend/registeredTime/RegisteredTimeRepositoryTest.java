@@ -43,11 +43,7 @@ class RegisteredTimeRepositoryTest {
     @Test
     @DisplayName("findAllById_ConsultantIdOrderById_StartDateAsc")
     public void givenRegisteredTimeList__whenFindAllByStartDateAsc__then2ItemsWhere04FebIsFirstItem() {
-        var mockedDataList = new RegisteredTime(new RegisteredTimeKey(mockedId, LocalDateTime.parse("2024-02-04 00:00:00", formatterSeconds)),
-                "Konsult-tid",
-                LocalDateTime.parse("2024-02-04 23:59:59", formatterSeconds),
-                8D,
-                "H&M");
+        var mockedDataList = RegisteredTimeRepositoryMockedData.createMockedRegisteredTime04Feb();
         registeredTimeRepository.save(mockedDataList);
         var actualResult = registeredTimeRepository.findAllById_ConsultantIdOrderById_StartDateAsc(mockedId);
         assertEquals(registeredTime.getId().getStartDate(), actualResult.get(1).getId().getStartDate());
@@ -58,13 +54,7 @@ class RegisteredTimeRepositoryTest {
     @Test
     @DisplayName("findFirstById_ConsultantIdOrderByEndDateDesc")
     public void givenRegisteredTimeList__whenFindAllByEndDateDesc__thenReturn06Feb() {
-        var mockedDataList = new RegisteredTime(new RegisteredTimeKey(mockedId,
-                LocalDateTime.parse("2024-02-06 00:00:00",
-                        formatterSeconds)),
-                "Konsult-tid",
-                LocalDateTime.parse("2024-02-06 23:59:59", formatterSeconds),
-                8D,
-                "H&M");
+        var mockedDataList = RegisteredTimeRepositoryMockedData.createMockedRegisteredTime06Feb();
         registeredTimeRepository.save(mockedDataList);
         var actualResult = registeredTimeRepository.findFirstById_ConsultantIdOrderByEndDateDesc(mockedId);
         assertEquals(mockedDataList.getId().getStartDate(), actualResult.getId().getStartDate());
@@ -79,18 +69,8 @@ class RegisteredTimeRepositoryTest {
     @Test
     @DisplayName("countAllById_ConsultantIdAndTypeIs")
     public void givenSemesterRegistered__whenCountAllBySemester__thenReturn1(){
-        var mockedRegisteredTime2 =  new RegisteredTime(new RegisteredTimeKey(mockedId, LocalDateTime.parse("2024-03-07 00:00:00", formatterSeconds)),
-                "Semester",
-                LocalDateTime.parse("2024-03-07 23:59:59", formatterSeconds),
-                8D,
-                "H&M");
-        var mockedRegisteredTime3 =  new RegisteredTime(new RegisteredTimeKey(mockedId, LocalDateTime.parse("2024-03-08 00:00:00", formatterSeconds)),
-                "Konsult-tid",
-                LocalDateTime.parse("2024-03-08 23:59:59", formatterSeconds),
-                8D,
-                "H&M");
-        registeredTimeRepository.save(mockedRegisteredTime2);
-        registeredTimeRepository.save(mockedRegisteredTime3);
+        var mockedListOfRegisteredTime = RegisteredTimeRepositoryMockedData.createMockedListOfRegisteredTimeWithOneSemesterRegistered();
+        registeredTimeRepository.saveAll(mockedListOfRegisteredTime);
         var actualResult = registeredTimeRepository.countAllById_ConsultantIdAndTypeIs(mockedId, "Semester").orElse(0);
         assertEquals(1, actualResult);
     }
@@ -98,24 +78,8 @@ class RegisteredTimeRepositoryTest {
     @Test
     @DisplayName("getSumOfTotalHoursByConsultantIdAndType")
     public void givenRegisteredTimeListAndSemester__whenGetSumOfTotalHoursByType__thenReturn16H(){
-        var mockedRegisteredTime2 =  new RegisteredTime(new RegisteredTimeKey(mockedId, LocalDateTime.parse("2024-03-07 00:00:00", formatterSeconds)),
-                "Semester",
-                LocalDateTime.parse("2024-03-07 23:59:59", formatterSeconds),
-                8D,
-                "H&M");
-        var mockedRegisteredTime3 =  new RegisteredTime(new RegisteredTimeKey(mockedId, LocalDateTime.parse("2024-03-08 00:00:00", formatterSeconds)),
-                "Konsult-tid",
-                LocalDateTime.parse("2024-03-08 23:59:59", formatterSeconds),
-                8D,
-                "H&M");
-        var mockedRegisteredTime4 =  new RegisteredTime(new RegisteredTimeKey(mockedId, LocalDateTime.parse("2024-04-05 00:00:00", formatterSeconds)),
-                "Semester",
-                LocalDateTime.parse("2024-04-05 23:59:59", formatterSeconds),
-                8D,
-                "H&M");
-        registeredTimeRepository.save(mockedRegisteredTime2);
-        registeredTimeRepository.save(mockedRegisteredTime3);
-        registeredTimeRepository.save(mockedRegisteredTime4);
+        var mockedListOfRegisteredTime = RegisteredTimeRepositoryMockedData.createMockedListOfRegisteredTime();
+        registeredTimeRepository.saveAll(mockedListOfRegisteredTime);
         double actualResult = registeredTimeRepository.getSumOfTotalHoursByConsultantIdAndType(mockedId, "Semester").orElse(0D);
         assertEquals(16D, actualResult);
     }
@@ -123,48 +87,16 @@ class RegisteredTimeRepositoryTest {
     @Test
     @DisplayName("getSumOfTotalHoursByConsultantIdAndType")
     public void givenRegisteredTimeListAndKonsultTid__whenGetSumOfTotalHoursByType__thenReturn16H(){
-        var mockedRegisteredTime2 =  new RegisteredTime(new RegisteredTimeKey(mockedId, LocalDateTime.parse("2024-03-07 00:00:00", formatterSeconds)),
-                "Semester",
-                LocalDateTime.parse("2024-03-07 23:59:59", formatterSeconds),
-                8D,
-                "H&M");
-        var mockedRegisteredTime3 =  new RegisteredTime(new RegisteredTimeKey(mockedId, LocalDateTime.parse("2024-03-08 00:00:00", formatterSeconds)),
-                "Konsult-tid",
-                LocalDateTime.parse("2024-03-08 23:59:59", formatterSeconds),
-                8D,
-                "H&M");
-        var mockedRegisteredTime4 =  new RegisteredTime(new RegisteredTimeKey(mockedId, LocalDateTime.parse("2024-04-05 00:00:00", formatterSeconds)),
-                "Semester",
-                LocalDateTime.parse("2024-04-05 23:59:59", formatterSeconds),
-                8D,
-                "H&M");
-        registeredTimeRepository.save(mockedRegisteredTime2);
-        registeredTimeRepository.save(mockedRegisteredTime3);
-        registeredTimeRepository.save(mockedRegisteredTime4);
+        var mockedListOfRegisteredTime = RegisteredTimeRepositoryMockedData.createMockedListOfRegisteredTime();
+        registeredTimeRepository.saveAll(mockedListOfRegisteredTime);
         double actualResult = registeredTimeRepository.getSumOfTotalHoursByConsultantIdAndType(mockedId, "Konsult-tid").orElse(0D);
         assertEquals(16D, actualResult);
     }
     @Test
     @DisplayName("getSumOfTotalHoursByConsultantIdAndType")
     public void givenRegisteredTimeListAndEgenAdministration__whenGetSumOfTotalHoursByType__thenReturn0H(){
-        var mockedRegisteredTime2 =  new RegisteredTime(new RegisteredTimeKey(mockedId, LocalDateTime.parse("2024-03-07 00:00:00", formatterSeconds)),
-                "Semester",
-                LocalDateTime.parse("2024-03-07 23:59:59", formatterSeconds),
-                8D,
-                "H&M");
-        var mockedRegisteredTime3 =  new RegisteredTime(new RegisteredTimeKey(mockedId, LocalDateTime.parse("2024-03-08 00:00:00", formatterSeconds)),
-                "Konsult-tid",
-                LocalDateTime.parse("2024-03-08 23:59:59", formatterSeconds),
-                8D,
-                "H&M");
-        var mockedRegisteredTime4 =  new RegisteredTime(new RegisteredTimeKey(mockedId, LocalDateTime.parse("2024-04-05 00:00:00", formatterSeconds)),
-                "Semester",
-                LocalDateTime.parse("2024-04-05 23:59:59", formatterSeconds),
-                8D,
-                "H&M");
-        registeredTimeRepository.save(mockedRegisteredTime2);
-        registeredTimeRepository.save(mockedRegisteredTime3);
-        registeredTimeRepository.save(mockedRegisteredTime4);
+        var mockedListOfRegisteredTime = RegisteredTimeRepositoryMockedData.createMockedListOfRegisteredTime();
+        registeredTimeRepository.saveAll(mockedListOfRegisteredTime);
         double actualResult = registeredTimeRepository.getSumOfTotalHoursByConsultantIdAndType(mockedId, "Egen administration").orElse(0D);
         assertEquals(0D, actualResult);
     }
@@ -172,26 +104,10 @@ class RegisteredTimeRepositoryTest {
     @Test
     @DisplayName("findFirstById_ConsultantIdAndTypeIsOrderByEndDateDesc")
     public void givenRegisteredTimeListAndTypeSemester__whenFindFirstByTypeAndEndDateDesc__then05Apr(){
-        var mockedRegisteredTime2 =  new RegisteredTime(new RegisteredTimeKey(mockedId, LocalDateTime.parse("2024-03-07 00:00:00", formatterSeconds)),
-                "Semester",
-                LocalDateTime.parse("2024-03-07 23:59:59", formatterSeconds),
-                8D,
-                "H&M");
-        var mockedRegisteredTime3 =  new RegisteredTime(new RegisteredTimeKey(mockedId, LocalDateTime.parse("2024-03-08 00:00:00", formatterSeconds)),
-                "Konsult-tid",
-                LocalDateTime.parse("2024-03-08 23:59:59", formatterSeconds),
-                8D,
-                "H&M");
-        var mockedRegisteredTime4 =  new RegisteredTime(new RegisteredTimeKey(mockedId, LocalDateTime.parse("2024-04-05 00:00:00", formatterSeconds)),
-                "Semester",
-                LocalDateTime.parse("2024-04-05 23:59:59", formatterSeconds),
-                8D,
-                "H&M");
-        registeredTimeRepository.save(mockedRegisteredTime2);
-        registeredTimeRepository.save(mockedRegisteredTime3);
-        registeredTimeRepository.save(mockedRegisteredTime4);
+        var mockedListOfRegisteredTime = RegisteredTimeRepositoryMockedData.createMockedListOfRegisteredTime();
+        registeredTimeRepository.saveAll(mockedListOfRegisteredTime);
         RegisteredTime actualResult = registeredTimeRepository.findFirstById_ConsultantIdAndTypeIsOrderByEndDateDesc(mockedId, "Semester");
-        assertEquals(mockedRegisteredTime4.getId().getStartDate(), actualResult.getId().getStartDate());
+        assertEquals(LocalDateTime.parse("2024-04-05 00:00:00", formatterSeconds), actualResult.getId().getStartDate());
     }
 
 }
