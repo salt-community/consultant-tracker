@@ -122,7 +122,7 @@ public class ConsultantService {
         List<Consultant> allActiveConsultants = getAllActiveConsultants();
         allActiveConsultants.forEach(el -> {
             int rand_int1 = rand.nextInt(2);
-            el.setClient(registeredTimeService.getCurrentClient(el.getId()));
+            el.setClient(registeredTimeService.getCurrentClient(el.getId()).trim());
             el.setResponsiblePT(responsiblePts[rand_int1]);
             consultantRepository.save(el);
         });
