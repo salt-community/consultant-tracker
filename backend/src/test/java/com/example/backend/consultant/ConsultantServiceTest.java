@@ -124,10 +124,14 @@ class ConsultantServiceTest extends ApplicationTestConfig {
         int expectedConsultantsFound = 1;
 
         /* ARRANGE FOR HELPER METHOD - getAllConsultantsPageable() */
-        Mockito.when(mockedConsultantRepo.findAllByActiveTrueAndFilterByName(anyString(), any(Pageable.class))).thenReturn(pageableConsultantsList);
+        Mockito.when(mockedConsultantRepo.findAllByActiveTrueAndFilterByNameAndResponsiblePtAndClients(
+                anyString(),
+                any(Pageable.class),
+                any(List.class),
+                any(List.class))).thenReturn(pageableConsultantsList);
 
         /* ACT */
-        ConsultantResponseListDto mockedResult = consultantService.getAllConsultantDtos(0, 8, "mockJohn", "mockPt", "mockClient");
+        ConsultantResponseListDto mockedResult = consultantService.getAllConsultantDtos(0, 8, "mockJohn", List.of("mockPt"), List.of("mockClient"));
 
         /* ASSERT */
         assertEquals(expectedConsultantsFound, mockedResult.consultants().size());

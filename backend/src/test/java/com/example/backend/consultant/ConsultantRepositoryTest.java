@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -57,7 +58,11 @@ class ConsultantRepositoryTest {
     @Test
     void shouldReturnListOfSize1() {
         Pageable pageRequest = PageRequest.of(0,5);
-        Page<Consultant> activeJohn = repo.findAllByActiveTrueAndFilterByName("john", pageRequest);
+        Page<Consultant> activeJohn = repo.findAllByActiveTrueAndFilterByNameAndResponsiblePtAndClients(
+                "john",
+                pageRequest,
+                List.of("Jane Doe"),
+                List.of("H&M"));
         int expectedResult = 1;
         assertEquals(expectedResult, activeJohn.getTotalElements());
     }
