@@ -8,6 +8,7 @@ import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
@@ -22,7 +23,13 @@ public class TimekeeperClient {
 
     public TimekeeperClient(@Value("${TIMEKEEPER.URL}") String baseUrl,
                             @Value("${TIMEKEEPER.AUTH}") String HEADER) {
-        CLIENT_URL = WebClient.create(baseUrl);
+//        CLIENT_URL = WebClient.create(baseUrl);
+        CLIENT_URL = WebClient.builder().baseUrl(baseUrl).exchangeStrategies(ExchangeStrategies.builder()
+                        .codecs(configurer -> configurer
+                                .defaultCodecs()
+                                .maxInMemorySize(16 * 1024 * 1024))
+                        .build())
+                .build();
         this.HEADER = HEADER;
     }
 
@@ -56,7 +63,7 @@ public class TimekeeperClient {
         List<TimekeeperUserDto> users = new ArrayList<>();
         while (index < numOfPages) {
             TimekeeperUserListResponseDto dto = CLIENT_URL.get()
-                    .uri("api/v1/user?PageIndex={index}&TagIDs=8561&TagIDs=8571", index)
+                    .uri("api/v1/user?PageIndex={index}&pageSize=100&TagIDs=8561&TagIDs=8571", index)
                     .header("Authorization", HEADER)
                     .retrieve()
                     .bodyToMono(TimekeeperUserListResponseDto.class)
@@ -89,16 +96,16 @@ public class TimekeeperClient {
         int numOfPages = 1;
         List<TimekeeperRegisteredTimeResponseDto> registeredTime = new ArrayList<>();
         while (index < numOfPages) {
-                TimekeeperRegisteredTimeListResponseDto dto = CLIENT_URL.get()
-                        .uri("api/v1/TimeRegistration?UserId={id}&PageIndex={index}", id, index)
-                        .header("Authorization", HEADER)
-                        .retrieve()
-                        .onStatus(HttpStatus.NOT_FOUND::equals,
-                                response->Mono.empty())
-                        .bodyToMono(TimekeeperRegisteredTimeListResponseDto.class)
-                        .block();
+            TimekeeperRegisteredTimeListResponseDto dto = CLIENT_URL.get()
+                    .uri("api/v1/TimeRegistration?UserId={id}&PageIndex={index}&pageSize=1000", id, index)
+                    .header("Authorization", HEADER)
+                    .retrieve()
+                    .onStatus(HttpStatus.NOT_FOUND::equals,
+                            response -> Mono.empty())
+                    .bodyToMono(TimekeeperRegisteredTimeListResponseDto.class)
+                    .block();
             assert dto != null;
-            if(dto.consultancyTime() == null){
+            if (dto.consultancyTime() == null) {
                 break;
             }
             registeredTime.addAll(dto.consultancyTime().stream()
