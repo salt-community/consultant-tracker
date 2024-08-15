@@ -3,8 +3,8 @@ package com.example.backend.redDays;
 import com.example.backend.client.nager.NagerClient;
 import com.example.backend.client.nager.dto.RedDaysFromNagerDto;
 import com.example.backend.consultant.ConsultantService;
+import com.example.backend.redDays.dto.RedDaysResponseDto;
 import com.example.backend.utils.Utilities;
-import lombok.Data;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +13,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import static com.example.backend.redDays.CountryCode.NORWAY;
+import static com.example.backend.redDays.CountryCode.SWEDEN;
+
 
 @Service
 public class RedDaysService {
@@ -33,6 +37,14 @@ public class RedDaysService {
         List<RedDays> allDates = redDaysRepository.findAllByCountry(countryCode);
         return allDates.stream().map(el -> el.date).toList();
     }
+
+    // TODO TESTS
+    public RedDaysResponseDto getAllRedDays(){
+        List<LocalDate> redDaysSE = getRedDays(SWEDEN.countryCode);
+        List<LocalDate> redDaysNO = getRedDays(NORWAY.countryCode);
+        return new RedDaysResponseDto(redDaysSE, redDaysNO);
+    }
+    // TODO TESTS
 
     public List<RedDays> getRedDaysFromNager(int startYear, int endYear) {
         List<RedDays> savedRedDaysDB = new ArrayList<>();
