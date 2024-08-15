@@ -11,17 +11,15 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.util.UUID;
 
+@Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class RedDays {
-    @Getter
+public class RedDay {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-
     LocalDate date;
-    @Getter
     String name;
     String country;
 }

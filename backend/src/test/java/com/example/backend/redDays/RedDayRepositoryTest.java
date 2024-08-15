@@ -17,59 +17,59 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 @DataJpaTest
-public class RedDaysRepositoryTest {
+public class RedDayRepositoryTest {
     @Autowired
-    RedDaysRepository redDaysRepository;
-    RedDays redDay;
+    RedDayRepository redDaysRepository;
+    RedDay redDay;
     UUID mockedId = UUID.fromString("01438d07-91cb-4f4d-adab-aa050462779e");
     UUID id;
 
     @BeforeEach
     public void setUp() {
-        redDay = new RedDays(mockedId,
+        redDay = new RedDay(mockedId,
                 LocalDate.parse("2024-01-01"),
                 "New Year",
                 "SE");
-        RedDays savedMockedData = redDaysRepository.save(redDay);
+        RedDay savedMockedData = redDaysRepository.save(redDay);
         id = savedMockedData.getId();
     }
 
     @Test
     @DisplayName("save")
     public void givenRedDay__whenSave__thenSuccessful() {
-        redDay = new RedDays(mockedId,
+        redDay = new RedDay(mockedId,
                 LocalDate.parse("2024-01-01"),
                 "New Year",
                 "SE");
-        RedDays savedMockedData = redDaysRepository.save(redDay);
+        RedDay savedMockedData = redDaysRepository.save(redDay);
         id = savedMockedData.getId();
-        RedDays actualResult = redDaysRepository.findById(id).orElse(null);
+        RedDay actualResult = redDaysRepository.findById(id).orElse(null);
         assertNotNull(actualResult);
     }
 
     @Test
     @DisplayName("findAll")
     public void  whenFindAll__thenListSize2() {
-        var mockedRedDays =  new RedDays(UUID.randomUUID(),
+        var mockedRedDays =  new RedDay(UUID.randomUUID(),
                 LocalDate.parse("2024-01-01"),
                 "New Year",
                 "SE");
         redDaysRepository.save(mockedRedDays);
-        List<RedDays> actualResult = redDaysRepository.findAll();
+        List<RedDay> actualResult = redDaysRepository.findAll();
         assertEquals(2, actualResult.size());
     }
 
     @Test
     @DisplayName("findAllByCountry")
     public void givenSE__whenFindAllByCountry__thenListSize1() {
-        List<RedDays> actualResult = redDaysRepository.findAllByCountry("SE");
+        List<RedDay> actualResult = redDaysRepository.findAllByCountry("SE");
         assertEquals(1, actualResult.size());
     }
 
     @Test
     @DisplayName("findAllByCountry")
     public void givenNO__whenFindAllByCountry__thenEmptyList() {
-        List<RedDays> actualResult = redDaysRepository.findAllByCountry("NO");
+        List<RedDay> actualResult = redDaysRepository.findAllByCountry("NO");
         assertTrue(actualResult.isEmpty());
     }
 }

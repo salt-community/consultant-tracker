@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/redDays")
 @RequiredArgsConstructor
 @CrossOrigin
-public class RedDaysController {
-    private final RedDaysService redDaysService;
+public class RedDayController {
+    private final RedDayService redDaysService;
 
     @GetMapping
     public ResponseEntity<RedDaysResponseDto> getAllRedDays(){

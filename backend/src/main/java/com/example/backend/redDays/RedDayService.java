@@ -19,14 +19,14 @@ import static com.example.backend.redDays.CountryCode.SWEDEN;
 
 
 @Service
-public class RedDaysService {
-    private final RedDaysRepository redDaysRepository;
+public class RedDayService {
+    private final RedDayRepository redDaysRepository;
     private final NagerClient workingDaysClient;
     private final ConsultantService consultantService;
 
-    public RedDaysService(@Lazy ConsultantService consultantService,
-                          RedDaysRepository redDaysRepository,
-                          NagerClient workingDaysClient
+    public RedDayService(@Lazy ConsultantService consultantService,
+                         RedDayRepository redDaysRepository,
+                         NagerClient workingDaysClient
                           ) {
         this.consultantService = consultantService;
         this.redDaysRepository = redDaysRepository;
@@ -34,20 +34,18 @@ public class RedDaysService {
     }
     //-----------------------------COVERED BY TESTS ---------------------------------
     public List<LocalDate> getRedDays(String countryCode) {
-        List<RedDays> allDates = redDaysRepository.findAllByCountry(countryCode);
+        List<RedDay> allDates = redDaysRepository.findAllByCountry(countryCode);
         return allDates.stream().map(el -> el.date).toList();
     }
 
-    // TODO TESTS
     public RedDaysResponseDto getAllRedDays(){
         List<LocalDate> redDaysSE = getRedDays(SWEDEN.countryCode);
         List<LocalDate> redDaysNO = getRedDays(NORWAY.countryCode);
         return new RedDaysResponseDto(redDaysSE, redDaysNO);
     }
-    // TODO TESTS
 
-    public List<RedDays> getRedDaysFromNager(int startYear, int endYear) {
-        List<RedDays> savedRedDaysDB = new ArrayList<>();
+    public List<RedDay> getRedDaysFromNager(int startYear, int endYear) {
+        List<RedDay> savedRedDaysDB = new ArrayList<>();
         for (int i = 0; startYear + i < endYear; i++) {
             List<RedDaysFromNagerDto> currentYearRedDaysArray = workingDaysClient.getRedDaysPerYear(startYear + i, new String[]{"SE", "NO"});
             savedRedDaysDB.addAll(saveRedDays(currentYearRedDaysArray));
@@ -55,10 +53,10 @@ public class RedDaysService {
         return savedRedDaysDB;
     }
 
-    private List<RedDays> saveRedDays(List<RedDaysFromNagerDto> redDaysArray) {
-        List<RedDays> savedRedDays = new ArrayList<>();
+    private List<RedDay> saveRedDays(List<RedDaysFromNagerDto> redDaysArray) {
+        List<RedDay> savedRedDays = new ArrayList<>();
         for (RedDaysFromNagerDto redDays : redDaysArray) {
-            RedDays save = redDaysRepository.save(new RedDays(UUID.randomUUID(), redDays.date(), redDays.name(), redDays.countryCode()));
+            RedDay save = redDaysRepository.save(new RedDay(UUID.randomUUID(), redDays.date(), redDays.name(), redDays.countryCode()));
             savedRedDays.add(save);
         }
         return savedRedDays;

@@ -3,6 +3,7 @@ package com.example.backend.redDays;
 import com.example.backend.ApplicationTestConfig;
 import com.example.backend.client.nager.NagerClient;
 import com.example.backend.consultant.ConsultantService;
+import com.example.backend.redDays.dto.RedDaysResponseDto;
 import com.example.backend.utils.Utilities;
 import lombok.SneakyThrows;
 import org.assertj.core.util.Lists;
@@ -29,27 +30,27 @@ import static org.mockito.Mockito.mockStatic;
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
 @ContextConfiguration(classes = ApplicationTestConfig.class)
-class RedDaysServiceTest {
-    private RedDaysService redDaysService;
+class RedDayServiceTest {
+    private RedDayService redDaysService;
     @Mock
     private NagerClient workingDaysClient;
     @Mock
     private ConsultantService consultantService;
     @Mock
-    private RedDaysRepository redDaysRepository;
+    private RedDayRepository redDaysRepository;
     private MockedStatic<Utilities> mockUtilities;
 
 
     @BeforeEach
     public void setUp() {
-        this.redDaysService = new RedDaysService(consultantService, redDaysRepository, workingDaysClient);
+        this.redDaysService = new RedDayService(consultantService, redDaysRepository, workingDaysClient);
     }
 
     @Test
     @DisplayName("getRedDays")
     public void givenCountryCodeSE__whenGetRedDays__then31December2023() {
         Mockito.when(redDaysRepository.findAllByCountry("SE"))
-                .thenReturn(RedDaysServiceMockedData.createMockedRedDayList());
+                .thenReturn(RedDayServiceMockedData.createMockedRedDayList());
         List<LocalDate> actualResult = redDaysService.getRedDays("SE");
         assertEquals(2, actualResult.size());
         assertEquals(LocalDate.parse("2023-12-31"), actualResult.getFirst());
@@ -60,7 +61,7 @@ class RedDaysServiceTest {
     public void givenCountryCodeNO__whenGetRedDays__then1Jan2024And24Dec2024() {
         var expectedResult = Lists.newArrayList(LocalDate.parse("2024-01-01"), LocalDate.parse("2024-12-24"));
         Mockito.when(redDaysRepository.findAllByCountry("NO"))
-                .thenReturn(RedDaysServiceMockedData.createMockedRedDaysList());
+                .thenReturn(RedDayServiceMockedData.createMockedRedDaysList());
         List<LocalDate> actualResult = redDaysService.getRedDays("NO");
         assertEquals(2, actualResult.size());
         assertEquals(expectedResult.get(1), actualResult.get(1));
@@ -73,7 +74,7 @@ class RedDaysServiceTest {
                         UUID.fromString("45ec353f-b0f5-4a51-867e-8d0d84d11573")))
                 .thenReturn("SE");
         Mockito.lenient().when(redDaysRepository.findAllByCountry("SE"))
-                .thenReturn(RedDaysServiceMockedData.createMockedRedDayList());
+                .thenReturn(RedDayServiceMockedData.createMockedRedDayList());
         boolean actualResult = redDaysService.isRedDay(
                 LocalDate.parse("2024-01-02"),
                 UUID.fromString("45ec353f-b0f5-4a51-867e-8d0d84d11573"));
@@ -112,7 +113,7 @@ class RedDaysServiceTest {
                         UUID.fromString("45ec353f-b0f5-4a51-867e-8d0d84d11573")))
                 .thenReturn("Sverige");
         Mockito.lenient().when(redDaysRepository.findAllByCountry("SE"))
-                .thenReturn(RedDaysServiceMockedData.createMockedRedDayList());
+                .thenReturn(RedDayServiceMockedData.createMockedRedDayList());
         mockUtilities = mockStatic(Utilities.class);
         mockUtilities.when(() -> Utilities.isWeekend(6)).thenReturn(true);
         mockUtilities.when(() -> Utilities.isWeekend(7)).thenReturn(true);
@@ -133,7 +134,7 @@ class RedDaysServiceTest {
                         UUID.fromString("45ec353f-b0f5-4a51-867e-8d0d84d11573")))
                 .thenReturn("Sverige");
         Mockito.lenient().when(redDaysRepository.findAllByCountry("SE"))
-                .thenReturn(RedDaysServiceMockedData.createMockedRedDayList());
+                .thenReturn(RedDayServiceMockedData.createMockedRedDayList());
         mockUtilities = mockStatic(Utilities.class);
         mockUtilities.when(() -> Utilities.isWeekend(6)).thenReturn(true);
         mockUtilities.when(() -> Utilities.isWeekend(7)).thenReturn(true);
@@ -154,7 +155,7 @@ class RedDaysServiceTest {
                         UUID.fromString("45ec353f-b0f5-4a51-867e-8d0d84d11573")))
                 .thenReturn("Sverige");
         Mockito.lenient().when(redDaysRepository.findAllByCountry("SE"))
-                .thenReturn(RedDaysServiceMockedData.createMockedRedDayList());
+                .thenReturn(RedDayServiceMockedData.createMockedRedDayList());
         mockUtilities = mockStatic(Utilities.class);
         mockUtilities.when(() -> Utilities.isWeekend(6)).thenReturn(true);
         mockUtilities.when(() -> Utilities.isWeekend(7)).thenReturn(true);
@@ -172,11 +173,24 @@ class RedDaysServiceTest {
     @DisplayName("getRedDaysFromNager")
     public void given2018__whenGetRedDaysFromNager__thenShouldSaveNewYearsEve() {
         Mockito.lenient().when(workingDaysClient.getRedDaysPerYear(2018, new String[]{"SE", "NO"}))
-                .thenReturn(RedDaysServiceMockedData.createMockedRedDaysFromNager());
-        Mockito.lenient().when(redDaysRepository.save(Mockito.any(RedDays.class)))
-                .thenReturn(RedDaysServiceMockedData.createMockedRedDaysFromRepository());
-        List<RedDays> actualResult = redDaysService.getRedDaysFromNager(2018, 2019);
+                .thenReturn(RedDayServiceMockedData.createMockedRedDaysFromNager());
+        Mockito.lenient().when(redDaysRepository.save(Mockito.any(RedDay.class)))
+                .thenReturn(RedDayServiceMockedData.createMockedRedDaysFromRepository());
+        List<RedDay> actualResult = redDaysService.getRedDaysFromNager(2018, 2019);
         assertEquals("New Years Eve", actualResult.get(0).getName());
+    }
+    @Test
+    @DisplayName("getAllRedDays")
+    public void givenCountryCodes__whenGetAllRedDays__thenShouldReturn2Lists(){
+        Mockito.lenient().when(redDaysRepository.findAllByCountry("SE"))
+                .thenReturn(List.of(RedDayServiceMockedData.createMockedRedDaysFromRepositorySE()));
+        Mockito.lenient().when(redDaysRepository.findAllByCountry("NO"))
+                .thenReturn(List.of(RedDayServiceMockedData.createMockedRedDaysFromRepositoryNO()));
+        RedDaysResponseDto actualResult = redDaysService.getAllRedDays();
+        assertEquals(1, actualResult.redDaysSE().size());
+        assertEquals(1, actualResult.redDaysNO().size());
+        assertEquals(LocalDate.parse("2024-12-25"), actualResult.redDaysSE().get(0));
+        assertEquals(LocalDate.parse("2024-12-24"), actualResult.redDaysNO().get(0));
     }
 
     //----------------------------- PRIVATE METHODS TESTS ---------------------------------

@@ -4,7 +4,7 @@ import com.example.backend.ApplicationTestConfig;
 import com.example.backend.client.timekeeper.TimekeeperClient;
 import com.example.backend.consultant.ConsultantService;
 import com.example.backend.consultant.dto.ConsultantTimeDto;
-import com.example.backend.redDays.RedDaysService;
+import com.example.backend.redDays.RedDayService;
 import com.example.backend.registeredTime.dto.RegisteredTimeResponseDto;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -36,7 +36,7 @@ class RegisteredTimeServiceTest {
     @Mock
     private TimekeeperClient timekeeperClient;
     @Mock
-    private RedDaysService redDaysService;
+    private RedDayService redDaysService;
     private RegisteredTimeService registeredTimeService;
     private final List<UUID> listOfConsultantIds = new ArrayList<>(List.of(UUID.fromString("68c670d6-3038-4fca-95be-2669aaf0b549"),
             UUID.fromString("0239ceac-5e65-40a6-a949-5492c22b22e3")));

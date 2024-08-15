@@ -3,18 +3,14 @@ package com.example.backend.consultant;
 import com.example.backend.consultant.dto.ClientsAndPtsListDto;
 import com.example.backend.consultant.dto.ConsultantResponseListDto;
 import com.example.backend.consultant.dto.ConsultantTimeResponseDto;
-import com.example.backend.redDays.RedDays;
-import com.example.backend.redDays.RedDaysService;
-import com.example.backend.registeredTime.RegisteredTime;
+import com.example.backend.redDays.RedDay;
+import com.example.backend.redDays.RedDayService;
 import com.example.backend.registeredTime.RegisteredTimeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Array;
-import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/consultants")
@@ -24,7 +20,7 @@ public class ConsultantController {
 
     private final ConsultantService consultantService;
     private final RegisteredTimeService registeredTimeService;
-    private final RedDaysService redDaysService;
+    private final RedDayService redDaysService;
     @GetMapping
     public ResponseEntity<ConsultantResponseListDto> getConsultantsAndRegisteredTime(
             @RequestParam(name = "page", defaultValue = "0") int page,
@@ -37,7 +33,7 @@ public class ConsultantController {
     }
 
     @GetMapping("/redDays")
-    public ResponseEntity<List<RedDays>> getConsultantById() {
+    public ResponseEntity<List<RedDay>> getConsultantById() {
         return ResponseEntity.ok(redDaysService.getRedDaysFromNager(2018,2030));
     }
 

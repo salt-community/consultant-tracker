@@ -7,7 +7,7 @@ import com.example.backend.consultant.ConsultantService;
 import com.example.backend.consultant.dto.ConsultantResponseDto;
 import com.example.backend.consultant.dto.ConsultantTimeDto;
 import com.example.backend.consultant.dto.TotalDaysStatisticsDto;
-import com.example.backend.redDays.RedDaysService;
+import com.example.backend.redDays.RedDayService;
 import com.example.backend.registeredTime.dto.RegisteredTimeDto;
 import com.example.backend.registeredTime.dto.RegisteredTimeResponseDto;
 import com.example.backend.registeredTime.dto.RemainingDaysDto;
@@ -28,12 +28,12 @@ public class RegisteredTimeService {
     private final RegisteredTimeRepository registeredTimeRepository;
     private final ConsultantService consultantService;
     private final TimekeeperClient timekeeperClient;
-    private final RedDaysService redDaysService;
+    private final RedDayService redDaysService;
 
     public RegisteredTimeService(RegisteredTimeRepository registeredTimeRepository,
                                  @Lazy ConsultantService consultantService,
                                  TimekeeperClient timekeeperClient,
-                                 RedDaysService redDaysService) {
+                                 RedDayService redDaysService) {
         this.registeredTimeRepository = registeredTimeRepository;
         this.consultantService = consultantService;
         this.timekeeperClient = timekeeperClient;
