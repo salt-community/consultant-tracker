@@ -12,16 +12,16 @@ import {
 } from "react";
 
 export type DetailsContextType = {
-  name: string;
+  fullName: string;
   data: ConsultantDetailsDataType[];
-  setName: Dispatch<SetStateAction<string>>;
+  setFullName: Dispatch<SetStateAction<string>>;
   setData: Dispatch<SetStateAction<ConsultantDetailsDataType[]>>;
 };
 
 export const DetailsContext = createContext<DetailsContextType>({
-  name: "",
+  fullName: "",
   data: [],
-  setName: () => "",
+  setFullName: () => "",
   setData: () => [],
 });
 
@@ -30,11 +30,11 @@ type ContextProviderProps = {
 };
 
 export const DetailsContextProvider = ({ children }: ContextProviderProps) => {
-  const [name, setName] = useState<string>("");
+  const [fullName, setFullName] = useState<string>("");
   const [data, setData] = useState<ConsultantDetailsDataType[]>(
     consultantDetailsData
   );
-  const value = { name, setName, data, setData };
+  const value = { fullName, setFullName, data, setData };
 
   return (
     <DetailsContext.Provider value={value}>{children}</DetailsContext.Provider>

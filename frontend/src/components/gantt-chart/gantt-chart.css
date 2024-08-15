@@ -8,8 +8,10 @@
 }
 
 .holiday{
-    background: #f8cfcb;
+    background: rgb(248, 187, 176);
 }
+
+
 
 .react-calendar-timeline .rct-vertical-lines .rct-vl.rct-day-6,
 .react-calendar-timeline .rct-vertical-lines .rct-vl.rct-day-0{

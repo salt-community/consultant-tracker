@@ -141,3 +141,7 @@ export type AllClientsAndResponsiblePtResponse ={
   pts: string[],
   clients: string[]
 }
+export type RedDaysResponseType ={
+  redDaysSE: string[],
+  redDaysNO: string[],
+}

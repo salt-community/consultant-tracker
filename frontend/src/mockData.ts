@@ -21,70 +21,70 @@ export const infographicData = [
 export const consultantsData: ConsultantDataType[] = [
   {
     id: "001",
-    name: "Stefan Hansdotter",
+    fullName: "Stefan Hansdotter",
     clientId: "111",
     client: "Syntronix",
     pt: "Josefin Stål"
   },
   {
     id: "002",
-    name: "Astrad Rehnquist",
+    fullName: "Astrad Rehnquist",
     clientId: "222",
     client: "Scania",
     pt: "Josefin Stål"
   },
   {
     id: "003",
-    name: "Josephine Ahlgren Björk",
+    fullName: "Josephine Ahlgren Björk",
     clientId: "333",
     client: "AstraZeneca",
     pt: "Josefin Stål"
   },
   {
     id: "004",
-    name: "Olof Dahlquist",
+    fullName: "Olof Dahlquist",
     clientId: "-",
     client: "-",
     pt: "Josefin Stål"
   },
   {
     id: "005",
-    name: "Axel Folly",
+    fullName: "Axel Folly",
     clientId: "444",
     client: "Spotify",
     pt: "Josefin Stål"
   },
   {
     id: "006",
-    name: "Allan Sanddahl",
+    fullName: "Allan Sanddahl",
     clientId: "555",
     client: "ABB",
     pt: "Josefin Stål"
   },
   {
     id: "007",
-    name: "Julia Roberts",
+    fullName: "Julia Roberts",
     clientId: "666",
     client: "Telia",
     pt: "Anna Carlsson"
   },
   {
     id: "008",
-    name: "Agnes Ekbom",
+    fullName: "Agnes Ekbom",
     clientId: "222",
     client: "Scania",
     pt: "Anna Carlsson"
   },
   {
     id: "009",
-    name: "Zara Larsson",
+    fullName: "Zara Larsson",
     clientId: "-",
     client: "-",
     pt: "Anna Carlsson"
   },
   {
     id: "010",
-    name: "Iris Lindahl",
+    fullName: "Iris Lindahl",
     clientId: "777",
     client: "Swedbank",
     pt: "Anna Carlsson"
@@ -109,11 +109,11 @@ export const headCells: HeaderCellsType[] = [
 export const consultantDetailsData: ConsultantDetailsDataType[] = [
   {
     id: "001",
-    name: "Stefan Hansdotter",
+    fullName: "Stefan Hansdotter",
     client: [
       {
         id: "111",
-        name: "Syntronix",
+        fullName: "Syntronix",
         startDate: "2021-01-01",
         endDate: "2021-12-31",
       },
@@ -151,11 +151,11 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
   },
   {
     id: "002",
-    name: "Astrad Rehnquist",
+    fullName: "Astrad Rehnquist",
     client: [
       {
         id: "222",
-        name: "Scania",
+        fullName: "Scania",
         startDate: "2021-01-01",
         endDate: "2021-12-31",
       },
@@ -197,11 +197,11 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
   },
   {
     id: "003",
-    name: "Josephine Ahlgren Björk",
+    fullName: "Josephine Ahlgren Björk",
     client: [
       {
         id: "333",
-        name: "AstraZeneca",
+        fullName: "AstraZeneca",
         startDate: "2022-01-01",
         endDate: "2022-12-31",
       },
@@ -243,7 +243,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
   },
   {
     id: "004",
-    name: "Olof Dahlquist",
+    fullName: "Olof Dahlquist",
     client: [],
     pt: "inactive",
     absence: [],
@@ -275,11 +275,11 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
   },
   {
     id: "005",
-    name: "Axel Folly",
+    fullName: "Axel Folly",
     client: [
       {
         id: "444",
-        name: "Spotify",
+        fullName: "Spotify",
         startDate: "2022-01-01",
         endDate: "2022-12-31",
       },
@@ -314,11 +314,11 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
   },
   {
     id: "006",
-    name: "Allan Sanddahl",
+    fullName: "Allan Sanddahl",
     client: [
       {
         id: "555",
-        name: "ABB",
+        fullName: "ABB",
         startDate: "2022-01-01",
         endDate: "2022-12-31",
       },
@@ -353,11 +353,11 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
   },
   {
     id: "007",
-    name: "Julia Roberts",
+    fullName: "Julia Roberts",
     client: [
       {
         id: "666",
-        name: "Telia",
+        fullName: "Telia",
         startDate: "2022-01-01",
         endDate: "2022-12-31",
       },
@@ -392,11 +392,11 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
   },
   {
     id: "008",
-    name: "Agnes Ekbom",
+    fullName: "Agnes Ekbom",
     client: [
       {
         id: "222",
-        name: "Scania",
+        fullName: "Scania",
         startDate: "2022-01-01",
         endDate: "2022-12-31",
       },
@@ -436,7 +436,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
   },
   {
     id: "009",
-    name: "Zara Larsson",
+    fullName: "Zara Larsson",
     client: [],
     pt: "inactive",
     absence: [],
@@ -468,11 +468,11 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
   },
   {
     id: "010",
-    name: "Iris Lindahl",
+    fullName: "Iris Lindahl",
     client: [
       {
         id: "777",
-        name: "Swedbank",
+        fullName: "Swedbank",
         startDate: "2022-01-01",
         endDate: "2022-12-31",
       },
@@ -528,11 +528,11 @@ export const tabs = [
 export const clientsData: ClientsDetailsDataType[] = [
   {
     id: "111",
-    name: "Syntronix",
+    fullName: "Syntronix",
     contactPeople: [
       {
         id: "11",
-        name: "Edvin Ekdal",
+        fullName: "Edvin Ekdal",
         phone: "111-222-111",
         email: "edvin.ekdal@syntronix.se",
       },
@@ -540,23 +540,23 @@ export const clientsData: ClientsDetailsDataType[] = [
     listOfConsultants: [
       {
         id: "001",
-        name: "Stefan Hansdotter",
+        fullName: "Stefan Hansdotter",
       },
     ],
   },
   {
     id: "222",
-    name: "Scania",
+    fullName: "Scania",
     contactPeople: [
       {
         id: "22",
-        name: "Leon Göransson",
+        fullName: "Leon Göransson",
         phone: "111-222-222",
         email: "leon.goransson@scania.se",
       },
       {
         id: "33",
-        name: "Thor Söderberg",
+        fullName: "Thor Söderberg",
         phone: "111-222-223",
         email: "thor.soderberg@scania.se",
       },
@@ -564,21 +564,21 @@ export const clientsData: ClientsDetailsDataType[] = [
     listOfConsultants: [
       {
         id: "002",
-        name: "Astrad Rehnquist",
+        fullName: "Astrad Rehnquist",
       },
       {
         id: "008",
-        name: "Agnes Ekbom",
+        fullName: "Agnes Ekbom",
       },
     ],
   },
   {
     id: "333",
-    name: "AstraZeneca",
+    fullName: "AstraZeneca",
     contactPeople: [
       {
         id: "44",
-        name: "Thomas Lundmark",
+        fullName: "Thomas Lundmark",
         phone: "111-222-333",
         email: "thomas.lundmark@astrazeneca.se",
       },
@@ -586,17 +586,17 @@ export const clientsData: ClientsDetailsDataType[] = [
     listOfConsultants: [
       {
         id: "003",
-        name: "Josephine Ahlgren Björk",
+        fullName: "Josephine Ahlgren Björk",
       },
     ],
   },
   {
     id: "444",
-    name: "Spotify",
+    fullName: "Spotify",
     contactPeople: [
       {
         id: "55",
-        name: "Loke Lundholm",
+        fullName: "Loke Lundholm",
         phone: "111-222-444",
         email: "loke.lundholm@spotify.se",
       },
@@ -604,17 +604,17 @@ export const clientsData: ClientsDetailsDataType[] = [
     listOfConsultants: [
       {
         id: "005",
-        name: "Axel Folly",
+        fullName: "Axel Folly",
       },
     ],
   },
   {
     id: "555",
-    name: "ABB",
+    fullName: "ABB",
     contactPeople: [
       {
         id: "66",
-        name: "Odert Haglund",
+        fullName: "Odert Haglund",
         phone: "111-222-555",
         email: "odert.haglund@abb.se",
       },
@@ -622,17 +622,17 @@ export const clientsData: ClientsDetailsDataType[] = [
     listOfConsultants: [
       {
         id: "006",
-        name: "Allan Sanddahl",
+        fullName: "Allan Sanddahl",
       },
     ],
   },
   {
     id: "666",
-    name: "Telia",
+    fullName: "Telia",
     contactPeople: [
       {
         id: "77",
-        name: "Lars Persson",
+        fullName: "Lars Persson",
         phone: "111-222-666",
         email: "lars.persson@telia.se",
       },
@@ -640,17 +640,17 @@ export const clientsData: ClientsDetailsDataType[] = [
     listOfConsultants: [
       {
         id: "007",
-        name: "Julia Roberts",
+        fullName: "Julia Roberts",
       },
     ],
   },
   {
     id: "777",
-    name: "Swedbank",
+    fullName: "Swedbank",
     contactPeople: [
       {
         id: "88",
-        name: "Axel Westermark",
+        fullName: "Axel Westermark",
         phone: "111-222-777",
         email: "axel.westermark@swedbank.se",
       },
@@ -658,7 +658,7 @@ export const clientsData: ClientsDetailsDataType[] = [
     listOfConsultants: [
       {
         id: "010",
-        name: "Iris Lindahl",
+        fullName: "Iris Lindahl",
       },
     ],
   },

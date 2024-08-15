@@ -18,6 +18,8 @@ type Props = {
   filterClients: string[];
   setFilterPts: Dispatch<SetStateAction<string[]>>;
   setFilterClients: Dispatch<SetStateAction<string[]>>;
+  setFilterName: Dispatch<SetStateAction<string>>;
+  filterName: string;
 };
 function FilterField({
   lisOfResponsiblePt,
@@ -26,17 +28,18 @@ function FilterField({
   filterClients,
   setFilterPts,
   setFilterClients,
+  setFilterName,
+  filterName
 }: Props) {
-  const [filterValue, setFilterValue] = useState("");
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setFilterValue(e.target.value);
+    setFilterName(e.target.value)
   };
 
   const handleClear = () => {
-    setFilterValue("");
-    setFilterPts([]);
+    setFilterPts(["Josefin Stål"]);
     setFilterClients([]);
+    setFilterName("")
   };
 
   const handlePtsSelection = (selectionArr: string[]) => {
@@ -57,7 +60,7 @@ function FilterField({
             label={`By consultant name`}
             variant="outlined"
             className="filter-text__input"
-            value={filterValue}
+            value={filterName}
             onChange={handleInputChange}
           />
         </div>

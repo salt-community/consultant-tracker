@@ -14,8 +14,8 @@ const BreadcrumbsComponent = ({variant}:Props) => {
   const clients =  useClientsContext();
   const content = ()=>{
     switch(variant){
-      case "client": return clients.name;
-      default: return details.name
+      case "client": return clients.fullName;
+      default: return details.fullName
     }
   }
   return (

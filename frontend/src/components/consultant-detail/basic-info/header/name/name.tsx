@@ -21,7 +21,7 @@ const HeaderName = ({name}: Props) => {
 
   const handleClick = (v: boolean) => {
     setNameReadonly(v);
-    setInputName(details.name);
+    setInputName(details.fullName);
   };
 
   const changeName = (e: FormEvent<HTMLFormElement>) => {

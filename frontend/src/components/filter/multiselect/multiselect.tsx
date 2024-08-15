@@ -36,7 +36,7 @@ const Multiselect = ({fullList, handleSelection, selected, setSelection, label}:
           input={<OutlinedInput label={label}/>}
           renderValue={(selected) => selected.join(', ')}
         >
-          {fullList.map((name) => (
+          {fullList.length > 0 && fullList.map((name) => (
             <MenuItem key={name} value={name}>
               <Checkbox checked={selected.indexOf(name) > -1}/>
               <ListItemText primary={name}/>

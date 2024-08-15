@@ -2,10 +2,10 @@
 import Timeline from "react-calendar-timeline";
 import "react-calendar-timeline/lib/Timeline.css";
 import moment from "moment";
-import { ConsultantItemsType, ConsultantsCalendarType } from "@/types";
+import {ConsultantItemsType, ConsultantsCalendarType, RedDaysResponseType} from "@/types";
 import "./gantt-chart.css";
-import { selectColor } from "@/utils/utils";
-import { useEffect, useState } from "react";
+import {selectColor} from "@/utils/utils";
+import {useEffect, useState} from "react";
 import {
   Popover,
   PopoverClose,
@@ -16,23 +16,27 @@ import {
 } from "../popover/popover";
 import TablePagination from "@mui/material/TablePagination";
 import * as React from "react";
+import {getRedDays} from "@/api";
 
 type Props = {
   itemsProps: ConsultantItemsType[];
   groupsProps: ConsultantsCalendarType[];
   totalItems: number
 };
-const GanttChart = ({ itemsProps, groupsProps, totalItems }: Props) => {
+const GanttChart = ({itemsProps, groupsProps, totalItems}: Props) => {
   const [modalData, setModalData] = useState<ConsultantItemsType>();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [redDaysSE, setRedDaysSE] = useState([]);
+  const [redDaysNO, setRedDaysNO] = useState([]);
 
   const handleItemSelect = (itemId, e, time) => {
     const consultantItems = itemsProps.filter((el) => itemId == el.id)[0];
     setModalData(consultantItems);
   };
-  useEffect(() => {}, [modalData]);
-  const itemRenderer = ({ item, itemContext, getItemProps }) => {
+  useEffect(() => {
+  }, [modalData]);
+  const itemRenderer = ({item, itemContext, getItemProps}) => {
     const chosenColor = selectColor(item.title);
     const background = itemContext.selected
       ? chosenColor
@@ -41,7 +45,14 @@ const GanttChart = ({ itemsProps, groupsProps, totalItems }: Props) => {
       ? "black"
       : item.itemProps.style.borderColor;
 
-
+    const {name, client, projectName, totalDays} = item.details
+    const {
+      totalWorkedDays,
+      totalRemainingDays,
+      totalWorkedHours,
+      totalVacationDaysUsed,
+      totalRemainingHours
+    } = item.details.totalDaysStatistics
     return (
       <div
         {...getItemProps({
@@ -60,21 +71,21 @@ const GanttChart = ({ itemsProps, groupsProps, totalItems }: Props) => {
         <Popover>
           <PopoverTrigger/>
           <PopoverContent className="Popover">
-            <PopoverHeading>{item.details.name}</PopoverHeading>
+            <PopoverHeading>{name}</PopoverHeading>
             <PopoverDescription>
               <div className="popover-descr__basic-details">
-                <p>Client: {item.details.client}</p>
-                <p>Total Days Worked: {item.details.totalWorkedDays}</p>
-                <p>Remaining Days: {item.details.totalRemainingDays}</p>
-                <p>Total worked hours: {item.details.totalWorkedHours}</p>
-                <p>Total remaining hours: {item.details.totalRemainingHours}</p>
+                <p>Client: {client}</p>
+                <p>Total Days Worked: {totalWorkedDays}</p>
+                <p>Remaining Days: {totalRemainingDays}</p>
+                <p>Total worked hours: {totalWorkedHours}</p>
+                <p>Total remaining hours: {totalRemainingHours}</p>
                 <p>
-                  Total Vacay Days Used: {item.details.totalVacationDaysUsed}
+                  Total Vacay Days Used: {totalVacationDaysUsed}
                 </p>
               </div>
               <div className="popover-descr__item">
-                <h3>{item.title} - {item.details.totalDays} days</h3>
-                <p>{item.details.projectName}</p>
+                <h3>{item.title} - {totalDays} days</h3>
+                <p>{projectName}</p>
                 <p>Start: {item.start_time.format('ddd, DD-MMM-YY')}</p>
                 <p>End: {item.end_time.format('ddd, DD-MMM-YY')}</p>
               </div>
@@ -86,16 +97,32 @@ const GanttChart = ({ itemsProps, groupsProps, totalItems }: Props) => {
     );
   };
   //TODO update holidays / fetch from backend
-  const holidays = [
-    moment("01.01.2024"),
-    moment("06.01.2024"),
-  ];
+  // const holidays = [
+  //   moment("2024-01-01"),
+  //   moment("2024-01-06"),
+  // ];
+
+  useEffect(() => {
+    getRedDays().then((res: RedDaysResponseType) =>{
+      setRedDaysSE(res.redDaysSE.map(el => moment(el)));
+      setRedDaysNO(res.redDaysNO.map(el=>moment(el)));
+    });
+  }, []);
+
   const verticalLineClassNamesForTime = (timeStart, timeEnd) => {
     const currentTimeStart = moment(timeStart);
     const currentTimeEnd = moment(timeEnd);
 
     let classes = [];
-    for (let holiday of holidays) {
+    for (let holiday of redDaysSE) {
+      if (
+        holiday.isSame(currentTimeStart, "day") &&
+        holiday.isSame(currentTimeEnd, "day")
+      ) {
+        classes.push("holiday");
+      }
+    }
+    for (let holiday of redDaysNO) {
       if (
         holiday.isSame(currentTimeStart, "day") &&
         holiday.isSame(currentTimeEnd, "day")
