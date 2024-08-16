@@ -58,14 +58,21 @@ const Dashboard = () => {
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
+      setPage(0)
       fetchConsultantsData();
     }, 500)
     return () => clearTimeout(delayDebounceFn)
   }, [filterName]);
 
   useEffect(() => {
+    setPage(0)
     fetchConsultantsData();
-  }, [filterPts, filterClients, page, rowsPerPage]);
+  }, [filterPts, filterClients]);
+
+
+  useEffect(() => {
+    fetchConsultantsData();
+  }, [page, rowsPerPage]);
 
   return (
     <>
