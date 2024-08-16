@@ -6,10 +6,12 @@ import com.example.backend.consultant.dto.ClientsAndPtsListDto;
 import com.example.backend.consultant.dto.ConsultantResponseListDto;
 import com.example.backend.registeredTime.RegisteredTimeService;
 import com.example.backend.tag.Tag;
+import jakarta.annotation.PostConstruct;
 import lombok.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -39,10 +41,10 @@ public class ConsultantService {
     public Page<Consultant> getAllConsultantsPageable(int page, int pageSize, String name, List<String> pt, List<String> client) {
         Pageable pageRequest = PageRequest.of(page, pageSize);
         ClientsAndPtsListDto allClientsAndPts = getAllClientsAndPts();
-        if(pt.isEmpty()){
-           pt.addAll(allClientsAndPts.pts().stream().toList());
+        if (pt.isEmpty()) {
+            pt.addAll(allClientsAndPts.pts().stream().toList());
         }
-        if(client.isEmpty()){
+        if (client.isEmpty()) {
             client.addAll(allClientsAndPts.clients().stream().toList());
         }
         return consultantRepository.findAllByActiveTrueAndFilterByNameAndResponsiblePtAndClients(name, pageRequest, pt, client);
@@ -58,7 +60,8 @@ public class ConsultantService {
         return consultantRepository.findAllByActiveTrue();
     }
 
-    //    @Scheduled(cron = "0 0 0 * * *")
+//    @PostConstruct
+    @Scheduled(cron = "0 0 0 * * *")
     public void fetchDataFromTimekeeper() {
         List<TimekeeperUserDto> timekeeperUserDto = timekeeperClient.getUsers();
         assert timekeeperUserDto != null;
@@ -128,11 +131,11 @@ public class ConsultantService {
         });
     }
 
-    public ClientsAndPtsListDto getAllClientsAndPts(){
+    public ClientsAndPtsListDto getAllClientsAndPts() {
         List<Consultant> activeConsultants = getAllActiveConsultants();
         Set<String> listOfClients = new TreeSet<>();
         Set<String> listOfPts = new TreeSet<>();
-        for(Consultant consultant : activeConsultants){
+        for (Consultant consultant : activeConsultants) {
             listOfClients.add(consultant.getClient());
             listOfPts.add(consultant.getResponsiblePT());
         }

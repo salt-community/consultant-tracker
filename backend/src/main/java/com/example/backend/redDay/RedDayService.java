@@ -5,7 +5,9 @@ import com.example.backend.client.nager.dto.RedDaysFromNagerDto;
 import com.example.backend.consultant.ConsultantService;
 import com.example.backend.redDay.dto.RedDaysResponseDto;
 import com.example.backend.utils.Utilities;
+import jakarta.annotation.PostConstruct;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -42,6 +44,11 @@ public class RedDayService {
         List<LocalDate> redDaysSE = getRedDays(SE.countryCode);
         List<LocalDate> redDaysNO = getRedDays(NO.countryCode);
         return new RedDaysResponseDto(redDaysSE, redDaysNO);
+    }
+    @PostConstruct
+    @Scheduled(cron="0 0 0 1 1 *")
+    private void fetchRedDaysByStartAndEndYear(){
+        getRedDaysFromNager(2018,2030);
     }
 
     public List<RedDay> getRedDaysFromNager(int startYear, int endYear) {
