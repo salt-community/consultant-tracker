@@ -1,9 +1,9 @@
-package com.example.backend.redDays;
+package com.example.backend.redDay;
 
 import com.example.backend.client.nager.NagerClient;
 import com.example.backend.client.nager.dto.RedDaysFromNagerDto;
 import com.example.backend.consultant.ConsultantService;
-import com.example.backend.redDays.dto.RedDaysResponseDto;
+import com.example.backend.redDay.dto.RedDaysResponseDto;
 import com.example.backend.utils.Utilities;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -14,8 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static com.example.backend.redDays.CountryCode.NORWAY;
-import static com.example.backend.redDays.CountryCode.SWEDEN;
+import static com.example.backend.redDay.CountryCode.NO;
+import static com.example.backend.redDay.CountryCode.SE;
 
 
 @Service
@@ -39,8 +39,8 @@ public class RedDayService {
     }
 
     public RedDaysResponseDto getAllRedDays(){
-        List<LocalDate> redDaysSE = getRedDays(SWEDEN.countryCode);
-        List<LocalDate> redDaysNO = getRedDays(NORWAY.countryCode);
+        List<LocalDate> redDaysSE = getRedDays(SE.countryCode);
+        List<LocalDate> redDaysNO = getRedDays(NO.countryCode);
         return new RedDaysResponseDto(redDaysSE, redDaysNO);
     }
 

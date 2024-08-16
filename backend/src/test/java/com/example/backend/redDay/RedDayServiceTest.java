@@ -1,9 +1,9 @@
-package com.example.backend.redDays;
+package com.example.backend.redDay;
 
 import com.example.backend.ApplicationTestConfig;
 import com.example.backend.client.nager.NagerClient;
 import com.example.backend.consultant.ConsultantService;
-import com.example.backend.redDays.dto.RedDaysResponseDto;
+import com.example.backend.redDay.dto.RedDaysResponseDto;
 import com.example.backend.utils.Utilities;
 import lombok.SneakyThrows;
 import org.assertj.core.util.Lists;

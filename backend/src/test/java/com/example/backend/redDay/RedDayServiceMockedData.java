@@ -1,4 +1,4 @@
-package com.example.backend.redDays;
+package com.example.backend.redDay;
 
 import com.example.backend.client.nager.dto.RedDaysFromNagerDto;
 import org.assertj.core.util.Lists;

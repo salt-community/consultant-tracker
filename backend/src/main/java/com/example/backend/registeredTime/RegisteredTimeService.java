@@ -7,7 +7,7 @@ import com.example.backend.consultant.ConsultantService;
 import com.example.backend.consultant.dto.ConsultantResponseDto;
 import com.example.backend.consultant.dto.ConsultantTimeDto;
 import com.example.backend.consultant.dto.TotalDaysStatisticsDto;
-import com.example.backend.redDays.RedDayService;
+import com.example.backend.redDay.RedDayService;
 import com.example.backend.registeredTime.dto.RegisteredTimeDto;
 import com.example.backend.registeredTime.dto.RegisteredTimeResponseDto;
 import com.example.backend.registeredTime.dto.RemainingDaysDto;

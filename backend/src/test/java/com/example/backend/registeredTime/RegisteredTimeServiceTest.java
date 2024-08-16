@@ -4,7 +4,7 @@ import com.example.backend.ApplicationTestConfig;
 import com.example.backend.client.timekeeper.TimekeeperClient;
 import com.example.backend.consultant.ConsultantService;
 import com.example.backend.consultant.dto.ConsultantTimeDto;
-import com.example.backend.redDays.RedDayService;
+import com.example.backend.redDay.RedDayService;
 import com.example.backend.registeredTime.dto.RegisteredTimeResponseDto;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;

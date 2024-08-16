@@ -1,6 +1,6 @@
-package com.example.backend.redDays;
+package com.example.backend.redDay;
 
-import com.example.backend.redDays.dto.RedDaysResponseDto;
+import com.example.backend.redDay.dto.RedDaysResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;

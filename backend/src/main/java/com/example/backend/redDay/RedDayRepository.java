@@ -1,4 +1,4 @@
-package com.example.backend.redDays;
+package com.example.backend.redDay;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

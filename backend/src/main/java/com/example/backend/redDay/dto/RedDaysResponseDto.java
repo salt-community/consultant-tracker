@@ -1,4 +1,4 @@
-package com.example.backend.redDays.dto;
+package com.example.backend.redDay.dto;
 
 import java.time.LocalDate;
 import java.util.List;

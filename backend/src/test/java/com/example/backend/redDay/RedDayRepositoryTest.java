@@ -1,4 +1,4 @@
-package com.example.backend.redDays;
+package com.example.backend.redDay;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
