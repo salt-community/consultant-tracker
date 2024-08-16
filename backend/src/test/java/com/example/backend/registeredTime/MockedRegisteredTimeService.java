@@ -358,6 +358,7 @@ public class MockedRegisteredTimeService {
                 consultant.getPhoneNumber(),
                 consultant.getResponsiblePT(),
                 consultant.getClient(),
+                consultant.getCountry(),
                 mockedStatistics,
                 mockedTimeItems);
     }

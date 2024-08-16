@@ -219,6 +219,7 @@ class ConsultantServiceTest extends ApplicationTestConfig {
 
         /* ARRANGE FOR HELPER METHOD getAllActiveConsultants() */
         Mockito.when(mockedConsultantRepo.findAllByActiveTrue()).thenReturn(List.of(mockedConsultant1));
+        Mockito.when(mockedRegisteredTimeService.getCurrentClient(any(UUID.class))).thenReturn("H&M");
 
         /* ACT */
         consultantService.fillClientAndResponsiblePt();
@@ -345,6 +346,7 @@ class ConsultantServiceTest extends ApplicationTestConfig {
 
         /* ARRANGE FOR HELPER TO THE HELPER METHOD - getAllActiveConsultants() */
         Mockito.when(mockedConsultantRepo.findAllByActiveTrue()).thenReturn(activeConsultants);
+        Mockito.when(mockedRegisteredTimeService.getCurrentClient(any(UUID.class))).thenReturn("H&M");
 
         /* ACT */
         consultantService.fetchDataFromTimekeeper();
@@ -402,6 +404,7 @@ class ConsultantServiceTest extends ApplicationTestConfig {
 
         /* ARRANGE FOR HELPER TO THE HELPER METHOD - getAllActiveConsultants() */
         Mockito.when(mockedConsultantRepo.findAllByActiveTrue()).thenReturn(activeConsultants);
+        Mockito.when(mockedRegisteredTimeService.getCurrentClient(any(UUID.class))).thenReturn("H&M");
 
         /* ACT */
         consultantService.fetchDataFromTimekeeper();
