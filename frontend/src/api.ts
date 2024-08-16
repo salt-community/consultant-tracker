@@ -4,9 +4,9 @@ export const getDashboardData = async () => {
 };
 
 
-export const getConsultantsData = async (clientEncodeURI, ptsEncodeURI, filterName) => {
+export const getConsultantsData = async (page, pageSize,clientEncodeURI, ptsEncodeURI, filterName) => {
   return await fetch(
-    `http://localhost:8080/api/consultants?page=0&${ptsEncodeURI}&${clientEncodeURI}&name=${filterName}`)
+    `http://localhost:8080/api/consultants?page=${page}&pageSize=${pageSize}&${ptsEncodeURI}&${clientEncodeURI}&name=${filterName}`)
     .then((response) => response.json());
 }
 

@@ -54,6 +54,7 @@ export const mapConsultantsToCalendarItems = (res: ConsultantCalendarType) => {
             fullName: el.fullName,
             responsiblePt: el.responsiblePt,
             client: el.client,
+            country: el.country,
             totalDaysStatistics: {
               totalRemainingDays: totalRemainingDays,
               totalWorkedDays: totalWorkedDays,

@@ -7,11 +7,13 @@
   z-index: 1;
 }
 
-.holiday{
-    background: rgb(248, 187, 176);
+.holidayNO{
+    background: rgb(245, 212, 166);
 }
 
-
+.holidaySE{
+    background: rgb(244, 171, 159);
+}
 
 .react-calendar-timeline .rct-vertical-lines .rct-vl.rct-day-6,
 .react-calendar-timeline .rct-vertical-lines .rct-vl.rct-day-0{

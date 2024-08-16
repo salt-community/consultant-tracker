@@ -28,6 +28,9 @@ const Dashboard = () => {
   const [filterPts, setFilterPts] = useState(["Josefin Stål"]);
   const [filterClients, setFilterClients] = useState<string[]>([]);
   const [filterName, setFilterName] = useState<string>("");
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+
   useEffect(() => {
     fetch("http://localhost:8080/api/consultants/getAllClientsAndPts")
       .then((res) => res.json())
@@ -40,14 +43,16 @@ const Dashboard = () => {
   const fetchConsultantsData = () => {
     const filterPtsEncodeUriString = encodeString(filterPts, "pt")
     const filterClientsEncodeUriString = encodeString(filterClients, "client")
-    getConsultantsData(filterClientsEncodeUriString, filterPtsEncodeUriString, filterName)
+    getConsultantsData(page, rowsPerPage, filterClientsEncodeUriString, filterPtsEncodeUriString, filterName)
       .then((res) => {
         setItems(mapConsultantsToCalendarItems(res));
         setTotalItems(res.totalConsultants);
         const data = res.consultants.map((el: ConsultantFetchType) => {
-          return {id: el.id, title: el.fullName};
+          const title = el.country === "NO" ? el.fullName + ` (${el.country})` : el.fullName;
+          return {id: el.id, title: title};
         });
         setGroups(data);
+        tableData.setData(res);
       })
   }
 
@@ -59,13 +64,8 @@ const Dashboard = () => {
   }, [filterName]);
 
   useEffect(() => {
-    getDashboardData()
-      .then((data) => {
-        tableData.setData(data);
-        tableData.setFilteredData(data);
-      });
     fetchConsultantsData();
-  }, [filterPts, filterClients]);
+  }, [filterPts, filterClients, page, rowsPerPage]);
 
   return (
     <>
@@ -98,9 +98,17 @@ const Dashboard = () => {
           itemsProps={items}
           groupsProps={groups}
           totalItems={totalItems}
+          setPage={setPage}
+          page={page}
+          rowsPerPage={rowsPerPage}
+          setRowsPerPage={setRowsPerPage}
         />
       )}
-      {view === "table" && <EnhancedTable totalItems={totalItems}/>}
+      {view === "table" && <EnhancedTable totalItems={totalItems}
+                                          setPage={setPage}
+                                          page={page}
+                                          rowsPerPage={rowsPerPage}
+                                          setRowsPerPage={setRowsPerPage}/>}
     </>
   );
 };

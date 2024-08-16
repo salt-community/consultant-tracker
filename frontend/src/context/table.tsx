@@ -27,10 +27,15 @@ const initialData = {
       fullName: "",
       email: "",
       phoneNumber: "",
+      country: "",
+      client: "",
+      responsiblePt: "",
       totalDaysStatistics: {
         totalRemainingDays: 0,
         totalWorkedDays: 0,
         totalVacationDaysUsed: 0,
+        totalWorkedHours: 0,
+        totalRemainingHours: 0
       },
       registeredTimeDtoList: [
         {
@@ -39,6 +44,7 @@ const initialData = {
           endDate: dayjs(),
           type: "",
           projectName: "",
+          days: 0
         },
       ],
     },

@@ -17,6 +17,7 @@ import { useTableContext } from "@/context/table";
 import Link from "next/link";
 import "./table.css";
 import { FaArrowUpRightFromSquare } from "react-icons/fa6";
+import {Dispatch, SetStateAction, useEffect} from "react";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -109,17 +110,20 @@ function EnhancedTableHead(props: EnhancedTableProps) {
 
 type Props ={
   totalItems: number;
+  page: number,
+  setPage: Dispatch<SetStateAction<number>>
+  setRowsPerPage: Dispatch<SetStateAction<number>>
+  rowsPerPage: number
 }
 
-export default function EnhancedTable({totalItems}:Props) {
+export default function EnhancedTable({totalItems, page, setPage, setRowsPerPage, rowsPerPage}:Props) {
   const [order, setOrder] = React.useState<Order>("asc");
   const [orderBy, setOrderBy] =
     React.useState<keyof ConsultantFetchType>("fullName");
   const [selected, setSelected] = React.useState<readonly string[]>([]);
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-  const tableData = useTableContext();
+  const tableData = useTableContext().data;
+  console.log(tableData.consultants[0].client)
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -128,15 +132,6 @@ export default function EnhancedTable({totalItems}:Props) {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
-  };
-
-  const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.checked) {
-      const newSelected = tableData.filteredData.consultants.map((n) => n.id);
-      setSelected(newSelected);
-      return;
-    }
-    setSelected([]);
   };
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -150,26 +145,25 @@ export default function EnhancedTable({totalItems}:Props) {
     setPage(0);
   };
 
-  const isSelected = (id: string) => selected.indexOf(id) !== -1;
 
   const emptyRows =
     page > 0
-      ? Math.max(0, (1 + page) * rowsPerPage - tableData.filteredData.consultants.length)
+      ? Math.max(0, (1 + page) * rowsPerPage - tableData.consultants.length)
       : 0;
 
   const visibleRows = React.useMemo(
-    () =>
-      tableData.filteredData.consultants &&
+    () => tableData.consultants &&
       stableSort(
-        [...tableData.filteredData.consultants],
+        [...tableData.consultants],
         getComparator(order, orderBy)
       ).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
-    [order, orderBy, page, rowsPerPage, tableData.filteredData.consultants]
+        [order, orderBy, page, rowsPerPage, tableData.consultants]
   );
+
 
   return (
     <>
-      {tableData.filteredData.consultants && (
+      {tableData.consultants && (
         <Box sx={{ width: "100%" }}>
           <Paper className="paper-root__table">
             <TableContainer>
@@ -182,23 +176,19 @@ export default function EnhancedTable({totalItems}:Props) {
                   numSelected={selected.length}
                   order={order}
                   orderBy={orderBy}
-                  onSelectAllClick={handleSelectAllClick}
                   onRequestSort={handleRequestSort}
-                  rowCount={tableData.filteredData.consultants.length}
+                  rowCount={tableData.consultants.length}
                 />
                 <TableBody>
                   {visibleRows.map((row: ConsultantFetchType) => {
-                    const isItemSelected = isSelected(row.id);
                     return (
                       <TableRow
                         hover
-                        aria-checked={isItemSelected}
                         tabIndex={-1}
                         key={row.id}
-                        selected={isItemSelected}
                       >
                         <TableCell className="column">
-                          <div className="clients-link">{"Josefin Stål"} </div>
+                          <div className="clients-link">{row.responsiblePt} </div>
                         </TableCell>
                         <TableCell className="column">
                           <Link
@@ -210,7 +200,7 @@ export default function EnhancedTable({totalItems}:Props) {
                           </Link>
                         </TableCell>
                         <TableCell className="column">
-                          <div className="clients-link">{"AstraZeneca"}</div>
+                          <div className="clients-link">{row.client}</div>
                         </TableCell>
                       </TableRow>
                     );

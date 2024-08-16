@@ -5,7 +5,7 @@ import moment from "moment";
 import {ConsultantItemsType, ConsultantsCalendarType, RedDaysResponseType} from "@/types";
 import "./gantt-chart.css";
 import {selectColor} from "@/utils/utils";
-import {useEffect, useState} from "react";
+import {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {
   Popover,
   PopoverClose,
@@ -17,16 +17,19 @@ import {
 import TablePagination from "@mui/material/TablePagination";
 import * as React from "react";
 import {getRedDays} from "@/api";
+import {TablePaginationActions} from "@mui/base";
 
 type Props = {
   itemsProps: ConsultantItemsType[];
   groupsProps: ConsultantsCalendarType[];
-  totalItems: number
+  totalItems: number,
+  page: number,
+  setPage: Dispatch<SetStateAction<number>>
+  setRowsPerPage: Dispatch<SetStateAction<number>>
+  rowsPerPage: number
 };
-const GanttChart = ({itemsProps, groupsProps, totalItems}: Props) => {
+const GanttChart = ({itemsProps, groupsProps, totalItems, page, setPage, rowsPerPage, setRowsPerPage}: Props) => {
   const [modalData, setModalData] = useState<ConsultantItemsType>();
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [redDaysSE, setRedDaysSE] = useState([]);
   const [redDaysNO, setRedDaysNO] = useState([]);
 
@@ -45,7 +48,7 @@ const GanttChart = ({itemsProps, groupsProps, totalItems}: Props) => {
       ? "black"
       : item.itemProps.style.borderColor;
 
-    const {name, client, projectName, totalDays} = item.details
+    const {fullName, client, projectName, totalDays, country} = item.details
     const {
       totalWorkedDays,
       totalRemainingDays,
@@ -71,7 +74,7 @@ const GanttChart = ({itemsProps, groupsProps, totalItems}: Props) => {
         <Popover>
           <PopoverTrigger/>
           <PopoverContent className="Popover">
-            <PopoverHeading>{name}</PopoverHeading>
+            <PopoverHeading>{fullName} {country === "NO" && `(${country})`}</PopoverHeading>
             <PopoverDescription>
               <div className="popover-descr__basic-details">
                 <p>Client: {client}</p>
@@ -96,11 +99,6 @@ const GanttChart = ({itemsProps, groupsProps, totalItems}: Props) => {
       </div>
     );
   };
-  //TODO update holidays / fetch from backend
-  // const holidays = [
-  //   moment("2024-01-01"),
-  //   moment("2024-01-06"),
-  // ];
 
   useEffect(() => {
     getRedDays().then((res: RedDaysResponseType) =>{
@@ -119,7 +117,7 @@ const GanttChart = ({itemsProps, groupsProps, totalItems}: Props) => {
         holiday.isSame(currentTimeStart, "day") &&
         holiday.isSame(currentTimeEnd, "day")
       ) {
-        classes.push("holiday");
+        classes.push("holidaySE");
       }
     }
     for (let holiday of redDaysNO) {
@@ -127,13 +125,13 @@ const GanttChart = ({itemsProps, groupsProps, totalItems}: Props) => {
         holiday.isSame(currentTimeStart, "day") &&
         holiday.isSame(currentTimeEnd, "day")
       ) {
-        classes.push("holiday");
+        classes.push("holidayNO");
       }
     }
 
     return classes;
   };
-  const handleChangePage = (event: unknown, newPage: number) => {
+  const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
     setPage(newPage);
   };
 
