@@ -1,0 +1,6 @@
+.error-container{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    color: rgba(242, 3, 146, 1);
+}

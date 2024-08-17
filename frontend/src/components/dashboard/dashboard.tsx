@@ -16,6 +16,7 @@ import {
   ConsultantFetchType,
   RegisteredTimeItemType,
 } from "@/types";
+import Loading from "@/components/loading/loading";
 
 const Dashboard = () => {
   const [view, setView] = useState<string>("timeline");
@@ -30,7 +31,8 @@ const Dashboard = () => {
   const [filterName, setFilterName] = useState<string>("");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   useEffect(() => {
     fetch("http://localhost:8080/api/consultants/getAllClientsAndPts")
       .then((res) => res.json())
@@ -43,6 +45,7 @@ const Dashboard = () => {
   const fetchConsultantsData = () => {
     const filterPtsEncodeUriString = encodeString(filterPts, "pt")
     const filterClientsEncodeUriString = encodeString(filterClients, "client")
+    setLoading(true);
     getConsultantsData(page, rowsPerPage, filterClientsEncodeUriString, filterPtsEncodeUriString, filterName)
       .then((res) => {
         setItems(mapConsultantsToCalendarItems(res));
@@ -53,7 +56,13 @@ const Dashboard = () => {
         });
         setGroups(data);
         tableData.setData(res);
+        setLoading(false);
       })
+      .catch(err=>  {
+        setLoading(false)
+        setError("Failed to fetch resources")
+      }
+    )
   }
 
   useEffect(() => {
@@ -109,13 +118,18 @@ const Dashboard = () => {
           page={page}
           rowsPerPage={rowsPerPage}
           setRowsPerPage={setRowsPerPage}
+          loading={loading}
+          error={error}
         />
       )}
       {view === "table" && <EnhancedTable totalItems={totalItems}
                                           setPage={setPage}
+                                          loading={loading}
                                           page={page}
                                           rowsPerPage={rowsPerPage}
-                                          setRowsPerPage={setRowsPerPage}/>}
+                                          error={error}
+                                          setRowsPerPage={setRowsPerPage}/>
+      }
     </>
   );
 };

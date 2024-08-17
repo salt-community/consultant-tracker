@@ -18,6 +18,8 @@ import TablePagination from "@mui/material/TablePagination";
 import * as React from "react";
 import {getRedDays} from "@/api";
 import {TablePaginationActions} from "@mui/base";
+import Loading from "@/components/loading/loading";
+import Error from "@/components/error/error";
 
 type Props = {
   itemsProps: ConsultantItemsType[];
@@ -26,9 +28,11 @@ type Props = {
   page: number,
   setPage: Dispatch<SetStateAction<number>>
   setRowsPerPage: Dispatch<SetStateAction<number>>
-  rowsPerPage: number
+  rowsPerPage: number,
+  loading: boolean,
+  error: string
 };
-const GanttChart = ({itemsProps, groupsProps, totalItems, page, setPage, rowsPerPage, setRowsPerPage}: Props) => {
+const GanttChart = ({itemsProps, groupsProps, totalItems, page, setPage, error, rowsPerPage, setRowsPerPage, loading}: Props) => {
   const [modalData, setModalData] = useState<ConsultantItemsType>();
   const [redDaysSE, setRedDaysSE] = useState([]);
   const [redDaysNO, setRedDaysNO] = useState([]);
@@ -142,8 +146,11 @@ const GanttChart = ({itemsProps, groupsProps, totalItems, page, setPage, rowsPer
     setPage(0);
   };
   return (
-    groupsProps.length > 0 &&
-    itemsProps.length > 0 && (
+    loading
+      ? <Loading />
+        : error.length !== 0
+        ? <Error message={error}/>
+        : (groupsProps.length > 0 && itemsProps.length > 0) && (
       <div>
         <div>
           <Timeline
