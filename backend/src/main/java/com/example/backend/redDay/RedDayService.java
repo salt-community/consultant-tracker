@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.time.Year;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,6 +25,7 @@ public class RedDayService {
     private final RedDayRepository redDaysRepository;
     private final NagerClient workingDaysClient;
     private final ConsultantService consultantService;
+
 
     public RedDayService(@Lazy ConsultantService consultantService,
                          RedDayRepository redDaysRepository,
@@ -45,29 +46,8 @@ public class RedDayService {
         List<LocalDate> redDaysNO = getRedDays(NO.countryCode);
         return new RedDaysResponseDto(redDaysSE, redDaysNO);
     }
-    @PostConstruct
-    @Scheduled(cron="0 0 0 1 1 *")
-    private void fetchRedDaysByStartAndEndYear(){
-        getRedDaysFromNager(2018,2030);
-    }
 
-    public List<RedDay> getRedDaysFromNager(int startYear, int endYear) {
-        List<RedDay> savedRedDaysDB = new ArrayList<>();
-        for (int i = 0; startYear + i < endYear; i++) {
-            List<RedDaysFromNagerDto> currentYearRedDaysArray = workingDaysClient.getRedDaysPerYear(startYear + i, new String[]{"SE", "NO"});
-            savedRedDaysDB.addAll(saveRedDays(currentYearRedDaysArray));
-        }
-        return savedRedDaysDB;
-    }
 
-    private List<RedDay> saveRedDays(List<RedDaysFromNagerDto> redDaysArray) {
-        List<RedDay> savedRedDays = new ArrayList<>();
-        for (RedDaysFromNagerDto redDays : redDaysArray) {
-            RedDay save = redDaysRepository.save(new RedDay(UUID.randomUUID(), redDays.date(), redDays.name(), redDays.countryCode()));
-            savedRedDays.add(save);
-        }
-        return savedRedDays;
-    }
     private String getCountryCode(UUID consultantId) {
         return consultantService.getCountryCodeByConsultantId(consultantId).equals("Sverige") ? "SE" : "NO";
     }
@@ -107,5 +87,24 @@ public class RedDayService {
             }
         }
         return nonWorkingDays;
+    }
+
+    @PostConstruct
+    @Scheduled(cron="0 0 0 1 1 *")
+    public void getRedDaysFromNager() {
+        //TODO change it to have date as primary key?!?!
+        redDaysRepository.deleteAll();
+        var saltStartYear = 2018;
+        for (int i = 0; saltStartYear + i <= Year.now().getValue()+1; i++) {
+            List<RedDaysFromNagerDto> currentYearRedDaysArray = workingDaysClient.getRedDaysPerYear(2018 + i, new String[]{"SE", "NO"});
+            //TODO handle in case there is not response from nager;
+            saveRedDays(currentYearRedDaysArray);
+        }
+    }
+
+    private void saveRedDays(List<RedDaysFromNagerDto> redDaysArray) {
+        for (RedDaysFromNagerDto redDays : redDaysArray) {
+            redDaysRepository.save(new RedDay(UUID.randomUUID(), redDays.date(), redDays.name(), redDays.countryCode()));
+        }
     }
 }
