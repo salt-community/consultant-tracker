@@ -142,7 +142,6 @@ export default function EnhancedTable({totalItems, page, setPage, setRowsPerPage
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
   };
 
 
