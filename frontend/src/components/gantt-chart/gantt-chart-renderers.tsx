@@ -30,8 +30,8 @@ export const itemRenderer = ({ item, itemContext, getItemProps }) => {
 
 export const groupsRenderer = ({ group }) => {
   return (
-    <Link href={`consultants/${group.id}`} className="consultant-details__link">
+    // <Link href={`consultants/${group.id}`} className="consultant-details__link">
         <span className="title">{group.title}</span>
-    </Link>
+    // </Link>
   );
 };
