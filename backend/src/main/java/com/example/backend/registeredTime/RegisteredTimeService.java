@@ -133,7 +133,7 @@ public class RegisteredTimeService {
     }
 
 
-    private TotalDaysStatisticsDto getAllDaysStatistics(UUID id) {
+    public TotalDaysStatisticsDto getAllDaysStatistics(UUID id) {
         String country = consultantService.getCountryCodeByConsultantId(id);
         int totalWorkedDays = countTotalWorkedDays(id);
         double totalRemainingDays = Utilities.getTotalDaysByCountry(country);

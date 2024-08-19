@@ -37,8 +37,8 @@ public class RedDayService {
     }
     //-----------------------------COVERED BY TESTS ---------------------------------
     public List<LocalDate> getRedDays(String countryCode) {
-        List<RedDay> allDates = redDaysRepository.findAllByCountry(countryCode);
-        return allDates.stream().map(el -> el.date).toList();
+        List<RedDay> allDates = redDaysRepository.findAllById_CountryCode(countryCode);
+        return allDates.stream().map(el -> el.getId().getDate()).toList();
     }
 
     public RedDaysResponseDto getAllRedDays(){
@@ -92,19 +92,28 @@ public class RedDayService {
     @PostConstruct
     @Scheduled(cron="0 0 0 1 1 *")
     public void getRedDaysFromNager() {
-        //TODO change it to have date as primary key?!?!
-        redDaysRepository.deleteAll();
         var saltStartYear = 2018;
+//        TODO ask about value of that part - refactor?
+        RedDay latestDateDB = redDaysRepository.findFirstByOrderById_DateDesc();
+        if(latestDateDB != null ){
+            int latestYearDB = latestDateDB.getId().getDate().getYear();
+            if(latestYearDB== Year.now().getValue()+1){
+                return;
+            }
+            saltStartYear = latestYearDB+1;
+        }
+        //        TODO ask about value of that part
         for (int i = 0; saltStartYear + i <= Year.now().getValue()+1; i++) {
-            List<RedDaysFromNagerDto> currentYearRedDaysArray = workingDaysClient.getRedDaysPerYear(2018 + i, new String[]{"SE", "NO"});
+            List<RedDaysFromNagerDto> currentYearRedDaysArray = workingDaysClient.getRedDaysPerYear(saltStartYear + i, new String[]{"SE", "NO"});
             //TODO handle in case there is not response from nager;
             saveRedDays(currentYearRedDaysArray);
         }
     }
 
+
     private void saveRedDays(List<RedDaysFromNagerDto> redDaysArray) {
         for (RedDaysFromNagerDto redDays : redDaysArray) {
-            redDaysRepository.save(new RedDay(UUID.randomUUID(), redDays.date(), redDays.name(), redDays.countryCode()));
+            redDaysRepository.save(new RedDay(new RedDayKey(redDays.date(), redDays.countryCode()), redDays.name()));
         }
     }
 }

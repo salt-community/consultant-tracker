@@ -32,5 +32,4 @@ public record ConsultantResponseDto(UUID id,
                 registeredTimeDtoList
                 );
     }
-
 }

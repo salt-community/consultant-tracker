@@ -3,8 +3,12 @@ package com.example.backend.consultant;
 import com.example.backend.client.timekeeper.TimekeeperClient;
 import com.example.backend.client.timekeeper.dto.TimekeeperUserDto;
 import com.example.backend.consultant.dto.ClientsAndPtsListDto;
+import com.example.backend.consultant.dto.ConsultantResponseDto;
 import com.example.backend.consultant.dto.ConsultantResponseListDto;
+import com.example.backend.consultant.dto.TotalDaysStatisticsDto;
+import com.example.backend.exceptions.ConsultantNotFoundException;
 import com.example.backend.registeredTime.RegisteredTimeService;
+import com.example.backend.registeredTime.dto.RegisteredTimeResponseDto;
 import com.example.backend.tag.Tag;
 import jakarta.annotation.PostConstruct;
 import lombok.*;
@@ -35,6 +39,13 @@ public class ConsultantService {
                 consultantsList.getTotalElements(),
                 new ArrayList<>(consultantsList.stream()
                         .map(registeredTimeService::getConsultantTimelineItems).toList()));
+    }
+
+    public ConsultantResponseDto getConsultantById(UUID id){
+        Consultant consultantById = consultantRepository.findById(id).orElseThrow(()-> new ConsultantNotFoundException("Consultant with such id not found."));
+        TotalDaysStatisticsDto totalDaysStatistics = registeredTimeService.getAllDaysStatistics(id);
+        List<RegisteredTimeResponseDto> consultantTimeDto = registeredTimeService.getGroupedConsultantsRegisteredTimeItems(id);
+        return ConsultantResponseDto.toDto(consultantById, totalDaysStatistics, consultantTimeDto);
     }
 
     //-----------------------------COVERED BY TESTS ---------------------------------

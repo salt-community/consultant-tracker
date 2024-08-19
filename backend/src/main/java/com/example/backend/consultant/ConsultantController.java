@@ -1,12 +1,14 @@
 package com.example.backend.consultant;
 
 import com.example.backend.consultant.dto.ClientsAndPtsListDto;
+import com.example.backend.consultant.dto.ConsultantResponseDto;
 import com.example.backend.consultant.dto.ConsultantResponseListDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/consultants")
@@ -24,6 +26,11 @@ public class ConsultantController {
             @RequestParam(defaultValue = "", required = false) List<String> pt) {
         ConsultantResponseListDto consultantsResponse = consultantService.getAllConsultantDtos(page, pageSize, name, pt, client);
         return ResponseEntity.ok(consultantsResponse);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ConsultantResponseDto> getConsultantById(@PathVariable UUID id){
+        return ResponseEntity.ok(consultantService.getConsultantById(id));
     }
 
     @GetMapping("/getAllClientsAndPts")
