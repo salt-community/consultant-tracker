@@ -5,19 +5,16 @@ import TextField from "@/components/text-field/text-field";
 import { usePathname } from "next/navigation";
 import { ConsultantDetailsDataType } from "@/types";
 import { useDetailsContext } from "@/context/details";
-import Edit from "@/components/edit/edit";
 
 type Props = {
   email: string;
   phone: string;
-  github: string;
 };
 
-const ContactDetails = ({ email, phone, github }: Props) => {
+const ContactDetails = ({ email, phone}: Props) => {
   const [contactData, setContactData] = useState({
     email,
     phone,
-    github,
   });
   const [readonly, setReadonly] = useState(true);
   const idParam = usePathname().split("/").pop();
@@ -30,7 +27,6 @@ const ContactDetails = ({ email, phone, github }: Props) => {
         if (el.id === idParam) {
           el.email = contactData.email;
           el.phone = contactData.phone;
-          el.github = contactData.github;
         }
         return el;
       })
@@ -73,7 +69,6 @@ const ContactDetails = ({ email, phone, github }: Props) => {
       >
         <div className="edit-card__container">
           <h2>Contact Details</h2>
-          <Edit readonly={readonly} handleClick={handleClick} />
         </div>
         <TextField
           label="Email"
@@ -88,13 +83,6 @@ const ContactDetails = ({ email, phone, github }: Props) => {
           value={contactData.phone}
           readonly={readonly}
           name="phone"
-        />
-        <TextField
-          label="GitHub"
-          onChange={handleChange}
-          value={contactData.github}
-          readonly={readonly}
-          name="github"
         />
       </Box>
     </div>
