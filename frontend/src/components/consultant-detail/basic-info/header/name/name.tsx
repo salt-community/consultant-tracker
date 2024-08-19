@@ -5,7 +5,6 @@ import {useDetailsContext} from "@/context/details";
 import "./name.css";
 import {usePathname} from "next/navigation";
 import {FONT_SIZE} from "@/constants";
-import {consultantDetailsData} from "@/mockData";
 import Edit from "@/components/edit/edit";
 
 type Props = {
@@ -33,13 +32,13 @@ const HeaderName = ({name}: Props) => {
       return el
     }));
     setInputName(refName.current!.value);
-    details.setName(refName.current!.value);
+    details.setFullName(refName.current!.value);
     setNameReadonly(true);
   };
 
   useEffect(() => {
     if (refName.current!.value === name) {
-      details.setName(name);
+      details.setFullName(name);
     }
   }, [details, name]);
 

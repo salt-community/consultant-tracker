@@ -4,6 +4,7 @@ import {
   RegisteredTimeItemType
 } from "@/types";
 import dayjs from "dayjs";
+import moment from "moment/moment";
 
 export const selectColor = (type: string) => {
   switch (type) {
@@ -81,3 +82,27 @@ export const mapConsultantsToCalendarItems = (res: ConsultantCalendarType) => {
     );
   });
 }
+
+export const verticalLineClassNamesForTime = (timeStart, timeEnd, redDaysSE, redDaysNO) => {
+  const currentTimeStart = moment(timeStart);
+  const currentTimeEnd = moment(timeEnd);
+
+  let classes = [];
+  for (let holiday of redDaysSE) {
+    if (
+      holiday.isSame(currentTimeStart, "day") &&
+      holiday.isSame(currentTimeEnd, "day")
+    ) {
+      classes.push("holidaySE");
+    }
+  }
+  for (let holiday of redDaysNO) {
+    if (
+      holiday.isSame(currentTimeStart, "day") &&
+      holiday.isSame(currentTimeEnd, "day")
+    ) {
+      classes.push("holidayNO");
+    }
+  }
+  return classes;
+};

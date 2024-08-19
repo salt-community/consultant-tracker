@@ -4,22 +4,15 @@ import "react-calendar-timeline/lib/Timeline.css";
 import moment from "moment";
 import {ConsultantItemsType, ConsultantsCalendarType, RedDaysResponseType} from "@/types";
 import "./gantt-chart.css";
-import {selectColor} from "@/utils/utils";
+import {verticalLineClassNamesForTime} from "@/utils/utils";
 import {Dispatch, SetStateAction, useEffect, useState} from "react";
-import {
-  Popover,
-  PopoverClose,
-  PopoverContent,
-  PopoverDescription,
-  PopoverHeading,
-  PopoverTrigger,
-} from "../popover/popover";
 import TablePagination from "@mui/material/TablePagination";
 import * as React from "react";
 import {getRedDays} from "@/api";
-import {TablePaginationActions} from "@mui/base";
 import Loading from "@/components/loading/loading";
 import Error from "@/components/error/error";
+import {groupsRenderer, itemRenderer} from "@/components/gantt-chart/gantt-chart-renderers";
+import TooltipComponent from "@/components/tooltip/tooltip";
 
 type Props = {
   itemsProps: ConsultantItemsType[];
@@ -32,125 +25,52 @@ type Props = {
   loading: boolean,
   error: string
 };
-const GanttChart = ({itemsProps, groupsProps, totalItems, page, setPage, error, rowsPerPage, setRowsPerPage, loading}: Props) => {
+const GanttChart = ({
+                      itemsProps,
+                      groupsProps,
+                      totalItems,
+                      page,
+                      setPage,
+                      error,
+                      rowsPerPage,
+                      setRowsPerPage,
+                      loading
+                    }: Props) => {
   const [modalData, setModalData] = useState<ConsultantItemsType>();
   const [redDaysSE, setRedDaysSE] = useState([]);
   const [redDaysNO, setRedDaysNO] = useState([]);
+  const [open, setOpen]= useState(false)
 
-  const handleItemSelect = (itemId, e, time) => {
+  const handleItemSelect = (itemId) => {
     const consultantItems = itemsProps.filter((el) => itemId == el.id)[0];
     setModalData(consultantItems);
-  };
-  useEffect(() => {
-  }, [modalData]);
-  const itemRenderer = ({item, itemContext, getItemProps}) => {
-    const chosenColor = selectColor(item.title);
-    const background = itemContext.selected
-      ? chosenColor
-      : item.itemProps.style.background;
-    const borderColor = itemContext.selected
-      ? "black"
-      : item.itemProps.style.borderColor;
-
-    const {fullName, client, projectName, totalDays, country} = item.details
-    const {
-      totalWorkedDays,
-      totalRemainingDays,
-      totalWorkedHours,
-      totalVacationDaysUsed,
-      totalRemainingHours
-    } = item.details.totalDaysStatistics
-    return (
-      <div
-        {...getItemProps({
-          style: {
-            background,
-            color: item.color,
-            borderColor,
-            borderStyle: "solid",
-            borderWidth: 1,
-            borderRadius: 0,
-            borderLeftWidth: itemContext.selected ? 3 : 1,
-            borderRightWidth: itemContext.selected ? 3 : 1,
-          },
-        })}
-      >
-        <Popover>
-          <PopoverTrigger/>
-          <PopoverContent className="Popover">
-            <PopoverHeading>{fullName} {country === "NO" && `(${country})`}</PopoverHeading>
-            <PopoverDescription>
-              <div className="popover-descr__basic-details">
-                <p>Client: {client}</p>
-                <p>Total Days Worked: {totalWorkedDays}</p>
-                <p>Remaining Days: {totalRemainingDays}</p>
-                <p>Total worked hours: {totalWorkedHours}</p>
-                <p>Total remaining hours: {totalRemainingHours}</p>
-                <p>
-                  Total Vacay Days Used: {totalVacationDaysUsed}
-                </p>
-              </div>
-              <div className="popover-descr__item">
-                <h3>{item.title} - {totalDays} days</h3>
-                <p>{projectName}</p>
-                <p>Start: {item.start_time.format('ddd, DD-MMM-YY')}</p>
-                <p>End: {item.end_time.format('ddd, DD-MMM-YY')}</p>
-              </div>
-            </PopoverDescription>
-            <PopoverClose>Close</PopoverClose>
-          </PopoverContent>
-        </Popover>
-      </div>
-    );
+    setOpen(true);
   };
 
-  useEffect(() => {
-    getRedDays().then((res: RedDaysResponseType) =>{
-      setRedDaysSE(res.redDaysSE.map(el => moment(el)));
-      setRedDaysNO(res.redDaysNO.map(el=>moment(el)));
-    });
-  }, []);
 
-  const verticalLineClassNamesForTime = (timeStart, timeEnd) => {
-    const currentTimeStart = moment(timeStart);
-    const currentTimeEnd = moment(timeEnd);
+useEffect(() => {
+  getRedDays().then((res: RedDaysResponseType) => {
+    setRedDaysSE(res.redDaysSE.map(el => moment(el)));
+    setRedDaysNO(res.redDaysNO.map(el => moment(el)));
+  });
+}, []);
 
-    let classes = [];
-    for (let holiday of redDaysSE) {
-      if (
-        holiday.isSame(currentTimeStart, "day") &&
-        holiday.isSame(currentTimeEnd, "day")
-      ) {
-        classes.push("holidaySE");
-      }
-    }
-    for (let holiday of redDaysNO) {
-      if (
-        holiday.isSame(currentTimeStart, "day") &&
-        holiday.isSame(currentTimeEnd, "day")
-      ) {
-        classes.push("holidayNO");
-      }
-    }
+const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
+  setPage(newPage);
+};
 
-    return classes;
-  };
-  const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-  return (
-    loading
-      ? <Loading />
-        : error.length !== 0
-        ? <Error message={error}/>
-        : (groupsProps.length > 0 && itemsProps.length > 0) && (
+const handleChangeRowsPerPage = (
+  event: React.ChangeEvent<HTMLInputElement>
+) => {
+  setRowsPerPage(parseInt(event.target.value, 10));
+  setPage(0);
+};
+return (
+  loading
+    ? <Loading/>
+    : error.length !== 0
+      ? <Error message={error}/>
+      : (groupsProps.length > 0 && itemsProps.length > 0) && (
       <div>
         <div>
           <Timeline
@@ -158,11 +78,14 @@ const GanttChart = ({itemsProps, groupsProps, totalItems, page, setPage, error, 
             items={itemsProps}
             onItemSelect={handleItemSelect}
             itemRenderer={itemRenderer}
+            groupRenderer={groupsRenderer}
             canMove={false}
+            onItemClick={handleItemSelect}
             defaultTimeStart={moment().add(-17, "day")}
             defaultTimeEnd={moment().add(4, "day")}
-            verticalLineClassNamesForTime={verticalLineClassNamesForTime}
+            verticalLineClassNamesForTime={(timeStart, timeEnd)=>verticalLineClassNamesForTime(timeStart, timeEnd, redDaysSE, redDaysNO)}
           />
+          {modalData && <TooltipComponent content={modalData} setOpen={setOpen} open={open} />}
         </div>
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
@@ -175,7 +98,8 @@ const GanttChart = ({itemsProps, groupsProps, totalItems, page, setPage, error, 
         />
       </div>
     )
-  );
-};
+);
+}
+;
 
 export default GanttChart;

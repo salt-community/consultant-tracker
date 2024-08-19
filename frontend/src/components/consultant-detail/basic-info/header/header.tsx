@@ -4,9 +4,8 @@ import HeaderName from "@/components/consultant-detail/basic-info/header/name/na
 
 type Props = {
   name: string;
-  status: string;
 };
-const BasicInfoHeader = ({ name, status }: Props) => {
+const BasicInfoHeader = ({ name }: Props) => {
   return (
     <section className="basic-info-header__container">
       <HeaderAvatar />

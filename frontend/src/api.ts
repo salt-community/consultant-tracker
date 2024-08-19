@@ -14,3 +14,8 @@ export const getRedDays = async () => {
   return await fetch("http://localhost:8080/api/redDays")
     .then((response) => response.json());
 }
+
+export const getConsultantById=async(id:string)=>{
+  return await fetch(`http://localhost:8080/api/consultants/${id}`)
+    .then((response) => response.json());
+}

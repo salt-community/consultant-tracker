@@ -3,23 +3,17 @@ import Infographic from "./infographic/infographic";
 import "./dashboard.css";
 import {infographicData} from "@/mockData";
 import FilterField from "../filter/filter";
-import EnhancedTable from "../table/table";
-import ViewSwitch from "@/components/view-switch/view-switch";
 import GanttChart from "@/components/gantt-chart/gantt-chart";
 import React, {useState, useEffect} from "react";
-import {getConsultantsData, getDashboardData} from "@/api";
+import {getConsultantsData} from "@/api";
 import {useTableContext} from "@/context/table";
-import dayjs from "dayjs";
-import {encodeString, mapConsultantsToCalendarItems, selectColor} from "@/utils/utils";
+import {encodeString, mapConsultantsToCalendarItems} from "@/utils/utils";
 import {
   AllClientsAndResponsiblePtResponse,
   ConsultantFetchType,
-  RegisteredTimeItemType,
 } from "@/types";
-import Loading from "@/components/loading/loading";
 
 const Dashboard = () => {
-  const [view, setView] = useState<string>("timeline");
   const tableData = useTableContext();
   const [items, setItems] = useState<any[]>([]);
   const [groups, setGroups] = useState([]);
@@ -108,8 +102,6 @@ const Dashboard = () => {
         setFilterName={setFilterName}
         filterName={filterName}
       />
-      <ViewSwitch setView={setView} view={view}/>
-      {view === "timeline" && (
         <GanttChart
           itemsProps={items}
           groupsProps={groups}
@@ -121,15 +113,6 @@ const Dashboard = () => {
           loading={loading}
           error={error}
         />
-      )}
-      {view === "table" && <EnhancedTable totalItems={totalItems}
-                                          setPage={setPage}
-                                          loading={loading}
-                                          page={page}
-                                          rowsPerPage={rowsPerPage}
-                                          error={error}
-                                          setRowsPerPage={setRowsPerPage}/>
-      }
     </>
   );
 };
