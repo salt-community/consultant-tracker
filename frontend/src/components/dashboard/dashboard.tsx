@@ -1,13 +1,13 @@
 "use client";
 import Infographic from "./infographic/infographic";
 import "./dashboard.css";
-import {infographicData} from "@/mockData";
+import { infographicData } from "@/mockData";
 import FilterField from "../filter/filter";
 import GanttChart from "@/components/gantt-chart/gantt-chart";
-import React, {useState, useEffect} from "react";
-import {getConsultantsData} from "@/api";
-import {useTableContext} from "@/context/table";
-import {encodeString, mapConsultantsToCalendarItems} from "@/utils/utils";
+import React, { useState, useEffect } from "react";
+import { getConsultantsData } from "@/api";
+import { useTableContext } from "@/context/table";
+import { encodeString, mapConsultantsToCalendarItems } from "@/utils/utils";
 import {
   AllClientsAndResponsiblePtResponse,
   ConsultantFetchType,
@@ -27,6 +27,8 @@ const Dashboard = () => {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [open, setOpen] = useState(false);
+
   useEffect(() => {
     fetch("http://localhost:8080/api/consultants/getAllClientsAndPts")
       .then((res) => res.json())
@@ -37,41 +39,49 @@ const Dashboard = () => {
   }, []);
 
   const fetchConsultantsData = () => {
-    const filterPtsEncodeUriString = encodeString(filterPts, "pt")
-    const filterClientsEncodeUriString = encodeString(filterClients, "client")
+    const filterPtsEncodeUriString = encodeString(filterPts, "pt");
+    const filterClientsEncodeUriString = encodeString(filterClients, "client");
     setLoading(true);
-    getConsultantsData(page, rowsPerPage, filterClientsEncodeUriString, filterPtsEncodeUriString, filterName)
+    getConsultantsData(
+      page,
+      rowsPerPage,
+      filterClientsEncodeUriString,
+      filterPtsEncodeUriString,
+      filterName
+    )
       .then((res) => {
         setItems(mapConsultantsToCalendarItems(res));
         setTotalItems(res.totalConsultants);
         const data = res.consultants.map((el: ConsultantFetchType) => {
-          const title = el.country === "NO" ? el.fullName + ` (${el.country})` : el.fullName;
-          return {id: el.id, title: title};
+          const title =
+            el.country === "NO"
+              ? el.fullName + ` (${el.country})`
+              : el.fullName;
+          return { id: el.id, title: title };
         });
         setGroups(data);
         tableData.setData(res);
+        setOpen(false);
         setLoading(false);
       })
-      .catch(err=>  {
-        setLoading(false)
-        setError("Failed to fetch resources")
-      }
-    )
-  }
+      .catch((err) => {
+        setLoading(false);
+        setError("Failed to fetch resources");
+      });
+  };
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
-      setPage(0)
+      setPage(0);
       fetchConsultantsData();
-    }, 500)
-    return () => clearTimeout(delayDebounceFn)
+    }, 500);
+    return () => clearTimeout(delayDebounceFn);
   }, [filterName]);
 
   useEffect(() => {
-    setPage(0)
+    setPage(0);
     fetchConsultantsData();
   }, [filterPts, filterClients]);
-
 
   useEffect(() => {
     fetchConsultantsData();
@@ -81,7 +91,7 @@ const Dashboard = () => {
     <>
       <div className="dashboard-infographic__card">
         {infographicData.map((element, index) => {
-          const {title, amount, variant} = element;
+          const { title, amount, variant } = element;
           return (
             <Infographic
               key={index}
@@ -102,17 +112,19 @@ const Dashboard = () => {
         setFilterName={setFilterName}
         filterName={filterName}
       />
-        <GanttChart
-          itemsProps={items}
-          groupsProps={groups}
-          totalItems={totalItems}
-          setPage={setPage}
-          page={page}
-          rowsPerPage={rowsPerPage}
-          setRowsPerPage={setRowsPerPage}
-          loading={loading}
-          error={error}
-        />
+      <GanttChart
+        itemsProps={items}
+        groupsProps={groups}
+        totalItems={totalItems}
+        setPage={setPage}
+        page={page}
+        rowsPerPage={rowsPerPage}
+        setRowsPerPage={setRowsPerPage}
+        loading={loading}
+        error={error}
+        setOpen={setOpen}
+        open={open}
+      />
     </>
   );
 };
