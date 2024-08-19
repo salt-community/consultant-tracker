@@ -14,7 +14,7 @@ type Props = {
 
 const CardDetails = ({personalData}: Props) => {
     const [value, setValue] = useState("personalData");
-    const { email, phoneNumber, client, totalDaysStatistics,registeredTimeDtoList } = personalData;
+    const { email, phoneNumber, client, totalDaysStatistics, registeredTimeDtoList } = personalData;
 
     const handleChange = (event: SyntheticEvent, newValue: string) => {
       setValue(newValue);
@@ -25,7 +25,7 @@ const CardDetails = ({personalData}: Props) => {
       case "schedule":
         return <Schedule />;
       case "vacation":
-        return <VacationInfo />;
+        return <VacationInfo vacationDaysUsed={totalDaysStatistics.totalVacationDaysUsed}/>;
         case "clients":
           return <Client registeredTime={registeredTimeDtoList}/>;
       default:
