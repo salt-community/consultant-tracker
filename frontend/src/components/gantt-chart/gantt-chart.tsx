@@ -118,7 +118,7 @@ const GanttChart = ({
           )}
         </div>
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={[5, 10]}
           component="div"
           count={totalItems}
           rowsPerPage={rowsPerPage}
