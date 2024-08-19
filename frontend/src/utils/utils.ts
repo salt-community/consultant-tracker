@@ -63,7 +63,7 @@ export const mapConsultantsToCalendarItems = (res: ConsultantCalendarType) => {
               totalRemainingHours: totalRemainingHours,
               totalWorkedHours: totalWorkedHours,
             },
-            totalDays: item.days
+            totalDays: item.days,
           },
           start_time: dayjs(item.startDate),
           end_time: dayjs(item.endDate),
