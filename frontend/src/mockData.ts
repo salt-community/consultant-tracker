@@ -510,8 +510,8 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
 export const tabs = [
   {
     id: 1,
-    label: "Clients",
-    value: "clients.tsx",
+    label: "Personal Data",
+    value: "personalData",
   },
   {
     id: 2,
@@ -522,6 +522,11 @@ export const tabs = [
     id: 3,
     label: "Vacation",
     value: "vacation",
+  },
+  {
+    id: 4,
+    label: "Clients",
+    value: "clients",
   },
 ];
 
