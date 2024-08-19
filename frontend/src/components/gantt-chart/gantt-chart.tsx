@@ -72,7 +72,7 @@ return (
       ? <Error message={error}/>
       : (groupsProps.length > 0 && itemsProps.length > 0) && (
       <div>
-        <div>
+        <div className="gantt-chart__wrapper">
           <Timeline
             groups={groupsProps}
             items={itemsProps}
@@ -83,6 +83,8 @@ return (
             onItemClick={handleItemSelect}
             defaultTimeStart={moment().add(-17, "day")}
             defaultTimeEnd={moment().add(4, "day")}
+            sidebarWidth={250}
+            lineHeight={35}
             verticalLineClassNamesForTime={(timeStart, timeEnd)=>verticalLineClassNamesForTime(timeStart, timeEnd, redDaysSE, redDaysNO)}
           />
           {modalData && <TooltipComponent content={modalData} setOpen={setOpen} open={open} />}
