@@ -32,7 +32,10 @@ type Props = {
   rowsPerPage: number;
   loading: boolean;
   error: string;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+  open: boolean;
 };
+
 const GanttChart = ({
   itemsProps,
   groupsProps,
@@ -43,17 +46,17 @@ const GanttChart = ({
   rowsPerPage,
   setRowsPerPage,
   loading,
+  setOpen,
+  open,
 }: Props) => {
   const [modalData, setModalData] = useState<ConsultantItemsType>();
-  const [redDaysSE, setRedDaysSE] = useState([]);
-  const [redDaysNO, setRedDaysNO] = useState([]);
+  const [redDaysSE, setRedDaysSE] = useState<moment.Moment[]>([]);
+  const [redDaysNO, setRedDaysNO] = useState<moment.Moment[]>([]);
   const [id, setId] = useState<string>();
-  const [open, setOpen] = useState(false);
 
-  const handleItemSelect = (itemId) => {
+  const handleItemSelect = (itemId: string) => {
     const consultantItems = itemsProps.filter((el) => itemId == el.id)[0];
     setModalData(consultantItems);
-    console.log("consultantItems.group", consultantItems.group);
     setId(consultantItems.group);
     setOpen(true);
   };
@@ -109,9 +112,9 @@ const GanttChart = ({
             }
           />
           {id && id.length > 0 && (
-            <>
-              <BasicInfo id={id} /> <CardDetails />
-            </>
+            <div className={open ? "show" : "hide"}>
+              <BasicInfo id={id} />
+            </div>
           )}
         </div>
         <TablePagination
