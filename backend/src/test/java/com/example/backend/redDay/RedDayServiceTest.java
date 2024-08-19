@@ -46,7 +46,7 @@ class RedDayServiceTest {
     @Test
     @DisplayName("getRedDays")
     public void givenCountryCodeSE__whenGetRedDays__then31December2023() {
-        Mockito.when(redDayRepository.findAllByCountry("SE"))
+        Mockito.when(redDayRepository.findAllById_CountryCode("SE"))
                 .thenReturn(RedDayServiceMockedData.createMockedRedDayList());
         List<LocalDate> actualResult = redDaysService.getRedDays("SE");
         assertEquals(2, actualResult.size());
@@ -57,7 +57,7 @@ class RedDayServiceTest {
     @DisplayName("getRedDays")
     public void givenCountryCodeNO__whenGetRedDays__then1Jan2024And24Dec2024() {
         var expectedResult = Lists.newArrayList(LocalDate.parse("2024-01-01"), LocalDate.parse("2024-12-24"));
-        Mockito.when(redDayRepository.findAllByCountry("NO"))
+        Mockito.when(redDayRepository.findAllById_CountryCode("NO"))
                 .thenReturn(RedDayServiceMockedData.createMockedRedDaysList());
         List<LocalDate> actualResult = redDaysService.getRedDays("NO");
         assertEquals(2, actualResult.size());
@@ -70,7 +70,7 @@ class RedDayServiceTest {
         Mockito.lenient().when(consultantService.getCountryCodeByConsultantId(
                         UUID.fromString("45ec353f-b0f5-4a51-867e-8d0d84d11573")))
                 .thenReturn("SE");
-        Mockito.lenient().when(redDayRepository.findAllByCountry("SE"))
+        Mockito.lenient().when(redDayRepository.findAllById_CountryCode("SE"))
                 .thenReturn(RedDayServiceMockedData.createMockedRedDayList());
         boolean actualResult = redDaysService.isRedDay(
                 LocalDate.parse("2024-01-02"),
@@ -109,7 +109,7 @@ class RedDayServiceTest {
         Mockito.lenient().when(consultantService.getCountryCodeByConsultantId(
                         UUID.fromString("45ec353f-b0f5-4a51-867e-8d0d84d11573")))
                 .thenReturn("Sverige");
-        Mockito.lenient().when(redDayRepository.findAllByCountry("SE"))
+        Mockito.lenient().when(redDayRepository.findAllById_CountryCode("SE"))
                 .thenReturn(RedDayServiceMockedData.createMockedRedDayList());
         mockUtilities = mockStatic(Utilities.class);
         mockUtilities.when(() -> Utilities.isWeekend(6)).thenReturn(true);
@@ -130,7 +130,7 @@ class RedDayServiceTest {
         Mockito.lenient().when(consultantService.getCountryCodeByConsultantId(
                         UUID.fromString("45ec353f-b0f5-4a51-867e-8d0d84d11573")))
                 .thenReturn("Sverige");
-        Mockito.lenient().when(redDayRepository.findAllByCountry("SE"))
+        Mockito.lenient().when(redDayRepository.findAllById_CountryCode("SE"))
                 .thenReturn(RedDayServiceMockedData.createMockedRedDayList());
         mockUtilities = mockStatic(Utilities.class);
         mockUtilities.when(() -> Utilities.isWeekend(6)).thenReturn(true);
@@ -151,7 +151,7 @@ class RedDayServiceTest {
         Mockito.lenient().when(consultantService.getCountryCodeByConsultantId(
                         UUID.fromString("45ec353f-b0f5-4a51-867e-8d0d84d11573")))
                 .thenReturn("Sverige");
-        Mockito.lenient().when(redDayRepository.findAllByCountry("SE"))
+        Mockito.lenient().when(redDayRepository.findAllById_CountryCode("SE"))
                 .thenReturn(RedDayServiceMockedData.createMockedRedDayList());
         mockUtilities = mockStatic(Utilities.class);
         mockUtilities.when(() -> Utilities.isWeekend(6)).thenReturn(true);
@@ -169,9 +169,9 @@ class RedDayServiceTest {
     @Test
     @DisplayName("getAllRedDays")
     public void givenCountryCodes__whenGetAllRedDays__thenShouldReturn2Lists(){
-        Mockito.lenient().when(redDayRepository.findAllByCountry("SE"))
+        Mockito.lenient().when(redDayRepository.findAllById_CountryCode("SE"))
                 .thenReturn(List.of(RedDayServiceMockedData.createMockedRedDaysFromRepositorySE()));
-        Mockito.lenient().when(redDayRepository.findAllByCountry("NO"))
+        Mockito.lenient().when(redDayRepository.findAllById_CountryCode("NO"))
                 .thenReturn(List.of(RedDayServiceMockedData.createMockedRedDaysFromRepositoryNO()));
         RedDaysResponseDto actualResult = redDaysService.getAllRedDays();
         assertEquals(1, actualResult.redDaysSE().size());

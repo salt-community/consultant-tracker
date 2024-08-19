@@ -11,33 +11,21 @@ import java.util.UUID;
 public class RedDayServiceMockedData {
 
     public static List<RedDay> createMockedRedDayList(){
-        var mockedRedDay = new RedDay(
-                UUID.fromString("2e6d51fe-713a-413b-8769-0180aa60c084"),
-                LocalDate.parse("2023-12-31"),
-                "New Years Eve",
-                "SE"
+        var mockedRedDay = new RedDay(new RedDayKey(LocalDate.parse("2023-12-31"), "SE"),
+                "New Years Eve"
         );
-        var mockedRedDay2 = new RedDay(
-                UUID.fromString("2e6d51fe-713a-413b-8769-0180aa60c084"),
-                LocalDate.parse("2024-01-01"),
-                "New Year",
-                "SE"
+        var mockedRedDay2 = new RedDay( new RedDayKey(LocalDate.parse("2024-01-01"), "SE"),
+                "New Year"
         );
         return Lists.newArrayList(mockedRedDay,mockedRedDay2);
     }
 
     public static List<RedDay> createMockedRedDaysList(){
-        var mockedRedDay = new RedDay(
-                UUID.fromString("2e6d51fe-713a-413b-8769-0180aa60c084"),
-                LocalDate.parse("2024-01-01"),
-                "New Year",
-                "NO"
+        var mockedRedDay = new RedDay( new RedDayKey(LocalDate.parse("2024-01-01"), "NO"),
+                "New Year"
         );
-        var mockedRedDay2 = new RedDay(
-                UUID.fromString("2e6d51fe-713a-413b-8769-0180aa60c084"),
-                LocalDate.parse("2024-12-24"),
-                "Christmas Eve",
-                "NO"
+        var mockedRedDay2 = new RedDay( new RedDayKey(LocalDate.parse("2024-12-24"), "NO"),
+                "Christmas Eve"
         );
         return Lists.newArrayList(mockedRedDay, mockedRedDay2);
     }
@@ -52,22 +40,17 @@ public class RedDayServiceMockedData {
         return mockedRedDaysFromNagerDtoList;
     }
     public static RedDay createMockedRedDaysFromRepository(){
-        return new RedDay(UUID.fromString("45ec353f-b0f5-4a51-867e-8d0d84d11573"),
-                LocalDate.parse("2018-12-31"),
-                "New Years Eve",
-                "SE");
+        return new RedDay(new RedDayKey(LocalDate.parse("2018-12-31"),"SE"),
+                "New Years Eve");
     }
 
     public static RedDay createMockedRedDaysFromRepositoryNO(){
-        return new RedDay(UUID.fromString("45ec353f-b0f5-4a51-867e-8d0d84d11573"),
-                LocalDate.parse("2024-12-24"),
-                "Christmas Eve",
-                "NO");
+        return new RedDay(new RedDayKey(LocalDate.parse("2024-12-24"),"NO"),
+                "Christmas Eve");
+
     }
     public static RedDay createMockedRedDaysFromRepositorySE(){
-        return new RedDay(UUID.fromString("45ec353f-b0f5-4a51-867e-8d0d84d11573"),
-                LocalDate.parse("2024-12-25"),
-                "Christmas",
-                "SE");
+        return new RedDay(new RedDayKey(LocalDate.parse("2024-12-25"),"SE"),
+                "Christmas");
     }
 }
