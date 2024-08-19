@@ -79,8 +79,8 @@ export type ConsultantsCalendarType = {
 };
 
 export type ConsultantItemsType = {
-  id: number;
-  group: number;
+  id: string;
+  group: string;
   title?: React.ReactNode | undefined;
   start_time: Dayjs;
   end_time: Dayjs;
