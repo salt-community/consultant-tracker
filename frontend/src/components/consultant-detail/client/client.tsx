@@ -1,36 +1,40 @@
 "use client";
 
-import { consultantDetailsData } from "@/mockData";
-import { ConsultantDetailsDataType } from "@/types";
-import { usePathname } from "next/navigation";
+import { RegisteredTimeItemType } from "@/types";
 import { useEffect, useState } from "react";
-import "../basic-info/basic-info.css"
+import "../basic-info/basic-info.css";
 
-const Client = () => {
-  const idParam = usePathname().split("/").pop();
-  const [clientData, setClientData] = useState<ConsultantDetailsDataType>(
-    consultantDetailsData[0]
+type Props = {
+  registeredTime: RegisteredTimeItemType[];
+};
+
+const Client = ({ registeredTime }: Props) => {
+  const [filteredData, setFilteredData] = useState<RegisteredTimeItemType[]>(
+    []
   );
 
+  const filterData = () => {
+    const filter = new Set();
+    registeredTime.forEach((el)=>{filter.add(el.projectName)});
+    console.log("filter",filter);
+  };
+
   useEffect(() => {
-    const consultantById = consultantDetailsData.filter(
-      (el) => el.id == idParam
-    );
-    setClientData(consultantById[0]);
-  }, [idParam]);
+    filterData();
+  }, []);
 
   return (
-    clientData && (
+    registeredTime && (
       <div>
-        {clientData.client.map((item) => {
-          const { id, name, startDate, endDate } = item;
+        {registeredTime.map((item) => {
+          const { projectName } = item;
           return (
-            <div key={id}>
+            <div key={projectName}>
               <div className="basic-info__contact-title">
-                <h3>{name}</h3>
+                <h3>{projectName}</h3>
               </div>
-              <p>Start date : {startDate}</p>
-              <p>End date: {endDate}</p>
+              {/* <p>Start date : {strtDate}</p>
+              <p>End date: {endDate}</p> */}
             </div>
           );
         })}
