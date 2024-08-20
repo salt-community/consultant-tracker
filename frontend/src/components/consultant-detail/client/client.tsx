@@ -33,7 +33,7 @@ const Client = ({ registeredTime }: Props) => {
               <div className="basic-info__contact-title">
                 <h3>{projectName}</h3>
               </div>
-              {/* <p>Start date : {strtDate}</p>
+              {/* <p>Start date : {startDate}</p>
               <p>End date: {endDate}</p> */}
             </div>
           );

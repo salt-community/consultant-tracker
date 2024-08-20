@@ -2,12 +2,11 @@
 
 import { consultantDetailsData } from "@/mockData";
 import { ConsultantDetailsDataType } from "@/types";
-import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import "./schedules.css";
 
 const Schedule = () => {
-  const idParam = usePathname().split("/").pop();
+  const idParam = "001";
   const [scheduleData, setScheduleData] = useState<ConsultantDetailsDataType>(
     consultantDetailsData[0]
   );

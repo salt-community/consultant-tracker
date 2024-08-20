@@ -53,12 +53,14 @@ const GanttChart = ({
   const [redDaysSE, setRedDaysSE] = useState<moment.Moment[]>([]);
   const [redDaysNO, setRedDaysNO] = useState<moment.Moment[]>([]);
   const [id, setId] = useState<string>();
+  const [openTootlip, setOpenTooltip] = useState(false);
 
   const handleItemSelect = (itemId: string) => {
     const consultantItems = itemsProps.filter((el) => itemId == el.id)[0];
     setModalData(consultantItems);
     setId(consultantItems.group);
     setOpen(true);
+    setOpenTooltip(true);
   };
 
   useEffect(() => {
@@ -111,9 +113,9 @@ const GanttChart = ({
               )
             }
           />
-          {id && id.length > 0 && (
+          {id && id.length > 0 && modalData && (
             <div className={open ? "show" : "hide"}>
-              <BasicInfo id={id} />
+              <BasicInfo id={id} modalData={modalData} openTooltip={openTootlip} setOpenTooltip={setOpenTooltip}/>
             </div>
           )}
         </div>
