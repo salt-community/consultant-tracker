@@ -1,19 +1,18 @@
 import Tooltip from "@mui/material/Tooltip";
 import { Dispatch, SetStateAction } from "react";
-import { ConsultantFetchType, ConsultantItemsType } from "@/types";
+import { ConsultantItemsType } from "@/types";
 import "./tooltip-component.css";
 
-
 type Props = {
-  content: ConsultantFetchType;
+  content: ConsultantItemsType;
   setOpenTooltip: Dispatch<SetStateAction<boolean>>;
   openTooltip: boolean;
 };
 
 const TooltipComponent = ({ setOpenTooltip, openTooltip, content }: Props) => {
-  console.log("content",content);
+  console.log("Selected Item Content:", content);
+  console.log("Tooltip Open:", openTooltip);
 
-    console.log("openTooltip",openTooltip);
   const handleTooltipClose = () => {
     setOpenTooltip(false);
   };
@@ -31,20 +30,26 @@ const TooltipComponent = ({ setOpenTooltip, openTooltip, content }: Props) => {
       title=""
       className={openTooltip ? "tooltip__container" : "hidden"}
     >
-      <div>
-        <button onClick={handleTooltipClose}>Close</button>
-        <p>Consultant name: {content.fullName}</p>
-        {content.registeredTimeDtoList.map((el, key) => {
-            return (
-                <div key={key}>
-                    {/* <p>Client: {el.projectName}</p> */}
-                    <p>Total days selected: {el.days}</p>
-                </div>
-                );
-            }
-            )
-        }
-        <p>Client: {content.client}</p>
+      <div className="tooltip-content">
+        <button onClick={handleTooltipClose} className="close-button">
+          Close
+        </button>
+        <div className="item-details">
+          <h3>{content.details.name}</h3>
+          <p>Title: {content.title}</p>
+          <p>
+            Total Days Selected:{" "}
+            {content.end_time.diff(content.start_time, "day") + 1}
+          </p>
+          <p>Start Date: {content.start_time.format("ddd, DD-MMM-YY")}</p>
+          <p>End Date: {content.end_time.format("ddd, DD-MMM-YY")}</p>
+          <p>Project Name: {content.details.projectName}</p>
+          <p>Total Worked Days: {content.details.totalWorkedDays}</p>
+          <p>Remaining Days: {content.details.totalRemainingDays}</p>
+          <p>
+            Total Vacation Days Used: {content.details.totalVacationDaysUsed}
+          </p>
+        </div>
       </div>
     </Tooltip>
   );

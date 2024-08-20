@@ -13,10 +13,15 @@ type Props = {
   personalData: ConsultantFetchType;
   modalData: ConsultantItemsType;
   openTooltip: boolean;
-  setOpenTooltip: Dispatch<SetStateAction<boolean>>
+  setOpenTooltip: Dispatch<SetStateAction<boolean>>;
 };
 
-const CardDetails = ({ personalData, modalData, openTooltip, setOpenTooltip }: Props) => {
+const CardDetails = ({
+  personalData,
+  modalData,
+  openTooltip,
+  setOpenTooltip,
+}: Props) => {
   const [value, setValue] = useState("personalData");
   const {
     email,
@@ -51,7 +56,11 @@ const CardDetails = ({ personalData, modalData, openTooltip, setOpenTooltip }: P
   return (
     <div className="detail-page__tabs-wrapper">
       <TabsComponent value={value} handleChange={handleChange} />
-      <TooltipComponent setOpenTooltip={setOpenTooltip} openTooltip={openTooltip} content={personalData} />
+      <TooltipComponent
+        setOpenTooltip={setOpenTooltip}
+        openTooltip={openTooltip}
+        content={modalData}
+      />
       <div className="consultant-detail__card">{content()}</div>
     </div>
   );
