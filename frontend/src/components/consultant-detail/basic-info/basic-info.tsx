@@ -1,8 +1,8 @@
 "use client";
 
-import { ConsultantFetchType } from "@/types";
+import { ConsultantFetchType, ConsultantItemsType } from "@/types";
 import "./basic-info.css";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import BasicInfoHeader from "@/components/consultant-detail/basic-info/header/header";
 import { getConsultantById } from "@/api";
 import ContactDetails from "./contact-details/contact-details";
@@ -15,11 +15,15 @@ import Client from "../client/client";
 
 type Props = {
   id: string;
+  modalData: ConsultantItemsType;
+  openTooltip: boolean;
+  setOpenTooltip: Dispatch<SetStateAction<boolean>> ;
 };
 
-const BasicInfo = ({ id }: Props) => {
+const BasicInfo = ({ id, modalData, openTooltip, setOpenTooltip}: Props) => {
   const [personalData, setPersonalData] = useState<ConsultantFetchType>();
   const fetchConsultantById = () => {
+    console.log("id",id);
     if (id) getConsultantById(id).then((res) => setPersonalData(res));
   };
 
@@ -32,7 +36,7 @@ const BasicInfo = ({ id }: Props) => {
       <div className="basic-info__wrapper">
         <BasicInfoHeader name={personalData.fullName} />
         <div className="basic-info__data">
-          <CardDetails personalData={personalData}/>
+          <CardDetails personalData={personalData} modalData={modalData} openTooltip={openTooltip} setOpenTooltip={setOpenTooltip}/>
         </div>
       </div>
     )
