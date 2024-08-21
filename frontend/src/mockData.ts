@@ -520,6 +520,11 @@ export const tabs = [
   },
   {
     id: 3,
+    label: "Absences",
+    value: "absences",
+  },
+  {
+    id: 4,
     label: "Clients",
     value: "clients",
   },
