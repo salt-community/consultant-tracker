@@ -45,3 +45,7 @@
 .hide {
   display: none;
 }
+
+.gantt-chart__no-data {
+  padding: 10px;
+}

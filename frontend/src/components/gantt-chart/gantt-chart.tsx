@@ -89,36 +89,8 @@ const GanttChart = ({
     <Error message={error} />
   ) : (
     groupsProps.length > 0 &&
-    itemsProps.length > 0 && (
+    itemsProps.length > 0 ? (
       <div>
-        <div className="gantt-chart__wrapper">
-          <Timeline
-            groups={groupsProps}
-            items={itemsProps}
-            onItemSelect={handleItemSelect}
-            itemRenderer={itemRenderer}
-            groupRenderer={groupsRenderer}
-            canMove={false}
-            onItemClick={handleItemSelect}
-            defaultTimeStart={moment().add(-17, "day")}
-            defaultTimeEnd={moment().add(4, "day")}
-            sidebarWidth={250}
-            lineHeight={35}
-            verticalLineClassNamesForTime={(timeStart, timeEnd) =>
-              verticalLineClassNamesForTime(
-                timeStart,
-                timeEnd,
-                redDaysSE,
-                redDaysNO
-              )
-            }
-          />
-          {id && id.length > 0 && modalData && (
-            <div className={open ? "show" : "hide"}>
-              <BasicInfo id={id} modalData={modalData} openTooltip={openTootlip} setOpenTooltip={setOpenTooltip}/>
-            </div>
-          )}
-        </div>
         <TablePagination
           rowsPerPageOptions={[5, 10]}
           component="div"
@@ -128,8 +100,42 @@ const GanttChart = ({
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
+          <div className="gantt-chart__wrapper">
+            <Timeline
+              groups={groupsProps}
+              items={itemsProps}
+              onItemSelect={handleItemSelect}
+              itemRenderer={itemRenderer}
+              groupRenderer={groupsRenderer}
+              canMove={false}
+              onItemClick={handleItemSelect}
+              defaultTimeStart={moment().add(-17, "day")}
+              defaultTimeEnd={moment().add(4, "day")}
+              sidebarWidth={250}
+              lineHeight={35}
+              verticalLineClassNamesForTime={(timeStart, timeEnd) =>
+                verticalLineClassNamesForTime(
+                  timeStart,
+                  timeEnd,
+                  redDaysSE,
+                  redDaysNO
+                )
+              }
+            />
+            {id && id.length > 0 && modalData && (
+              <div className={open ? "show" : "hide"}>
+                <BasicInfo
+                  id={id}
+                  modalData={modalData}
+                  openTooltip={openTootlip}
+                  setOpenTooltip={setOpenTooltip}
+                />
+              </div>
+            )}
+          </div>
       </div>
-    )
-  );
+    ) : (<div className="gantt-chart__no-data">No data matching filter criteria</div>)
+  )
+
 };
 export default GanttChart;
