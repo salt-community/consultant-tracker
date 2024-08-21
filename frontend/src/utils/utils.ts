@@ -3,7 +3,7 @@ import {
   ConsultantFetchType,
   RegisteredTimeItemType
 } from "@/types";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import moment from "moment/moment";
 
 export const selectColor = (type: string) => {
@@ -105,4 +105,20 @@ export const verticalLineClassNamesForTime = (timeStart, timeEnd, redDaysSE, red
     }
   }
   return classes;
+};
+
+export const workingDays = (startDate: Dayjs, endDate: Dayjs): number => {
+  let totalDays = 0;
+  let currentDate = startDate.startOf("day");
+
+  while (currentDate <= endDate) {
+    const isWeekend = currentDate.day() === 0 || currentDate.day() === 6;
+    if (!isWeekend) {
+      totalDays += 1;
+    }
+
+    currentDate = currentDate.add(1, "day");
+  }
+
+  return totalDays;
 };

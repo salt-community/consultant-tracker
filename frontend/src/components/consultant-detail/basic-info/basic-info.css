@@ -1,7 +1,7 @@
 .basic-info__data {
     display: flex;
-    gap: 70px;
-    width: 100%;
+    gap: 10px;
+    width: 70%;
 }
 
 .basic-info__wrapper {
@@ -10,6 +10,7 @@
     padding-top: 30px;
     width: 100%;
     gap: 30px;
+    padding-bottom: 10px;
 }
 
 .basic-info__data .MuiInputBase-root {
@@ -35,4 +36,3 @@
     align-self: start;
     border-radius: 50%;
 }
-

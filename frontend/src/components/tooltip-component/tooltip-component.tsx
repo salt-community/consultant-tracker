@@ -2,7 +2,7 @@ import Tooltip from "@mui/material/Tooltip";
 import { Dispatch, SetStateAction } from "react";
 import { ConsultantItemsType } from "@/types";
 import "./tooltip-component.css";
-import { Dayjs } from "dayjs";
+
 
 type Props = {
   content: ConsultantItemsType;
@@ -15,23 +15,9 @@ const TooltipComponent = ({ setOpenTooltip, openTooltip, content }: Props) => {
     setOpenTooltip(false);
   };
 
-  const workingDays = (startDate: Dayjs, endDate: Dayjs): number => {
-    let totalDays = 0;
-    let currentDate = startDate.startOf("day");
+  
 
-    while (currentDate <= endDate) {
-      const isWeekend = currentDate.day() === 0 || currentDate.day() === 6;
-      if (!isWeekend) {
-        totalDays += 1;
-      }
-
-      currentDate = currentDate.add(1, "day");
-    }
-
-    return totalDays;
-  };
-
-  let totalWorkDays = workingDays(content.start_time, content.end_time);
+  // let totalWorkDays = workingDays(content.start_time, content.end_time);
 
   return (
     <Tooltip

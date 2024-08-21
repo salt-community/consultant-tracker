@@ -12,18 +12,20 @@ import CardDetails from "@/components/card-details/card-details";
 import { Schedule } from "@mui/icons-material";
 import VacationInfo from "../vacation-info/vacation-info";
 import Client from "../client/client";
+import TooltipComponent from "@/components/tooltip-component/tooltip-component";
+import TimeItemDetails from "@/components/tooltip-component/time-item-details";
 
 type Props = {
   id: string;
   modalData: ConsultantItemsType;
   openTooltip: boolean;
-  setOpenTooltip: Dispatch<SetStateAction<boolean>> ;
+  setOpenTooltip: Dispatch<SetStateAction<boolean>>;
 };
 
-const BasicInfo = ({ id, modalData, openTooltip, setOpenTooltip}: Props) => {
+const BasicInfo = ({ id, modalData, openTooltip, setOpenTooltip }: Props) => {
   const [personalData, setPersonalData] = useState<ConsultantFetchType>();
   const fetchConsultantById = () => {
-    console.log("id",id);
+    console.log("id", id);
     if (id) getConsultantById(id).then((res) => setPersonalData(res));
   };
 
@@ -36,9 +38,27 @@ const BasicInfo = ({ id, modalData, openTooltip, setOpenTooltip}: Props) => {
       <div className="basic-info__wrapper">
         <BasicInfoHeader name={personalData.fullName} />
         <div className="basic-info__data">
-          <CardDetails personalData={personalData} modalData={modalData} openTooltip={openTooltip} setOpenTooltip={setOpenTooltip}/>
+          <CardDetails
+            personalData={personalData}
+            modalData={modalData}
+            openTooltip={openTooltip}
+            setOpenTooltip={setOpenTooltip}
+          />
         </div>
+
+        <TimeItemDetails
+          setOpenTooltip={setOpenTooltip}
+          openTooltip={openTooltip}
+          content={modalData}
+        />
+
+        {/* <TooltipComponent
+            setOpenTooltip={setOpenTooltip}
+            openTooltip={openTooltip}
+            content={modalData}
+          /> */}
       </div>
+      // </div>
     )
   );
 };

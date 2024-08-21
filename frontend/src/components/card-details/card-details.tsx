@@ -41,6 +41,18 @@ const CardDetails = ({
         return <Schedule />;
       case "clients":
         return <Client registeredTime={registeredTimeDtoList} />;
+      case "absences":
+        return (
+          <VacationInfo
+            vacationDaysUsed={
+              personalData.totalDaysStatistics.totalVacationDaysUsed
+            }
+            sickDaysUsed={1}
+            parentalLeaveUsed={10}
+            vabDaysUsed={1}
+            unpaidLeaveUsed={2}
+          />
+        );
       default:
         return (
           <PersonalData
@@ -56,11 +68,6 @@ const CardDetails = ({
   return (
     <div className="detail-page__tabs-wrapper">
       <TabsComponent value={value} handleChange={handleChange} />
-      <TooltipComponent
-        setOpenTooltip={setOpenTooltip}
-        openTooltip={openTooltip}
-        content={modalData}
-      />
       <div className="consultant-detail__card">{content()}</div>
     </div>
   );
