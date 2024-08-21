@@ -52,10 +52,8 @@ const TooltipComponent = ({ setOpenTooltip, openTooltip, content }: Props) => {
         </button>
         <div className="item-details">
           <h3>{content.details.name}</h3>
-          <p>Title: {content.title}</p>
-          <p>
-            Total Days Selected:{" "}{totalWorkDays}
-          </p>
+          <p>{content.title}</p>
+          <p>Total Days Selected: {totalWorkDays}</p>
           <p>Start Date: {content.start_time.format("ddd, DD-MMM-YY")}</p>
           <p>End Date: {content.end_time.format("ddd, DD-MMM-YY")}</p>
         </div>
