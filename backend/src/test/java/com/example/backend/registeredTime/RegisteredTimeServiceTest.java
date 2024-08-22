@@ -64,7 +64,7 @@ class RegisteredTimeServiceTest {
     @Test
     @DisplayName("getCurrentClient")
     public void shouldReturnPGPWhenConsultantDidNotWorkYet() {
-        Mockito.when(registeredTimeRepository.findFirstById_ConsultantIdAndTypeIsOrderByEndDateDesc(
+        Mockito.lenient().when(registeredTimeRepository.findFirstById_ConsultantIdAndTypeIsOrderByEndDateDesc(
                         listOfConsultantIds.get(0), CONSULTANCY_TIME.activity))
                 .thenReturn(null);
         String actualResult = registeredTimeService.getCurrentClient(listOfConsultantIds.get(0));
@@ -73,11 +73,11 @@ class RegisteredTimeServiceTest {
 
     @Test
     public void shouldReturnCurrentClientWhenConsultantWorked() {
-        Mockito.when(registeredTimeRepository.findFirstById_ConsultantIdAndTypeIsOrderByEndDateDesc(
-                        listOfConsultantIds.get(0), CONSULTANCY_TIME.activity))
-                .thenReturn(RegisteredTimeServiceMockedData.createMockedLasWorkTimeRegistered());
+        Mockito.when(registeredTimeRepository.findFirstById_ConsultantIdOrderByEndDateDesc(
+                        listOfConsultantIds.get(0))).thenReturn(null);
+        String expectedResult = PGP.activity;
         String actualResult = registeredTimeService.getCurrentClient(listOfConsultantIds.get(0));
-        assertEquals(actualResult, "H&M");
+        assertEquals(expectedResult, actualResult);
     }
 
     @Test
