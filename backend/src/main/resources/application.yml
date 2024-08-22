@@ -1,3 +1,5 @@
+app:
+  mode:
 spring:
   datasource:
     url: ${DB.URL}
