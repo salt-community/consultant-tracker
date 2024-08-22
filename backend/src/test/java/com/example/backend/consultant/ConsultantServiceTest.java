@@ -124,7 +124,7 @@ class ConsultantServiceTest extends ApplicationTestConfig {
         int expectedConsultantsFound = 1;
 
         /* ARRANGE FOR HELPER METHOD - getAllConsultantsPageable() */
-        Mockito.when(mockedConsultantRepo.findAllByActiveTrueAndFilterByNameAndResponsiblePtAndClients(
+        Mockito.when(mockedConsultantRepo.findAllByActiveTrueAndFilterByNameAndResponsiblePtAndClientsOrderByFullNameAsc(
                 anyString(),
                 any(Pageable.class),
                 any(List.class),

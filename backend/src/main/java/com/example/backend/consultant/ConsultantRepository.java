@@ -13,9 +13,10 @@ import java.util.UUID;
 public interface ConsultantRepository extends JpaRepository<Consultant, UUID> {
     boolean existsByTimekeeperId(Long id);
     List<Consultant> findAllByActiveTrue();
-    @Query("SELECT t FROM Consultant t WHERE t.active = true AND t.fullName iLIKE %:fullName% AND t.responsiblePT IN :ptList AND t.client IN :clientsList")
-    Page<Consultant> findAllByActiveTrueAndFilterByNameAndResponsiblePtAndClients(String fullName, Pageable pageable, List<String> ptList, List<String> clientsList);
     @Query("SELECT t.country FROM Consultant t WHERE t.id = (:id)")
     String findCountryById(UUID id);
+
+    @Query("SELECT t FROM Consultant t WHERE t.active = true AND t.fullName iLIKE %:fullName% AND t.responsiblePT IN :ptList AND t.client IN :clientsList ORDER BY t.fullName ASC")
+    Page<Consultant> findAllByActiveTrueAndFilterByNameAndResponsiblePtAndClientsOrderByFullNameAsc(String fullName, Pageable pageable, List<String> ptList, List<String> clientsList);
 
 }
