@@ -10,7 +10,6 @@ import com.example.backend.exceptions.ConsultantNotFoundException;
 import com.example.backend.registeredTime.RegisteredTimeService;
 import com.example.backend.registeredTime.dto.RegisteredTimeResponseDto;
 import com.example.backend.tag.Tag;
-import jakarta.annotation.PostConstruct;
 import lombok.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -51,12 +50,11 @@ public class ConsultantService {
     //-----------------------------COVERED BY TESTS ---------------------------------
     public Page<Consultant> getAllConsultantsPageable(int page, int pageSize, String name, List<String> pt, List<String> client) {
         Pageable pageRequest = PageRequest.of(page, pageSize);
-        ClientsAndPtsListDto allClientsAndPts = getAllClientsAndPts();
         if (pt.isEmpty()) {
-            pt.addAll(allClientsAndPts.pts().stream().toList());
+            pt.addAll(getListOfAllClientsOrPts("pts"));
         }
         if (client.isEmpty()) {
-            client.addAll(allClientsAndPts.clients().stream().toList());
+            client.addAll(getListOfAllClientsOrPts("clients"));
         }
         return consultantRepository.findAllByActiveTrueAndFilterByNameAndResponsiblePtAndClientsOrderByFullNameAsc(name, pageRequest, pt, client);
     }
@@ -71,7 +69,7 @@ public class ConsultantService {
         return consultantRepository.findAllByActiveTrue();
     }
 
-//    @PostConstruct
+    //    @PostConstruct
     @Scheduled(cron = "0 0 0 * * *")
     public void fetchDataFromTimekeeper() {
         List<TimekeeperUserDto> timekeeperUserDto = timekeeperClient.getUsers();
@@ -143,16 +141,21 @@ public class ConsultantService {
     }
 
     public ClientsAndPtsListDto getAllClientsAndPts() {
-        List<Consultant> activeConsultants = getAllActiveConsultants();
-        Set<String> listOfClients = new TreeSet<>();
-        Set<String> listOfPts = new TreeSet<>();
-        for (Consultant consultant : activeConsultants) {
-            if (!consultant.getClient().equals("PGP")) {
-                listOfClients.add(consultant.getClient());
-            }
-            listOfPts.add(consultant.getResponsiblePT());
-        }
+        Set<String> listOfClients = getListOfAllClientsOrPts("clients");
+        Set<String> listOfPts = getListOfAllClientsOrPts("pts");
         return new ClientsAndPtsListDto(listOfClients, listOfPts);
     }
 
+    public Set<String> getListOfAllClientsOrPts(String clientOrPt) {
+        List<Consultant> activeConsultants = getAllActiveConsultants();
+        Set<String> resultList = new TreeSet<>();
+        for (Consultant consultant : activeConsultants) {
+            if (clientOrPt.equals("pts")) {
+                resultList.add(consultant.getResponsiblePT());
+            } else if (clientOrPt.equals("clients") && !consultant.getClient().equals("PGP")) {
+                resultList.add(consultant.getClient());
+            }
+        }
+        return resultList;
+    }
 }
