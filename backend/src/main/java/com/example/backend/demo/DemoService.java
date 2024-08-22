@@ -1,6 +1,7 @@
 package com.example.backend.demo;
 
 import com.example.backend.consultant.ConsultantService;
+import com.example.backend.consultant.dto.ClientsAndPtsListDto;
 import com.example.backend.consultant.dto.ConsultantResponseDto;
 import com.example.backend.consultant.dto.ConsultantResponseListDto;
 import com.example.backend.demo.dto.DemoValuesDto;
@@ -8,8 +9,10 @@ import com.example.backend.registeredTime.dto.RegisteredTimeResponseDto;
 import lombok.Data;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 @Service
 @Data
@@ -86,5 +89,9 @@ public class DemoService {
     private String getRandomClient() {
         int rand = new Random().nextInt(9);
         return demoClients.get(rand);
+    }
+
+    public ClientsAndPtsListDto getAllDemoClientsAndPts() {
+        return new ClientsAndPtsListDto(new HashSet<String>(demoClients), new HashSet<String>(demoPts));
     }
 }

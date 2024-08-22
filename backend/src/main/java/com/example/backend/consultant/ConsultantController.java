@@ -46,6 +46,11 @@ public class ConsultantController {
 
     @GetMapping("/getAllClientsAndPts")
     public ResponseEntity<ClientsAndPtsListDto> getAllClientsAndPts(){
+        if ("demo".equalsIgnoreCase(appMode)) {
+            System.out.println("IN DEMO MODE");
+            var smth = demoService.getAllDemoClientsAndPts();
+            return ResponseEntity.ok(smth);
+        }
         return ResponseEntity.ok(consultantService.getAllClientsAndPts());
     }
 }
