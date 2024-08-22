@@ -41,8 +41,8 @@ public class ConsultantService {
                         .map(registeredTimeService::getConsultantTimelineItems).toList()));
     }
 
-    public ConsultantResponseDto getConsultantById(UUID id){
-        Consultant consultantById = consultantRepository.findById(id).orElseThrow(()-> new ConsultantNotFoundException("Consultant with such id not found."));
+    public ConsultantResponseDto getConsultantById(UUID id) {
+        Consultant consultantById = consultantRepository.findById(id).orElseThrow(() -> new ConsultantNotFoundException("Consultant with such id not found."));
         TotalDaysStatisticsDto totalDaysStatistics = registeredTimeService.getAllDaysStatistics(id);
         List<RegisteredTimeResponseDto> consultantTimeDto = registeredTimeService.getGroupedConsultantsRegisteredTimeItems(id);
         return ConsultantResponseDto.toDto(consultantById, totalDaysStatistics, consultantTimeDto);
@@ -71,7 +71,7 @@ public class ConsultantService {
         return consultantRepository.findAllByActiveTrue();
     }
 
-//    @PostConstruct
+    //    @PostConstruct
     @Scheduled(cron = "0 0 0 * * *")
     public void fetchDataFromTimekeeper() {
         List<TimekeeperUserDto> timekeeperUserDto = timekeeperClient.getUsers();
@@ -147,7 +147,9 @@ public class ConsultantService {
         Set<String> listOfClients = new TreeSet<>();
         Set<String> listOfPts = new TreeSet<>();
         for (Consultant consultant : activeConsultants) {
-            listOfClients.add(consultant.getClient());
+            if (!consultant.getClient().equals("PGP")) {
+                listOfClients.add(consultant.getClient());
+            }
             listOfPts.add(consultant.getResponsiblePT());
         }
         return new ClientsAndPtsListDto(listOfClients, listOfPts);
