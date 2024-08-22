@@ -3,7 +3,9 @@ package com.example.backend.consultant;
 import com.example.backend.consultant.dto.ClientsAndPtsListDto;
 import com.example.backend.consultant.dto.ConsultantResponseDto;
 import com.example.backend.consultant.dto.ConsultantResponseListDto;
+import com.example.backend.demo.DemoService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +19,10 @@ import java.util.UUID;
 public class ConsultantController {
 
     private final ConsultantService consultantService;
+    private final DemoService demoService;
+    @Value("${app.mode}")
+    private String appMode;
+
     @GetMapping
     public ResponseEntity<ConsultantResponseListDto> getConsultantsAndRegisteredTime(
             @RequestParam(name = "page", defaultValue = "0") int page,
@@ -24,6 +30,11 @@ public class ConsultantController {
             @RequestParam(defaultValue = "", required = false) String name,
             @RequestParam(defaultValue = "", required = false) List<String> client,
             @RequestParam(defaultValue = "", required = false) List<String> pt) {
+        if ("demo".equalsIgnoreCase(appMode)) {
+            System.out.println("IN DEMO MODE");
+            var smth = demoService.getDemoConsultants(name, client, pt);
+            return ResponseEntity.ok(smth);
+        }
         ConsultantResponseListDto consultantsResponse = consultantService.getAllConsultantDtos(page, pageSize, name, pt, client);
         return ResponseEntity.ok(consultantsResponse);
     }
