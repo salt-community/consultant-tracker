@@ -48,7 +48,7 @@ public class RegisteredTimeService {
     //-----------------------------COVERED BY TESTS ---------------------------------
     public String getCurrentClient(UUID consultantId) {
         RegisteredTime lastWorkTimeRegistered = registeredTimeRepository
-                .findFirstById_ConsultantIdAndTypeIsOrderByEndDateDesc(consultantId, CONSULTANCY_TIME.activity);
+                .findFirstById_ConsultantIdOrderByEndDateDesc(consultantId);
         if (lastWorkTimeRegistered != null) {
             return lastWorkTimeRegistered.getProjectName();
         }
