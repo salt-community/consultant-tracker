@@ -20,7 +20,6 @@ import {
   itemRenderer,
 } from "@/components/gantt-chart/gantt-chart-renderers";
 import BasicInfo from "../consultant-detail/basic-info/basic-info";
-import CardDetails from "../card-details/card-details";
 
 type Props = {
   itemsProps: ConsultantItemsType[];

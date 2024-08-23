@@ -16,7 +16,6 @@ const Client = ({ registeredTime }: Props) => {
   const filterData = () => {
     const filter = new Set();
     registeredTime.forEach((el)=>{filter.add(el.projectName)});
-    console.log("filter",filter);
   };
 
   useEffect(() => {
