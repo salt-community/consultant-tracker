@@ -51,8 +51,10 @@ export const mapConsultantsToCalendarItems = (res: ConsultantCalendarType) => {
           id: item.registeredTimeId,
           group: el.id,
           title: item.type,
+          start_time: dayjs(item.startDate),
+          end_time: dayjs(item.endDate),
           details: {
-            fullName: el.fullName,
+            name: el.fullName,
             responsiblePt: el.responsiblePt,
             client: el.client,
             country: el.country,
@@ -65,9 +67,6 @@ export const mapConsultantsToCalendarItems = (res: ConsultantCalendarType) => {
             },
             totalDays: item.days,
           },
-          start_time: dayjs(item.startDate),
-          end_time: dayjs(item.endDate),
-          className: "",
           itemProps: {
             style: {
               zIndex: 1,
