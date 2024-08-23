@@ -7,6 +7,8 @@ import com.example.backend.consultant.ConsultantService;
 import com.example.backend.consultant.dto.ConsultantResponseDto;
 import com.example.backend.consultant.dto.ConsultantTimeDto;
 import com.example.backend.consultant.dto.TotalDaysStatisticsDto;
+import com.example.backend.demo.demoConsultant.DemoConsultant;
+import com.example.backend.demo.dto.DemoConsultantResponseDto;
 import com.example.backend.redDay.RedDayService;
 import com.example.backend.registeredTime.dto.RegisteredTimeDto;
 import com.example.backend.registeredTime.dto.RegisteredTimeResponseDto;
@@ -129,6 +131,14 @@ public class RegisteredTimeService {
         List<RegisteredTimeResponseDto> consultantTimeDto = getGroupedConsultantsRegisteredTimeItems(consultant.getId());
         TotalDaysStatisticsDto totalDaysStatistics = getAllDaysStatistics(consultant.getId());
         return ConsultantResponseDto.toDto(consultant, totalDaysStatistics,
+                Objects.requireNonNullElseGet(consultantTimeDto, ArrayList::new));
+    }
+
+    // FOR DEMO MODE
+    public DemoConsultantResponseDto getDemoConsultantTimelineItems(DemoConsultant consultant) {
+        List<RegisteredTimeResponseDto> consultantTimeDto = getGroupedConsultantsRegisteredTimeItems(consultant.getId());
+        TotalDaysStatisticsDto totalDaysStatistics = getAllDaysStatistics(consultant.getId());
+        return DemoConsultantResponseDto.toDto(consultant, totalDaysStatistics,
                 Objects.requireNonNullElseGet(consultantTimeDto, ArrayList::new));
     }
 

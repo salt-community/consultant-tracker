@@ -3,11 +3,8 @@ import {
   ChangeEvent,
   Dispatch,
   SetStateAction,
-  useEffect,
-  useState,
 } from "react";
 import "./filter.css";
-import { useTableContext } from "@/context/table";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Multiselect from "@/components/filter/multiselect/multiselect";
@@ -37,7 +34,9 @@ function FilterField({
   };
 
   const handleClear = () => {
-    setFilterPts(["Josefin Stål"]);
+    // setFilterPts(["Josefin Stål"]);
+    /* *** FOR DEMO *** */
+    setFilterPts(["Stella Asplund"]);
     setFilterClients([]);
     setFilterName("")
   };
