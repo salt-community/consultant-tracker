@@ -17,7 +17,7 @@ function TimeItemDetails({setOpenTooltip, openTooltip, content}: Props) {
     console.log("content: ",content);
     let borderClassName = selectColor(content.title!.toString());
   return (
-    <div className="item-details" style={{border:`1px solid ${borderClassName}`}}>
+    <div className="item-details" style={{border:`2px solid ${borderClassName}`}}>
         <h3>Selected Time bar:</h3>
         { content &&
           <>
