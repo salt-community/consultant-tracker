@@ -1,23 +1,23 @@
 import dayjs, { Dayjs } from "dayjs";
 import React from "react";
 
-export type InfographicType = {
-  title: string;
-  amount: number;
-};
+// export type InfographicType = {
+//   title: string;
+//   amount: number;
+// };
 
-export type ConsultantDataType = {
-  id: string;
-  name: string;
-  clientId: string;
-  client: string;
-  pt: string
-};
+// export type ConsultantDataType = {
+//   id: string;
+//   name: string;
+//   clientId: string;
+//   client: string;
+//   pt: string
+// };
 
-export type HeaderCellsType = {
-  id: keyof ConsultantFetchType;
-  label: string;
-};
+// export type HeaderCellsType = {
+//   id: keyof ConsultantFetchType;
+//   label: string;
+// };
 
 export type ClientDataType = {
   id: string;
@@ -46,7 +46,6 @@ export type ConsultantDetailsDataType = {
   client: ClientDataType[];
   pt: string;
   absence: AbsenceType[];
-  github: string;
   phone: string;
   startDate: string;
   remainingHours: number;
@@ -96,10 +95,11 @@ export type ConsultantItemsType = {
 };
 export type detailsType={
   name: string,
-  totalRemainingDays: number,
-  totalWorkedDays: number,
-  totalVacationDaysUsed: number,
-  projectName: string
+  responsiblePt: string,
+  client: string,
+  country: string,
+  totalDays: number,
+  totalDaysStatistics: TotalDaysStatisticsType,
 }
 
 export type ConsultantCalendarType = {

@@ -1,11 +1,13 @@
-import dayjs from "dayjs";
+
+
+// import dayjs from "dayjs";
 import {
   ClientsDetailsDataType,
-  ConsultantDataType,
+  // ConsultantDataType,
   ConsultantDetailsDataType,
-  ConsultantItemsType,
-  ConsultantsCalendarType,
-  HeaderCellsType,
+  // ConsultantItemsType,
+  // ConsultantsCalendarType,
+  // HeaderCellsType,
 } from "./types";
 
 export const navLinks = [
@@ -18,109 +20,131 @@ export const infographicData = [
   {title: "Josefin's consultants", amount: 5, variant: "violet"},
 ];
 
-export const consultantsData: ConsultantDataType[] = [
+export const tabs = [
   {
-    id: "001",
-    fullName: "Stefan Hansdotter",
-    clientId: "111",
-    client: "Syntronix",
-    pt: "Josefin Stål"
+    id: 1,
+    label: "Personal Data",
+    value: "personalData",
   },
   {
-    id: "002",
-    fullName: "Astrad Rehnquist",
-    clientId: "222",
-    client: "Scania",
-    pt: "Josefin Stål"
+    id: 2,
+    label: "Meetings schedule",
+    value: "schedule",
   },
   {
-    id: "003",
-    fullName: "Josephine Ahlgren Björk",
-    clientId: "333",
-    client: "AstraZeneca",
-    pt: "Josefin Stål"
+    id: 3,
+    label: "Absences",
+    value: "absences",
   },
   {
-    id: "004",
-    fullName: "Olof Dahlquist",
-    clientId: "-",
-    client: "-",
-    pt: "Josefin Stål"
-  },
-  {
-    id: "005",
-    fullName: "Axel Folly",
-    clientId: "444",
-    client: "Spotify",
-    pt: "Josefin Stål"
-  },
-  {
-    id: "006",
-    fullName: "Allan Sanddahl",
-    clientId: "555",
-    client: "ABB",
-    pt: "Josefin Stål"
-  },
-  {
-    id: "007",
-    fullName: "Julia Roberts",
-    clientId: "666",
-    client: "Telia",
-    pt: "Anna Carlsson"
-  },
-  {
-    id: "008",
-    fullName: "Agnes Ekbom",
-    clientId: "222",
-    client: "Scania",
-    pt: "Anna Carlsson"
-  },
-  {
-    id: "009",
-    fullName: "Zara Larsson",
-    clientId: "-",
-    client: "-",
-    pt: "Anna Carlsson"
-  },
-  {
-    id: "010",
-    fullName: "Iris Lindahl",
-    clientId: "777",
-    client: "Swedbank",
-    pt: "Anna Carlsson"
+    id: 4,
+    label: "Clients",
+    value: "clients",
   },
 ];
 
-export const headCells: HeaderCellsType[] = [
-  {
-    id: "pt",
-    label: "Responsible P&T",
-  },
-  {
-    id: "name",
-    label: "Name",
-  },
-  {
-    id: "client",
-    label: "Client",
-  },
-];
+// export const consultantsData: ConsultantDataType[] = [
+//   {
+//     id: "001",
+//     fullName: "Stefan Hansdotter",
+//     clientId: "111",
+//     client: "Syntronix",
+//     pt: "Josefin Stål"
+//   },
+//   {
+//     id: "002",
+//     fullName: "Astrad Rehnquist",
+//     clientId: "222",
+//     client: "Scania",
+//     pt: "Josefin Stål"
+//   },
+//   {
+//     id: "003",
+//     fullName: "Josephine Ahlgren Björk",
+//     clientId: "333",
+//     client: "AstraZeneca",
+//     pt: "Josefin Stål"
+//   },
+//   {
+//     id: "004",
+//     fullName: "Olof Dahlquist",
+//     clientId: "-",
+//     client: "-",
+//     pt: "Josefin Stål"
+//   },
+//   {
+//     id: "005",
+//     fullName: "Axel Folly",
+//     clientId: "444",
+//     client: "Spotify",
+//     pt: "Josefin Stål"
+//   },
+//   {
+//     id: "006",
+//     fullName: "Allan Sanddahl",
+//     clientId: "555",
+//     client: "ABB",
+//     pt: "Josefin Stål"
+//   },
+//   {
+//     id: "007",
+//     fullName: "Julia Roberts",
+//     clientId: "666",
+//     client: "Telia",
+//     pt: "Anna Carlsson"
+//   },
+//   {
+//     id: "008",
+//     fullName: "Agnes Ekbom",
+//     clientId: "222",
+//     client: "Scania",
+//     pt: "Anna Carlsson"
+//   },
+//   {
+//     id: "009",
+//     fullName: "Zara Larsson",
+//     clientId: "-",
+//     client: "-",
+//     pt: "Anna Carlsson"
+//   },
+//   {
+//     id: "010",
+//     fullName: "Iris Lindahl",
+//     clientId: "777",
+//     client: "Swedbank",
+//     pt: "Anna Carlsson"
+//   },
+// ];
+
+// export const headCells: HeaderCellsType[] = [
+//   {
+//     id: "pt",
+//     label: "Responsible P&T",
+//   },
+//   {
+//     id: "name",
+//     label: "Name",
+//   },
+//   {
+//     id: "client",
+//     label: "Client",
+//   },
+// ];
 
 export const consultantDetailsData: ConsultantDetailsDataType[] = [
   {
     id: "001",
-    fullName: "Stefan Hansdotter",
+    name: "Stefan Hansdotter",
     client: [
       {
         id: "111",
-        fullName: "Syntronix",
+        name: "Syntronix",
         startDate: "2021-01-01",
         endDate: "2021-12-31",
       },
     ],
     pt: "active",
     absence: [],
-    github: "stefan67509",
     phone: "070-123 45 67",
     startDate: "2021-01-01",
     remainingHours: 200,
@@ -151,11 +175,11 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
   },
   {
     id: "002",
-    fullName: "Astrad Rehnquist",
+    name: "Astrad Rehnquist",
     client: [
       {
         id: "222",
-        fullName: "Scania",
+        name: "Scania",
         startDate: "2021-01-01",
         endDate: "2021-12-31",
       },
@@ -169,7 +193,6 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
         absenceHours: 80,
       },
     ],
-    github: "astradthereh",
     phone: "070-123 45 67",
     startDate: "2021-01-01",
     remainingHours: 200,
@@ -197,11 +220,11 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
   },
   {
     id: "003",
-    fullName: "Josephine Ahlgren Björk",
+    name: "Josephine Ahlgren Björk",
     client: [
       {
         id: "333",
-        fullName: "AstraZeneca",
+        name: "AstraZeneca",
         startDate: "2022-01-01",
         endDate: "2022-12-31",
       },
@@ -215,7 +238,6 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
         absenceHours: 80,
       },
     ],
-    github: "jojophin",
     phone: "070-123 45 67",
     startDate: "2021-01-01",
     remainingHours: 200,
@@ -243,11 +265,10 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
   },
   {
     id: "004",
-    fullName: "Olof Dahlquist",
+    name: "Olof Dahlquist",
     client: [],
     pt: "inactive",
     absence: [],
-    github: "olofdahlquist",
     phone: "070-223 45 67",
     startDate: "2023-01-01",
     remainingHours: 100,
@@ -275,18 +296,17 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
   },
   {
     id: "005",
-    fullName: "Axel Folly",
+    name: "Axel Folly",
     client: [
       {
         id: "444",
-        fullName: "Spotify",
+        name: "Spotify",
         startDate: "2022-01-01",
         endDate: "2022-12-31",
       },
     ],
     pt: "active",
     absence: [],
-    github: "axelfolly",
     phone: "070-113 45 67",
     startDate: "2022-01-01",
     remainingHours: 10,
@@ -314,18 +334,17 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
   },
   {
     id: "006",
-    fullName: "Allan Sanddahl",
+    name: "Allan Sanddahl",
     client: [
       {
         id: "555",
-        fullName: "ABB",
+        name: "ABB",
         startDate: "2022-01-01",
         endDate: "2022-12-31",
       },
     ],
     pt: "active",
     absence: [],
-    github: "sanddahlall",
     phone: "070-113 45 67",
     startDate: "2022-03-01",
     remainingHours: 999,
@@ -353,18 +372,17 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
   },
   {
     id: "007",
-    fullName: "Julia Roberts",
+    name: "Julia Roberts",
     client: [
       {
         id: "666",
-        fullName: "Telia",
+        name: "Telia",
         startDate: "2022-01-01",
         endDate: "2022-12-31",
       },
     ],
     pt: "active",
     absence: [],
-    github: "juliaroberts",
     phone: "070-113 45 67",
     startDate: "2023-03-02",
     remainingHours: 999,
@@ -392,11 +410,11 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
   },
   {
     id: "008",
-    fullName: "Agnes Ekbom",
+    name: "Agnes Ekbom",
     client: [
       {
         id: "222",
-        fullName: "Scania",
+        name: "Scania",
         startDate: "2022-01-01",
         endDate: "2022-12-31",
       },
@@ -408,7 +426,6 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
         startDateAbsence: "2024-01-01",
       },
     ],
-    github: "agnesekbom",
     phone: "070-113 45 67",
     startDate: "2023-03-02",
     remainingHours: 999,
@@ -436,11 +453,10 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
   },
   {
     id: "009",
-    fullName: "Zara Larsson",
+    name: "Zara Larsson",
     client: [],
     pt: "inactive",
     absence: [],
-    github: "zaralarsson",
     phone: "070-113 45 67",
     startDate: "2023-03-02",
     remainingHours: 109,
@@ -468,18 +484,17 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
   },
   {
     id: "010",
-    fullName: "Iris Lindahl",
+    name: "Iris Lindahl",
     client: [
       {
         id: "777",
-        fullName: "Swedbank",
+        name: "Swedbank",
         startDate: "2022-01-01",
         endDate: "2022-12-31",
       },
     ],
     pt: "active",
     absence: [],
-    github: "irislinda",
     phone: "070-113 45 67",
     startDate: "2022-03-02",
     remainingHours: 101,
@@ -487,6 +502,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
     meetings: [
       {
         id: "001",
+
         date: "2021-02-01",
         title: "First regular meeting",
         description: "Ask something",
@@ -507,263 +523,241 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
   },
 ];
 
-export const tabs = [
-  {
-    id: 1,
-    label: "Personal Data",
-    value: "personalData",
-  },
-  {
-    id: 2,
-    label: "Meetings schedule",
-    value: "schedule",
-  },
-  {
-    id: 3,
-    label: "Absences",
-    value: "absences",
-  },
-  {
-    id: 4,
-    label: "Clients",
-    value: "clients",
-  },
-];
 
-export const clientsData: ClientsDetailsDataType[] = [
-  {
-    id: "111",
-    fullName: "Syntronix",
-    contactPeople: [
-      {
-        id: "11",
-        fullName: "Edvin Ekdal",
-        phone: "111-222-111",
-        email: "edvin.ekdal@syntronix.se",
-      },
-    ],
-    listOfConsultants: [
-      {
-        id: "001",
-        fullName: "Stefan Hansdotter",
-      },
-    ],
-  },
-  {
-    id: "222",
-    fullName: "Scania",
-    contactPeople: [
-      {
-        id: "22",
-        fullName: "Leon Göransson",
-        phone: "111-222-222",
-        email: "leon.goransson@scania.se",
-      },
-      {
-        id: "33",
-        fullName: "Thor Söderberg",
-        phone: "111-222-223",
-        email: "thor.soderberg@scania.se",
-      },
-    ],
-    listOfConsultants: [
-      {
-        id: "002",
-        fullName: "Astrad Rehnquist",
-      },
-      {
-        id: "008",
-        fullName: "Agnes Ekbom",
-      },
-    ],
-  },
-  {
-    id: "333",
-    fullName: "AstraZeneca",
-    contactPeople: [
-      {
-        id: "44",
-        fullName: "Thomas Lundmark",
-        phone: "111-222-333",
-        email: "thomas.lundmark@astrazeneca.se",
-      },
-    ],
-    listOfConsultants: [
-      {
-        id: "003",
-        fullName: "Josephine Ahlgren Björk",
-      },
-    ],
-  },
-  {
-    id: "444",
-    fullName: "Spotify",
-    contactPeople: [
-      {
-        id: "55",
-        fullName: "Loke Lundholm",
-        phone: "111-222-444",
-        email: "loke.lundholm@spotify.se",
-      },
-    ],
-    listOfConsultants: [
-      {
-        id: "005",
-        fullName: "Axel Folly",
-      },
-    ],
-  },
-  {
-    id: "555",
-    fullName: "ABB",
-    contactPeople: [
-      {
-        id: "66",
-        fullName: "Odert Haglund",
-        phone: "111-222-555",
-        email: "odert.haglund@abb.se",
-      },
-    ],
-    listOfConsultants: [
-      {
-        id: "006",
-        fullName: "Allan Sanddahl",
-      },
-    ],
-  },
-  {
-    id: "666",
-    fullName: "Telia",
-    contactPeople: [
-      {
-        id: "77",
-        fullName: "Lars Persson",
-        phone: "111-222-666",
-        email: "lars.persson@telia.se",
-      },
-    ],
-    listOfConsultants: [
-      {
-        id: "007",
-        fullName: "Julia Roberts",
-      },
-    ],
-  },
-  {
-    id: "777",
-    fullName: "Swedbank",
-    contactPeople: [
-      {
-        id: "88",
-        fullName: "Axel Westermark",
-        phone: "111-222-777",
-        email: "axel.westermark@swedbank.se",
-      },
-    ],
-    listOfConsultants: [
-      {
-        id: "010",
-        fullName: "Iris Lindahl",
-      },
-    ],
-  },
-];
+// export const clientsData: ClientsDetailsDataType[] = [
+//   {
+//     id: "111",
+//     fullName: "Syntronix",
+//     contactPeople: [
+//       {
+//         id: "11",
+//         fullName: "Edvin Ekdal",
+//         phone: "111-222-111",
+//         email: "edvin.ekdal@syntronix.se",
+//       },
+//     ],
+//     listOfConsultants: [
+//       {
+//         id: "001",
+//         fullName: "Stefan Hansdotter",
+//       },
+//     ],
+//   },
+//   {
+//     id: "222",
+//     fullName: "Scania",
+//     contactPeople: [
+//       {
+//         id: "22",
+//         fullName: "Leon Göransson",
+//         phone: "111-222-222",
+//         email: "leon.goransson@scania.se",
+//       },
+//       {
+//         id: "33",
+//         fullName: "Thor Söderberg",
+//         phone: "111-222-223",
+//         email: "thor.soderberg@scania.se",
+//       },
+//     ],
+//     listOfConsultants: [
+//       {
+//         id: "002",
+//         fullName: "Astrad Rehnquist",
+//       },
+//       {
+//         id: "008",
+//         fullName: "Agnes Ekbom",
+//       },
+//     ],
+//   },
+//   {
+//     id: "333",
+//     fullName: "AstraZeneca",
+//     contactPeople: [
+//       {
+//         id: "44",
+//         fullName: "Thomas Lundmark",
+//         phone: "111-222-333",
+//         email: "thomas.lundmark@astrazeneca.se",
+//       },
+//     ],
+//     listOfConsultants: [
+//       {
+//         id: "003",
+//         fullName: "Josephine Ahlgren Björk",
+//       },
+//     ],
+//   },
+//   {
+//     id: "444",
+//     fullName: "Spotify",
+//     contactPeople: [
+//       {
+//         id: "55",
+//         fullName: "Loke Lundholm",
+//         phone: "111-222-444",
+//         email: "loke.lundholm@spotify.se",
+//       },
+//     ],
+//     listOfConsultants: [
+//       {
+//         id: "005",
+//         fullName: "Axel Folly",
+//       },
+//     ],
+//   },
+//   {
+//     id: "555",
+//     fullName: "ABB",
+//     contactPeople: [
+//       {
+//         id: "66",
+//         fullName: "Odert Haglund",
+//         phone: "111-222-555",
+//         email: "odert.haglund@abb.se",
+//       },
+//     ],
+//     listOfConsultants: [
+//       {
+//         id: "006",
+//         fullName: "Allan Sanddahl",
+//       },
+//     ],
+//   },
+//   {
+//     id: "666",
+//     fullName: "Telia",
+//     contactPeople: [
+//       {
+//         id: "77",
+//         fullName: "Lars Persson",
+//         phone: "111-222-666",
+//         email: "lars.persson@telia.se",
+//       },
+//     ],
+//     listOfConsultants: [
+//       {
+//         id: "007",
+//         fullName: "Julia Roberts",
+//       },
+//     ],
+//   },
+//   {
+//     id: "777",
+//     fullName: "Swedbank",
+//     contactPeople: [
+//       {
+//         id: "88",
+//         fullName: "Axel Westermark",
+//         phone: "111-222-777",
+//         email: "axel.westermark@swedbank.se",
+//       },
+//     ],
+//     listOfConsultants: [
+//       {
+//         id: "010",
+//         fullName: "Iris Lindahl",
+//       },
+//     ],
+//   },
+// ];
 
-export const consultantsCalendar: ConsultantsCalendarType[] = [
-  {id: 1, title: "Stefan Hansdotter"},
-  {id: 2, title: "Astrad Rehnquist"},
-  {id: 3, title: "Josephine Ahlgren Björk"},
-  {id: 4, title: "Olof Dahlquist"},
-  {id: 5, title: "Axel Folly"},
-  {id: 6, title: "Allan Sanddahl"},
-  {id: 7, title: "Julia Roberts"},
-  {id: 8, title: "Agnes Ekbom"},
-  {id: 9, title: "Zara Larsson"},
-  {id: 10, title: "Iris Lindahl"},
-];
+// export const consultantsCalendar: ConsultantsCalendarType[] = [
+//   {id: 1, title: "Stefan Hansdotter"},
+//   {id: 2, title: "Astrad Rehnquist"},
+//   {id: 3, title: "Josephine Ahlgren Björk"},
+//   {id: 4, title: "Olof Dahlquist"},
+//   {id: 5, title: "Axel Folly"},
+//   {id: 6, title: "Allan Sanddahl"},
+//   {id: 7, title: "Julia Roberts"},
+//   {id: 8, title: "Agnes Ekbom"},
+//   {id: 9, title: "Zara Larsson"},
+//   {id: 10, title: "Iris Lindahl"},
+// ];
 
-export const consultantItems: ConsultantItemsType[] = [
-  {
-    id: 1,
-    group: 6,
-    start_time: dayjs("2024-07-22T00:00:00"),
-    end_time: dayjs("2024-08-22T23:59:59"),
-    itemProps: {
-      style: {
-        zIndex: 1,
-        background: "#29B269",
-        outline: "none",
-        border: "none"
-      },
-    },
-  },
-  {
-    id: 2,
-    group: 6,
-    start_time: dayjs("2024-08-05T00:00:00"),
-    end_time: dayjs("2024-08-09T23:59:59"),
-    itemProps: {
-      style: {
-        zIndex: 2,
-        background: "yellow",
-        outline: "none",
-        border: "none"
-      },
-    },
-  },
-  {
-    id: 3,
-    group: 6,
-    start_time: dayjs("2024-08-09T00:00:00"),
-    end_time: dayjs("2025-05-09T23:59:59"),
-    itemProps: {
-      style: {
-        zIndex: 0,
-        background: "#A2A2A2",
-        outline: "none",
-        border: "none"
-      },
-    },
-  }
-];
+// export const consultantItems: ConsultantItemsType[] = [
+//   {
+//     id: 1,
+//     group: 6,
+//     start_time: dayjs("2024-07-22T00:00:00"),
+//     end_time: dayjs("2024-08-22T23:59:59"),
+//     itemProps: {
+//       style: {
+//         zIndex: 1,
+//         background: "#29B269",
+//         outline: "none",
+//         border: "none"
+//       },
+//     },
+//   },
+//   {
+//     id: 2,
+//     group: 6,
+//     start_time: dayjs("2024-08-05T00:00:00"),
+//     end_time: dayjs("2024-08-09T23:59:59"),
+//     itemProps: {
+//       style: {
+//         zIndex: 2,
+//         background: "yellow",
+//         outline: "none",
+//         border: "none"
+//       },
+//     },
+//   },
+//   {
+//     id: 3,
+//     group: 6,
+//     start_time: dayjs("2024-08-09T00:00:00"),
+//     end_time: dayjs("2025-05-09T23:59:59"),
+//     itemProps: {
+//       style: {
+//         zIndex: 0,
+//         background: "#A2A2A2",
+//         outline: "none",
+//         border: "none"
+//       },
+//     },
+//   }
+// ];
 
-export const redDays = [
-  {
-    year: 2024,
-    redDays: [
-      "2024-01-01",
-      // "2024-01-06",
-      "2024-03-29",
-      // "2024-03-31",
-      "2024-04-01",
-      "2024-05-01",
-      "2024-05-09",
-      // "2024-05-19",
-      "2024-06-06",
-      // "2024-06-22",
-      // "2024-11-02",
-      "2024-12-25",
-      "2024-12-26"
-    ]
-  },
-  {
-    year: 2025,
-    redDays: [
-      "2025-01-01",
-      "2025-01-06",
-      "2025-04-18",
-      // "2025-04-20",
-      "2025-04-21",
-      "2025-05-01",
-      "2025-05-29",
-      "2025-06-06",
-      // "2025-06-08",
-      // "2025-06-21",
-      // "2025-11-01",
-      "2025-12-25",
-      "2025-12-26"
-    ]
-  }
-]
+// export const redDays = [
+//   {
+//     year: 2024,
+//     redDays: [
+//       "2024-01-01",
+//       // "2024-01-06",
+//       "2024-03-29",
+//       // "2024-03-31",
+//       "2024-04-01",
+//       "2024-05-01",
+//       "2024-05-09",
+//       // "2024-05-19",
+//       "2024-06-06",
+//       // "2024-06-22",
+//       // "2024-11-02",
+//       "2024-12-25",
+//       "2024-12-26"
+//     ]
+//   },
+//   {
+//     year: 2025,
+//     redDays: [
+//       "2025-01-01",
+//       "2025-01-06",
+//       "2025-04-18",
+//       // "2025-04-20",
+//       "2025-04-21",
+//       "2025-05-01",
+//       "2025-05-29",
+//       "2025-06-06",
+//       // "2025-06-08",
+//       // "2025-06-21",
+//       // "2025-11-01",
+//       "2025-12-25",
+//       "2025-12-26"
+//     ]
+//   }
+// ]
 
-export const allPts = ["Anna Carlsson", "Josefin Stål"];
+// export const allPts = ["Anna Carlsson", "Josefin Stål"];
