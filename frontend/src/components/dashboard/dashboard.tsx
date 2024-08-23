@@ -11,11 +11,12 @@ import { encodeString, mapConsultantsToCalendarItems } from "@/utils/utils";
 import {
   AllClientsAndResponsiblePtResponse,
   ConsultantFetchType,
+  ConsultantItemsType,
 } from "@/types";
 
 const Dashboard = () => {
   const tableData = useTableContext();
-  const [items, setItems] = useState<any[]>([]);
+  const [items, setItems] = useState<ConsultantItemsType[]>([]);
   const [groups, setGroups] = useState([]);
   const [listOfResponsiblePt, setListOfResponsiblePts] = useState<string[]>([]);
   const [listOfClients, setListOfClients] = useState<string[]>([]);
