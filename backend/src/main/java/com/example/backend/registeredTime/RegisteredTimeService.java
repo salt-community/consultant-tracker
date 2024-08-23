@@ -14,6 +14,7 @@ import com.example.backend.registeredTime.dto.RegisteredTimeDto;
 import com.example.backend.registeredTime.dto.RegisteredTimeResponseDto;
 import com.example.backend.registeredTime.dto.RemainingDaysDto;
 import com.example.backend.utils.Utilities;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
@@ -126,7 +127,7 @@ public class RegisteredTimeService {
         return timeItemsMap;
     }
     //-----------------------------------MOVE TO SEPARATE SERVICE--------------------------------------------
-
+    @Cacheable(cacheNames = "consultants",key="#consultant.id")
     public ConsultantResponseDto getConsultantTimelineItems(Consultant consultant) {
         List<RegisteredTimeResponseDto> consultantTimeDto = getGroupedConsultantsRegisteredTimeItems(consultant.getId());
         TotalDaysStatisticsDto totalDaysStatistics = getAllDaysStatistics(consultant.getId());
@@ -135,6 +136,7 @@ public class RegisteredTimeService {
     }
 
     // FOR DEMO MODE
+    @Cacheable(cacheNames = "demoConsultants",key="#consultant.id")
     public DemoConsultantResponseDto getDemoConsultantTimelineItems(DemoConsultant consultant) {
         List<RegisteredTimeResponseDto> consultantTimeDto = getGroupedConsultantsRegisteredTimeItems(consultant.getId());
         TotalDaysStatisticsDto totalDaysStatistics = getAllDaysStatistics(consultant.getId());
