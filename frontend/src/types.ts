@@ -20,7 +20,7 @@ import React from "react";
 // };
 
 export type ClientDataType = {
-  id: string;
+  // id: string;
   name: string;
   startDate: string;
   endDate: string;
@@ -117,6 +117,7 @@ export type ConsultantFetchType = {
   responsiblePt: string,
   totalDaysStatistics: TotalDaysStatisticsType,
   registeredTimeDtoList: RegisteredTimeItemType[],
+  clientsList: ClientDataType[],
   client: string,
   country: string
 }

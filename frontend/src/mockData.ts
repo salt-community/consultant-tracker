@@ -137,7 +137,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
     name: "Stefan Hansdotter",
     client: [
       {
-        id: "111",
+        // id: "111",
         name: "Syntronix",
         startDate: "2021-01-01",
         endDate: "2021-12-31",
@@ -178,7 +178,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
     name: "Astrad Rehnquist",
     client: [
       {
-        id: "222",
+        // id: "222",
         name: "Scania",
         startDate: "2021-01-01",
         endDate: "2021-12-31",
@@ -223,7 +223,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
     name: "Josephine Ahlgren Björk",
     client: [
       {
-        id: "333",
+        // id: "333",
         name: "AstraZeneca",
         startDate: "2022-01-01",
         endDate: "2022-12-31",
@@ -299,7 +299,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
     name: "Axel Folly",
     client: [
       {
-        id: "444",
+        // id: "444",
         name: "Spotify",
         startDate: "2022-01-01",
         endDate: "2022-12-31",
@@ -337,7 +337,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
     name: "Allan Sanddahl",
     client: [
       {
-        id: "555",
+        // id: "555",
         name: "ABB",
         startDate: "2022-01-01",
         endDate: "2022-12-31",
@@ -375,7 +375,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
     name: "Julia Roberts",
     client: [
       {
-        id: "666",
+        // id: "666",
         name: "Telia",
         startDate: "2022-01-01",
         endDate: "2022-12-31",
@@ -413,7 +413,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
     name: "Agnes Ekbom",
     client: [
       {
-        id: "222",
+        // id: "222",
         name: "Scania",
         startDate: "2022-01-01",
         endDate: "2022-12-31",
@@ -487,7 +487,7 @@ export const consultantDetailsData: ConsultantDetailsDataType[] = [
     name: "Iris Lindahl",
     client: [
       {
-        id: "777",
+        // id: "777",
         name: "Swedbank",
         startDate: "2022-01-01",
         endDate: "2022-12-31",
