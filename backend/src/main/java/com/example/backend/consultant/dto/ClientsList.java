@@ -1,4 +1,6 @@
 package com.example.backend.consultant.dto;
 
-public record ClientsList() {
+import java.time.LocalDate;
+
+public record ClientsList(String name, LocalDate startDate, LocalDate endDate) {
 }
