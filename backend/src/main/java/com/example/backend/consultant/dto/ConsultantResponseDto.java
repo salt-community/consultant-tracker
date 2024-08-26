@@ -3,6 +3,7 @@ package com.example.backend.consultant.dto;
 import com.example.backend.consultant.Consultant;
 import com.example.backend.redDay.CountryCode;
 import com.example.backend.registeredTime.dto.RegisteredTimeResponseDto;
+import com.example.backend.timeChunks.TimeChunks;
 
 import java.util.List;
 import java.util.UUID;
@@ -22,7 +23,7 @@ public record ConsultantResponseDto(UUID id,
     public static ConsultantResponseDto toDto(
             Consultant consultant,
             TotalDaysStatisticsDto totalDaysStatistics,
-            List<RegisteredTimeResponseDto> registeredTimeDtoList) {
+            List<TimeChunks> timeChunks) {
         return new ConsultantResponseDto(
                 consultant.getId(),
                 consultant.getFullName(),
@@ -32,7 +33,7 @@ public record ConsultantResponseDto(UUID id,
                 consultant.getClient(),
                 consultant.getCountry().equals(SWEDEN.country) ? CountryCode.SE.countryCode : CountryCode.NO.countryCode,
                 totalDaysStatistics,
-                registeredTimeDtoList
+                timeChunks.stream().map(RegisteredTimeResponseDto::fromTimeChunks).toList()
                 );
     }
 }

@@ -7,6 +7,8 @@ import com.example.backend.exceptions.ConsultantNotFoundException;
 import com.example.backend.registeredTime.RegisteredTimeService;
 import com.example.backend.registeredTime.dto.RegisteredTimeResponseDto;
 import com.example.backend.tag.Tag;
+import com.example.backend.timeChunks.TimeChunks;
+import com.example.backend.timeChunks.TimeChunksService;
 import jakarta.annotation.PostConstruct;
 import lombok.*;
 import org.springframework.data.domain.Page;
@@ -23,9 +25,10 @@ import java.util.*;
 @Data
 @AllArgsConstructor
 public class ConsultantService {
-    private ConsultantRepository consultantRepository;
-    private TimekeeperClient timekeeperClient;
-    private RegisteredTimeService registeredTimeService;
+    private final ConsultantRepository consultantRepository;
+    private final TimekeeperClient timekeeperClient;
+    private final RegisteredTimeService registeredTimeService;
+    private final TimeChunksService timeChunksService;
 
     //-----------------------------COVERED BY TESTS ---------------------------------
     public ConsultantResponseListDto getAllConsultantDtos(int page, int pageSize, String name, List<String> pt, List<String> client) {
@@ -35,16 +38,17 @@ public class ConsultantService {
                 page,
                 consultantsList.getTotalPages(),
                 consultantsList.getTotalElements(),
-                new ArrayList<>(consultantsList.stream()
-                        .map(registeredTimeService::getConsultantTimelineItems).toList()));
+                consultantsList.stream()
+                        .map(c -> ConsultantResponseDto.toDto(c,
+                                registeredTimeService.getAllDaysStatistics(c.getId()),
+                                timeChunksService.getTimeChunksByConsultant(c.getId()))).toList());
     }
 
     public SingleConsultantResponseListDto getConsultantById(UUID id) {
         Consultant consultantById = consultantRepository.findById(id).orElseThrow(() -> new ConsultantNotFoundException("Consultant with such id not found."));
         TotalDaysStatisticsDto totalDaysStatistics = registeredTimeService.getAllDaysStatistics(id);
-//        List<RegisteredTimeResponseDto> consultantTimeDto = registeredTimeService.getGroupedConsultantsRegisteredTimeItems(id);
         List<ClientsList> clientsList = getClientListByConsultantId(id);
-        return SingleConsultantResponseListDto.toDto(consultantById, totalDaysStatistics, /*consultantTimeDto,*/ clientsList);
+        return SingleConsultantResponseListDto.toDto(consultantById, totalDaysStatistics, clientsList);
     }
 
     //-----------------------------COVERED BY TESTS ---------------------------------
@@ -53,7 +57,7 @@ public class ConsultantService {
         List<String> distinctClients = registeredTimeService.getClientsByConsultantId(consultantId);
         for (String client : distinctClients) {
             if (!client.equalsIgnoreCase(NotClient.PGP.value)
-            && !client.equalsIgnoreCase(NotClient.UPSKILLING.value)) {
+                    && !client.equalsIgnoreCase(NotClient.UPSKILLING.value)) {
                 LocalDate startDate = registeredTimeService.getStartDateByClientAndConsultantId(client, consultantId);
                 LocalDate endDate = registeredTimeService.getEndDateByClientAndConsultantId(client, consultantId);
                 clientsList.add(new ClientsList(client, startDate, endDate));
@@ -84,13 +88,15 @@ public class ConsultantService {
         return consultantRepository.findAllByActiveTrue();
     }
 
-//            @PostConstruct
+//    @PostConstruct
     @Scheduled(cron = "0 0 0 * * *")
     public void fetchDataFromTimekeeper() {
         List<TimekeeperUserDto> timekeeperUserDto = timekeeperClient.getUsers();
         assert timekeeperUserDto != null;
         updateConsultantTable(timekeeperUserDto);
         registeredTimeService.fetchAndSaveTimeRegisteredByConsultantDB();
+        List<Consultant> allActiveConsultants = getAllActiveConsultants();
+        timeChunksService.saveTimeChunksForAllConsultants(allActiveConsultants);
         fillClientAndResponsiblePt();
     }
 

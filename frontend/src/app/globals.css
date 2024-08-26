@@ -76,3 +76,8 @@ ul {
     padding: 0;
     list-style: none;
 }
+
+.details__title {
+    font-size: smaller;
+    font-weight: 300;
+  }

@@ -13,6 +13,8 @@ import com.example.backend.redDay.RedDayService;
 import com.example.backend.registeredTime.dto.RegisteredTimeDto;
 import com.example.backend.registeredTime.dto.RegisteredTimeResponseDto;
 import com.example.backend.registeredTime.dto.RemainingDaysDto;
+import com.example.backend.timeChunks.TimeChunks;
+import com.example.backend.timeChunks.TimeChunksKey;
 import com.example.backend.utils.Utilities;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Lazy;
@@ -128,21 +130,17 @@ public class RegisteredTimeService {
     }
 
     //-----------------------------------MOVE TO SEPARATE SERVICE--------------------------------------------
-    @Cacheable(cacheNames = "consultants", key = "#consultant.id")
-    public ConsultantResponseDto getConsultantTimelineItems(Consultant consultant) {
-        List<RegisteredTimeResponseDto> consultantTimeDto = getGroupedConsultantsRegisteredTimeItems(consultant.getId());
-        TotalDaysStatisticsDto totalDaysStatistics = getAllDaysStatistics(consultant.getId());
-        return ConsultantResponseDto.toDto(consultant, totalDaysStatistics,
-                Objects.requireNonNullElseGet(consultantTimeDto, ArrayList::new));
+//    @Cacheable(cacheNames = "consultants", key = "#consultant.id")
+    public TotalDaysStatisticsDto getConsultantTimelineItems(Consultant consultant) {
+        return getAllDaysStatistics(consultant.getId());
     }
 
     // FOR DEMO MODE
-    @Cacheable(cacheNames = "demoConsultants", key = "#consultant.id")
+//    @Cacheable(cacheNames = "demoConsultants", key = "#consultant.id")
     public DemoConsultantResponseDto getDemoConsultantTimelineItems(DemoConsultant consultant) {
-        List<RegisteredTimeResponseDto> consultantTimeDto = getGroupedConsultantsRegisteredTimeItems(consultant.getId());
         TotalDaysStatisticsDto totalDaysStatistics = getAllDaysStatistics(consultant.getId());
         return DemoConsultantResponseDto.toDto(consultant, totalDaysStatistics,
-                Objects.requireNonNullElseGet(consultantTimeDto, ArrayList::new));
+                Objects.requireNonNullElseGet(null, ArrayList::new));
     }
 
 
@@ -189,125 +187,19 @@ public class RegisteredTimeService {
                 .toList();
     }
 
-    public List<RegisteredTimeResponseDto> getGroupedConsultantsRegisteredTimeItems(UUID id) {
-        List<RegisteredTime> registeredTimeList = getTimeByConsultantId(id);
-        if (registeredTimeList.isEmpty()) {
-            return null;
-        }
-        Map<Integer, RegisteredTimeDto> groupedRegisteredTime = groupRegisteredTimeItemsIntoMap(registeredTimeList, id);
-        Map<Integer, RegisteredTimeDto> groupedRegisteredTimeWithFilledGaps = fillRegisteredTimeGaps(sortMap(groupedRegisteredTime), id);
-        List<RegisteredTimeDto> regTimeRespDto = new ArrayList<>(groupedRegisteredTimeWithFilledGaps.values());
-        List<RegisteredTimeResponseDto> registeredTimeResponseDto = new ArrayList<>(regTimeRespDto
-                .stream()
-                .map(RegisteredTimeResponseDto::fromRegisteredTimeDto)
-                .toList());
-        RegisteredTimeResponseDto remainingConsultancyTimeByConsultantId = getRemainingConsultancyTimeByConsultantId(id);
-        if (remainingConsultancyTimeByConsultantId != null) {
-            registeredTimeResponseDto.add(remainingConsultancyTimeByConsultantId);
-        }
-        return registeredTimeResponseDto;
-    }
-
-    private Map<Integer, RegisteredTimeDto> groupRegisteredTimeItemsIntoMap(List<RegisteredTime> registeredTimeList, UUID id) {
-        Map<Integer, RegisteredTimeDto> mappedRecords = new HashMap<>();
-        String prevType = registeredTimeList.getFirst().getType();
-        int generatedKey = 0;
-        for (RegisteredTime registeredTime : registeredTimeList) {
-            if (mappedRecords.containsKey(generatedKey)) {
-                LocalDate startDateBefore = mappedRecords.get(generatedKey).endDate().toLocalDate();
-                long daysBetween = DAYS.between(startDateBefore, registeredTime.getId().getStartDate().toLocalDate());
-                boolean onlyRedDayaAndWeekendsBetween = redDaysService.checkRedDaysOrWeekend(daysBetween, startDateBefore, id, "single check") == (daysBetween - 1);
-                if (prevType.equals(registeredTime.getType()) && onlyRedDayaAndWeekendsBetween) {
-                    computeMapEntry(mappedRecords, registeredTime, generatedKey);
-                } else {
-                    generatedKey++;
-                    createNewMapEntry(mappedRecords, registeredTime, generatedKey);
-                }
-            } else {
-                createNewMapEntry(mappedRecords, registeredTime, generatedKey);
-            }
-            prevType = registeredTime.getType();
-        }
-        return mappedRecords;
-    }
-
-    private void computeMapEntry(Map<Integer, RegisteredTimeDto> mappedRecords, RegisteredTime registeredTime, int generatedKey) {
-        mappedRecords.computeIfPresent(generatedKey, (key, registeredTimeDto) ->
-                new RegisteredTimeDto(registeredTimeDto.startDate(),
-                        registeredTime.getEndDate(),
-                        registeredTimeDto.type(),
-                        registeredTime.getProjectName(),
-                        registeredTimeDto.days() + 1
-                ));
-    }
-
-    private void createNewMapEntry(Map<Integer, RegisteredTimeDto> mappedRecords, RegisteredTime registeredTime, int generatedKey) {
-        mappedRecords.put(generatedKey,
-                new RegisteredTimeDto(registeredTime.getId().getStartDate(),
-                        registeredTime.getEndDate(),
-                        registeredTime.getType(),
-                        registeredTime.getProjectName(),
-                        1));
-    }
-
-    private Map<Integer, RegisteredTimeDto> sortMap(Map<Integer, RegisteredTimeDto> resultSet) {
-        return resultSet.entrySet()
-                .stream()
-                .sorted(Comparator.comparing(e -> e.getValue().startDate()))
-                .collect(Collectors.toMap(Map.Entry::getKey,
-                        Map.Entry::getValue,
-                        (left, right) -> left,
-                        LinkedHashMap::new));
-    }
-
-    private Map<Integer, RegisteredTimeDto> fillRegisteredTimeGaps(Map<Integer, RegisteredTimeDto> resultSet, UUID consultantId) {
-        Map<Integer, RegisteredTimeDto> filledGapsMap = new HashMap<>(resultSet);
-        for (int i = 0; i < resultSet.size() - 1; i++) {
-            LocalDate dateBefore = resultSet.get(i).endDate().toLocalDate();
-            LocalDate dateAfter = resultSet.get(i + 1).startDate().toLocalDate();
-            long daysBetween = DAYS.between(dateBefore, dateAfter);
-            if (daysBetween > 1) {
-                int nonWorkingDays = redDaysService.checkRedDaysOrWeekend(daysBetween, dateBefore, consultantId, "single check");
-                fillGapsWithNoRegisteredTime(nonWorkingDays, daysBetween, filledGapsMap, dateBefore, dateAfter, i, consultantId);
-            }
-        }
-        return filledGapsMap;
-    }
-
-    private void fillGapsWithNoRegisteredTime(int nonWorkingDays, Long daysBetween, Map<Integer, RegisteredTimeDto> filledGapsMap, LocalDate dateBefore, LocalDate dateAfter, int i, UUID id) {
-        if (nonWorkingDays != 0) {
-            filledGapsMap.computeIfPresent(i, (key, value) ->
-                    new RegisteredTimeDto(value.startDate(),
-                            value.endDate().plusDays(nonWorkingDays),
-                            value.type(),
-                            value.projectName(),
-                            value.days()));
-        }
-        if (nonWorkingDays != daysBetween - 1) {
-            int totalNonWorkingDays = redDaysService.checkRedDaysOrWeekend(daysBetween, dateBefore, id, "multiple check");
-            filledGapsMap.put(filledGapsMap.size(),
-                    new RegisteredTimeDto(dateBefore.plusDays(nonWorkingDays + 1).atStartOfDay(),
-                            dateAfter.minusDays(1).atTime(23, 59, 59),
-                            "No Registered Time",
-                            "No Registered Time",
-                            (int) (daysBetween - 1 - totalNonWorkingDays)));
-        }
-    }
-
-    public RegisteredTimeResponseDto getRemainingConsultancyTimeByConsultantId(UUID consultantId) {
+    public TimeChunks getRemainingConsultancyTimeByConsultantId(UUID consultantId) {
         LocalDateTime lastRegisteredDate = registeredTimeRepository.findFirstById_ConsultantIdOrderByEndDateDesc(consultantId).getEndDate();
         LocalDateTime startDate = lastRegisteredDate.plusDays(1).withHour(0).withMinute(0).withSecond(0);
         RemainingDaysDto estimatedEndDate = getEstimatedConsultancyEndDate(consultantId, startDate);
         if (estimatedEndDate.endDate() == startDate) {
             return null;
         }
-        return new RegisteredTimeResponseDto(
-                UUID.randomUUID(),
-                startDate,
+        return new TimeChunks(
+                new TimeChunksKey(consultantId, startDate),
+                "Remaining Days",
                 estimatedEndDate.endDate(),
-                "Remaining Days",
-                "Remaining Days",
-                estimatedEndDate.remainingDays());
+                estimatedEndDate.remainingDays(),
+                "Remaining Days");
     }
 
     private RemainingDaysDto getEstimatedConsultancyEndDate(UUID consultantId, LocalDateTime startDate) {

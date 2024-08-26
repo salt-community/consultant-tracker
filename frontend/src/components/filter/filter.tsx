@@ -34,9 +34,9 @@ function FilterField({
   };
 
   const handleClear = () => {
-    setFilterPts(["Josefin Stål"]);
+    // setFilterPts(["Josefin Stål"]);
     /* *** FOR DEMO *** */
-    // setFilterPts(["Stella Asplund"]);
+    setFilterPts(["Stella Asplund"]);
     setFilterClients([]);
     setFilterName("")
   };

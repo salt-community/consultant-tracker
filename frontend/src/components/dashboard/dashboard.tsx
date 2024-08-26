@@ -21,9 +21,9 @@ const Dashboard = () => {
   const [listOfResponsiblePt, setListOfResponsiblePts] = useState<string[]>([]);
   const [listOfClients, setListOfClients] = useState<string[]>([]);
   const [totalItems, setTotalItems] = useState<number>(0);
-  const [filterPts, setFilterPts] = useState(["Josefin Stål"]);
+  // const [filterPts, setFilterPts] = useState(["Josefin Stål"]);
    /* *** FOR DEMO *** */
-  // const [filterPts, setFilterPts] = useState(["Stella Asplund"]);
+  const [filterPts, setFilterPts] = useState(["Stella Asplund"]);
   const [filterClients, setFilterClients] = useState<string[]>([]);
   const [filterName, setFilterName] = useState<string>("");
   const [page, setPage] = React.useState(0);

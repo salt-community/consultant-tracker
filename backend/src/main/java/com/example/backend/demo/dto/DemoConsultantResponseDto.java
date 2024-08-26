@@ -4,6 +4,7 @@ import com.example.backend.consultant.dto.TotalDaysStatisticsDto;
 import com.example.backend.demo.demoConsultant.DemoConsultant;
 import com.example.backend.redDay.CountryCode;
 import com.example.backend.registeredTime.dto.RegisteredTimeResponseDto;
+import com.example.backend.timeChunks.TimeChunks;
 
 import java.util.List;
 import java.util.UUID;
@@ -20,7 +21,7 @@ public record DemoConsultantResponseDto(UUID id,
                                         TotalDaysStatisticsDto totalDaysStatistics,
                                         List<RegisteredTimeResponseDto> registeredTimeDtoList) {
 
-    public static DemoConsultantResponseDto toDto(DemoConsultant consultant, TotalDaysStatisticsDto totalDaysStatistics, List<RegisteredTimeResponseDto> registeredTimeDtoList) {
+    public static DemoConsultantResponseDto toDto(DemoConsultant consultant, TotalDaysStatisticsDto totalDaysStatistics, List<TimeChunks> timeChunks) {
         return new DemoConsultantResponseDto(
                 consultant.getId(),
                 consultant.getFullName(),
@@ -30,7 +31,7 @@ public record DemoConsultantResponseDto(UUID id,
                 consultant.getClient(),
                 consultant.getCountry().equals(SWEDEN.country) ? CountryCode.SE.countryCode : CountryCode.NO.countryCode,
                 totalDaysStatistics,
-                registeredTimeDtoList
+                timeChunks.stream().map(RegisteredTimeResponseDto::fromTimeChunks).toList()
         );
     }
 }

@@ -11,10 +11,10 @@
   box-shadow: rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;
 }
 
-.time-details__title {
+/* .time-details__title {
   font-size: smaller;
   font-weight: 300;
-}
+} */
 
 .time-details__wrapper {
   line-height: normal;

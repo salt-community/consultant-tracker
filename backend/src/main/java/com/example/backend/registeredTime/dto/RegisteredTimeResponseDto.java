@@ -1,5 +1,7 @@
 package com.example.backend.registeredTime.dto;
 
+import com.example.backend.timeChunks.TimeChunks;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -17,5 +19,13 @@ public record RegisteredTimeResponseDto(UUID registeredTimeId,
                 registeredTimeDto.type(),
                 registeredTimeDto.projectName(),
                 registeredTimeDto.days());
+    }
+    public static RegisteredTimeResponseDto fromTimeChunks(TimeChunks timeChunks) {
+        return new RegisteredTimeResponseDto(UUID.randomUUID(),
+                timeChunks.getId().getStartDate(),
+                timeChunks.getEndDate(),
+                timeChunks.getType(),
+                timeChunks.getProjectName(),
+                timeChunks.getTotalDays());
     }
 }
