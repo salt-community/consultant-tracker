@@ -2,15 +2,11 @@ package com.example.backend.consultant;
 
 import com.example.backend.client.timekeeper.TimekeeperClient;
 import com.example.backend.client.timekeeper.dto.TimekeeperUserDto;
-import com.example.backend.consultant.dto.ClientsAndPtsListDto;
-import com.example.backend.consultant.dto.ConsultantResponseDto;
-import com.example.backend.consultant.dto.ConsultantResponseListDto;
-import com.example.backend.consultant.dto.TotalDaysStatisticsDto;
+import com.example.backend.consultant.dto.*;
 import com.example.backend.exceptions.ConsultantNotFoundException;
 import com.example.backend.registeredTime.RegisteredTimeService;
 import com.example.backend.registeredTime.dto.RegisteredTimeResponseDto;
 import com.example.backend.tag.Tag;
-import jakarta.annotation.PostConstruct;
 import lombok.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.*;
 
 
@@ -41,11 +38,45 @@ public class ConsultantService {
                         .map(registeredTimeService::getConsultantTimelineItems).toList()));
     }
 
-    public ConsultantResponseDto getConsultantById(UUID id) {
+    public SingleConsultantResponseListDto getConsultantById(UUID id) {
         Consultant consultantById = consultantRepository.findById(id).orElseThrow(() -> new ConsultantNotFoundException("Consultant with such id not found."));
         TotalDaysStatisticsDto totalDaysStatistics = registeredTimeService.getAllDaysStatistics(id);
-        List<RegisteredTimeResponseDto> consultantTimeDto = registeredTimeService.getGroupedConsultantsRegisteredTimeItems(id);
-        return ConsultantResponseDto.toDto(consultantById, totalDaysStatistics, consultantTimeDto);
+//        List<RegisteredTimeResponseDto> consultantTimeDto = registeredTimeService.getGroupedConsultantsRegisteredTimeItems(id);
+        List<ClientsList> clientsList = getClientListByConsultantId(id);
+        return SingleConsultantResponseListDto.toDto(consultantById, totalDaysStatistics, /*consultantTimeDto,*/ clientsList);
+    }
+
+//    private List<ClientsList> getClientsList(List<RegisteredTimeResponseDto> consultantTimeDto) {
+//        List<ClientsList> clientsList = new ArrayList<>();
+//        String client = "";
+//        LocalDate startDate = LocalDate.now();
+//        LocalDate endDate = LocalDate.now();
+//        for (RegisteredTimeResponseDto registeredTime : consultantTimeDto) {
+//            if (client.equalsIgnoreCase(registeredTime.projectName())) {
+//                endDate = registeredTime.endDate().toLocalDate();
+//            } else if (!client.isEmpty()) {
+//                clientsList.add(new ClientsList(client, startDate, endDate));
+//            } else {
+//                client = registeredTime.projectName();
+//                startDate = registeredTime.startDate().toLocalDate();
+//                endDate = registeredTime.endDate().toLocalDate();
+//            }
+//        }
+//        return clientsList;
+//    }
+
+    public List<ClientsList> getClientListByConsultantId(UUID consultantId) {
+        List<ClientsList> clientsList = new ArrayList<>();
+        List<String> distinctClients = registeredTimeService.getClientsByConsultantId(consultantId);
+        for (String client : distinctClients) {
+            if (!client.equalsIgnoreCase(NotClient.PGP.value)
+            && !client.equalsIgnoreCase(NotClient.UPSKILLING.value)) {
+                LocalDate startDate = registeredTimeService.getStartDateByClientAndConsultantId(client, consultantId);
+                LocalDate endDate = registeredTimeService.getEndDateByClientAndConsultantId(client, consultantId);
+                clientsList.add(new ClientsList(client, startDate, endDate));
+            }
+        }
+        return clientsList;
     }
 
     //-----------------------------COVERED BY TESTS ---------------------------------
@@ -70,7 +101,7 @@ public class ConsultantService {
         return consultantRepository.findAllByActiveTrue();
     }
 
-//        @PostConstruct
+    //        @PostConstruct
     @Scheduled(cron = "0 0 0 * * *")
     public void fetchDataFromTimekeeper() {
         List<TimekeeperUserDto> timekeeperUserDto = timekeeperClient.getUsers();

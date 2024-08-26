@@ -4,6 +4,7 @@ import com.example.backend.ApplicationTestConfig;
 import com.example.backend.ObjectConstructor;
 import com.example.backend.client.timekeeper.TimekeeperClient;
 import com.example.backend.client.timekeeper.dto.TimekeeperUserDto;
+import com.example.backend.consultant.dto.ClientsList;
 import com.example.backend.consultant.dto.ConsultantResponseListDto;
 import com.example.backend.registeredTime.MockedRegisteredTimeService;
 import com.example.backend.registeredTime.RegisteredTime;
@@ -26,6 +27,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ContextConfiguration;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -415,4 +417,89 @@ class ConsultantServiceTest extends ApplicationTestConfig {
         assertTrue(isAsExpected);
     }
 
+    @Test
+    void shouldReturnAList_Of1Client() {
+        // mock registeredTimeService.getClientsByConsultantId(consultantId)
+        Mockito.when(mockedRegisteredTimeService.getClientsByConsultantId(any(UUID.class)))
+                .thenReturn(List.of("H&M"));
+        List<ClientsList> expectedResult = List.of(new ClientsList("H&M", LocalDate.now(), LocalDate.now()));
+        List<ClientsList> actualResult = consultantService.getClientListByConsultantId(UUID.randomUUID());
+        assertEquals(expectedResult.size(), actualResult.size());
+    }
+
+    @Test
+    void shouldReturnListOf2Clients() {
+        String clientA = "client A";
+        String clientB = "client B";
+        UUID randomUUID = UUID.randomUUID();
+        LocalDate startDateClientA = LocalDate.parse("2024-02-05");
+        LocalDate endDateClientA = LocalDate.parse("2024-03-05");
+        LocalDate startDateClientB = LocalDate.parse("2024-03-06");
+        LocalDate endDateClientB = LocalDate.parse("2024-04-05");
+        Mockito.when(mockedRegisteredTimeService.getClientsByConsultantId(randomUUID))
+                .thenReturn(List.of(clientA, clientB));
+        Mockito.when(mockedRegisteredTimeService.getStartDateByClientAndConsultantId(clientA, randomUUID))
+                .thenReturn(startDateClientA);
+        Mockito.when(mockedRegisteredTimeService.getStartDateByClientAndConsultantId(clientB, randomUUID))
+                .thenReturn(startDateClientB);
+        Mockito.when(mockedRegisteredTimeService.getEndDateByClientAndConsultantId(clientA, randomUUID))
+                .thenReturn(endDateClientA);
+        Mockito.when(mockedRegisteredTimeService.getEndDateByClientAndConsultantId(clientB, randomUUID))
+                .thenReturn(endDateClientB);
+        List<ClientsList> expectedResult = List.of(
+                new ClientsList(clientA, startDateClientA, endDateClientA),
+                new ClientsList(clientB, startDateClientB, endDateClientB));
+        List<ClientsList> actualResult = consultantService.getClientListByConsultantId(randomUUID);
+        assertEquals(expectedResult.size(), actualResult.size());
+    }
+
+    @Test
+    void should_ExcludePGP_And_ReturnListOf1Client() {
+        String pgp = "PGP";
+        String clientB = "client B";
+        UUID randomUUID = UUID.randomUUID();
+        LocalDate startDateClientA = LocalDate.parse("2024-02-05");
+        LocalDate endDateClientA = LocalDate.parse("2024-03-05");
+        LocalDate startDateClientB = LocalDate.parse("2024-03-06");
+        LocalDate endDateClientB = LocalDate.parse("2024-04-05");
+        Mockito.when(mockedRegisteredTimeService.getClientsByConsultantId(randomUUID))
+                .thenReturn(List.of(pgp, clientB));
+        Mockito.when(mockedRegisteredTimeService.getStartDateByClientAndConsultantId(pgp, randomUUID))
+                .thenReturn(startDateClientA);
+        Mockito.when(mockedRegisteredTimeService.getStartDateByClientAndConsultantId(clientB, randomUUID))
+                .thenReturn(startDateClientB);
+        Mockito.when(mockedRegisteredTimeService.getEndDateByClientAndConsultantId(pgp, randomUUID))
+                .thenReturn(endDateClientA);
+        Mockito.when(mockedRegisteredTimeService.getEndDateByClientAndConsultantId(clientB, randomUUID))
+                .thenReturn(endDateClientB);
+        List<ClientsList> expectedResult = List.of(
+                new ClientsList(clientB, startDateClientB, endDateClientB));
+        List<ClientsList> actualResult = consultantService.getClientListByConsultantId(randomUUID);
+        assertEquals(expectedResult.size(), actualResult.size());
+    }
+
+    @Test
+    void should_ExcludeUpskilling_And_ReturnListOf1Client() {
+        String upskilling = "Upskilling";
+        String clientB = "client B";
+        UUID randomUUID = UUID.randomUUID();
+        LocalDate startDateClientA = LocalDate.parse("2024-02-05");
+        LocalDate endDateClientA = LocalDate.parse("2024-03-05");
+        LocalDate startDateClientB = LocalDate.parse("2024-03-06");
+        LocalDate endDateClientB = LocalDate.parse("2024-04-05");
+        Mockito.when(mockedRegisteredTimeService.getClientsByConsultantId(randomUUID))
+                .thenReturn(List.of(upskilling, clientB));
+        Mockito.when(mockedRegisteredTimeService.getStartDateByClientAndConsultantId(upskilling, randomUUID))
+                .thenReturn(startDateClientA);
+        Mockito.when(mockedRegisteredTimeService.getStartDateByClientAndConsultantId(clientB, randomUUID))
+                .thenReturn(startDateClientB);
+        Mockito.when(mockedRegisteredTimeService.getEndDateByClientAndConsultantId(upskilling, randomUUID))
+                .thenReturn(endDateClientA);
+        Mockito.when(mockedRegisteredTimeService.getEndDateByClientAndConsultantId(clientB, randomUUID))
+                .thenReturn(endDateClientB);
+        List<ClientsList> expectedResult = List.of(
+                new ClientsList(clientB, startDateClientB, endDateClientB));
+        List<ClientsList> actualResult = consultantService.getClientListByConsultantId(randomUUID);
+        assertEquals(expectedResult.size(), actualResult.size());
+    }
 }

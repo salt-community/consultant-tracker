@@ -126,8 +126,9 @@ public class RegisteredTimeService {
         });
         return timeItemsMap;
     }
+
     //-----------------------------------MOVE TO SEPARATE SERVICE--------------------------------------------
-    @Cacheable(cacheNames = "consultants",key="#consultant.id")
+    @Cacheable(cacheNames = "consultants", key = "#consultant.id")
     public ConsultantResponseDto getConsultantTimelineItems(Consultant consultant) {
         List<RegisteredTimeResponseDto> consultantTimeDto = getGroupedConsultantsRegisteredTimeItems(consultant.getId());
         TotalDaysStatisticsDto totalDaysStatistics = getAllDaysStatistics(consultant.getId());
@@ -136,7 +137,7 @@ public class RegisteredTimeService {
     }
 
     // FOR DEMO MODE
-    @Cacheable(cacheNames = "demoConsultants",key="#consultant.id")
+    @Cacheable(cacheNames = "demoConsultants", key = "#consultant.id")
     public DemoConsultantResponseDto getDemoConsultantTimelineItems(DemoConsultant consultant) {
         List<RegisteredTimeResponseDto> consultantTimeDto = getGroupedConsultantsRegisteredTimeItems(consultant.getId());
         TotalDaysStatisticsDto totalDaysStatistics = getAllDaysStatistics(consultant.getId());
@@ -187,6 +188,7 @@ public class RegisteredTimeService {
                 .map(ConsultantTimeDto::toConsultantTimeDto)
                 .toList();
     }
+
     public List<RegisteredTimeResponseDto> getGroupedConsultantsRegisteredTimeItems(UUID id) {
         List<RegisteredTime> registeredTimeList = getTimeByConsultantId(id);
         if (registeredTimeList.isEmpty()) {
@@ -316,5 +318,19 @@ public class RegisteredTimeService {
             return new RemainingDaysDto(startDate, remainingConsultancyDays);
         }
         return new RemainingDaysDto(redDaysService.removeNonWorkingDays(startDate, remainingConsultancyDays, consultantId), remainingConsultancyDays);
+    }
+
+    public List<String> getClientsByConsultantId(UUID consultantId) {
+        return registeredTimeRepository.findDistinctProjectNameBydId_ConsultantId(consultantId);
+    }
+
+    public LocalDate getStartDateByClientAndConsultantId(String client, UUID consultantId) {
+        return registeredTimeRepository.findFirstByProjectNameAndId_ConsultantIdOrderById_StartDateAsc(client, consultantId)
+                .getId().getStartDate().toLocalDate();
+    }
+
+    public LocalDate getEndDateByClientAndConsultantId(String client, UUID consultantId) {
+        return registeredTimeRepository.findFirstByProjectNameAndId_ConsultantIdOrderByEndDateDesc(client, consultantId)
+                .getEndDate().toLocalDate();
     }
 }

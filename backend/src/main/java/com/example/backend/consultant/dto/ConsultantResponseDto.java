@@ -19,7 +19,10 @@ public record ConsultantResponseDto(UUID id,
                                     TotalDaysStatisticsDto totalDaysStatistics,
                                     List<RegisteredTimeResponseDto> registeredTimeDtoList) {
 
-    public static ConsultantResponseDto toDto(Consultant consultant, TotalDaysStatisticsDto totalDaysStatistics, List<RegisteredTimeResponseDto> registeredTimeDtoList) {
+    public static ConsultantResponseDto toDto(
+            Consultant consultant,
+            TotalDaysStatisticsDto totalDaysStatistics,
+            List<RegisteredTimeResponseDto> registeredTimeDtoList) {
         return new ConsultantResponseDto(
                 consultant.getId(),
                 consultant.getFullName(),
