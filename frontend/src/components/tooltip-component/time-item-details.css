@@ -1,4 +1,4 @@
-.item-details {
+.time-details {
   display: flex;
   flex-direction: column;
   width: 30%;
@@ -11,11 +11,11 @@
   box-shadow: rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;
 }
 
-.details-sections-title {
+.time-details__title {
   font-size: smaller;
   font-weight: 300;
 }
 
-.details-sections__wrapper {
+.time-details__wrapper {
   line-height: normal;
 }

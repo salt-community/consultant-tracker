@@ -12,32 +12,31 @@ type Props = {
 
 function TimeItemDetails({ setOpenTooltip, openTooltip, content }: Props) {
   useEffect(() => {
-    console.log(content.details);
   }, [content]);
   let borderClassName = selectColor(content.title!.toString());
   return (
     <div
-      className="item-details"
+      className="time-details"
       style={{ border: `2px solid ${borderClassName}` }}
     >
       {content && (
         <>
           <h3>{content.title}</h3>
           <hr />
-          <div className="details-sections__wrapper">
-            <p className="details-sections-title">Client:</p>
+          <div className="time-details__wrapper">
+            <p className="time-details__title">Client:</p>
             <p>{content.details.client}</p>
           </div>
-          <div className="details-sections__wrapper">
-            <p className="details-sections-title">Total Days Selected: </p>
+          <div className="time-details__wrapper">
+            <p className="time-details__title">Total Days Selected: </p>
             <p>{workingDays(content.start_time, content.end_time)}</p>
           </div>
-          <div className="details-sections__wrapper">
-            <p className="details-sections-title">Start Date:</p>
+          <div className="time-details__wrapper">
+            <p className="time-details__title">Start Date:</p>
             <p>{content.start_time.format("ddd, DD-MMM-YY")}</p>
           </div>
-          <div className="details-sections__wrapper">
-            <p className="details-sections-title">End Date:</p>
+          <div className="time-details__wrapper">
+            <p className="time-details__title">End Date:</p>
             <p>{content.end_time.format("ddd, DD-MMM-YY")}</p>
           </div>
         </>
