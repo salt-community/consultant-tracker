@@ -7,6 +7,7 @@ import com.example.backend.exceptions.ConsultantNotFoundException;
 import com.example.backend.registeredTime.RegisteredTimeService;
 import com.example.backend.registeredTime.dto.RegisteredTimeResponseDto;
 import com.example.backend.tag.Tag;
+import jakarta.annotation.PostConstruct;
 import lombok.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -46,25 +47,7 @@ public class ConsultantService {
         return SingleConsultantResponseListDto.toDto(consultantById, totalDaysStatistics, /*consultantTimeDto,*/ clientsList);
     }
 
-//    private List<ClientsList> getClientsList(List<RegisteredTimeResponseDto> consultantTimeDto) {
-//        List<ClientsList> clientsList = new ArrayList<>();
-//        String client = "";
-//        LocalDate startDate = LocalDate.now();
-//        LocalDate endDate = LocalDate.now();
-//        for (RegisteredTimeResponseDto registeredTime : consultantTimeDto) {
-//            if (client.equalsIgnoreCase(registeredTime.projectName())) {
-//                endDate = registeredTime.endDate().toLocalDate();
-//            } else if (!client.isEmpty()) {
-//                clientsList.add(new ClientsList(client, startDate, endDate));
-//            } else {
-//                client = registeredTime.projectName();
-//                startDate = registeredTime.startDate().toLocalDate();
-//                endDate = registeredTime.endDate().toLocalDate();
-//            }
-//        }
-//        return clientsList;
-//    }
-
+    //-----------------------------COVERED BY TESTS ---------------------------------
     public List<ClientsList> getClientListByConsultantId(UUID consultantId) {
         List<ClientsList> clientsList = new ArrayList<>();
         List<String> distinctClients = registeredTimeService.getClientsByConsultantId(consultantId);
@@ -101,7 +84,7 @@ public class ConsultantService {
         return consultantRepository.findAllByActiveTrue();
     }
 
-    //        @PostConstruct
+//            @PostConstruct
     @Scheduled(cron = "0 0 0 * * *")
     public void fetchDataFromTimekeeper() {
         List<TimekeeperUserDto> timekeeperUserDto = timekeeperClient.getUsers();
