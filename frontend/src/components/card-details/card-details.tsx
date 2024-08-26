@@ -7,7 +7,6 @@ import VacationInfo from "../consultant-detail/vacation-info/vacation-info";
 import Client from "../consultant-detail/client/client";
 import PersonalData from "../consultant-detail/basic-info/personal-data/personal-data";
 import { ConsultantFetchType, ConsultantItemsType } from "@/types";
-import TooltipComponent from "../tooltip-component/tooltip-component";
 
 type Props = {
   personalData: ConsultantFetchType;
@@ -40,7 +39,7 @@ const CardDetails = ({
       case "schedule":
         return <Schedule />;
       case "clients":
-        return <Client registeredTime={registeredTimeDtoList} />;
+        return <Client clientList={personalData.clientsList}/>;
       case "absences":
         return (
           <VacationInfo

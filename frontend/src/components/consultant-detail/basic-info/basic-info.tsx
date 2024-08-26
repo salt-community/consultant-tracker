@@ -19,7 +19,8 @@ const BasicInfo = ({ id, modalData, openTooltip, setOpenTooltip }: Props) => {
   const [personalData, setPersonalData] = useState<ConsultantFetchType>();
   const fetchConsultantById = () => {
 
-    if (id) getConsultantById(id).then((res) => setPersonalData(res));
+    if (id) getConsultantById(id).then((res) => {
+      setPersonalData(res)});
   };
 
   useEffect(() => {

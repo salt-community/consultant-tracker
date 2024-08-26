@@ -1,7 +1,8 @@
 import {
+  ClientDataType,
   ConsultantCalendarType,
   ConsultantFetchType,
-  RegisteredTimeItemType
+  RegisteredTimeItemType,
 } from "@/types";
 import dayjs, { Dayjs } from "dayjs";
 import moment from "moment/moment";
@@ -33,56 +34,58 @@ export const encodeString = (value: string[], prefix: string) => {
     .join("&")
     .replaceAll("-", "%2D")
     .replaceAll(".", "%2E");
-}
-
+};
 
 export const mapConsultantsToCalendarItems = (res: ConsultantCalendarType) => {
   return res.consultants.flatMap((el: ConsultantFetchType) => {
-    return el.registeredTimeDtoList.map(
-      (item: RegisteredTimeItemType) => {
-        const {
-          totalRemainingDays,
-          totalWorkedDays,
-          totalVacationDaysUsed,
-          totalRemainingHours,
-          totalWorkedHours
-        } = el.totalDaysStatistics;
-        return {
-          id: item.registeredTimeId,
-          group: el.id,
-          title: item.type,
-          start_time: dayjs(item.startDate),
-          end_time: dayjs(item.endDate),
-          details: {
-            name: el.fullName,
-            responsiblePt: el.responsiblePt,
-            client: el.client,
-            country: el.country,
-            totalDaysStatistics: {
-              totalRemainingDays: totalRemainingDays,
-              totalWorkedDays: totalWorkedDays,
-              totalVacationDaysUsed: totalVacationDaysUsed,
-              totalRemainingHours: totalRemainingHours,
-              totalWorkedHours: totalWorkedHours,
-            },
-            totalDays: item.days,
+    return el.registeredTimeDtoList.map((item: RegisteredTimeItemType) => {
+      const {
+        totalRemainingDays,
+        totalWorkedDays,
+        totalVacationDaysUsed,
+        totalRemainingHours,
+        totalWorkedHours,
+      } = el.totalDaysStatistics;
+      return {
+        id: item.registeredTimeId,
+        group: el.id,
+        title: item.type,
+        start_time: dayjs(item.startDate),
+        end_time: dayjs(item.endDate),
+        details: {
+          name: el.fullName,
+          responsiblePt: el.responsiblePt,
+          client: el.client,
+          country: el.country,
+          totalDaysStatistics: {
+            totalRemainingDays: totalRemainingDays,
+            totalWorkedDays: totalWorkedDays,
+            totalVacationDaysUsed: totalVacationDaysUsed,
+            totalRemainingHours: totalRemainingHours,
+            totalWorkedHours: totalWorkedHours,
           },
-          itemProps: {
-            style: {
-              zIndex: 1,
-              background: selectColor(item.type),
-              outline: "none",
-              borderColor: selectColor(item.type),
-              borderRightWidth: "0",
-            },
+          totalDays: item.days,
+        },
+        itemProps: {
+          style: {
+            zIndex: 1,
+            background: selectColor(item.type),
+            outline: "none",
+            borderColor: selectColor(item.type),
+            borderRightWidth: "0",
           },
-        };
-      }
-    );
+        },
+      };
+    });
   });
-}
+};
 
-export const verticalLineClassNamesForTime = (timeStart, timeEnd, redDaysSE, redDaysNO) => {
+export const verticalLineClassNamesForTime = (
+  timeStart,
+  timeEnd,
+  redDaysSE,
+  redDaysNO
+) => {
   const currentTimeStart = moment(timeStart);
   const currentTimeEnd = moment(timeEnd);
 
@@ -120,4 +123,28 @@ export const workingDays = (startDate: Dayjs, endDate: Dayjs): number => {
   }
 
   return totalDays;
+};
+
+export const getSortedClientData = (
+  timeItems: RegisteredTimeItemType[]
+): ClientDataType[] => {
+  // console.log("in utils");
+  // console.log("timeItems[0]", timeItems[0])
+  const itemsToExclude: string[] = [
+    "No Registered Time",
+    "Remaining Days",
+    "PGP",
+  ];
+  const clientsList: ClientDataType[] = []; 
+   timeItems
+    .filter((t) => !itemsToExclude.includes(t.projectName))
+    .map((item) => {
+      clientsList.push({
+        name: item.projectName,
+        startDate: item.startDate.toString(),
+        endDate: item.endDate.toString()
+      })
+    });
+
+    return clientsList;
 };

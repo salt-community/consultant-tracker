@@ -1,36 +1,39 @@
 "use client";
 
-import { RegisteredTimeItemType } from "@/types";
+import { ClientDataType, RegisteredTimeItemType } from "@/types";
 import { useEffect, useState } from "react";
 import "../basic-info/basic-info.css";
 
 type Props = {
-  registeredTime: RegisteredTimeItemType[];
+  clientList: ClientDataType[];
 };
 
-const Client = ({ registeredTime }: Props) => {
+const Client = ({ clientList }: Props) => {
   const [filteredData, setFilteredData] = useState<RegisteredTimeItemType[]>(
     []
   );
+ console.log(clientList);
+  // const filterData = () => {
+  //   const filter = new Set();
+  //   // console.log(registeredTime);
+  //   registeredTime.forEach((el)=>{filter.add(el.projectName)});
+  // };
 
-  const filterData = () => {
-    const filter = new Set();
-    registeredTime.forEach((el)=>{filter.add(el.projectName)});
-  };
-
-  useEffect(() => {
-    filterData();
-  }, []);
+  // useEffect(() => {
+  //   filterData();
+  // }, []);
 
   return (
-    registeredTime && (
+    clientList && (
       <div>
-        {registeredTime.map((item) => {
-          const { projectName } = item;
+        {clientList.map((item) => {
+          const { name, startDate, endDate } = item;
           return (
-            <div key={projectName}>
+            <div key={name}>
               <div className="basic-info__contact-title">
-                <h3>{projectName}</h3>
+                <h3>{name}</h3>
+                <p>Start Date: {startDate}</p>
+                <p>End Date: {endDate}</p>
               </div>
               {/* <p>Start date : {startDate}</p>
               <p>End date: {endDate}</p> */}
