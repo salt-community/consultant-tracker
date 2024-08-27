@@ -1,20 +1,149 @@
-INSERT INTO demo_consultant (id, full_name, email, phone_number, timekeeper_id, active, client, responsiblept, country) VALUES ('e8c7ef67-c2bf-46c1-b13e-da091d3bd242', 'Alice Svensson', 'alice.svensson@example.com', NULL, 1001, true,
-        'Client A', 'Stella Asplund', 'Sverige'),
-       ('eabd975d-36d8-4d9c-ac61-2c5fbb1df96d', 'Bob Eriksson', 'bob.eriksson@example.com', NULL, 1002, true,
-        'Client B', 'Stella Asplund', 'Sverige'),
-       ('05913dfb-b7f2-47f4-a4e9-467e42a71e3b', 'Leona Rehnquist', 'leona@example.com', NULL, 1003, true, 'Client A',
-        'Stella Asplund', 'Sverige'),
-       ('7d430b04-7681-40f7-bb77-023e381ed45e', 'Gabriella Tornquist', 'gabi@example.com', NULL, 1004, true, 'Client B',
-        'Stella Asplund', 'Sverige'),
-       ('70058f5c-6cbd-4f7f-adb2-649c52da3549', 'Kira Lagerlöf', 'kira@example.com', NULL, 1005, true, 'Client A',
-        'Stella Asplund', 'Sverige'),
-       ('2851256d-1582-4e1c-bdfb-c56364d3f623', 'Denise Ceder', 'denise@example.com', NULL, 1006, true, 'Client B',
-        'Monica Sjöström', 'Sverige'),
-       ('2f71e399-2f31-4815-bef8-46eb449b13eb', 'Faje Lindblad', 'faje@example.com', NULL, 1007, true, 'Client A',
-        'Monica Sjöström', 'Sverige'),
-       ('c43d5f7d-b8e8-446d-ad1b-fc3e060826ae', 'Alf Forsberg', 'alf@example.com', NULL, 1008, true, 'Client B',
-        'Monica Sjöström', 'Sverige'),
-       ('bcc90582-d28b-4a57-b846-512c99cd688f', 'Ulf Lindahl', 'ulf@example.com', NULL, 1009, true, 'Client A',
-        'Monica Sjöström', 'Sverige'),
-       ('f8399d79-3e0d-4474-9770-56f171e21205', 'Bertil Skarsgård', 'bertil@example.com', NULL, 1010, true, 'Client B',
-        'Monica Sjöström', 'Sverige') ON CONFLICT DO NOTHING;
+INSERT INTO demo_consultant (id, full_name, email, phone_number, timekeeper_id, active, client, responsiblept, country)
+SELECT c.id,
+       'Alice Svensson',
+       'alice.svensson@example.com',
+       NULL,
+       1001,
+       true,
+       'Client A',
+       'Stella Asplund',
+       'Sverige'
+FROM consultant c
+WHERE c.active IS true
+ORDER BY c.id
+LIMIT 1 OFFSET 0 ON CONFLICT DO NOTHING;
+
+INSERT INTO demo_consultant (id, full_name, email, phone_number, timekeeper_id, active, client, responsiblept, country)
+SELECT c.id,
+       'Bob Eriksson',
+       'bob@example.com',
+       NULL,
+       1002,
+       true,
+       'Client A',
+       'Stella Asplund',
+       'Sverige'
+FROM consultant c
+WHERE c.active IS true
+ORDER BY c.id
+LIMIT 1 OFFSET 1 ON CONFLICT DO NOTHING;
+
+INSERT INTO demo_consultant (id, full_name, email, phone_number, timekeeper_id, active, client, responsiblept, country)
+SELECT c.id,
+       'Leona Rehnquist',
+       'leona@example.com',
+       NULL,
+       1002,
+       true,
+       'Client A',
+       'Stella Asplund',
+       'Sverige'
+FROM consultant c
+WHERE c.active IS true
+ORDER BY c.id
+LIMIT 1 OFFSET 2 ON CONFLICT DO NOTHING;
+
+INSERT INTO demo_consultant (id, full_name, email, phone_number, timekeeper_id, active, client, responsiblept, country)
+SELECT c.id,
+       'Gabriella Tornquist',
+       'gabriella@example.com',
+       NULL,
+       1002,
+       true,
+       'Client A',
+       'Stella Asplund',
+       'Sverige'
+FROM consultant c
+WHERE c.active IS true
+ORDER BY c.id
+LIMIT 1 OFFSET 3 ON CONFLICT DO NOTHING;
+
+INSERT INTO demo_consultant (id, full_name, email, phone_number, timekeeper_id, active, client, responsiblept, country)
+SELECT c.id,
+       'Kira Lagerlöf',
+       'kira@example.com',
+       NULL,
+       1002,
+       true,
+       'Client A',
+       'Stella Asplund',
+       'Sverige'
+FROM consultant c
+WHERE c.active IS true
+ORDER BY c.id
+LIMIT 1 OFFSET 4 ON CONFLICT DO NOTHING;
+
+INSERT INTO demo_consultant (id, full_name, email, phone_number, timekeeper_id, active, client, responsiblept, country)
+SELECT c.id,
+       'Denise Ceder',
+       'denise@example.com',
+       NULL,
+       1002,
+       true,
+       'Client B',
+       'Monica Sjöström',
+       'Sverige'
+FROM consultant c
+WHERE c.active IS true
+ORDER BY c.id
+LIMIT 1 OFFSET 5 ON CONFLICT DO NOTHING;
+
+INSERT INTO demo_consultant (id, full_name, email, phone_number, timekeeper_id, active, client, responsiblept, country)
+SELECT c.id,
+       'Faje Lindblad',
+       'faje@example.com',
+       NULL,
+       1002,
+       true,
+       'Client B',
+       'Monica Sjöström',
+       'Sverige'
+FROM consultant c
+WHERE c.active IS true
+ORDER BY c.id
+LIMIT 1 OFFSET 6 ON CONFLICT DO NOTHING;
+
+INSERT INTO demo_consultant (id, full_name, email, phone_number, timekeeper_id, active, client, responsiblept, country)
+SELECT c.id,
+       'Alf Forsberg',
+       'alf@example.com',
+       NULL,
+       1002,
+       true,
+       'Client B',
+       'Monica Sjöström',
+       'Sverige'
+FROM consultant c
+WHERE c.active IS true
+ORDER BY c.id
+LIMIT 1 OFFSET 7 ON CONFLICT DO NOTHING;
+
+INSERT INTO demo_consultant (id, full_name, email, phone_number, timekeeper_id, active, client, responsiblept, country)
+SELECT c.id,
+       'Ulf Lindahl',
+       'ulf@example.com',
+       NULL,
+       1002,
+       true,
+       'Client B',
+       'Monica Sjöström',
+       'Sverige'
+FROM consultant c
+WHERE c.active IS true
+ORDER BY c.id
+LIMIT 1 OFFSET 8 ON CONFLICT DO NOTHING;
+
+INSERT INTO demo_consultant (id, full_name, email, phone_number, timekeeper_id, active, client, responsiblept, country)
+SELECT c.id,
+       'Bertil Skarsgård',
+       'bertil@example.com',
+       NULL,
+       1002,
+       true,
+       'Client B',
+       'Monica Sjöström',
+       'Sverige'
+FROM consultant c
+WHERE c.active IS true
+ORDER BY c.id
+LIMIT 1 OFFSET 9 ON CONFLICT DO NOTHING;
