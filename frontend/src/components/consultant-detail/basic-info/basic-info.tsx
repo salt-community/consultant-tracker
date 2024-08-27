@@ -6,7 +6,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import BasicInfoHeader from "@/components/consultant-detail/basic-info/header/header";
 import { getConsultantById } from "@/api";
 import CardDetails from "@/components/card-details/card-details";
-import TimeItemDetails from "@/components/tooltip-component/time-item-details";
+import TimeItemDetails from "@/components/time-item-details/time-item-details";
 
 type Props = {
   id: string;
