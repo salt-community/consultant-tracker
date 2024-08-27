@@ -1,22 +1,26 @@
 import "./absence-info.css";
 import SingleDetailField from "@/components/single-detail-field/single-detail-field";
+import {TotalDaysStatisticsType} from "@/types";
 
 type Props = {
-  vacationDaysUsed: number;
-  sickDaysUsed?: number;
-  parentalLeaveUsed?: number;
-  vabDaysUsed?: number;
-  unpaidLeaveUsed?: number
+  totalDaysStatistics: TotalDaysStatisticsType;
 };
 
-const AbsenceInfo = ({vacationDaysUsed, sickDaysUsed, parentalLeaveUsed, vabDaysUsed, unpaidLeaveUsed}: Props) => {
+const AbsenceInfo = ({totalDaysStatistics}: Props) => {
+  const {
+    totalVacationDaysUsed,
+    totalSickDays,
+    totalParentalLeaveDays,
+    totalVABDays,
+    totalUnpaidVacationDays
+  } = totalDaysStatistics;
   return (
     <div className="absence-info__wrapper">
-      <SingleDetailField title="Total vacation days used" content={`${vacationDaysUsed}`}/>
-      <SingleDetailField title="Total sick days used" content={`${sickDaysUsed}`}/>
-      <SingleDetailField title="Total parental leave days used" content={`${parentalLeaveUsed}`}/>
-      <SingleDetailField title="Total VAB days used" content={`${vabDaysUsed}`}/>
-      <SingleDetailField title="Total unpaid leave days used" content={`${unpaidLeaveUsed}`}/>
+      <SingleDetailField title="Total vacation days used" content={`${totalVacationDaysUsed}`}/>
+      <SingleDetailField title="Total sick days used" content={`${totalSickDays}`}/>
+      <SingleDetailField title="Total parental leave days used" content={`${totalParentalLeaveDays}`}/>
+      <SingleDetailField title="Total VAB days used" content={`${totalVABDays}`}/>
+      <SingleDetailField title="Total unpaid leave days used" content={`${totalUnpaidVacationDays}`}/>
     </div>
   );
 };

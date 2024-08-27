@@ -135,6 +135,10 @@ export type ConsultantFetchType = {
     totalRemainingDays: number,
     totalWorkedDays: number,
     totalVacationDaysUsed: number,
+    totalSickDays: number,
+    totalParentalLeaveDays: number,
+    totalVABDays: number,
+    totalUnpaidVacationDays: number,
     totalRemainingHours: number,
     totalWorkedHours: number
 }

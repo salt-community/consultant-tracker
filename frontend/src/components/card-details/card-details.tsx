@@ -43,13 +43,7 @@ const CardDetails = ({
       case "absences":
         return (
           <AbsenceInfo
-            vacationDaysUsed={
-              personalData.totalDaysStatistics.totalVacationDaysUsed
-            }
-            sickDaysUsed={1}
-            parentalLeaveUsed={10}
-            vabDaysUsed={1}
-            unpaidLeaveUsed={2}
+            totalDaysStatistics={totalDaysStatistics}
           />
         );
       default:
