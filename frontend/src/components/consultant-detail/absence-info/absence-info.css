@@ -1,0 +1,10 @@
+.absence-info__wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.absence-info__wrapper:nth-child(n) div{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}

@@ -3,7 +3,7 @@
 import { Dispatch, SetStateAction, SyntheticEvent, useState } from "react";
 import TabsComponent from "../tabs/tabs";
 import Schedule from "../consultant-detail/schedule/schedule";
-import VacationInfo from "../consultant-detail/vacation-info/vacation-info";
+import AbsenceInfo from "@/components/consultant-detail/absence-info/absence-info";
 import Client from "../consultant-detail/client/client";
 import PersonalData from "../consultant-detail/basic-info/personal-data/personal-data";
 import { ConsultantFetchType, ConsultantItemsType } from "@/types";
@@ -42,7 +42,7 @@ const CardDetails = ({
         return <Client clientList={personalData.clientsList}/>;
       case "absences":
         return (
-          <VacationInfo
+          <AbsenceInfo
             vacationDaysUsed={
               personalData.totalDaysStatistics.totalVacationDaysUsed
             }

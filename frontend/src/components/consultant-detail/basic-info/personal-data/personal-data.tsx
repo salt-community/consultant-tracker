@@ -18,11 +18,10 @@ const PersonalData = ({ email, phone, client, totalDaysStatistics }: Props) => {
       <SingleDetailField title="Client" content={client}/>
       </div>
       <div className="personal-data__statistics">
-        <h3>Statistics</h3>
-        <SingleDetailField title="Total Worked Days" content={`${totalDaysStatistics.totalWorkedDays}`}/>
-        <SingleDetailField title="Total Remaining Days" content={`${totalDaysStatistics.totalRemainingDays}`}/>
-        <SingleDetailField title="Total Worked Hours" content={`${totalDaysStatistics.totalWorkedHours}`}/>
-        <SingleDetailField title="Total Remaining Hours" content={`${totalDaysStatistics.totalRemainingHours}`}/>
+        <SingleDetailField title="Total worked days" content={`${totalDaysStatistics.totalWorkedDays}`}/>
+        <SingleDetailField title="Total remaining days" content={`${totalDaysStatistics.totalRemainingDays}`}/>
+        <SingleDetailField title="Total worked hours" content={`${totalDaysStatistics.totalWorkedHours}`}/>
+        <SingleDetailField title="Total remaining hours" content={`${totalDaysStatistics.totalRemainingHours}`}/>
       </div>
     </div>
   );
