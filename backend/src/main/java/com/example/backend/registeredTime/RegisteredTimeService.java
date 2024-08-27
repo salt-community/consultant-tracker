@@ -182,7 +182,7 @@ public class RegisteredTimeService {
     }
 
     private RemainingDaysDto getEstimatedConsultancyEndDate(UUID consultantId, LocalDateTime startDate) {
-        Double totalWorkedHours = countTotalWorkedHours(consultantId);
+        double totalWorkedHours = countTotalWorkedHours(consultantId);
         String countryCode = consultantService.getCountryCodeByConsultantId(consultantId);
         int remainingConsultancyDays = (int) Utilities.countRemainingDays(totalWorkedHours, countryCode);
         if (remainingConsultancyDays <= 0) {

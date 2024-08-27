@@ -12,7 +12,7 @@ public class Utilities {
     public static double countRemainingDays(Double workedHours, String country) {
         final double standardWorkingHours = getStandardWorkingHours(country);
         final int totalHours = getTotalHours(country);
-        return Math.round((totalHours - workedHours) / standardWorkingHours * 10.0) / 10.0;
+        return Math.ceil((totalHours - workedHours) / standardWorkingHours );
     }
 
     public static double getStandardWorkingHours(String country) {
