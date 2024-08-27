@@ -1,6 +1,7 @@
 package com.example.backend.consultant.dto;
 
 import com.example.backend.consultant.Consultant;
+import com.example.backend.demo.demoConsultant.DemoConsultant;
 import com.example.backend.redDay.CountryCode;
 
 import java.util.List;
@@ -20,6 +21,22 @@ public record SingleConsultantResponseListDto(UUID id,
 
     public static SingleConsultantResponseListDto toDto(
             Consultant consultant,
+            TotalDaysStatisticsDto totalDaysStatistics,
+            List<ClientsList> clientsList) {
+        return new SingleConsultantResponseListDto(
+                consultant.getId(),
+                consultant.getFullName(),
+                consultant.getEmail(),
+                consultant.getPhoneNumber(),
+                consultant.getResponsiblePT(),
+                consultant.getClient(),
+                consultant.getCountry().equals(SWEDEN.country) ? CountryCode.SE.countryCode : CountryCode.NO.countryCode,
+                totalDaysStatistics,
+                clientsList
+        );
+    }
+    public static SingleConsultantResponseListDto toDto(
+            DemoConsultant consultant,
             TotalDaysStatisticsDto totalDaysStatistics,
             List<ClientsList> clientsList) {
         return new SingleConsultantResponseListDto(

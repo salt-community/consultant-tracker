@@ -1,19 +1,12 @@
 package com.example.backend.demo.demoConsultant;
 
-import com.example.backend.consultant.Consultant;
+
 import com.example.backend.consultant.ConsultantService;
-import com.example.backend.consultant.dto.ClientsAndPtsListDto;
-import com.example.backend.consultant.dto.ClientsList;
-import com.example.backend.consultant.dto.ConsultantResponseDto;
-import com.example.backend.consultant.dto.TotalDaysStatisticsDto;
-import com.example.backend.demo.dto.DemoConsultantResponseDto;
-import com.example.backend.demo.dto.DemoConsultantResponseListDto;
+import com.example.backend.consultant.dto.*;
 import com.example.backend.exceptions.ConsultantNotFoundException;
 import com.example.backend.registeredTime.RegisteredTimeService;
-import com.example.backend.registeredTime.dto.RegisteredTimeResponseDto;
 import com.example.backend.timeChunks.TimeChunksService;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -30,15 +23,15 @@ public class DemoConsultantService {
     TimeChunksService timeChunksService;
     ConsultantService consultantService;
 
-    public DemoConsultantResponseListDto getAllDemoConsultantDtos(int page, int pageSize, String name, List<String> pt, List<String> client) {
+    public ConsultantResponseListDto getAllDemoConsultantDtos(int page, int pageSize, String name, List<String> pt, List<String> client) {
         Page<DemoConsultant> consultantsList = getAllDemoConsultantsPageable(page, pageSize, name, pt, client);
 
-        return new DemoConsultantResponseListDto(
+        return new ConsultantResponseListDto(
                 page,
                 consultantsList.getTotalPages(),
                 consultantsList.getTotalElements(),
                 consultantsList.stream()
-                        .map(c -> DemoConsultantResponseDto.toDto(c,
+                        .map(c -> ConsultantResponseDto.toDto(c,
                                 registeredTimeService.getAllDaysStatistics(c.getId()),
                                 timeChunksService.getTimeChunksByConsultant(c.getId()))).toList());
     }
@@ -73,10 +66,10 @@ public class DemoConsultantService {
         return resultList;
     }
 
-    public DemoSingleConsultantResponseListDto getDemoConsultantById(UUID id) {
+    public SingleConsultantResponseListDto getDemoConsultantById(UUID id) {
         DemoConsultant consultantById = demoConsultantRepo.findById(id).orElseThrow(() -> new ConsultantNotFoundException("Consultant with such id not found."));
         TotalDaysStatisticsDto totalDaysStatistics = registeredTimeService.getAllDaysStatistics(id);
         List<ClientsList> clientsList = consultantService.getClientListByConsultantId(id);
-        return DemoSingleConsultantResponseListDto.toDto(consultantById, totalDaysStatistics, clientsList);
+        return SingleConsultantResponseListDto.toDto(consultantById, totalDaysStatistics, clientsList);
     }
 }

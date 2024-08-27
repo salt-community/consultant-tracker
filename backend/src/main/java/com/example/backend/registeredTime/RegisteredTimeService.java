@@ -4,29 +4,22 @@ import com.example.backend.client.timekeeper.TimekeeperClient;
 import com.example.backend.client.timekeeper.dto.TimekeeperRegisteredTimeResponseDto;
 import com.example.backend.consultant.Consultant;
 import com.example.backend.consultant.ConsultantService;
-import com.example.backend.consultant.dto.ConsultantResponseDto;
+
 import com.example.backend.consultant.dto.ConsultantTimeDto;
 import com.example.backend.consultant.dto.TotalDaysStatisticsDto;
-import com.example.backend.demo.demoConsultant.DemoConsultant;
-import com.example.backend.demo.dto.DemoConsultantResponseDto;
 import com.example.backend.redDay.RedDayService;
-import com.example.backend.registeredTime.dto.RegisteredTimeDto;
-import com.example.backend.registeredTime.dto.RegisteredTimeResponseDto;
 import com.example.backend.registeredTime.dto.RemainingDaysDto;
 import com.example.backend.timeChunks.TimeChunks;
 import com.example.backend.timeChunks.TimeChunksKey;
 import com.example.backend.utils.Utilities;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static com.example.backend.client.timekeeper.Activity.*;
-import static java.time.temporal.ChronoUnit.DAYS;
 
 @Service
 public class RegisteredTimeService {
@@ -127,20 +120,6 @@ public class RegisteredTimeService {
             }
         });
         return timeItemsMap;
-    }
-
-    //-----------------------------------MOVE TO SEPARATE SERVICE--------------------------------------------
-//    @Cacheable(cacheNames = "consultants", key = "#consultant.id")
-    public TotalDaysStatisticsDto getConsultantTimelineItems(Consultant consultant) {
-        return getAllDaysStatistics(consultant.getId());
-    }
-
-    // FOR DEMO MODE
-//    @Cacheable(cacheNames = "demoConsultants", key = "#consultant.id")
-    public DemoConsultantResponseDto getDemoConsultantTimelineItems(DemoConsultant consultant) {
-        TotalDaysStatisticsDto totalDaysStatistics = getAllDaysStatistics(consultant.getId());
-        return DemoConsultantResponseDto.toDto(consultant, totalDaysStatistics,
-                Objects.requireNonNullElseGet(null, ArrayList::new));
     }
 
 

@@ -1,18 +1,17 @@
 "use client";
-import Infographic from "./infographic/infographic";
 import "./dashboard.css";
-import { infographicData } from "@/mockData";
 import FilterField from "../filter/filter";
 import GanttChart from "@/components/gantt-chart/gantt-chart";
-import React, { useState, useEffect } from "react";
-import { getConsultantsData } from "@/api";
-import { useTableContext } from "@/context/table";
-import { encodeString, mapConsultantsToCalendarItems } from "@/utils/utils";
+import React, {useState, useEffect} from "react";
+import {getConsultantsData, getInfographicsByPt} from "@/api";
+import {useTableContext} from "@/context/table";
+import {encodeString, mapConsultantsToCalendarItems} from "@/utils/utils";
 import {
   AllClientsAndResponsiblePtResponse,
   ConsultantFetchType,
-  ConsultantItemsType,
+  ConsultantItemsType, InfographicDataType, InfographicResponseType,
 } from "@/types";
+import Infographic from "@/components/dashboard/infographic/infographic";
 
 const Dashboard = () => {
   const tableData = useTableContext();
@@ -21,9 +20,9 @@ const Dashboard = () => {
   const [listOfResponsiblePt, setListOfResponsiblePts] = useState<string[]>([]);
   const [listOfClients, setListOfClients] = useState<string[]>([]);
   const [totalItems, setTotalItems] = useState<number>(0);
-  // const [filterPts, setFilterPts] = useState(["Josefin Stål"]);
-   /* *** FOR DEMO *** */
-  const [filterPts, setFilterPts] = useState(["Stella Asplund"]);
+  const [filterPts, setFilterPts] = useState(["Josefin Stål"]);
+  /* *** FOR DEMO *** */
+  // const [filterPts, setFilterPts] = useState(["Stella Asplund"]);
   const [filterClients, setFilterClients] = useState<string[]>([]);
   const [filterName, setFilterName] = useState<string>("");
   const [page, setPage] = React.useState(0);
@@ -31,6 +30,7 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [open, setOpen] = useState(false);
+  const [infographicData, setInfographicData] = useState<InfographicDataType[]>([]);
 
   useEffect(() => {
     fetch("http://localhost:8080/api/consultants/getAllClientsAndPts")
@@ -60,7 +60,7 @@ const Dashboard = () => {
             el.country === "NO"
               ? el.fullName + ` (${el.country})`
               : el.fullName;
-          return { id: el.id, title: title };
+          return {id: el.id, title: title};
         });
         setGroups(data);
         tableData.setData(res);
@@ -72,6 +72,18 @@ const Dashboard = () => {
         setError("Failed to fetch resources");
       });
   };
+
+  useEffect(() => {
+    getInfographicsByPt("Josefin Stål")
+      .then((res: InfographicResponseType) => {
+        const infographics = [
+          {title: "Total consultants", amount: res.totalConsultants, variant: "blue"},
+          {title: "Josefin's consultants", amount: res.ptsConsultants, variant: "violet"}
+        ];
+      setInfographicData(infographics);
+      })
+  }, []);
+
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {

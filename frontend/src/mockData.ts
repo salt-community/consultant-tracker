@@ -14,11 +14,6 @@ export const navLinks = [
   "Sign out",
 ];
 
-export const infographicData = [
-  {title: "Total consultants", amount: 10, variant: "blue"},
-  {title: "Active consultants", amount: 8, variant: "green"},
-  {title: "Josefin's consultants", amount: 5, variant: "violet"},
-];
 
 export const tabs = [
   {

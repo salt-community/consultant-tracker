@@ -1,6 +1,7 @@
 package com.example.backend.consultant.dto;
 
 import com.example.backend.consultant.Consultant;
+import com.example.backend.demo.demoConsultant.DemoConsultant;
 import com.example.backend.redDay.CountryCode;
 import com.example.backend.registeredTime.dto.RegisteredTimeResponseDto;
 import com.example.backend.timeChunks.TimeChunks;
@@ -35,5 +36,21 @@ public record ConsultantResponseDto(UUID id,
                 totalDaysStatistics,
                 timeChunks.stream().map(RegisteredTimeResponseDto::fromTimeChunks).toList()
                 );
+    }
+    public static ConsultantResponseDto toDto(
+            DemoConsultant consultant,
+            TotalDaysStatisticsDto totalDaysStatistics,
+            List<TimeChunks> timeChunks) {
+        return new ConsultantResponseDto(
+                consultant.getId(),
+                consultant.getFullName(),
+                consultant.getEmail(),
+                consultant.getPhoneNumber(),
+                consultant.getResponsiblePT(),
+                consultant.getClient(),
+                consultant.getCountry().equals(SWEDEN.country) ? CountryCode.SE.countryCode : CountryCode.NO.countryCode,
+                totalDaysStatistics,
+                timeChunks.stream().map(RegisteredTimeResponseDto::fromTimeChunks).toList()
+        );
     }
 }

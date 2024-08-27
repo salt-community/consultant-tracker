@@ -5,11 +5,8 @@ import com.example.backend.client.timekeeper.dto.TimekeeperUserDto;
 import com.example.backend.consultant.dto.*;
 import com.example.backend.exceptions.ConsultantNotFoundException;
 import com.example.backend.registeredTime.RegisteredTimeService;
-import com.example.backend.registeredTime.dto.RegisteredTimeResponseDto;
 import com.example.backend.tag.Tag;
-import com.example.backend.timeChunks.TimeChunks;
 import com.example.backend.timeChunks.TimeChunksService;
-import jakarta.annotation.PostConstruct;
 import lombok.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,8 +19,7 @@ import java.util.*;
 
 
 @Service
-@Data
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ConsultantService {
     private final ConsultantRepository consultantRepository;
     private final TimekeeperClient timekeeperClient;
@@ -42,6 +38,12 @@ public class ConsultantService {
                         .map(c -> ConsultantResponseDto.toDto(c,
                                 registeredTimeService.getAllDaysStatistics(c.getId()),
                                 timeChunksService.getTimeChunksByConsultant(c.getId()))).toList());
+    }
+
+    public InfographicResponseDto getInfographicsByPt(String pt){
+        int totalConsultants = consultantRepository.findAllByActiveTrue().size();
+        int totalPtsConsultants = consultantRepository.countAllByActiveTrueAndResponsiblePT(pt);
+        return new InfographicResponseDto(totalConsultants, totalPtsConsultants);
     }
 
     public SingleConsultantResponseListDto getConsultantById(UUID id) {

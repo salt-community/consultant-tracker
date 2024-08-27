@@ -1,8 +1,6 @@
 package com.example.backend.consultant;
 
-import com.example.backend.consultant.dto.ClientsAndPtsListDto;
-import com.example.backend.consultant.dto.ConsultantResponseDto;
-import com.example.backend.consultant.dto.ConsultantResponseListDto;
+import com.example.backend.consultant.dto.*;
 import com.example.backend.demo.demoConsultant.DemoConsultantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,7 +22,7 @@ public class ConsultantController {
     private String appMode;
 
     @GetMapping
-    public ResponseEntity<?> getConsultantsAndRegisteredTime(
+    public ResponseEntity<ConsultantResponseListDto> getConsultantsAndRegisteredTime(
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
             @RequestParam(defaultValue = "", required = false) String name,
@@ -38,8 +36,13 @@ public class ConsultantController {
         return ResponseEntity.ok(consultantsResponse);
     }
 
+    @GetMapping("/infographics/{pt}")
+    public ResponseEntity<InfographicResponseDto> getInfographicsByPt(@PathVariable String pt){
+        return  ResponseEntity.ok(consultantService.getInfographicsByPt(pt));
+    }
+
     @GetMapping("/{id}")
-    public ResponseEntity<?> getConsultantById(@PathVariable UUID id){
+    public ResponseEntity<SingleConsultantResponseListDto> getConsultantById(@PathVariable UUID id){
         if ("demo".equalsIgnoreCase(appMode)) {
             return ResponseEntity.ok(demoConsultantService.getDemoConsultantById(id));
         }
