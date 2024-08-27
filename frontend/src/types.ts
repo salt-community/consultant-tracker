@@ -18,6 +18,15 @@ import React from "react";
 //   id: keyof ConsultantFetchType;
 //   label: string;
 // };
+export type InfographicResponseType={
+  totalConsultants: number,
+  ptsConsultants: number
+}
+export type InfographicDataType ={
+  title: string,
+  amount: number,
+  variant: string
+}
 
 export type ClientDataType = {
   // id: string;
