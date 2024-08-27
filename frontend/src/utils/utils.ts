@@ -109,42 +109,5 @@ export const verticalLineClassNamesForTime = (
   return classes;
 };
 
-export const workingDays = (startDate: Dayjs, endDate: Dayjs): number => {
-  let totalDays = 0;
-  let currentDate = startDate.startOf("day");
 
-  while (currentDate <= endDate) {
-    const isWeekend = currentDate.day() === 0 || currentDate.day() === 6;
-    if (!isWeekend) {
-      totalDays += 1;
-    }
 
-    currentDate = currentDate.add(1, "day");
-  }
-
-  return totalDays;
-};
-
-export const getSortedClientData = (
-  timeItems: RegisteredTimeItemType[]
-): ClientDataType[] => {
-  // console.log("in utils");
-  // console.log("timeItems[0]", timeItems[0])
-  const itemsToExclude: string[] = [
-    "No Registered Time",
-    "Remaining Days",
-    "PGP",
-  ];
-  const clientsList: ClientDataType[] = []; 
-   timeItems
-    .filter((t) => !itemsToExclude.includes(t.projectName))
-    .map((item) => {
-      clientsList.push({
-        name: item.projectName,
-        startDate: item.startDate.toString(),
-        endDate: item.endDate.toString()
-      })
-    });
-
-    return clientsList;
-};
