@@ -1,4 +1,6 @@
 import { TotalDaysStatisticsType } from "@/types";
+import SingleDetailField from "@/components/single-detail-field/single-detail-field";
+import './personal-data.css'
 
 type Props = {
   email: string;
@@ -9,17 +11,18 @@ type Props = {
 
 const PersonalData = ({ email, phone, client, totalDaysStatistics }: Props) => {
   return (
-    <div>
-      <h3>Email: {email}</h3>
-      <h3>Phone: {phone === null ? "-": phone}</h3>
-      <h3>Client: {client}</h3>
-      <hr />
-      <div>
+    <div className="personal-data__container">
+      <div className="personal-data__info">
+      <SingleDetailField title="Email" content={email} />
+      <SingleDetailField title="Phone" content={phone == null ? "-": phone}/>
+      <SingleDetailField title="Client" content={client}/>
+      </div>
+      <div className="personal-data__statistics">
         <h3>Statistics</h3>
-        <h4>Total Worked Days: {totalDaysStatistics.totalWorkedDays}</h4>
-        <h4>Total Remaining Days: {totalDaysStatistics.totalRemainingDays}</h4>
-        <h4>Total Worked Hours: {totalDaysStatistics.totalWorkedHours}</h4>
-        <h4>Total Remaining Hours: {totalDaysStatistics.totalRemainingHours}</h4>
+        <SingleDetailField title="Total Worked Days" content={`${totalDaysStatistics.totalWorkedDays}`}/>
+        <SingleDetailField title="Total Remaining Days" content={`${totalDaysStatistics.totalRemainingDays}`}/>
+        <SingleDetailField title="Total Worked Hours" content={`${totalDaysStatistics.totalWorkedHours}`}/>
+        <SingleDetailField title="Total Remaining Hours" content={`${totalDaysStatistics.totalRemainingHours}`}/>
       </div>
     </div>
   );
