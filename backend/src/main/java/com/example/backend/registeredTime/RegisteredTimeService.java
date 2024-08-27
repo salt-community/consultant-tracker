@@ -134,8 +134,25 @@ public class RegisteredTimeService {
             totalRemainingDays = Utilities.roundToTwoDecimalPoints(Utilities.countRemainingDays(totalWorkedHours, country));
             totalRemainingHours = Utilities.roundToOneDecimalPoint(totalRemainingDays * Utilities.getStandardWorkingHours(country));
         }
-        int totalVacationDays = registeredTimeRepository.countAllById_ConsultantIdAndTypeIs(id, VACATION.activity).orElse(0);
-        return new TotalDaysStatisticsDto(totalRemainingDays, totalWorkedDays, totalVacationDays, totalRemainingHours, Utilities.roundToOneDecimalPoint(totalWorkedHours));
+        int totalVacationDays = registeredTimeRepository.countAllById_ConsultantIdAndTypeIs(id, VACATION.activity)
+                .orElse(0);
+        int totalSickDays = registeredTimeRepository.countAllById_ConsultantIdAndTypeIs(id, SICK_LEAVE.activity)
+                .orElse(0);
+        int totalParentalLeaveDays = registeredTimeRepository.countAllById_ConsultantIdAndTypeIs(id, PARENTAL_LEAVE.activity)
+                .orElse(0);
+        int totalVABDays = registeredTimeRepository.countAllById_ConsultantIdAndTypeIs(id, SICK_CHILD_CARE.activity)
+                .orElse(0);
+        int totalUnpaidVacationDays = registeredTimeRepository.countAllById_ConsultantIdAndTypeIs(id, LEAVE_OF_ABSENCE.activity)
+                .orElse(0);
+        return new TotalDaysStatisticsDto(totalRemainingDays,
+                totalWorkedDays,
+                totalVacationDays,
+                totalSickDays,
+                totalParentalLeaveDays,
+                totalVABDays,
+                totalUnpaidVacationDays,
+                totalRemainingHours,
+                Utilities.roundToOneDecimalPoint(totalWorkedHours));
     }
 
     //-----------------------------COVERED BY TESTS ---------------------------------

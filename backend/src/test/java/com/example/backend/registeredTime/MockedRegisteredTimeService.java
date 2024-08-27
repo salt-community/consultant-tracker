@@ -349,7 +349,7 @@ public class MockedRegisteredTimeService {
     }
 
     public static ConsultantResponseDto getConsultantTimelineItemsMocked(Consultant consultant) {
-        TotalDaysStatisticsDto mockedStatistics = new TotalDaysStatisticsDto(3, 250, 15, 24, 2000);
+        TotalDaysStatisticsDto mockedStatistics = new TotalDaysStatisticsDto(3, 250, 15,0,0,0,0, 24, 2000);
         List<RegisteredTimeResponseDto> mockedTimeItems = Lists.newArrayList();
         return new ConsultantResponseDto(
                 consultant.getId(),

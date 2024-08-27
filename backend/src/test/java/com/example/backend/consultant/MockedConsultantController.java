@@ -23,7 +23,7 @@ public class MockedConsultantController {
                 pt,
                 client,
                 "Sverige",
-                new TotalDaysStatisticsDto(10, 10, 0, 80, 80),
+                new TotalDaysStatisticsDto(10, 10, 0,0,0,0,0, 80, 80),
                 List.of(new RegisteredTimeResponseDto(UUID.fromString("1bc08a49-e27c-499a-8bb2-c5b70c646fca"),
                                 LocalDateTime.parse("2024-02-01 00:00:00", formatterSeconds),
                                 LocalDateTime.parse("2024-02-05 00:00:00", formatterSeconds),
