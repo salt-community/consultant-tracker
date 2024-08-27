@@ -25,7 +25,6 @@ public class TimeChunksService {
 
     public void saveTimeChunksForAllConsultants(List<Consultant> consultants) {
         for (Consultant consultant : consultants) {
-            System.out.println("consultant = " + consultant);
             List<TimeChunks> timeChunksToSave = getGroupedConsultantsRegisteredTimeItems(consultant.getId());
             if (timeChunksToSave != null) {
                 timeChunksRepository.saveAll(timeChunksToSave);
