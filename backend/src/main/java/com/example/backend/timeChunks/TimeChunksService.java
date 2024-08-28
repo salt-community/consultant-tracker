@@ -139,9 +139,9 @@ public class TimeChunksService {
         }
     }
 
-//    public List<TimeChunks> getTimeChunksByConsultant(UUID id) {
-//        return timeChunksRepository.findAllById_ConsultantIdOrderById_StartDateAsc(id);
-//    }
+    public List<TimeChunks> getTimeChunksByConsultant(UUID id) {
+        return timeChunksRepository.findAllById_ConsultantIdOrderById_StartDateAsc(id);
+    }
 
     public List<TimeChunks> getTimeChunksByConsultantIdAndClient(UUID id, List<String> client) {
         return timeChunksRepository.findAllById_ConsultantIdAndProjectNameOrderById_StartDateAsc(id, client);
