@@ -4,10 +4,11 @@ import com.example.backend.client.timekeeper.TimekeeperClient;
 import com.example.backend.client.timekeeper.dto.TimekeeperUserDto;
 import com.example.backend.consultant.dto.*;
 import com.example.backend.exceptions.ConsultantNotFoundException;
+import com.example.backend.meetings_schedule.MeetingsScheduleService;
+import com.example.backend.meetings_schedule.dto.MeetingsDto;
 import com.example.backend.registeredTime.RegisteredTimeService;
 import com.example.backend.tag.Tag;
 import com.example.backend.timeChunks.TimeChunksService;
-import jakarta.annotation.PostConstruct;
 import lombok.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,6 +27,7 @@ public class ConsultantService {
     private final TimekeeperClient timekeeperClient;
     private final RegisteredTimeService registeredTimeService;
     private final TimeChunksService timeChunksService;
+    private final MeetingsScheduleService meetingsScheduleService;
 
     //-----------------------------COVERED BY TESTS ---------------------------------
     public ConsultantResponseListDto getAllConsultantDtos(int page, int pageSize, String name, List<String> pt, List<String> client) {
@@ -50,23 +52,25 @@ public class ConsultantService {
     public SingleConsultantResponseListDto getConsultantById(UUID id) {
         Consultant consultantById = consultantRepository.findById(id).orElseThrow(() -> new ConsultantNotFoundException("Consultant with such id not found."));
         TotalDaysStatisticsDto totalDaysStatistics = registeredTimeService.getAllDaysStatistics(id);
-        List<ClientsList> clientsList = getClientListByConsultantId(id);
-        return SingleConsultantResponseListDto.toDto(consultantById, totalDaysStatistics, clientsList);
+        List<ClientsListDto> clientsListDto = getClientListByConsultantId(id);
+        List<MeetingsDto> meetings = meetingsScheduleService.getMeetingsDto(id);
+        System.out.println("meetings = " + meetings);
+        return SingleConsultantResponseListDto.toDto(consultantById, totalDaysStatistics, clientsListDto, meetings);
     }
 
     //-----------------------------COVERED BY TESTS ---------------------------------
-    public List<ClientsList> getClientListByConsultantId(UUID consultantId) {
-        List<ClientsList> clientsList = new ArrayList<>();
+    public List<ClientsListDto> getClientListByConsultantId(UUID consultantId) {
+        List<ClientsListDto> clientsListDto = new ArrayList<>();
         List<String> distinctClients = registeredTimeService.getClientsByConsultantId(consultantId);
         for (String client : distinctClients) {
             if (!client.equalsIgnoreCase(NotClient.PGP.value)
                     && !client.equalsIgnoreCase(NotClient.UPSKILLING.value)) {
                 LocalDate startDate = registeredTimeService.getStartDateByClientAndConsultantId(client, consultantId);
                 LocalDate endDate = registeredTimeService.getEndDateByClientAndConsultantId(client, consultantId);
-                clientsList.add(new ClientsList(client, startDate, endDate));
+                clientsListDto.add(new ClientsListDto(client, startDate, endDate));
             }
         }
-        return clientsList;
+        return clientsListDto;
     }
 
     //-----------------------------COVERED BY TESTS ---------------------------------

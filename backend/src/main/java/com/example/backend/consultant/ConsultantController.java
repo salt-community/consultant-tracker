@@ -43,9 +43,9 @@ public class ConsultantController {
 
     @GetMapping("/{id}")
     public ResponseEntity<SingleConsultantResponseListDto> getConsultantById(@PathVariable UUID id){
-        if ("demo".equalsIgnoreCase(appMode)) {
-            return ResponseEntity.ok(demoConsultantService.getDemoConsultantById(id));
-        }
+//        if ("demo".equalsIgnoreCase(appMode)) {
+//            return ResponseEntity.ok(demoConsultantService.getDemoConsultantById(id));
+//        }
         return ResponseEntity.ok(consultantService.getConsultantById(id));
     }
 

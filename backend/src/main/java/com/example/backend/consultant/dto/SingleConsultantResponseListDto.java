@@ -2,6 +2,7 @@ package com.example.backend.consultant.dto;
 
 import com.example.backend.consultant.Consultant;
 import com.example.backend.demo.demoConsultant.DemoConsultant;
+import com.example.backend.meetings_schedule.dto.MeetingsDto;
 import com.example.backend.redDay.CountryCode;
 
 import java.util.List;
@@ -17,12 +18,14 @@ public record SingleConsultantResponseListDto(UUID id,
                                               String client,
                                               String country,
                                               TotalDaysStatisticsDto totalDaysStatistics,
-                                              List<ClientsList> clientsList) {
+                                              List<ClientsListDto> clientsList,
+                                              List<MeetingsDto> meetings) {
 
     public static SingleConsultantResponseListDto toDto(
             Consultant consultant,
             TotalDaysStatisticsDto totalDaysStatistics,
-            List<ClientsList> clientsList) {
+            List<ClientsListDto> clientsListDto,
+            List<MeetingsDto> meetings) {
         return new SingleConsultantResponseListDto(
                 consultant.getId(),
                 consultant.getFullName(),
@@ -32,13 +35,16 @@ public record SingleConsultantResponseListDto(UUID id,
                 consultant.getClient(),
                 consultant.getCountry().equals(SWEDEN.country) ? CountryCode.SE.countryCode : CountryCode.NO.countryCode,
                 totalDaysStatistics,
-                clientsList
+                clientsListDto,
+                meetings
         );
     }
+
     public static SingleConsultantResponseListDto toDto(
             DemoConsultant consultant,
             TotalDaysStatisticsDto totalDaysStatistics,
-            List<ClientsList> clientsList) {
+            List<ClientsListDto> clientsListDto,
+            List<MeetingsDto> meetings) {
         return new SingleConsultantResponseListDto(
                 consultant.getId(),
                 consultant.getFullName(),
@@ -48,7 +54,8 @@ public record SingleConsultantResponseListDto(UUID id,
                 consultant.getClient(),
                 consultant.getCountry().equals(SWEDEN.country) ? CountryCode.SE.countryCode : CountryCode.NO.countryCode,
                 totalDaysStatistics,
-                clientsList
+                clientsListDto,
+                meetings
         );
     }
 }

@@ -66,10 +66,10 @@ public class DemoConsultantService {
         return resultList;
     }
 
-    public SingleConsultantResponseListDto getDemoConsultantById(UUID id) {
-        DemoConsultant consultantById = demoConsultantRepo.findById(id).orElseThrow(() -> new ConsultantNotFoundException("Consultant with such id not found."));
-        TotalDaysStatisticsDto totalDaysStatistics = registeredTimeService.getAllDaysStatistics(id);
-        List<ClientsList> clientsList = consultantService.getClientListByConsultantId(id);
-        return SingleConsultantResponseListDto.toDto(consultantById, totalDaysStatistics, clientsList);
-    }
+//    public SingleConsultantResponseListDto getDemoConsultantById(UUID id) {
+//        DemoConsultant consultantById = demoConsultantRepo.findById(id).orElseThrow(() -> new ConsultantNotFoundException("Consultant with such id not found."));
+//        TotalDaysStatisticsDto totalDaysStatistics = registeredTimeService.getAllDaysStatistics(id);
+//        List<ClientsListDto> clientsList = consultantService.getClientListByConsultantId(id);
+//        return SingleConsultantResponseListDto.toDto(consultantById, totalDaysStatistics, clientsList);
+//    }
 }

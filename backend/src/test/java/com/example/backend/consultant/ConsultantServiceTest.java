@@ -4,7 +4,7 @@ import com.example.backend.ApplicationTestConfig;
 import com.example.backend.ObjectConstructor;
 import com.example.backend.client.timekeeper.TimekeeperClient;
 import com.example.backend.client.timekeeper.dto.TimekeeperUserDto;
-import com.example.backend.consultant.dto.ClientsList;
+import com.example.backend.consultant.dto.ClientsListDto;
 import com.example.backend.consultant.dto.ConsultantResponseListDto;
 import com.example.backend.consultant.dto.TotalDaysStatisticsDto;
 import com.example.backend.registeredTime.MockedRegisteredTimeService;
@@ -432,8 +432,8 @@ class ConsultantServiceTest extends ApplicationTestConfig {
         // mock registeredTimeService.getClientsByConsultantId(consultantId)
         Mockito.when(mockedRegisteredTimeService.getClientsByConsultantId(any(UUID.class)))
                 .thenReturn(List.of("H&M"));
-        List<ClientsList> expectedResult = List.of(new ClientsList("H&M", LocalDate.now(), LocalDate.now()));
-        List<ClientsList> actualResult = consultantService.getClientListByConsultantId(UUID.randomUUID());
+        List<ClientsListDto> expectedResult = List.of(new ClientsListDto("H&M", LocalDate.now(), LocalDate.now()));
+        List<ClientsListDto> actualResult = consultantService.getClientListByConsultantId(UUID.randomUUID());
         assertEquals(expectedResult.size(), actualResult.size());
     }
 
@@ -456,10 +456,10 @@ class ConsultantServiceTest extends ApplicationTestConfig {
                 .thenReturn(endDateClientA);
         Mockito.when(mockedRegisteredTimeService.getEndDateByClientAndConsultantId(clientB, randomUUID))
                 .thenReturn(endDateClientB);
-        List<ClientsList> expectedResult = List.of(
-                new ClientsList(clientA, startDateClientA, endDateClientA),
-                new ClientsList(clientB, startDateClientB, endDateClientB));
-        List<ClientsList> actualResult = consultantService.getClientListByConsultantId(randomUUID);
+        List<ClientsListDto> expectedResult = List.of(
+                new ClientsListDto(clientA, startDateClientA, endDateClientA),
+                new ClientsListDto(clientB, startDateClientB, endDateClientB));
+        List<ClientsListDto> actualResult = consultantService.getClientListByConsultantId(randomUUID);
         assertEquals(expectedResult.size(), actualResult.size());
     }
 
@@ -482,9 +482,9 @@ class ConsultantServiceTest extends ApplicationTestConfig {
                 .thenReturn(endDateClientA);
         Mockito.when(mockedRegisteredTimeService.getEndDateByClientAndConsultantId(clientB, randomUUID))
                 .thenReturn(endDateClientB);
-        List<ClientsList> expectedResult = List.of(
-                new ClientsList(clientB, startDateClientB, endDateClientB));
-        List<ClientsList> actualResult = consultantService.getClientListByConsultantId(randomUUID);
+        List<ClientsListDto> expectedResult = List.of(
+                new ClientsListDto(clientB, startDateClientB, endDateClientB));
+        List<ClientsListDto> actualResult = consultantService.getClientListByConsultantId(randomUUID);
         assertEquals(expectedResult.size(), actualResult.size());
     }
 
@@ -507,9 +507,9 @@ class ConsultantServiceTest extends ApplicationTestConfig {
                 .thenReturn(endDateClientA);
         Mockito.when(mockedRegisteredTimeService.getEndDateByClientAndConsultantId(clientB, randomUUID))
                 .thenReturn(endDateClientB);
-        List<ClientsList> expectedResult = List.of(
-                new ClientsList(clientB, startDateClientB, endDateClientB));
-        List<ClientsList> actualResult = consultantService.getClientListByConsultantId(randomUUID);
+        List<ClientsListDto> expectedResult = List.of(
+                new ClientsListDto(clientB, startDateClientB, endDateClientB));
+        List<ClientsListDto> actualResult = consultantService.getClientListByConsultantId(randomUUID);
         assertEquals(expectedResult.size(), actualResult.size());
     }
 }

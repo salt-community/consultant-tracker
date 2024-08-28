@@ -2,10 +2,11 @@ package com.example.backend.meetings_schedule;
 
 import com.example.backend.consultant.Consultant;
 import com.example.backend.consultant.ConsultantService;
+import com.example.backend.meetings_schedule.dto.MeetingsDto;
 import com.example.backend.registeredTime.RegisteredTimeService;
 import com.example.backend.timeChunks.TimeChunks;
 import com.example.backend.timeChunks.TimeChunksService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -17,16 +18,33 @@ import static com.example.backend.client.timekeeper.Activity.REMAINING_DAYS;
 import static com.example.backend.meetings_schedule.Meetings.*;
 
 @Service
-@RequiredArgsConstructor
 public class MeetingsScheduleService {
 
-    private final ConsultantService consultantService;
-    private final TimeChunksService timeChunksService;
-    private final RegisteredTimeService registeredTimeService;
-    private final MeetingsScheduleRepository meetingsScheduleRepository;
+    private ConsultantService consultantService;
+    private TimeChunksService timeChunksService;
+    private RegisteredTimeService registeredTimeService;
+    private MeetingsScheduleRepository meetingsScheduleRepository;
+
+    public MeetingsScheduleService(
+            @Lazy
+            ConsultantService consultantService,
+            TimeChunksService timeChunksService,
+            RegisteredTimeService registeredTimeService,
+            MeetingsScheduleRepository meetingsScheduleRepository) {
+        this.consultantService = consultantService;
+        this.timeChunksService = timeChunksService;
+        this.registeredTimeService = registeredTimeService;
+        this.meetingsScheduleRepository = meetingsScheduleRepository;
+    }
 
     public void createMeetingsForActiveConsultantsNonPgp() {
         List<Consultant> activeConsultants = consultantService.getAllActiveConsultants();
+        System.out.println("activeConsultants.size() = " + activeConsultants.size());
+        for (Consultant consultant : activeConsultants) {
+            System.out.println("-----------------------");
+            System.out.println("consultant.getFullName() = " + consultant.getFullName());
+            System.out.println("consultant.getId() = " + consultant.getId());
+        }
         int firstMeetingWeeks = 44;
         int secondMeetingWeeks = 20;
         int thirdMeetingWeeks = 8;
@@ -40,32 +58,38 @@ public class MeetingsScheduleService {
                 String currentClient = clients.getLast();
                 timeChunksByConsultant = timeChunksService.getTimeChunksByConsultantIdAndClient(
                         consultant.getId(), List.of(currentClient, REMAINING_DAYS.activity));
-            } else return;
+            } else continue;
+
 
             LocalDate firstMeeting = getMeetingDate(timeChunksByConsultant, firstMeetingWeeks);
+            if (firstMeeting == null) {
+                continue;
+            }
 //            LocalDate secondMeeting = getMeetingDate(timeChunksByConsultant, secondMeetingWeeks);
             LocalDate thirdMeeting = getMeetingDate(timeChunksByConsultant, thirdMeetingWeeks);
             LocalDate fourthMeeting = getMeetingDate(timeChunksByConsultant, fourthMeetingWeeks);
+            UUID consultantId = consultant.getId();
+            System.out.println("consultant = " + consultant.getFullName());
+            System.out.println("firstMeeting = " + firstMeeting);
+            System.out.println("thirdMeeting = " + thirdMeeting);
+            System.out.println("fourthMeeting = " + fourthMeeting);
             meetingsScheduleRepository.save(new MeetingsSchedule(
-                    UUID.randomUUID(),
-                    FIRST,
+                    new MeetingsScheduleKey(consultantId,
+                    FIRST),
                     firstMeeting,
                     "Upcomming",
-                    consultant,
                     consultant.getSaltUser()));
             meetingsScheduleRepository.save(new MeetingsSchedule(
-                    UUID.randomUUID(),
-                    THIRD,
+                    new MeetingsScheduleKey(consultantId,
+                    THIRD),
                     thirdMeeting,
                     "Upcomming",
-                    consultant,
                     consultant.getSaltUser()));
             meetingsScheduleRepository.save(new MeetingsSchedule(
-                    UUID.randomUUID(),
-                    FOURTH,
+                    new MeetingsScheduleKey(consultantId,
+                    FOURTH),
                     fourthMeeting,
                     "Upcomming",
-                    consultant,
                     consultant.getSaltUser()));
         }
     }
@@ -76,7 +100,9 @@ public class MeetingsScheduleService {
 //                .toList().getFirst().getId().getStartDate().toLocalDate();
         TimeChunks remainingDays = timeChunks.stream()
                 .filter(t -> t.getType().equalsIgnoreCase(REMAINING_DAYS.activity)).findFirst().orElse(null);
-        assert remainingDays != null;
+        if (remainingDays == null) {
+            return null;
+        }
         return remainingDays.getEndDate().toLocalDate().minusWeeks(weeks);
 
 //        int weekFirstDay = firstDayAtWork.get(WeekFields.of(Locale.ENGLISH).weekOfYear());
@@ -98,5 +124,12 @@ public class MeetingsScheduleService {
 //            nextMeetingDate = nextMeetingDate.plusDays(nonConsultancyTime);
 //        }
 //        return nextMeetingDate;
+    }
+
+    public List<MeetingsDto> getMeetingsDto(UUID id) {
+        List<MeetingsSchedule> meetingsSchedules = meetingsScheduleRepository.findAllById_ConsultantId(id);
+        System.out.println("meetingsSchedules = " + meetingsSchedules);
+        return meetingsSchedules.stream()
+                .map(MeetingsDto::toDto).toList();
     }
 }

@@ -1,8 +1,6 @@
 package com.example.backend.demo.demoConsultant;
 
-import com.example.backend.consultant.Consultant;
-import com.example.backend.consultant.dto.ClientsList;
-import com.example.backend.consultant.dto.SingleConsultantResponseListDto;
+import com.example.backend.consultant.dto.ClientsListDto;
 import com.example.backend.consultant.dto.TotalDaysStatisticsDto;
 import com.example.backend.redDay.CountryCode;
 
@@ -20,12 +18,12 @@ public record DemoSingleConsultantResponseListDto(UUID id,
                                                   String client,
                                                   String country,
                                                   TotalDaysStatisticsDto totalDaysStatistics,
-                                                  List<ClientsList> clientsList) {
+                                                  List<ClientsListDto> clientsListDto) {
 
     public static DemoSingleConsultantResponseListDto toDto(
             DemoConsultant consultant,
             TotalDaysStatisticsDto totalDaysStatistics,
-            List<ClientsList> clientsList) {
+            List<ClientsListDto> clientsListDto) {
         return new DemoSingleConsultantResponseListDto(
                 consultant.getId(),
                 consultant.getFullName(),
@@ -35,7 +33,7 @@ public record DemoSingleConsultantResponseListDto(UUID id,
                 consultant.getClient(),
                 consultant.getCountry().equals(SWEDEN.country) ? CountryCode.SE.countryCode : CountryCode.NO.countryCode,
                 totalDaysStatistics,
-                List.of(new ClientsList(consultant.getClient(), LocalDate.now(), LocalDate.now()))
+                List.of(new ClientsListDto(consultant.getClient(), LocalDate.now(), LocalDate.now()))
         );
     }
 }
