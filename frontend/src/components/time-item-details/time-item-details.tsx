@@ -18,7 +18,7 @@ function TimeItemDetails({ setOpenTooltip, openTooltip, content }: Props) {
   return (
     <div
       className="time-details"
-      style={{ border: `2px solid ${borderClassName}` }}
+      style={{ border: `1.5px solid ${borderClassName}` }}
     >
       {content && (
         <>

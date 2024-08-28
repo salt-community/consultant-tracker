@@ -1,5 +1,6 @@
 .personal-data__container{
     display: flex;
+    gap: 30px;
 }
 
 .personal-data__info:nth-child(n) div{
