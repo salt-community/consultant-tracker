@@ -5,7 +5,6 @@ import com.example.backend.redDay.RedDayService;
 import com.example.backend.registeredTime.RegisteredTime;
 import com.example.backend.registeredTime.RegisteredTimeService;
 import com.example.backend.registeredTime.dto.RegisteredTimeDto;
-import com.example.backend.registeredTime.dto.RegisteredTimeResponseDto;
 import lombok.Data;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +12,8 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.example.backend.client.timekeeper.Activity.CONSULTANCY_TIME;
+import static com.example.backend.client.timekeeper.Activity.REMAINING_DAYS;
 import static java.time.temporal.ChronoUnit.DAYS;
 
 @Service
@@ -139,6 +140,10 @@ public class TimeChunksService {
     }
 
     public List<TimeChunks> getTimeChunksByConsultant(UUID id) {
-        return timeChunksRepository.findAllById_ConsultantId(id);
+        return timeChunksRepository.findAllById_ConsultantIdOrderById_StartDateAsc(id);
+    }
+
+    public List<TimeChunks> getTimeChunksByConsultantIdAndClient(UUID id, List<String> client) {
+        return timeChunksRepository.findAllById_ConsultantIdAndProjectNameOrderById_StartDateAsc(id, client);
     }
 }

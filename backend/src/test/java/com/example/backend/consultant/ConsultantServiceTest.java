@@ -132,7 +132,7 @@ class ConsultantServiceTest extends ApplicationTestConfig {
         int expectedConsultantsFound = 1;
         List<TimeChunks> timeChunks = new ArrayList<>();
         timeChunks.add(new TimeChunks(new TimeChunksKey(UUID.randomUUID(), LocalDateTime.now()), "Konsult-tid", LocalDateTime.now(), 10, "ABC"));
-        Mockito.when(mockedRegisteredTimeService.getAllDaysStatistics(any(UUID.class))).thenReturn(new TotalDaysStatisticsDto(0, 0, 0, 0, 0));
+        Mockito.when(mockedRegisteredTimeService.getAllDaysStatistics(any(UUID.class))).thenReturn(new TotalDaysStatisticsDto(0.0, 0, 0,0,0,0,0, 0.0, 0.0));
         Mockito.when(mockedTimeChunksService.getTimeChunksByConsultant(any(UUID.class))).thenReturn(timeChunks);
 
         /* ARRANGE FOR HELPER METHOD - getAllConsultantsPageable() */
