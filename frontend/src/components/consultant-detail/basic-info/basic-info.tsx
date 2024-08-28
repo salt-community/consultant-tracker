@@ -20,6 +20,7 @@ const BasicInfo = ({ id, modalData, openTooltip, setOpenTooltip }: Props) => {
   const fetchConsultantById = () => {
 
     if (id) getConsultantById(id).then((res) => {
+      console.log(res);
       setPersonalData(res)});
   };
 

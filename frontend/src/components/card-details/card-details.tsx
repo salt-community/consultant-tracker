@@ -37,7 +37,7 @@ const CardDetails = ({
   const content = () => {
     switch (value) {
       case "schedule":
-        return <Schedule />;
+        return <Schedule meetings={personalData.meetings} />;
       case "clients":
         return <Client clientList={personalData.clientsList}/>;
       case "absences":

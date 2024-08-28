@@ -43,10 +43,9 @@ export type AbsenceType = {
 };
 
 export type MeetingsType = {
-  id: string;
-  date: string;
+  year: number;
+  weekNumber: number;
   title: string;
-  description: string;
 };
 
 export type ConsultantDetailsDataType = {
@@ -108,6 +107,7 @@ export type detailsType={
   client: string,
   country: string,
   totalDays: number,
+  projectName: string,
   totalDaysStatistics: TotalDaysStatisticsType,
 }
 
@@ -127,6 +127,7 @@ export type ConsultantFetchType = {
   totalDaysStatistics: TotalDaysStatisticsType,
   registeredTimeDtoList: RegisteredTimeItemType[],
   clientsList: ClientDataType[],
+  meetings: MeetingsType[],
   client: string,
   country: string
 }
