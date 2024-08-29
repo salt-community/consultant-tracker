@@ -12,8 +12,11 @@ import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import javax.xml.crypto.dsig.keyinfo.PGPData;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.backend.consultant.NotClient.PGP;
 
 @Service
 @Data
@@ -32,30 +35,30 @@ public class TimekeeperClient {
                 .build();
         this.HEADER = HEADER;
     }
-
-    public TimekeeperUserDto getUser(Long id) {
-        TimekeeperUserListResponseDto dto = CLIENT_URL.get()
-                .uri("api/v1/user/{id}", id)
-                .header("Authorization", HEADER)
-                .retrieve()
-                .bodyToMono(TimekeeperUserListResponseDto.class)
-                .block();
-        assert dto != null;
-        return dto.timekeeperUsers().stream()
-                .map(tkUser -> {
-                    return new TimekeeperUserDto(
-                            tkUser.firstName(),
-                            tkUser.lastName(),
-                            tkUser.email(),
-                            tkUser.phone(),
-                            tkUser.tags(),
-                            tkUser.id(),
-                            tkUser.isActive(),
-                            null,
-                            null,
-                            tkUser.isEmployee());
-                }).toList().getFirst();
-    }
+ // TODO remove later
+//    public TimekeeperUserDto getUser(Long id) {
+//        TimekeeperUserListResponseDto dto = CLIENT_URL.get()
+//                .uri("api/v1/user/{id}", id)
+//                .header("Authorization", HEADER)
+//                .retrieve()
+//                .bodyToMono(TimekeeperUserListResponseDto.class)
+//                .block();
+//        assert dto != null;
+//        return dto.timekeeperUsers().stream()
+//                .map(tkUser -> {
+//                    return new TimekeeperUserDto(
+//                            tkUser.firstName(),
+//                            tkUser.lastName(),
+//                            tkUser.email(),
+//                            tkUser.phone(),
+//                            tkUser.tags(),
+//                            tkUser.id(),
+//                            tkUser.isActive(),
+//                            null,
+//                            null,
+//                            tkUser.isEmployee());
+//                }).toList().getFirst();
+//    }
 
     public List<TimekeeperUserDto> getUsers() {
         int index = 0;
@@ -88,6 +91,7 @@ public class TimekeeperClient {
             }
             index++;
         }
+
         return users;
     }
 

@@ -20,6 +20,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.*;
 
+import static com.example.backend.consultant.NotClient.PGP;
+
 
 @Service
 @RequiredArgsConstructor
@@ -44,7 +46,7 @@ public class ConsultantService {
                                 timeChunksService.getTimeChunksByConsultant(c.getId()))).toList());
     }
 
-    public InfographicResponseDto getInfographicsByPt(String pt){
+    public InfographicResponseDto getInfographicsByPt(String pt) {
         int totalConsultants = consultantRepository.findAllByActiveTrue().size();
         int totalPtsConsultants = consultantRepository.countAllByActiveTrueAndResponsiblePT(pt);
         return new InfographicResponseDto(totalConsultants, totalPtsConsultants);
@@ -64,7 +66,7 @@ public class ConsultantService {
         List<ClientsListDto> clientsListDto = new ArrayList<>();
         List<String> distinctClients = registeredTimeService.getClientsByConsultantId(consultantId);
         for (String client : distinctClients) {
-            if (!client.equalsIgnoreCase(NotClient.PGP.value)
+            if (!client.equalsIgnoreCase(PGP.value)
                     && !client.equalsIgnoreCase(NotClient.UPSKILLING.value)) {
                 LocalDate startDate = registeredTimeService.getStartDateByClientAndConsultantId(client, consultantId);
                 LocalDate endDate = registeredTimeService.getEndDateByClientAndConsultantId(client, consultantId);
@@ -96,7 +98,7 @@ public class ConsultantService {
         return consultantRepository.findAllByActiveTrue();
     }
 
-//    @PostConstruct
+    @PostConstruct
     @Scheduled(cron = "0 0 0 * * *")
     public void fetchDataFromTimekeeper() {
         List<TimekeeperUserDto> timekeeperUserDto = timekeeperClient.getUsers();
@@ -105,7 +107,7 @@ public class ConsultantService {
         registeredTimeService.fetchAndSaveTimeRegisteredByConsultantDB();
         List<Consultant> allActiveConsultants = getAllActiveConsultants();
         timeChunksService.saveTimeChunksForAllConsultants(allActiveConsultants);
-        fillClientAndResponsiblePt();
+        fillClientAndResponsiblePt(allActiveConsultants);
     }
 
     // Test in integration tests
@@ -116,7 +118,7 @@ public class ConsultantService {
                 /* *** METHOD BELOW IS TESTED SEPARATELY *** */
                 String countryTag = Tag.extractCountryTagFromTimekeeperUserDto(tkUser);
                 /* *** METHOD BELOW IS TESTED SEPARATELY *** */
-                createConsultant(new Consultant(
+                saveConsultant(new Consultant(
                         UUID.randomUUID(),
                         tkUser.firstName().trim().concat(" ").concat(tkUser.lastName().trim()),
                         tkUser.email(),
@@ -128,13 +130,13 @@ public class ConsultantService {
                         tkUser.isActive()));
             } else {
                 /* *** METHOD BELOW IS TESTED SEPARATELY *** */
-                updateIsActiveForExistingConsultant(tkUser);
+                updateExistingConsultant(tkUser);
             }
         });
     }
 
     //-----------------------------COVERED BY TESTS ---------------------------------
-    private void updateIsActiveForExistingConsultant(TimekeeperUserDto tkUser) {
+    private void updateExistingConsultant(TimekeeperUserDto tkUser) {
         List<Consultant> consultants = getAllConsultants();
         consultants.stream()
                 .filter(consultant -> consultant.getTimekeeperId().equals(tkUser.id()))
@@ -143,11 +145,20 @@ public class ConsultantService {
                         consultant.setActive(tkUser.isActive() && tkUser.isEmployee());
                         consultantRepository.save(consultant);
                     }
+                    if (!tkUser.tags().stream().filter(el -> el.getName().contains("På uppdrag")).toList().isEmpty()
+                            && consultant.getClient() != null && consultant.getClient().equals(PGP.value)) {
+                        consultant.setClient(null);
+                        consultantRepository.save(consultant);
+                    }
+                    else if (!tkUser.tags().stream().filter(el -> el.getName().contains(PGP.value)).toList().isEmpty()) {
+                        consultant.setClient(PGP.value);
+                        consultantRepository.save(consultant);
+                    }
                 });
     }
 
     //-----------------------------COVERED BY TESTS ---------------------------------
-    private void createConsultant(Consultant consultant) {
+    private void saveConsultant(Consultant consultant) {
         consultantRepository.save(consultant);
     }
 
@@ -157,13 +168,14 @@ public class ConsultantService {
     }
 
     //-----------------------------COVERED BY TESTS ---------------------------------
-    public void fillClientAndResponsiblePt() {
+    public void fillClientAndResponsiblePt(List<Consultant> listOfActiveConsultants) {
         String[] responsiblePts = {"Josefin Stål", "Anna Carlsson"};
         Random rand = new Random();
-        List<Consultant> allActiveConsultants = getAllActiveConsultants();
-        allActiveConsultants.forEach(el -> {
+        listOfActiveConsultants.forEach(el -> {
             int rand_int1 = rand.nextInt(2);
-            el.setClient(registeredTimeService.getCurrentClient(el.getId()).trim());
+            if (el.getClient() == null) {
+                el.setClient(registeredTimeService.getCurrentClient(el.getId()).trim());
+            }
             el.setResponsiblePT(responsiblePts[rand_int1]);
             consultantRepository.save(el);
         });

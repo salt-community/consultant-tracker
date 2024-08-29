@@ -56,9 +56,6 @@ public class MeetingsScheduleService {
                             consultant.getId(), List.of(currentClient, REMAINING_DAYS.activity));
                 }
             }
-//            if (!timeChunksByConsultant.getLast().getType().equals(REMAINING_DAYS.activity)) {
-//                continue;
-//            }
            createMeetings(consultant, timeChunksByConsultant);
         }
     }
