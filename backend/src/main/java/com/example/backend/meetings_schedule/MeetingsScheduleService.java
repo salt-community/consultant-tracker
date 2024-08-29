@@ -18,14 +18,15 @@ import java.util.UUID;
 import static com.example.backend.client.timekeeper.Activity.CONSULTANCY_TIME;
 import static com.example.backend.client.timekeeper.Activity.REMAINING_DAYS;
 import static com.example.backend.meetings_schedule.Meetings.*;
+import static java.time.temporal.ChronoUnit.DAYS;
 
 @Service
 public class MeetingsScheduleService {
 
-    private ConsultantService consultantService;
-    private TimeChunksService timeChunksService;
-    private RegisteredTimeService registeredTimeService;
-    private MeetingsScheduleRepository meetingsScheduleRepository;
+    private final ConsultantService consultantService;
+    private final TimeChunksService timeChunksService;
+    private final RegisteredTimeService registeredTimeService;
+    private final MeetingsScheduleRepository meetingsScheduleRepository;
 
     public MeetingsScheduleService(
             @Lazy
@@ -39,62 +40,58 @@ public class MeetingsScheduleService {
         this.meetingsScheduleRepository = meetingsScheduleRepository;
     }
 
-    public void createMeetingsForActiveConsultantsNonPgp() {
+    public void assignMeetingsDatesForActiveConsultants() {
         List<Consultant> activeConsultants = consultantService.getAllActiveConsultants();
-        int firstMeetingWeeks = 4;
-        int secondMeetingWeeks = 20;
-        int thirdMeetingWeeks = 8;
-        int fourthMeetingWeeks = 2;
-
         for (Consultant consultant : activeConsultants) {
             List<String> clients = registeredTimeService.getClientsByConsultantId(consultant.getId());
-            List<TimeChunks> timeChunksByConsultant = new ArrayList<>();
-            if (clients.size() == 1) {
-                timeChunksByConsultant = timeChunksService.getTimeChunksByConsultant(consultant.getId());
-            } else if (clients.size() > 1) {
-                String currentClient = clients.getLast();
-                timeChunksByConsultant = timeChunksService.getTimeChunksByConsultantIdAndClient(
-                        consultant.getId(), List.of(currentClient, REMAINING_DAYS.activity));
-            } else continue;
-
-            if(!timeChunksByConsultant.getLast().getType().equals(REMAINING_DAYS.activity)){
-                continue;
+            List<TimeChunks> timeChunksByConsultant;
+            switch(clients.size()){
+                case 0 -> {
+                    continue;
+                }
+                case 1 -> timeChunksByConsultant = timeChunksService.getTimeChunksByConsultant(consultant.getId());
+                default ->  {
+                    String currentClient = clients.getLast();
+                    timeChunksByConsultant = timeChunksService.getTimeChunksByConsultantIdAndClient(
+                            consultant.getId(), List.of(currentClient, REMAINING_DAYS.activity));
+                }
             }
-            LocalDate firstMeeting = getFirstMeeting(timeChunksByConsultant, firstMeetingWeeks);
-//            LocalDate secondMeeting = getMeetingDate(timeChunksByConsultant, secondMeetingWeeks);
-            LocalDate thirdMeeting = getThirdOrFourthMeetingDate(timeChunksByConsultant, thirdMeetingWeeks);
-            LocalDate fourthMeeting = getThirdOrFourthMeetingDate(timeChunksByConsultant, fourthMeetingWeeks);
-            UUID consultantId = consultant.getId();
-            meetingsScheduleRepository.save(new MeetingsSchedule(
-                    new MeetingsScheduleKey(consultantId,
-                            FIRST),
-                    firstMeeting,
-                    "Upcomming",
-                    consultant.getSaltUser()));
-            meetingsScheduleRepository.save(new MeetingsSchedule(
-                    new MeetingsScheduleKey(consultantId,
-                            THIRD),
-                    thirdMeeting,
-                    "Upcomming",
-                    consultant.getSaltUser()));
-            meetingsScheduleRepository.save(new MeetingsSchedule(
-                    new MeetingsScheduleKey(consultantId,
-                            FOURTH),
-                    fourthMeeting,
-                    "Upcomming",
-                    consultant.getSaltUser()));
+//            if (!timeChunksByConsultant.getLast().getType().equals(REMAINING_DAYS.activity)) {
+//                continue;
+//            }
+           createMeetings(consultant, timeChunksByConsultant);
+        }
+    }
+    private void createMeetings(Consultant consultant, List<TimeChunks> timeChunks){
+        int firstMeetingWeeks = 4;
+        int thirdMeetingWeeks = 8;
+        int fourthMeetingWeeks = 2;
+        LocalDate firstMeeting = getFirstMeetingDate(timeChunks, firstMeetingWeeks);
+        LocalDate secondMeeting = getSecondMeetingDate(timeChunks);
+        LocalDate thirdMeeting = getThirdOrFourthMeetingDate(timeChunks, thirdMeetingWeeks);
+        LocalDate fourthMeeting = getThirdOrFourthMeetingDate(timeChunks, fourthMeetingWeeks);
+        if (firstMeeting != null) {
+            saveMeeting(consultant, FIRST, firstMeeting);
+            saveMeeting(consultant, SECOND, secondMeeting);
+            saveMeeting(consultant, THIRD, thirdMeeting);
+            saveMeeting(consultant, FOURTH, fourthMeeting);
         }
     }
 
-    public LocalDate getFirstMeeting(List<TimeChunks> timeChunks, int weeks) {
-
-        TimeChunks consultancyStart = timeChunks.stream()
-                .filter(t -> t.getType().equalsIgnoreCase(CONSULTANCY_TIME.activity)).findFirst().orElse(null);
-        if (consultancyStart == null) {
+    public void saveMeeting(Consultant consultant, Meetings meetingTitle, LocalDate meetingDate) {
+        meetingsScheduleRepository.save(new MeetingsSchedule(
+                new MeetingsScheduleKey(consultant.getId(),
+                        meetingTitle),
+                meetingDate,
+                "Upcoming",
+                consultant.getSaltUser()));
+    }
+    public LocalDate getFirstMeetingDate(List<TimeChunks> timeChunks, int weeks) {
+        int nonConsultancyTime = 0;
+        LocalDateTime firstDayOfWork = getFirstDayOfWork(timeChunks);
+        if (firstDayOfWork == null) {
             return null;
         }
-        int nonConsultancyTime = 0;
-        LocalDateTime firstDayOfWork = consultancyStart.getId().getStartDate();
         for (TimeChunks tc : timeChunks) {
             if (!tc.getType().equalsIgnoreCase(CONSULTANCY_TIME.activity)
                     && tc.getId().getStartDate().isAfter(firstDayOfWork)
@@ -102,46 +99,35 @@ public class MeetingsScheduleService {
                 nonConsultancyTime += tc.getTotalDays();
             }
         }
-        return consultancyStart.getId().getStartDate().toLocalDate().plusWeeks(weeks).plusDays(nonConsultancyTime);
+        return firstDayOfWork.plusWeeks(weeks).plusDays(nonConsultancyTime).toLocalDate();
+    }
+
+    public LocalDate getSecondMeetingDate(List<TimeChunks> timeChunks) {
+        LocalDateTime firstDayOfWork = getFirstDayOfWork(timeChunks);
+        if (firstDayOfWork == null) {
+            return null;
+        }
+        LocalDateTime estimatedEndDate = timeChunks.getLast().getEndDate();
+        long countWeeksBetween = DAYS.between(firstDayOfWork, estimatedEndDate);
+        return firstDayOfWork.plusDays(countWeeksBetween / 2).toLocalDate();
+    }
+
+    public LocalDate getThirdOrFourthMeetingDate(List<TimeChunks> timeChunks, int weeks) {
+        LocalDateTime estimatedEndDate = timeChunks.getLast().getEndDate();
+        return estimatedEndDate.toLocalDate().minusWeeks(weeks);
     }
 
 
-    public LocalDate getThirdOrFourthMeetingDate(List<TimeChunks> timeChunks, int weeks) {
-//        LocalDate firstDayAtWork = timeChunks.stream()
-//                .filter(tc -> tc.getType().equalsIgnoreCase(CONSULTANCY_TIME.activity))
-//                .toList().getFirst().getId().getStartDate().toLocalDate();
-        TimeChunks remainingDays = timeChunks.stream()
-                .filter(t -> t.getType().equalsIgnoreCase(REMAINING_DAYS.activity)).findFirst().orElse(null);
-        if (remainingDays == null) {
-            return null;
-        }
-        return remainingDays.getEndDate().toLocalDate().minusWeeks(weeks);
-
-//        int weekFirstDay = firstDayAtWork.get(WeekFields.of(Locale.ENGLISH).weekOfYear());
-//        int firstKonsultTidDays = timeChunks.getFirst().getTotalDays();
-//        if (firstKonsultTidDays >= workingDaysTillFirstMeeting) {
-//            return nextMeetingDate;
-//        } else {
-////            List<TimeChunks> nonConsultancyTime = timeChunks.stream()
-//            int nonConsultancyTime = 0;
-//            for (TimeChunks tc : timeChunks) {
-//                if (!tc.getType().equalsIgnoreCase(CONSULTANCY_TIME.activity)
-//                        && tc.getId().getStartDate().getDayOfYear() > startDate.getDayOfYear()
-//                        && tc.getId().getStartDate().getDayOfYear() < nextMeetingDate.getDayOfYear()) {
-//                    nonConsultancyTime += tc.getTotalDays();
-//                }
-//            }
-//            System.out.println("nonConsultancyTime = " + nonConsultancyTime);
-//            System.out.println("nextMeetingDate before = " + nextMeetingDate);
-//            nextMeetingDate = nextMeetingDate.plusDays(nonConsultancyTime);
-//        }
-//        return nextMeetingDate;
+    private LocalDateTime getFirstDayOfWork(List<TimeChunks> timeChunks) {
+        TimeChunks consultancyStart = timeChunks.stream()
+                .filter(t -> t.getType().equalsIgnoreCase(CONSULTANCY_TIME.activity)).findFirst().orElse(null);
+        return consultancyStart == null ? null : consultancyStart.getId().getStartDate();
     }
 
     public List<MeetingsDto> getMeetingsDto(UUID id) {
         List<MeetingsSchedule> meetingsSchedules = meetingsScheduleRepository.findAllById_ConsultantIdOrderByDateAsc(id);
         System.out.println("meetingsSchedules = " + meetingsSchedules);
-        if(meetingsSchedules.isEmpty()){
+        if (meetingsSchedules.isEmpty()) {
             return new ArrayList<>();
         }
         return meetingsSchedules.stream()

@@ -1,6 +1,5 @@
 package com.example.backend.meetings_schedule;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +19,6 @@ public class MeetingsController {
 
     @GetMapping
     public void saveMeetings() {
-        meetingsScheduleService.createMeetingsForActiveConsultantsNonPgp();
+        meetingsScheduleService.assignMeetingsDatesForActiveConsultants();
     }
 }
