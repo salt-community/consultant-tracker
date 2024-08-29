@@ -9,6 +9,7 @@ import com.example.backend.meetings_schedule.dto.MeetingsDto;
 import com.example.backend.registeredTime.RegisteredTimeService;
 import com.example.backend.tag.Tag;
 import com.example.backend.timeChunks.TimeChunksService;
+import jakarta.annotation.PostConstruct;
 import lombok.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

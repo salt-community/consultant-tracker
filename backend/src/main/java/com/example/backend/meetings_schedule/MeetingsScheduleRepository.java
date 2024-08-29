@@ -8,5 +8,5 @@ import java.util.UUID;
 
 @Repository
 public interface MeetingsScheduleRepository extends JpaRepository<MeetingsSchedule, UUID> {
-    List<MeetingsSchedule> findAllById_ConsultantId(UUID consultantId);
+    List<MeetingsSchedule> findAllById_ConsultantIdOrderByDateAsc(UUID consultantId);
 }

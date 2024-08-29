@@ -117,7 +117,7 @@ class RegisteredTimeRepositoryTest {
     void shouldReturn_ListOf1_HandM() {
         List<String> expectedResultList = List.of("H&M");
         String expectedProjectName = "H&M";
-        List<String> actualResult = registeredTimeRepository.findDistinctProjectNameBydId_ConsultantId(mockedId);
+        List<String> actualResult = registeredTimeRepository.findDistinctProjectNameBydId_ConsultantIdOrderById_StartDateAsc(mockedId);
         assertEquals(expectedResultList.size(), actualResult.size());
         assertEquals(expectedProjectName, actualResult.getFirst());
     }
@@ -142,7 +142,7 @@ class RegisteredTimeRepositoryTest {
         registeredTimeRepository.save(registeredTime2);
         UUID consultantId = registeredTime1.getId().getConsultantId();
         List<String> expectedResult = List.of(clientA, clientB);
-        List<String> actualResult = registeredTimeRepository.findDistinctProjectNameBydId_ConsultantId(consultantId);
+        List<String> actualResult = registeredTimeRepository.findDistinctProjectNameBydId_ConsultantIdOrderById_StartDateAsc(consultantId);
         System.out.println("actualResult = " + actualResult);
         assertEquals(expectedResult.size(), actualResult.size());
         assertEquals(clientA, actualResult.getFirst());

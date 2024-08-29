@@ -209,7 +209,7 @@ public class RegisteredTimeService {
     }
 
     public List<String> getClientsByConsultantId(UUID consultantId) {
-        return registeredTimeRepository.findDistinctProjectNameBydId_ConsultantId(consultantId);
+        return registeredTimeRepository.findDistinctProjectNameBydId_ConsultantIdOrderById_StartDateAsc(consultantId);
     }
 
     public LocalDate getStartDateByClientAndConsultantId(String client, UUID consultantId) {
