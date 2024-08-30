@@ -123,7 +123,6 @@ public class MeetingsScheduleService {
 
     public List<MeetingsDto> getMeetingsDto(UUID id) {
         List<MeetingsSchedule> meetingsSchedules = meetingsScheduleRepository.findAllById_ConsultantIdOrderByDateAsc(id);
-        System.out.println("meetingsSchedules = " + meetingsSchedules);
         if (meetingsSchedules.isEmpty()) {
             return new ArrayList<>();
         }

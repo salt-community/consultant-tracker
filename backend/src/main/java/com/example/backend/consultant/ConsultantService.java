@@ -145,12 +145,12 @@ public class ConsultantService {
                         consultant.setActive(tkUser.isActive() && tkUser.isEmployee());
                         consultantRepository.save(consultant);
                     }
-                    if (!tkUser.tags().stream().filter(el -> el.getName().contains("På uppdrag")).toList().isEmpty()
+                    if (tkUser.tags() != null && !tkUser.tags().stream().filter(el -> el.getName().contains("På uppdrag")).toList().isEmpty()
                             && consultant.getClient() != null && consultant.getClient().equals(PGP.value)) {
                         consultant.setClient(null);
                         consultantRepository.save(consultant);
                     }
-                    else if (!tkUser.tags().stream().filter(el -> el.getName().contains(PGP.value)).toList().isEmpty()) {
+                    else if (tkUser.tags() != null && !tkUser.tags().stream().filter(el -> el.getName().contains(PGP.value)).toList().isEmpty()) {
                         consultant.setClient(PGP.value);
                         consultantRepository.save(consultant);
                     }
