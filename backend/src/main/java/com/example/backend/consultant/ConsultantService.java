@@ -145,8 +145,7 @@ public class ConsultantService {
                         consultant.setActive(tkUser.isActive() && tkUser.isEmployee());
                         consultantRepository.save(consultant);
                     }
-                    if (tkUser.tags() != null && !tkUser.tags().stream().filter(el -> el.getName().contains("På uppdrag")).toList().isEmpty()
-                            && consultant.getClient() != null && consultant.getClient().equals(PGP.value)) {
+                    if (tkUser.tags() != null && !tkUser.tags().stream().filter(el -> el.getName().contains("På uppdrag")).toList().isEmpty()) {
                         consultant.setClient(null);
                         consultantRepository.save(consultant);
                     }
