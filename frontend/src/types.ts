@@ -1,46 +1,22 @@
-import dayjs, { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 import React from "react";
 
-// export type InfographicType = {
-//   title: string;
-//   amount: number;
-// };
-
-// export type ConsultantDataType = {
-//   id: string;
-//   name: string;
-//   clientId: string;
-//   client: string;
-//   pt: string
-// };
-
-// export type HeaderCellsType = {
-//   id: keyof ConsultantFetchType;
-//   label: string;
-// };
-export type InfographicResponseType={
+export type InfographicResponseType = {
   totalConsultants: number,
   ptsConsultants: number
 }
-export type InfographicDataType ={
+export type InfographicDataType = {
   title: string,
   amount: number,
   variant: string
 }
 
 export type ClientDataType = {
-  // id: string;
   name: string;
   startDate: string;
   endDate: string;
 };
 
-export type AbsenceType = {
-  description: string;
-  startDateAbsence: string;
-  endDateAbsence?: string;
-  absenceHours?: number;
-};
 
 export type MeetingsType = {
   year: number;
@@ -48,67 +24,29 @@ export type MeetingsType = {
   title: string;
 };
 
-export type ConsultantDetailsDataType = {
-  id: string;
-  name: string;
-  client: ClientDataType[];
-  pt: string;
-  absence: AbsenceType[];
-  phone: string;
-  startDate: string;
-  remainingHours: number;
-  email: string;
-  meetings: MeetingsType[];
-};
-
-export type ContactPeopleType = {
-  id: string;
-  name: string;
-  phone: string;
-  email: string;
-};
-
-export type CompanyConsultantsType = {
-  id: string;
-  name: string;
-};
-
-export type ClientsDetailsDataType = {
-  id: string;
-  name: string;
-  contactPeople: ContactPeopleType[];
-  listOfConsultants: CompanyConsultantsType[];
-};
-
-export type ConsultantsCalendarType = {
-  id: number;
-  title: string;
-};
 
 export type ConsultantItemsType = {
-  id: string;
-  group: string;
-  title?: React.ReactNode | undefined;
-  start_time: Dayjs;
-  end_time: Dayjs;
-  canMove?: boolean | undefined;
-  details: detailsType,
-  onDoubleClick?: (()=> void) |undefined
-  onItemClick?: (()=> void) |undefined
-  canResize?: boolean | "left" | "right" | "both" | undefined;
-  canChangeGroup?: boolean | undefined;
-  className?: string | undefined;
-  style?: React.CSSProperties | undefined;
+  start_time: dayjs.Dayjs,
   itemProps?: React.HTMLAttributes<HTMLDivElement> | undefined;
-};
-export type detailsType={
-  name: string,
-  responsiblePt: string,
-  client: string,
-  country: string,
-  totalDays: number,
-  projectName: string,
-  totalDaysStatistics: TotalDaysStatisticsType,
+  end_time: dayjs.Dayjs,
+  details: {
+    responsiblePt: string,
+    country: string,
+    totalDays: number,
+    name: string,
+    client: string,
+    totalDaysStatistics: {
+      totalRemainingHours: number,
+      totalWorkedHours: number,
+      totalWorkedDays: number,
+      totalVacationDaysUsed: number,
+      totalRemainingDays: number
+    },
+    projectName: string
+  },
+  id: string,
+  title: string,
+  group: string
 }
 
 export type ConsultantCalendarType = {
@@ -132,16 +70,16 @@ export type ConsultantFetchType = {
   country: string
 }
 
-  export type TotalDaysStatisticsType = {
-    totalRemainingDays: number,
-    totalWorkedDays: number,
-    totalVacationDaysUsed: number,
-    totalSickDays: number,
-    totalParentalLeaveDays: number,
-    totalVABDays: number,
-    totalUnpaidVacationDays: number,
-    totalRemainingHours: number,
-    totalWorkedHours: number
+export type TotalDaysStatisticsType = {
+  totalRemainingDays: number,
+  totalWorkedDays: number,
+  totalVacationDaysUsed: number,
+  totalSickDays: number,
+  totalParentalLeaveDays: number,
+  totalVABDays: number,
+  totalUnpaidVacationDays: number,
+  totalRemainingHours: number,
+  totalWorkedHours: number
 }
 
 export type RegisteredTimeItemType = {
@@ -153,11 +91,11 @@ export type RegisteredTimeItemType = {
   projectName: string
 }
 
-export type AllClientsAndResponsiblePtResponse ={
+export type ClientsAndPtsListResponseType = {
   pts: string[],
   clients: string[]
 }
-export type RedDaysResponseType ={
+export type RedDaysResponseType = {
   redDaysSE: string[],
   redDaysNO: string[],
 }

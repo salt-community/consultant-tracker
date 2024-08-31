@@ -1,21 +1,23 @@
-import { selectColor } from "@/utils/utils";
+import {selectColor} from "@/utils/utils";
 import * as React from "react";
-import Link from "next/link";
-
-export const itemRenderer = ({ item, itemContext, getItemProps }) => {
+type Props={
+  item: any,
+  itemContext: any,
+  getItemProps: any
+}
+export const itemRenderer = ({item, itemContext, getItemProps}:Props) => {
   const chosenColor = selectColor(item.title);
   const background = itemContext.selected
     ? chosenColor
-    : item.itemProps.style.background;
+    : item.itemProps!.style!.background;
   const borderColor = itemContext.selected
     ? "black"
-    : item.itemProps.style.borderColor;
+    : item.itemProps!.style!.borderColor;
   return (
     <div
       {...getItemProps({
         style: {
           background,
-          color: item.color,
           borderColor,
           borderStyle: "solid",
           borderWidth: 1,
@@ -28,10 +30,12 @@ export const itemRenderer = ({ item, itemContext, getItemProps }) => {
   );
 };
 
-export const groupsRenderer = ({ group }) => {
+type GroupProps = {
+  group: any
+}
+
+export const groupsRenderer = ({group}:GroupProps) => {
   return (
-    // <Link href={`consultants/${group.id}`} className="consultant-details__link">
-        <span className="title">{group.title}</span>
-    // </Link>
+    <span className="title">{group.title}</span>
   );
 };

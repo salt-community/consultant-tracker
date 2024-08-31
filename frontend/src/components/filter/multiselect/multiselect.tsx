@@ -5,13 +5,12 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, {SelectChangeEvent} from '@mui/material/Select';
 import {Checkbox, ListItemText} from "@mui/material";
-import {Dispatch, SetStateAction} from "react";
 
 type Props = {
   fullList: string[];
   handleSelection: (el: string[]) => void,
   selected: string[],
-  setSelection: Dispatch<SetStateAction<string[]>>,
+  setSelection: (arr: string[]) => void,
   label: string
 }
 const Multiselect = ({fullList, handleSelection, selected, setSelection, label}: Props) => {

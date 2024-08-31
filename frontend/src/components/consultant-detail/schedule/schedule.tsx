@@ -1,7 +1,6 @@
 "use client";
 
-import { consultantDetailsData } from "@/mockData";
-import { ConsultantDetailsDataType, MeetingsType } from "@/types";
+import { MeetingsType } from "@/types";
 import React, { useEffect, useState } from "react";
 import "./schedules.css";
 import SingleDetailField from "@/components/single-detail-field/single-detail-field";

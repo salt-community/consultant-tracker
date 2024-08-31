@@ -1,12 +1,13 @@
 import {
-  ClientDataType,
   ConsultantCalendarType,
-  ConsultantFetchType,
+  ConsultantFetchType, ConsultantItemsType,
   RegisteredTimeItemType,
 } from "@/types";
-import dayjs, { Dayjs } from "dayjs";
-import moment from "moment/moment";
+import dayjs from "dayjs";
+import moment, {Moment} from "moment/moment";
 
+export const user = "Josefin Stål"
+// export const user = "Stella Asplund" // FOR DEMO
 export const selectColor = (type: string) => {
   switch (type) {
     case "Konsult-tid":
@@ -36,7 +37,17 @@ export const encodeString = (value: string[], prefix: string) => {
     .replaceAll(".", "%2E");
 };
 
-export const mapConsultantsToCalendarItems = (res: ConsultantCalendarType) => {
+export const mapGroups = (res: any) => {
+  return res.consultants.map((el: ConsultantFetchType) => {
+    const title =
+      el.country === "NO"
+        ? el.fullName + ` (${el.country})`
+        : el.fullName;
+    return {id: el.id, title: title};
+  });
+}
+
+export const mapConsultantsToCalendarItems = (res: ConsultantCalendarType): ConsultantItemsType[] => {
   return res.consultants.flatMap((el: ConsultantFetchType) => {
     return el.registeredTimeDtoList.map((item: RegisteredTimeItemType) => {
       const {
@@ -82,10 +93,10 @@ export const mapConsultantsToCalendarItems = (res: ConsultantCalendarType) => {
 };
 
 export const verticalLineClassNamesForTime = (
-  timeStart,
-  timeEnd,
-  redDaysSE,
-  redDaysNO
+  timeStart: number,
+  timeEnd: number,
+  redDaysSE: Moment[],
+  redDaysNO: Moment[]
 ) => {
   const currentTimeStart = moment(timeStart);
   const currentTimeEnd = moment(timeEnd);

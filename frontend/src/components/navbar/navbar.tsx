@@ -1,14 +1,14 @@
 import React from 'react';
 import Logo from "@/components/navbar/logo/logo";
 import './navbar.css'
-import HamburgerMenu from "@/components/navbar/hamburger-menu/hamburger-menu";
 import Link from "next/link";
+import SignOut from "@/components/navbar/sign-out/sign-out";
 
 const Navbar = () => {
   return (
     <div className="navbar-container">
       <Link href="/"><Logo /></Link>
-      <HamburgerMenu />
+      <Link href="/"><SignOut /></Link>
     </div>
   );
 };

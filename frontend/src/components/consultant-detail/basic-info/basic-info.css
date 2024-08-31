@@ -38,3 +38,11 @@
     align-self: start;
     border-radius: 50%;
 }
+
+.show {
+    display: flex;
+}
+
+.hide {
+    display: none;
+}

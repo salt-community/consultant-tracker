@@ -38,14 +38,6 @@
     position: relative;
 }
 
-.show {
-  display: flex;
-}
-
-.hide {
-  display: none;
-}
-
 .gantt-chart__no-data {
   padding: 10px;
 }

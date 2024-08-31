@@ -1,25 +1,19 @@
 "use client";
 
-import { Dispatch, SetStateAction, SyntheticEvent, useState } from "react";
+import {SyntheticEvent, useState } from "react";
 import TabsComponent from "../tabs/tabs";
 import Schedule from "../consultant-detail/schedule/schedule";
 import AbsenceInfo from "@/components/consultant-detail/absence-info/absence-info";
 import Client from "../consultant-detail/client/client";
 import PersonalData from "../consultant-detail/basic-info/personal-data/personal-data";
-import { ConsultantFetchType, ConsultantItemsType } from "@/types";
+import { ConsultantFetchType} from "@/types";
 
 type Props = {
   personalData: ConsultantFetchType;
-  modalData: ConsultantItemsType;
-  openTooltip: boolean;
-  setOpenTooltip: Dispatch<SetStateAction<boolean>>;
 };
 
 const CardDetails = ({
   personalData,
-  modalData,
-  openTooltip,
-  setOpenTooltip,
 }: Props) => {
   const [value, setValue] = useState("personalData");
   const {
@@ -27,7 +21,6 @@ const CardDetails = ({
     phoneNumber,
     client,
     totalDaysStatistics,
-    registeredTimeDtoList,
   } = personalData;
 
   const handleChange = (event: SyntheticEvent, newValue: string) => {

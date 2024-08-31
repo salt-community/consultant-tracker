@@ -1,53 +1,68 @@
 "use client";
-import {
-  ChangeEvent,
-  Dispatch,
-  SetStateAction,
-} from "react";
+import {ChangeEvent, useEffect} from "react";
 import "./filter.css";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Multiselect from "@/components/filter/multiselect/multiselect";
-type Props = {
-  lisOfResponsiblePt: string[];
-  listOfClients: string[];
-  filterPts: string[];
-  filterClients: string[];
-  setFilterPts: Dispatch<SetStateAction<string[]>>;
-  setFilterClients: Dispatch<SetStateAction<string[]>>;
-  setFilterName: Dispatch<SetStateAction<string>>;
-  filterName: string;
-};
-function FilterField({
-  lisOfResponsiblePt,
-  listOfClients,
-  filterPts,
-  filterClients,
-  setFilterPts,
+import {useDispatch, useSelector} from "react-redux";
+import {AppDispatch, RootState} from "@/store/store";
+import {
+  setDebounceFilterName,
   setFilterClients,
   setFilterName,
-  filterName
-}: Props) {
+  setFilterPts,
+  setListOfClients,
+  setListOfPts
+} from "@/store/slices/FilterFieldSlice";
+import {user} from "@/utils/utils";
+import {ClientsAndPtsListResponseType} from "@/types";
+import {getAllClientsAndPts} from "@/api";
+import {setPage} from "@/store/slices/PaginationSlice";
 
+
+function FilterField() {
+  const filterPts = useSelector((state: RootState) => state.filterField.filterPts)
+  const filterClients = useSelector((state: RootState) => state.filterField.filterClients)
+  const filterName = useSelector((state: RootState) => state.filterField.filterName)
+  const listOfClients = useSelector((state: RootState) => state.filterField.listOfClients)
+  const listOfPts = useSelector((state: RootState) => state.filterField.listOfPts)
+
+  const dispatch = useDispatch<AppDispatch>();
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setFilterName(e.target.value)
+    dispatch(setPage(0));
+    dispatch(setFilterName(e.target.value));
   };
 
-  const handleClear = () => {
-    setFilterPts(["Josefin Stål"]);
-    /* *** FOR DEMO *** */
-    // setFilterPts(["Stella Asplund"]);
-    setFilterClients([]);
-    setFilterName("")
-  };
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      dispatch(setDebounceFilterName(filterName));
+    }, 500);
+    return () => clearTimeout(delayDebounceFn);
+  }, [filterName, 500]);
 
   const handlePtsSelection = (selectionArr: string[]) => {
-    setFilterPts(selectionArr);
+    dispatch(setPage(0));
+    dispatch(setFilterPts(selectionArr));
   };
 
   const handleClientSelection = (selectionArr: string[]) => {
-    setFilterClients(selectionArr);
+    dispatch(setPage(0));
+    dispatch(setFilterClients(selectionArr));
   };
+
+  const handleClear = () => {
+    dispatch(setFilterPts([user]));
+    dispatch(setFilterClients([]));
+    dispatch(setFilterName(""))
+  };
+
+  useEffect(() => {
+    getAllClientsAndPts()
+      .then((res: ClientsAndPtsListResponseType) => {
+        dispatch(setListOfPts(res.pts));
+        dispatch(setListOfClients(res.clients));
+      });
+  }, []);
 
   return (
     <section className="filter-section">
@@ -66,14 +81,14 @@ function FilterField({
         <Multiselect
           fullList={listOfClients}
           handleSelection={handleClientSelection}
-          setSelection={setFilterClients}
+          setSelection={(clients)=>dispatch(setFilterClients(clients))}
           selected={filterClients}
           label="Filter by client"
         />
         <Multiselect
-          fullList={lisOfResponsiblePt}
+          fullList={listOfPts}
           handleSelection={handlePtsSelection}
-          setSelection={setFilterPts}
+          setSelection={(pts)=>dispatch(setFilterPts(pts))}
           selected={filterPts}
           label="Filter by responsible pt"
         />

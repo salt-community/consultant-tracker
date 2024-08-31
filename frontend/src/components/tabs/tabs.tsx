@@ -24,8 +24,6 @@ const TabsComponent = ({handleChange, value}: Props) => {
           const {label, id, value} = tab
           return <Tab value={value} label={label} key={id}/>
         })}
-
-
       </Tabs>
     </Box>
   );

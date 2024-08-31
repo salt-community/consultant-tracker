@@ -1,9 +1,6 @@
 import type {Metadata} from "next";
 import "./globals.css";
 import React from "react";
-import {TableContextProvider} from "@/context/table";
-import {DetailsContextProvider} from "@/context/details";
-import {ClientsContextProvider} from "@/context/clients";
 
 
 export const metadata: Metadata = {
@@ -16,13 +13,7 @@ export default function RootLayout({children}: Readonly<{
 }>) {
   return (
     <html lang="en">
-    <TableContextProvider>
-      <DetailsContextProvider>
-        <ClientsContextProvider>
-          <body>{children}</body>
-        </ClientsContextProvider>
-      </DetailsContextProvider>
-    </TableContextProvider>
+    <body>{children}</body>
     </html>
   );
 }
