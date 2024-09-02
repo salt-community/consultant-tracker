@@ -4,6 +4,8 @@ package com.example.backend.demo.demoConsultant;
 import com.example.backend.consultant.ConsultantService;
 import com.example.backend.consultant.dto.*;
 import com.example.backend.exceptions.ConsultantNotFoundException;
+import com.example.backend.meetings_schedule.MeetingsScheduleService;
+import com.example.backend.meetings_schedule.dto.MeetingsDto;
 import com.example.backend.registeredTime.RegisteredTimeService;
 import com.example.backend.timeChunks.TimeChunksService;
 import lombok.AllArgsConstructor;
@@ -12,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -22,6 +25,7 @@ public class DemoConsultantService {
     RegisteredTimeService registeredTimeService;
     TimeChunksService timeChunksService;
     ConsultantService consultantService;
+    MeetingsScheduleService meetingsScheduleService;
 
     public ConsultantResponseListDto getAllDemoConsultantDtos(int page, int pageSize, String name, List<String> pt, List<String> client) {
         Page<DemoConsultant> consultantsList = getAllDemoConsultantsPageable(page, pageSize, name, pt, client);
@@ -66,10 +70,11 @@ public class DemoConsultantService {
         return resultList;
     }
 
-//    public SingleConsultantResponseListDto getDemoConsultantById(UUID id) {
-//        DemoConsultant consultantById = demoConsultantRepo.findById(id).orElseThrow(() -> new ConsultantNotFoundException("Consultant with such id not found."));
-//        TotalDaysStatisticsDto totalDaysStatistics = registeredTimeService.getAllDaysStatistics(id);
-//        List<ClientsListDto> clientsList = consultantService.getClientListByConsultantId(id);
-//        return SingleConsultantResponseListDto.toDto(consultantById, totalDaysStatistics, clientsList);
-//    }
+    public SingleConsultantResponseListDto getDemoConsultantById(UUID id) {
+        DemoConsultant consultantById = demoConsultantRepo.findById(id).orElseThrow(() -> new ConsultantNotFoundException("Consultant with such id not found."));
+        TotalDaysStatisticsDto totalDaysStatistics = registeredTimeService.getAllDaysStatistics(id);
+        List<ClientsListDto> clientsList = List.of(new ClientsListDto(consultantById.getClient(), LocalDate.now(), LocalDate.now()));
+        List<MeetingsDto> meetings = meetingsScheduleService.getMeetingsDto(id);
+        return SingleConsultantResponseListDto.toDto(consultantById, totalDaysStatistics, clientsList, meetings);
+    }
 }
