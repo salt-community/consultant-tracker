@@ -19,13 +19,13 @@ const Schedule = ({ meetings }: Props) => {
   const formatTitle = (title: string) => {
     switch (title) {
       case "FIRST":
-        return "First regular meeting";
+        return "1st regular meeting";
       case "SECOND":
-        return "Second regular meeting";
+        return "2nd regular meeting";
       case "THIRD":
-        return "Third regular meeting";
+        return "3rd regular meeting";
       case "FOURTH":
-        return "Fourth regular meeting";
+        return "4th regular meeting";
       default:
         return "Not Scheduled";
     }

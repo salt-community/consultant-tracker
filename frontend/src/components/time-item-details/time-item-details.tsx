@@ -22,6 +22,8 @@ function TimeItemDetails() {
           <h3>{content.title}</h3>
           <hr />
           <SingleDetailField title="Client" content={content.details.projectName}/>
+          {/* FOR DEMO */}
+          {/* <SingleDetailField title="Client" content={content.details.client}/> */}
           <SingleDetailField title="Total Days Selected" content={`${content.details.totalDays}`}/>
           <SingleDetailField title="Start Date" content={content.start_time.format("ddd, DD-MMM-YYYY")}/>
           <SingleDetailField title="End Date" content={content.end_time.format("ddd, DD-MMM-YYYY")}/>

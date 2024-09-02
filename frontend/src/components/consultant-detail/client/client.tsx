@@ -2,7 +2,8 @@
 
 import { ClientDataType, RegisteredTimeItemType } from "@/types";
 import { useEffect, useState } from "react";
-import "../basic-info/basic-info.css";
+import "./client.css";
+import SingleDetailField from "@/components/single-detail-field/single-detail-field";
 
 type Props = {
   clientList: ClientDataType[];
@@ -29,14 +30,12 @@ const Client = ({ clientList }: Props) => {
         {clientList.map((item) => {
           const { name, startDate, endDate } = item;
           return (
-            <div key={name}>
-              <div className="basic-info__contact-title">
-                <h3>{name}</h3>
-                <p>Start Date: {startDate}</p>
-                <p>End Date: {endDate}</p>
-              </div>
-              {/* <p>Start date : {startDate}</p>
-              <p>End date: {endDate}</p> */}
+            <div key={name} className="basic-info__client-wrapper">
+
+                <h3 className="basic-info__client-title">{name}</h3>
+                <SingleDetailField title="Start Date" content={startDate}/>
+                <SingleDetailField title="End Date" content={endDate}/>
+
             </div>
           );
         })}
