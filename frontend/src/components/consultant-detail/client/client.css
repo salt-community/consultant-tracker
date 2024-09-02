@@ -1,8 +1,8 @@
 .basic-info__client-wrapper {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    margin-bottom: 10px;
+    gap: 5px;
+    margin-bottom: 20px;
 }
 
 .basic-info__client-title {

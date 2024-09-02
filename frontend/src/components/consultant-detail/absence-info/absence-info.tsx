@@ -4,9 +4,8 @@ import {useSelector} from "react-redux";
 import {RootState} from "@/store/store";
 
 
-
 const AbsenceInfo = () => {
-  const totalDaysStatistics =  useSelector((state: RootState)=> state.basicInfo.personalData.totalDaysStatistics)
+  const totalDaysStatistics = useSelector((state: RootState) => state.basicInfo.personalData.totalDaysStatistics)
   const {
     totalVacationDaysUsed,
     totalSickDays,
@@ -15,23 +14,25 @@ const AbsenceInfo = () => {
     totalUnpaidVacationDays,
   } = totalDaysStatistics;
   return (
-    <div className="absence-info__wrapper">
-      <h4>Total days used:</h4>
-      <div className="absence-info__content">
-        <SingleDetailField
-          title="Vacation"
-          content={`${totalVacationDaysUsed}`}
-        />
-        <SingleDetailField title="Sick" content={`${totalSickDays}`} />
-        <SingleDetailField
-          title="Parental leave"
-          content={`${totalParentalLeaveDays}`}
-        />
-        <SingleDetailField title="VAB" content={`${totalVABDays}`} />
-        <SingleDetailField
-          title="Unpaid leave"
-          content={`${totalUnpaidVacationDays}`}
-        />
+    <div className="absence-info__container">
+      <div className="absence-info__wrapper">
+        <h4>Total days used</h4>
+        <div className="absence-info__content">
+          <SingleDetailField
+            title="Vacation"
+            content={`${totalVacationDaysUsed}`}
+          />
+          <SingleDetailField title="Sick" content={`${totalSickDays}`}/>
+          <SingleDetailField
+            title="Parental leave"
+            content={`${totalParentalLeaveDays}`}
+          />
+          <SingleDetailField title="VAB" content={`${totalVABDays}`}/>
+          <SingleDetailField
+            title="Unpaid leave"
+            content={`${totalUnpaidVacationDays}`}
+          />
+        </div>
       </div>
     </div>
   );
