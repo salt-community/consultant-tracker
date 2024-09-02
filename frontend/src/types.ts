@@ -5,6 +5,7 @@ export type InfographicResponseType = {
   totalConsultants: number,
   ptsConsultants: number
 }
+
 export type InfographicDataType = {
   title: string,
   amount: number,
@@ -23,7 +24,6 @@ export type MeetingsType = {
   weekNumber: number;
   title: string;
 };
-
 
 export type ConsultantItemsType = {
   start_time: dayjs.Dayjs,
@@ -95,6 +95,7 @@ export type ClientsAndPtsListResponseType = {
   pts: string[],
   clients: string[]
 }
+
 export type RedDaysResponseType = {
   redDaysSE: string[],
   redDaysNO: string[],

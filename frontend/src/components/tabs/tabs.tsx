@@ -2,7 +2,7 @@ import {SyntheticEvent} from "react";
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
-import {tabs} from "@/mockData";
+import {tabs} from "@/data";
 import "./tabs.css"
 
 type Props = {
