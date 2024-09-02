@@ -14,7 +14,7 @@ const Client = () => {
           const { name, startDate, endDate } = item;
           return (
             <div key={name} className="basic-info__client-wrapper">
-                <h3 className="basic-info__client-title">{name}</h3>
+                <h4 className="basic-info__client-title">{name}</h4>
                 <SingleDetailField title="Start Date" content={startDate}/>
                 <SingleDetailField title="End Date" content={endDate}/>
             </div>

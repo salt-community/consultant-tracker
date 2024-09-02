@@ -1,20 +1,15 @@
 import "./single-detail-field.css";
+import { MdOutlineContentCopy } from "react-icons/md";
 type Props = {
   title: string;
   content: string;
+  onClick?: ()=>void
 };
-const SingleDetailField = ({ title, content }: Props) => {
-  let content2 = "";
-  if (content.includes("@")) {
-    const splitContent = content.split("@");
-    content = splitContent[0];
-    content2 = splitContent[1];
-  }
+const SingleDetailField = ({ title, content, onClick }: Props) => {
   return (
-    <div className="details__wrapper">
+    <div className="details__wrapper" onClick={onClick && onClick}>
       <p className="details__title">{title}:</p>
-      <p>{content}</p>
-      {content2.length > 0 && <p>{`@${content2}`}</p>}
+      <p className={onClick ? "content-copy" : ""}>{content} {onClick && <MdOutlineContentCopy />}</p>
     </div>
   );
 };

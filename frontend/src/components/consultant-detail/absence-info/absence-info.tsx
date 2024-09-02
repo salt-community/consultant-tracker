@@ -16,7 +16,7 @@ const AbsenceInfo = () => {
   } = totalDaysStatistics;
   return (
     <div className="absence-info__wrapper">
-      <h3>Total days used:</h3>
+      <h4>Total days used:</h4>
       <div className="absence-info__content">
         <SingleDetailField
           title="Vacation"
