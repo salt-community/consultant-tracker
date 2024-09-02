@@ -57,7 +57,6 @@ public class ConsultantService {
         TotalDaysStatisticsDto totalDaysStatistics = registeredTimeService.getAllDaysStatistics(id);
         List<ClientsListDto> clientsListDto = getClientListByConsultantId(id);
         List<MeetingsDto> meetings = meetingsScheduleService.getMeetingsDto(id);
-        System.out.println("meetings = " + meetings);
         return SingleConsultantResponseListDto.toDto(consultantById, totalDaysStatistics, clientsListDto, meetings);
     }
 
@@ -73,6 +72,17 @@ public class ConsultantService {
                 clientsListDto.add(new ClientsListDto(client, startDate, endDate));
             }
         }
+        if (clientsListDto.size() > 1) {
+            clientsListDto.sort(new Comparator<ClientsListDto>() {
+                public int compare(ClientsListDto o1, ClientsListDto o2) {
+                    if (o1.startDate() == null || o2.startDate() == null)
+                        return 0;
+                    return o2.startDate().compareTo(o1.startDate());
+                }
+            });
+        }
+
+        System.out.println("clientsListDto = " + clientsListDto);
         return clientsListDto;
     }
 
@@ -98,7 +108,7 @@ public class ConsultantService {
         return consultantRepository.findAllByActiveTrue();
     }
 
-    @PostConstruct
+    //    @PostConstruct
     @Scheduled(cron = "0 0 0 * * *")
     public void fetchDataFromTimekeeper() {
         List<TimekeeperUserDto> timekeeperUserDto = timekeeperClient.getUsers();
@@ -148,8 +158,7 @@ public class ConsultantService {
                     if (tkUser.tags() != null && !tkUser.tags().stream().filter(el -> el.getName().contains("På uppdrag")).toList().isEmpty()) {
                         consultant.setClient(null);
                         consultantRepository.save(consultant);
-                    }
-                    else if (tkUser.tags() != null && !tkUser.tags().stream().filter(el -> el.getName().contains(PGP.value)).toList().isEmpty()) {
+                    } else if (tkUser.tags() != null && !tkUser.tags().stream().filter(el -> el.getName().contains(PGP.value)).toList().isEmpty()) {
                         consultant.setClient(PGP.value);
                         consultantRepository.save(consultant);
                     }
