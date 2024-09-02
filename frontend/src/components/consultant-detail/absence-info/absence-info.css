@@ -6,5 +6,12 @@
 .absence-info__wrapper:nth-child(n) div{
     display: flex;
     gap: 10px;
-    align-items: center;
+    align-items: baseline;
+}
+
+.absence-info__content {
+    /* display: flex; */
+    flex-direction: column;
+    /* align-items: flex-start; */
+    padding-left: 10px;
 }
