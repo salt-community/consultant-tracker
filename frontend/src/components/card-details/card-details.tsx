@@ -6,23 +6,13 @@ import Schedule from "../consultant-detail/schedule/schedule";
 import AbsenceInfo from "@/components/consultant-detail/absence-info/absence-info";
 import Client from "../consultant-detail/client/client";
 import PersonalData from "../consultant-detail/basic-info/personal-data/personal-data";
-import { ConsultantFetchType} from "@/types";
+import {useSelector} from "react-redux";
+import {RootState} from "@/store/store";
 
-type Props = {
-  personalData: ConsultantFetchType;
-};
 
-const CardDetails = ({
-  personalData,
-}: Props) => {
+const CardDetails = () => {
   const [value, setValue] = useState("personalData");
-  const {
-    email,
-    phoneNumber,
-    client,
-    totalDaysStatistics,
-  } = personalData;
-
+  const personalData = useSelector((state:RootState)=>state.basicInfo.personalData)
   const handleChange = (event: SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
@@ -30,23 +20,16 @@ const CardDetails = ({
   const content = () => {
     switch (value) {
       case "schedule":
-        return <Schedule meetings={personalData.meetings} />;
+        return <Schedule />;
       case "clients":
-        return <Client clientList={personalData.clientsList}/>;
+        return <Client />;
       case "absences":
         return (
-          <AbsenceInfo
-            totalDaysStatistics={totalDaysStatistics}
-          />
+          <AbsenceInfo />
         );
       default:
         return (
-          <PersonalData
-            email={email}
-            phone={phoneNumber}
-            client={client}
-            totalDaysStatistics={totalDaysStatistics}
-          />
+          <PersonalData/>
         );
     }
   };

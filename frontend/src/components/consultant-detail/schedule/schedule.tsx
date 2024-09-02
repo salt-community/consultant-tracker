@@ -1,20 +1,13 @@
 "use client";
 
-import { MeetingsType } from "@/types";
-import React, { useEffect, useState } from "react";
 import "./schedules.css";
 import SingleDetailField from "@/components/single-detail-field/single-detail-field";
+import {useSelector} from "react-redux";
+import {RootState} from "@/store/store";
 
-type Props = {
-  meetings: MeetingsType[];
-};
 
-const Schedule = ({ meetings }: Props) => {
-  const [scheduleData, setScheduleData] = useState<MeetingsType[]>(meetings);
-  console.log("shceduled data", scheduleData);
-  useEffect(() => {
-    setScheduleData(meetings);
-  }, [meetings]);
+const Schedule = () => {
+  const scheduleData = useSelector((state: RootState)=> state.basicInfo.personalData.meetings)
 
   const formatTitle = (title: string) => {
     switch (title) {

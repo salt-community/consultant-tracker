@@ -1,23 +1,16 @@
-import { TotalDaysStatisticsType } from "@/types";
 import SingleDetailField from "@/components/single-detail-field/single-detail-field";
 import "./personal-data.css";
+import {useSelector} from "react-redux";
+import {RootState} from "@/store/store";
 
-type Props = {
-  email: string;
-  phone: string;
-  client: string;
-  totalDaysStatistics: TotalDaysStatisticsType;
-};
 
-const PersonalData = ({ email, phone, client, totalDaysStatistics }: Props) => {
+const PersonalData = () => {
+  const personalData = useSelector((state: RootState)=> state.basicInfo.personalData)
+  const {email, client, totalDaysStatistics} = personalData;
   return (
     <div className="personal-data__container">
       <div className="personal-data__info">
         <SingleDetailField title="Email" content={email} />
-        {/* <SingleDetailField
-          title="Phone"
-          content={phone == null ? "-" : phone}
-        /> */}
         <SingleDetailField title="Client" content={client} />
       </div>
       <div className="personal-data__statistics">

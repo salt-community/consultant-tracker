@@ -6,6 +6,5 @@
 
 .meetings-schedule__items {
     display: flex;
-    /* flex-direction: column; */
     gap: 28px;
 }

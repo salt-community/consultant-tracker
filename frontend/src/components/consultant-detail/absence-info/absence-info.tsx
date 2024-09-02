@@ -1,12 +1,12 @@
 import "./absence-info.css";
 import SingleDetailField from "@/components/single-detail-field/single-detail-field";
-import { TotalDaysStatisticsType } from "@/types";
+import {useSelector} from "react-redux";
+import {RootState} from "@/store/store";
 
-type Props = {
-  totalDaysStatistics: TotalDaysStatisticsType;
-};
 
-const AbsenceInfo = ({ totalDaysStatistics }: Props) => {
+
+const AbsenceInfo = () => {
+  const totalDaysStatistics =  useSelector((state: RootState)=> state.basicInfo.personalData.totalDaysStatistics)
   const {
     totalVacationDaysUsed,
     totalSickDays,

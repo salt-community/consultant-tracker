@@ -3,6 +3,8 @@ import dashboardHeaderReducer from './slices/DashboardHeaderSlice'
 import filterFieldReducer from './slices/FilterFieldSlice'
 import ganttChartReducer from './slices/GanttChartSlice'
 import paginationReducer from './slices/PaginationSlice'
+import basicInfoReducer from './slices/BasicInfoSlice'
+
 
 
 
@@ -11,7 +13,8 @@ export const store = configureStore({
     dashboardHeader: dashboardHeaderReducer,
     filterField: filterFieldReducer,
     ganttChart: ganttChartReducer,
-    pagination: paginationReducer
+    pagination: paginationReducer,
+    basicInfo: basicInfoReducer
   }
 })
 
