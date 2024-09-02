@@ -73,17 +73,20 @@ public class ConsultantService {
             }
         }
         if (clientsListDto.size() > 1) {
-            clientsListDto.sort(new Comparator<ClientsListDto>() {
-                public int compare(ClientsListDto o1, ClientsListDto o2) {
-                    if (o1.startDate() == null || o2.startDate() == null)
-                        return 0;
-                    return o2.startDate().compareTo(o1.startDate());
-                }
-            });
+            sortClientsListDtoByStartDateDesc(clientsListDto);
         }
 
-        System.out.println("clientsListDto = " + clientsListDto);
         return clientsListDto;
+    }
+
+    private void sortClientsListDtoByStartDateDesc(List<ClientsListDto> clientsListDto) {
+        clientsListDto.sort(new Comparator<ClientsListDto>() {
+            public int compare(ClientsListDto o1, ClientsListDto o2) {
+                if (o1.startDate() == null || o2.startDate() == null)
+                    return 0;
+                return o2.startDate().compareTo(o1.startDate());
+            }
+        });
     }
 
     //-----------------------------COVERED BY TESTS ---------------------------------
