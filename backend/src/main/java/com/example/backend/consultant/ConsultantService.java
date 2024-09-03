@@ -49,7 +49,8 @@ public class ConsultantService {
     public InfographicResponseDto getInfographicsByPt(String pt) {
         int totalConsultants = consultantRepository.findAllByActiveTrue().size();
         int totalPtsConsultants = consultantRepository.countAllByActiveTrueAndResponsiblePT(pt);
-        return new InfographicResponseDto(totalConsultants, totalPtsConsultants);
+        int totalPgpConsultants = consultantRepository.countAllByActiveTrueAndClient(PGP.value);
+        return new InfographicResponseDto(totalConsultants, totalPtsConsultants, totalPgpConsultants);
     }
 
     public SingleConsultantResponseListDto getConsultantById(UUID id) {
