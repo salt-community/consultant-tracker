@@ -6,7 +6,7 @@ import toast, {Toaster} from "react-hot-toast";
 
 const PersonalData = () => {
   const personalData = useSelector((state: RootState) => state.basicInfo.personalData)
-  const {email, client, totalDaysStatistics} = personalData;
+  const {email, client, totalDaysStatistics} = personalData!;
   const handleEmailCopy = () => {
     navigator.clipboard.writeText(email)
     toast.success("Email copied")

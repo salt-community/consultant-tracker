@@ -6,7 +6,7 @@ import {RootState} from "@/store/store";
 
 
 const Client = () => {
-  const clientList = useSelector((state: RootState)=> state.basicInfo.personalData.clientsList)
+  const clientList = useSelector((state: RootState)=> state.basicInfo.personalData!.clientsList)
   return (
     clientList && (
       <div>

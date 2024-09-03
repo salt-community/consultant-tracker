@@ -7,7 +7,7 @@ import {RootState} from "@/store/store";
 
 
 const Schedule = () => {
-  const scheduleData = useSelector((state: RootState) => state.basicInfo.personalData.meetings)
+  const scheduleData = useSelector((state: RootState) => state.basicInfo.personalData!.meetings)
 
   const formatTitle = (title: string) => {
     switch (title) {
