@@ -29,8 +29,9 @@
 
 .personal-data_statistics-days {
     display: flex;
+    flex-direction: column;
     margin-bottom: 5px;
-    gap: 30px;
+    gap: 5px;
 }
 
 .personal-data_statistics-days:nth-child(n) *{
@@ -51,4 +52,5 @@
 
 .personal-data_statistics__content{
     display: flex;
+    padding-left: 10px;
 }
