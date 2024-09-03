@@ -39,8 +39,8 @@ const TimelineComponent = () => {
         groupRenderer={groupsRenderer}
         canMove={false}
         onItemClick={handleItemSelect}
-        defaultTimeStart={moment().add(-17, "day")}
-        defaultTimeEnd={moment().add(4, "day")}
+        defaultTimeStart={moment().add(-6, "month")}
+        defaultTimeEnd={moment().add(5, "month")}
         sidebarWidth={250}
         lineHeight={35}
         verticalLineClassNamesForTime={(timeStart, timeEnd) =>
