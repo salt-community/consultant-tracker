@@ -43,23 +43,21 @@ public class MeetingsScheduleService {
     public void assignMeetingsDatesForActiveConsultants() {
         List<Consultant> activeConsultants = consultantService.getAllActiveConsultants();
         for (Consultant consultant : activeConsultants) {
-            if (consultant.getId().toString().equalsIgnoreCase("b48d8138-d259-4b75-9015-8726f89c8b43")) {
-
-                List<String> clients = registeredTimeService.getClientsByConsultantId(consultant.getId());
-                List<TimeChunks> timeChunksByConsultant;
-                switch (clients.size()) {
-                    case 0 -> {
-                        continue;
-                    }
-                    case 1 -> timeChunksByConsultant = timeChunksService.getTimeChunksByConsultant(consultant.getId());
-                    default -> {
-                        String currentClient = clients.getLast();
-                        timeChunksByConsultant = timeChunksService.getTimeChunksByConsultantIdAndClient(
-                                consultant.getId(), List.of(currentClient, REMAINING_DAYS.activity));
-                    }
+            List<String> clients = registeredTimeService.getClientsByConsultantId(consultant.getId());
+            List<TimeChunks> timeChunksByConsultant;
+            switch (clients.size()) {
+                case 0 -> {
+                    continue;
                 }
-                createMeetings(consultant, timeChunksByConsultant);
+                case 1 -> timeChunksByConsultant = timeChunksService.getTimeChunksByConsultant(consultant.getId());
+                default -> {
+                    String currentClient = clients.getLast();
+                    timeChunksByConsultant = timeChunksService.getTimeChunksByConsultantIdAndClient(
+                            consultant.getId(), List.of(currentClient, REMAINING_DAYS.activity));
+                }
             }
+            createMeetings(consultant, timeChunksByConsultant);
+
         }
     }
 
