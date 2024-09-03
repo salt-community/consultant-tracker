@@ -1,6 +1,3 @@
-import dayjs from "dayjs";
-import React from "react";
-
 export type InfographicResponseType = {
   totalConsultants: number,
   ptsConsultants: number
@@ -26,9 +23,9 @@ export type MeetingsType = {
 };
 
 export type ConsultantItemsType = {
-  start_time: dayjs.Dayjs,
+  start_time: moment.Moment,
   itemProps?: React.HTMLAttributes<HTMLDivElement> | undefined;
-  end_time: dayjs.Dayjs,
+  end_time: moment.Moment,
   details: {
     responsiblePt: string,
     country: string,
@@ -84,8 +81,8 @@ export type TotalDaysStatisticsType = {
 
 export type RegisteredTimeItemType = {
   registeredTimeId: string,
-  startDate: dayjs.Dayjs,
-  endDate: dayjs.Dayjs,
+  startDate: moment.Moment,
+  endDate: moment.Moment,
   type: string,
   days: number,
   projectName: string

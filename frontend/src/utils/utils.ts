@@ -3,7 +3,6 @@ import {
   ConsultantFetchType, ConsultantItemsType,
   RegisteredTimeItemType,
 } from "@/types";
-import dayjs from "dayjs";
 import moment, {Moment} from "moment/moment";
 
 export const user = "Josefin Stål"
@@ -106,8 +105,8 @@ export const mapConsultantsToCalendarItems = (res: ConsultantCalendarType): Cons
         id: item.registeredTimeId,
         group: el.id,
         title: item.type,
-        start_time: dayjs(item.startDate),
-        end_time: dayjs(item.endDate),
+        start_time: moment(item.startDate),
+        end_time: moment(item.endDate),
         details: {
           name: el.fullName,
           responsiblePt: el.responsiblePt,
