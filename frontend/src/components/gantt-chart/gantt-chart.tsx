@@ -20,6 +20,8 @@ import {
 import Pagination from "@/components/pagination/pagination";
 import {setTotalItems} from "@/store/slices/PaginationSlice";
 import TimelineComponent from "@/components/timeline-component/timelineComponent";
+import Legend from "@/components/gantt-chart/legend/legend";
+import AccordionComponent from "@/components/accordion/accordion-component";
 
 const GanttChart = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -62,6 +64,7 @@ const GanttChart = () => {
   return loading ? <Loading/> : error.length !== 0
     ? <Error message={error}/> :
     <div>
+      <AccordionComponent title="Legend" content={<Legend/>}/>
       <Pagination/>
       <div className="gantt-chart__wrapper">
         <TimelineComponent/>

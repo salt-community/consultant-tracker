@@ -29,6 +29,51 @@ export const selectColor = (type: string) => {
   }
 };
 
+export const legend = [
+  {
+    color: "#6EACDA",
+    description: "Konsult-tid / Egen administration"
+  },
+  {
+    color: "#7bc46e",
+    description: "Semester"
+  },
+  {
+    color: "#F3FEB8",
+    description: "Sjuk"
+  },
+  {
+    color: "#8ddfc2",
+    description: "Tjänstledig"
+  },
+  {
+    color: "#a4a4a4",
+    description: "Remaining Days"
+  },
+  {
+    color: "#000000",
+    description: "Föräldraledig / VAB "
+  },
+  {
+    color: "#EF5A6F",
+    description: "No registered time"
+  }
+]
+export const redDaysAndWeekends =[
+  {
+    color: "#f5d1d7",
+    description: "Weekends "
+  },
+  {
+    color: "#F5D4A6FF",
+    description: "Holiday Norway "
+  },
+  {
+    color: "#F4AB9FFF",
+    description: "Holiday Sweden "
+  },
+]
+
 export const encodeString = (value: string[], prefix: string) => {
   return value
     .map((p) => `${prefix}=${encodeURIComponent(p)}`)
