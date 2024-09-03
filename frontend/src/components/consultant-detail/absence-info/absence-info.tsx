@@ -5,7 +5,7 @@ import {RootState} from "@/store/store";
 
 
 const AbsenceInfo = () => {
-  const totalDaysStatistics = useSelector((state: RootState) => state.basicInfo.personalData.totalDaysStatistics)
+  const totalDaysStatistics = useSelector((state: RootState) => state.basicInfo.personalData!.totalDaysStatistics)
   const {
     totalVacationDaysUsed,
     totalSickDays,
