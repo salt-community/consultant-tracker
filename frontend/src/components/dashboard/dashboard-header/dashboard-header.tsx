@@ -24,6 +24,11 @@ const DashboardHeader = () => {
             variant: "blue"
           },
           {
+            title: "Total PGP",
+            amount: res.totalPgpConsultants,
+            variant: "green"
+          },
+          {
             title: `${userFirstName}'s consultants`,
             amount: res.ptsConsultants,
             variant: "violet"

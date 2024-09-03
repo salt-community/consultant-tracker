@@ -1,6 +1,7 @@
 export type InfographicResponseType = {
   totalConsultants: number,
   ptsConsultants: number
+  totalPgpConsultants: number
 }
 
 export type InfographicDataType = {
