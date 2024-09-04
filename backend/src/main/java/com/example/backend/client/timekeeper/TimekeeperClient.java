@@ -70,19 +70,17 @@ public class TimekeeperClient {
                     .block();
             assert dto != null;
             users.addAll(dto.timekeeperUsers().stream()
-                    .map(tkUser -> {
-                        return new TimekeeperUserDto(
-                                tkUser.firstName(),
-                                tkUser.lastName(),
-                                tkUser.email(),
-                                tkUser.phone(),
-                                tkUser.tags(),
-                                tkUser.id(),
-                                tkUser.isActive(),
-                                tkUser.client(),
-                                tkUser.responsiblePT(),
-                                tkUser.isEmployee());
-                    }).toList());
+                    .map(tkUser -> new TimekeeperUserDto(
+                            tkUser.firstName(),
+                            tkUser.lastName(),
+                            tkUser.email(),
+                            tkUser.phone(),
+                            tkUser.tags(),
+                            tkUser.id(),
+                            tkUser.isActive(),
+                            tkUser.client(),
+                            tkUser.responsiblePT(),
+                            tkUser.isEmployee())).toList());
             if (index == 0) {
                 numOfPages = dto.totalPages();
             }
@@ -110,13 +108,11 @@ public class TimekeeperClient {
                 break;
             }
             registeredTime.addAll(dto.consultancyTime().stream()
-                    .map(time -> {
-                        return new TimekeeperRegisteredTimeResponseDto(
-                                time.totalHours(),
-                                time.activityName(),
-                                time.date(),
-                                time.projectName());
-                    }).toList());
+                    .map(time -> new TimekeeperRegisteredTimeResponseDto(
+                            time.totalHours(),
+                            time.activityName(),
+                            time.date(),
+                            time.projectName())).toList());
 
             if (index == 0) {
                 numOfPages = dto.totalPages();
