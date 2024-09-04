@@ -11,7 +11,6 @@ import java.util.Map;
 public class NotionResponse {
     private List<String> consultantsList = new ArrayList<>();
 
-    @SuppressWarnings("unchecked")
     @JsonProperty("results")
     private void unpackNested(List<Map<String, Object>> results) {
 
