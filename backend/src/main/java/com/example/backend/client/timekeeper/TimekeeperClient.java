@@ -12,11 +12,9 @@ import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
-import javax.xml.crypto.dsig.keyinfo.PGPData;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.backend.consultant.NotClient.PGP;
 
 @Service
 @Data
@@ -26,7 +24,6 @@ public class TimekeeperClient {
 
     public TimekeeperClient(@Value("${TIMEKEEPER.URL}") String baseUrl,
                             @Value("${TIMEKEEPER.AUTH}") String HEADER) {
-//        CLIENT_URL = WebClient.create(baseUrl);
         CLIENT_URL = WebClient.builder().baseUrl(baseUrl).exchangeStrategies(ExchangeStrategies.builder()
                         .codecs(configurer -> configurer
                                 .defaultCodecs()
