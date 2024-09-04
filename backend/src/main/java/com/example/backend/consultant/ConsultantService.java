@@ -7,6 +7,8 @@ import com.example.backend.exceptions.ConsultantNotFoundException;
 import com.example.backend.meetings_schedule.MeetingsScheduleService;
 import com.example.backend.meetings_schedule.dto.MeetingsDto;
 import com.example.backend.registeredTime.RegisteredTimeService;
+import com.example.backend.saltUser.SaltUser;
+import com.example.backend.saltUser.SaltUserService;
 import com.example.backend.tag.Tag;
 import com.example.backend.timeChunks.TimeChunksService;
 import jakarta.annotation.PostConstruct;
@@ -31,6 +33,7 @@ public class ConsultantService {
     private final RegisteredTimeService registeredTimeService;
     private final TimeChunksService timeChunksService;
     private final MeetingsScheduleService meetingsScheduleService;
+    private final SaltUserService saltUserService;
 
     //-----------------------------COVERED BY TESTS ---------------------------------
     public ConsultantResponseListDto getAllConsultantDtos(int page, int pageSize, String name, List<String> pt, List<String> client) {
@@ -112,7 +115,7 @@ public class ConsultantService {
         return consultantRepository.findAllByActiveTrue();
     }
 
-//        @PostConstruct
+    //        @PostConstruct
     @Scheduled(cron = "0 0 0 * * *")
     public void fetchDataFromTimekeeper() {
         List<TimekeeperUserDto> timekeeperUserDto = timekeeperClient.getUsers();
@@ -210,5 +213,24 @@ public class ConsultantService {
             }
         }
         return resultList;
+    }
+
+    public void updatePtsForConsultants(Map<UUID, List<String>> consultantsAndPts) {
+        List<Consultant> activeConsultants = getAllActiveConsultants();
+        for (var entry : consultantsAndPts.entrySet()) {
+            SaltUser pt = saltUserService.getSaltUserById(entry.getKey());
+            List<String> consultants = entry.getValue();
+            for (String name : consultants) {
+                String[] namesSplit = name.split(" ");
+                activeConsultants.forEach(el ->
+                {
+                    if (el.getFullName().contains(namesSplit[0])
+                            && el.getFullName().contains(namesSplit[namesSplit.length - 1])) {
+                        el.setSaltUser(pt);
+                        saveConsultant(el);
+                    }
+                });
+            }
+        }
     }
 }

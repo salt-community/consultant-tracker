@@ -1,11 +1,16 @@
 package com.example.backend.client.notion;
 
+import com.example.backend.consultant.ConsultantService;
+import com.example.backend.saltUser.SaltUser;
+import com.example.backend.saltUser.SaltUserService;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
+
+import java.util.*;
 
 
 @Service
@@ -14,10 +19,14 @@ public class NotionClient {
     private final WebClient CLIENT_URL;
     private final String HEADER_AUTH;
     private final String DB_ID;
+    private final SaltUserService saltUserService;
+    private final ConsultantService consultantService;
 
     public NotionClient(@Value("${NOTION.URL}") String baseUrl,
                         @Value("${NOTION.AUTH}") String HEADER_AUTH,
-                        @Value("${NOTION.DB_ID}") String DB_ID) {
+                        @Value("${NOTION.DB_ID}") String DB_ID,
+                        SaltUserService saltUserService,
+                        ConsultantService consultantService) {
         this.HEADER_AUTH = HEADER_AUTH;
         CLIENT_URL = WebClient.builder().baseUrl(baseUrl)
                 .defaultHeaders(httpHeaders -> {
@@ -30,28 +39,43 @@ public class NotionClient {
                                 .maxInMemorySize(16 * 1024 * 1024))
                         .build()).build();
         this.DB_ID = DB_ID;
+        this.saltUserService = saltUserService;
+        this.consultantService = consultantService;
     }
 
     public void getUsersFromNotion() {
+        List<UUID> ptsIds = saltUserService.getAllPtsIds();
 
         String requestBody = """
-                    {
-                    "filter": {
-                      "property": "Responsible",
-                      "people": {
-                        "contains": "06e54dd7-ef44-49ee-b3ef-032ccef2b458"
-                         }
+                {
+                "filter": {
+                  "property": "Responsible",
+                  "people": {
+                    "contains": "%s"
                      }
-                    }""";
+                 }
+                }""";
 
-        NotionResponse dto = CLIENT_URL.post()
-                .uri("/{dbId}/query", DB_ID)
-                .bodyValue(requestBody)
-                .retrieve()
-                .bodyToMono(NotionResponse.class)
-                .block();
-        System.out.println("dto = " + dto);
-        assert dto != null;
-        System.out.println("dto.size() = " + dto.getConsultantsList().size());
+        Map<UUID, List<String>> consultantsAndPts = new HashMap<>();
+
+// TODO fetch all pages
+
+        for (UUID id : ptsIds) {
+            String stringFormat = String.format(requestBody, id);
+            NotionResponse dto = CLIENT_URL.post()
+                    .uri("/{dbId}/query", DB_ID)
+                    .bodyValue(stringFormat)
+                    .retrieve()
+                    .bodyToMono(NotionResponse.class)
+                    .block();
+            if (dto != null) {
+                consultantsAndPts.put(id, dto.getConsultantsList());
+            }
+        }
+        System.out.println("consultantsAndPts = " + consultantsAndPts);
+        if (!consultantsAndPts.isEmpty()) {
+            consultantService.updatePtsForConsultants(consultantsAndPts);
+        }
+
     }
 }
