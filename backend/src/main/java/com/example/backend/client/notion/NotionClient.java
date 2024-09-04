@@ -39,17 +39,19 @@ public class NotionClient {
                     "filter": {
                       "property": "Responsible",
                       "people": {
-                        "contains": "7f26998b-5296-439a-90ef-07dad83d3de2"
+                        "contains": "06e54dd7-ef44-49ee-b3ef-032ccef2b458"
                          }
                      }
                     }""";
 
-        JsonNode dto = CLIENT_URL.post()
+        NotionResponse dto = CLIENT_URL.post()
                 .uri("/{dbId}/query", DB_ID)
                 .bodyValue(requestBody)
                 .retrieve()
-                .bodyToMono(JsonNode.class)
+                .bodyToMono(NotionResponse.class)
                 .block();
         System.out.println("dto = " + dto);
+        assert dto != null;
+        System.out.println("dto.size() = " + dto.getConsultantsList().size());
     }
 }
