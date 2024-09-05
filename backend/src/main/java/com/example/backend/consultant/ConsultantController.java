@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/api/consultants")
@@ -21,10 +22,11 @@ public class ConsultantController {
     @Value("${app.mode}")
     private String appMode;
 
-//    @GetMapping("/timekeeper")
-//    public void getAllConsultants(){
-//        consultantService.fetchDataFromTimekeeper();
-//    }
+    @GetMapping("/timekeeper")
+    public ResponseEntity<String> getAllConsultants(){
+        consultantService.fetchDataFromTimekeeper();
+        return ResponseEntity.ok("Data fetched from timekeeper");
+    }
 
     @GetMapping
     public ResponseEntity<ConsultantResponseListDto> getConsultantsAndRegisteredTime(

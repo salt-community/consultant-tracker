@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.logging.Logger;
 
 import static com.example.backend.consultant.NotClient.PGP;
 
@@ -115,16 +116,23 @@ public class ConsultantService {
         return consultantRepository.findAllByActiveTrue();
     }
 
-    @PostConstruct
+//    @PostConstruct
     @Scheduled(cron = "0 0 0 * * *")
     public void fetchDataFromTimekeeper() {
+        Logger logger = Logger.getLogger(ConsultantService.class.getName());
         List<TimekeeperUserDto> timekeeperUserDto = timekeeperClient.getUsers();
         assert timekeeperUserDto != null;
         updateConsultantTable(timekeeperUserDto);
         registeredTimeService.fetchAndSaveTimeRegisteredByConsultantDB();
+        logger.info("Data fetched from timekeeper");
+
         List<Consultant> allActiveConsultants = getAllActiveConsultants();
         timeChunksService.saveTimeChunksForAllConsultants(allActiveConsultants);
+
+        logger.info("Chunks saved");
+
         fillClientAndResponsiblePt(allActiveConsultants);
+        logger.info("Clients and PTs filled");
     }
 
     // Test in integration tests
