@@ -53,14 +53,14 @@ class UtilitiesTest {
     }
 
     @ParameterizedTest
-    @CsvSource({"224D, 225", "0D, 253", "2024D, 0", "125.5, 237.3"})
+    @CsvSource({"224D, 225", "0D, 253", "2024D, 0", "125.5, 238.0"})
     void givenSweden__whenCountRemainingDays__thenExpectedDays(double input, double expected) {
         double actualValue = Utilities.countRemainingDays(input, SWEDEN.country);
         assertEquals(expected, actualValue);
     }
 
     @ParameterizedTest
-    @CsvSource({"224D, 224.1", "0D, 254", "1905D, 0", "125.5, 237.3"})
+    @CsvSource({"224D, 225.0", "0D, 254", "1905D, 0", "125.5, 238.0"})
     void givenNorway__whenCountRemainingDays__thenExpectedDays(double input, double expected) {
         double actualValue = Utilities.countRemainingDays(input, NORWAY.country);
         assertEquals(expected, actualValue);

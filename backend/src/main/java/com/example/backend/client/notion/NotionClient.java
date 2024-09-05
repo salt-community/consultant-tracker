@@ -1,9 +1,7 @@
 package com.example.backend.client.notion;
 
 import com.example.backend.consultant.ConsultantService;
-import com.example.backend.saltUser.SaltUser;
 import com.example.backend.saltUser.SaltUserService;
-import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

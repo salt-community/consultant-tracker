@@ -1,9 +1,7 @@
 package com.example.backend.consultant;
 
-import com.example.backend.redDay.RedDayService;
-
-import com.example.backend.registeredTime.RegisteredTimeService;
-
+import com.example.backend.demo.demoConsultant.DemoConsultant;
+import com.example.backend.demo.demoConsultant.DemoConsultantService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -29,6 +27,8 @@ public class ConsultantControllerTest {
 
     @MockBean
     ConsultantService consultantService;
+    @MockBean
+    DemoConsultantService demoConsultantService;
 
     @Test
     @DisplayName("/api/consultants")

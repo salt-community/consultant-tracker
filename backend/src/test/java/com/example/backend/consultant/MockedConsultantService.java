@@ -1,9 +1,12 @@
 package com.example.backend.consultant;
 
+import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@Service
 public class MockedConsultantService {
 
     private static List<Consultant> mockConsultantList = new ArrayList<>();
