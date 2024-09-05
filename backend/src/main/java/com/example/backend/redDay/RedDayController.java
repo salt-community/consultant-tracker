@@ -20,4 +20,9 @@ public class RedDayController {
     public ResponseEntity<RedDaysResponseDto> getAllRedDays(){
         return ResponseEntity.ok(redDaysService.getAllRedDays());
     }
+
+    @GetMapping("/test")
+    public void test(){
+        redDaysService.getRedDaysFromNager();
+    }
 }

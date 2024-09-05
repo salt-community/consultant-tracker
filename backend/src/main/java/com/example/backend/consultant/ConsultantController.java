@@ -21,6 +21,11 @@ public class ConsultantController {
     @Value("${app.mode}")
     private String appMode;
 
+    @GetMapping("/timekeeper")
+    public void getAllConsultants(){
+        consultantService.fetchDataFromTimekeeper();
+    }
+
     @GetMapping
     public ResponseEntity<ConsultantResponseListDto> getConsultantsAndRegisteredTime(
             @RequestParam(name = "page", defaultValue = "0") int page,
