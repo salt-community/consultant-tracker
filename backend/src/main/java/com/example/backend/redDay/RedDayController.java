@@ -21,8 +21,8 @@ public class RedDayController {
         return ResponseEntity.ok(redDaysService.getAllRedDays());
     }
 
-    @GetMapping("/test")
-    public void test(){
-        redDaysService.getRedDaysFromNager();
-    }
+//    @GetMapping("/test")
+//    public void test(){
+//        redDaysService.getRedDaysFromNager();
+//    }
 }
