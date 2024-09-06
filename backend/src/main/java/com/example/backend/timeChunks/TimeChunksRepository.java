@@ -12,6 +12,8 @@ public interface TimeChunksRepository extends JpaRepository<TimeChunks, TimeChun
 
     List<TimeChunks> findAllById_ConsultantIdOrderById_StartDateAsc(UUID consultantId);
 
+    List<TimeChunks> findAllById_ConsultantIdAndType(UUID consultantId, String type);
+
     @Query("SELECT t FROM TimeChunks t WHERE t.id.consultantId = (:consultantId) AND t.projectName IN :projectName ORDER BY t.id.startDate ASC")
     List<TimeChunks> findAllById_ConsultantIdAndProjectNameOrderById_StartDateAsc(UUID consultantId, List<String> projectName);
 }

@@ -1,6 +1,5 @@
 package com.example.backend.consultant;
 
-import com.example.backend.demo.demoConsultant.DemoConsultant;
 import com.example.backend.demo.demoConsultant.DemoConsultantService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

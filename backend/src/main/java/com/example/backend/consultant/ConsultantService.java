@@ -65,6 +65,10 @@ public class ConsultantService {
         return SingleConsultantResponseListDto.toDto(consultantById, totalDaysStatistics, clientsListDto, meetings);
     }
 
+    public Consultant getConsultantByIdAndReturnConsultant(UUID id) {
+        return consultantRepository.findConsultantById(id);
+    }
+
     //-----------------------------COVERED BY TESTS ---------------------------------
     public List<ClientsListDto> getClientListByConsultantId(UUID consultantId) {
         List<ClientsListDto> clientsListDto = new ArrayList<>();
