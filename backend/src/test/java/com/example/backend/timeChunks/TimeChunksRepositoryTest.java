@@ -28,7 +28,6 @@ class TimeChunksRepositoryTest {
         timeChunksRepository.save(timeChunks1);
         timeChunksRepository.save(timeChunks2);
         List<TimeChunks> actualResult = timeChunksRepository.findAllById_ConsultantIdAndProjectNameOrderById_StartDateAsc(id, List.of(client, "Remaining Days"));
-        System.out.println("actualResult = " + actualResult);
         assertEquals(2, actualResult.size());
     }
 }

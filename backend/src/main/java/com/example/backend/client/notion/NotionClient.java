@@ -70,7 +70,6 @@ public class NotionClient {
                 consultantsAndPts.put(id, dto.getConsultantsList());
             }
         }
-        System.out.println("consultantsAndPts = " + consultantsAndPts);
         if (!consultantsAndPts.isEmpty()) {
             consultantService.updatePtsForConsultants(consultantsAndPts);
         }

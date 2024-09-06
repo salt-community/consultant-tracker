@@ -143,7 +143,6 @@ class RegisteredTimeRepositoryTest {
         UUID consultantId = registeredTime1.getId().getConsultantId();
         List<String> expectedResult = List.of(clientA, clientB);
         List<String> actualResult = registeredTimeRepository.findDistinctProjectNameBydId_ConsultantIdOrderById_StartDateAsc(consultantId);
-        System.out.println("actualResult = " + actualResult);
         assertEquals(expectedResult.size(), actualResult.size());
         assertEquals(clientA, actualResult.getFirst());
         assertEquals(clientB, actualResult.get(1));

@@ -23,4 +23,5 @@ public interface RegisteredTimeRepository extends JpaRepository<RegisteredTime, 
 
      RegisteredTime findFirstByProjectNameAndId_ConsultantIdOrderById_StartDateAsc(String projectName, UUID consultantId);
      RegisteredTime findFirstByProjectNameAndId_ConsultantIdOrderByEndDateDesc(String projectName, UUID consultantId);
+     Long countAllById_ConsultantId(UUID id);
 }

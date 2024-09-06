@@ -27,18 +27,19 @@ public class TimeChunksService {
     public void saveTimeChunksForAllConsultants(List<Consultant> consultants) {
         for (Consultant consultant : consultants) {
             List<TimeChunks> timeChunksToSave = getGroupedConsultantsRegisteredTimeItems(consultant.getId());
-            List<TimeChunks> timeChunksRemainingDaysToSave = timeChunksToSave.stream().filter(el->el.getType().equals(REMAINING_DAYS.activity)).toList();
+            if (timeChunksToSave == null) {
+                continue;
+            }
+            List<TimeChunks> timeChunksRemainingDaysToSave = timeChunksToSave.stream().filter(el -> el.getType().equals(REMAINING_DAYS.activity)).toList();
             if(!timeChunksRemainingDaysToSave.isEmpty()){
-                List<TimeChunks> chunksInDB  = timeChunksRepository.findAllById_ConsultantIdAndType(consultant.getId(), REMAINING_DAYS.activity);
-                if(!chunksInDB.isEmpty()
+                List<TimeChunks> chunksInDB = timeChunksRepository.findAllById_ConsultantIdAndType(consultant.getId(), REMAINING_DAYS.activity);
+                if (!chunksInDB.isEmpty()
                         && (chunksInDB.getFirst().getId().getStartDate().isAfter(timeChunksRemainingDaysToSave.getFirst().getId().getStartDate())
-                        || chunksInDB.getFirst().getId().getStartDate().isBefore(timeChunksRemainingDaysToSave.getFirst().getId().getStartDate()))){
-                        timeChunksRepository.deleteById(chunksInDB.getFirst().getId());
+                        || chunksInDB.getFirst().getId().getStartDate().isBefore(timeChunksRemainingDaysToSave.getFirst().getId().getStartDate()))) {
+                    timeChunksRepository.deleteById(chunksInDB.getFirst().getId());
                 }
             }
-            if (!timeChunksToSave.isEmpty()) {
-                timeChunksRepository.saveAll(timeChunksToSave);
-            }
+            timeChunksRepository.saveAll(timeChunksToSave);
         }
     }
 

@@ -64,7 +64,8 @@ public class RegisteredTimeService {
     }
 
     private List<ConsultantTimeDto> fetchTimeFromTimekeeperDB(UUID consultantId, Long timekeeperId) {
-        List<TimekeeperRegisteredTimeResponseDto> consultancyTime = timekeeperClient.getTimeRegisteredByConsultant(timekeeperId);
+        long countRegisteredTime = registeredTimeRepository.countAllById_ConsultantId(consultantId);
+        List<TimekeeperRegisteredTimeResponseDto> consultancyTime = timekeeperClient.getTimeRegisteredByConsultant(timekeeperId, countRegisteredTime );
         List<ConsultantTimeDto> consultantTimeDtoList = new ArrayList<>();
         for (TimekeeperRegisteredTimeResponseDto item : consultancyTime) {
             consultantTimeDtoList.add(new ConsultantTimeDto(

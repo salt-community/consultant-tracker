@@ -12,6 +12,8 @@ import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -90,13 +92,17 @@ public class TimekeeperClient {
         return users;
     }
 
-    public List<TimekeeperRegisteredTimeResponseDto> getTimeRegisteredByConsultant(Long id) {
+    public List<TimekeeperRegisteredTimeResponseDto> getTimeRegisteredByConsultant(Long id, Long countTimeRegistered) {
         int index = 0;
         int numOfPages = 1;
         List<TimekeeperRegisteredTimeResponseDto> registeredTime = new ArrayList<>();
+        String startTime = LocalDateTime.now().minusMonths(2).toString();
+        if(countTimeRegistered == 0){
+            startTime = "";
+        }
         while (index < numOfPages) {
             TimekeeperRegisteredTimeListResponseDto dto = CLIENT_URL.get()
-                    .uri("api/v1/TimeRegistration?UserId={id}&PageIndex={index}&pageSize=1000", id, index)
+                    .uri("api/v1/TimeRegistration?UserId={id}&PageIndex={index}&pageSize=1000&FromDate={fromDate}", id, index, startTime)
                     .header("Authorization", HEADER)
                     .retrieve()
                     .onStatus(HttpStatus.NOT_FOUND::equals,

@@ -226,7 +226,6 @@ class ConsultantServiceTest extends ApplicationTestConfig {
         UUID actualResult = MockedConsultantService.mockedGetConsultantsList()
                 .stream()
                 .filter(c -> !c.isActive()).toList().getFirst().getId();
-        System.out.println("MockedConsultantService.mockedGetConsultantsList() = " + MockedConsultantService.mockedGetConsultantsList());
         assertEquals(expectedResult, actualResult);
     }
 
@@ -385,7 +384,6 @@ class ConsultantServiceTest extends ApplicationTestConfig {
 
         for (var time : registeredTimeList) {
             actualSumOfHoursRegistered += time.getTotalHours();
-            System.out.println("time.getType() = " + time.getType());
             if (time.getType().equalsIgnoreCase("Konsult-Tid")) {
                 actualNumberOfKonsultTidEntries++;
             }
