@@ -14,6 +14,7 @@ const Page = () => {
         <SignInButton/>
       </SignedOut>
       <SignedIn>
+        <Navbar />
         <Home />
       </SignedIn>
     </ClerkProvider>
