@@ -8,14 +8,16 @@ spring:
   jpa:
     defer-datasource-initialization: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+        boot:
+          allow_jdbc_metadata_access: false
   sql:
     init:
       platform: postgresql
-      mode: always
+      mode: never
   config:
     import: optional:secret.yml
   main:
