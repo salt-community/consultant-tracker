@@ -120,7 +120,7 @@ public class ConsultantService {
         return consultantRepository.findAllByActiveTrue();
     }
 
-//    @PostConstruct
+    @PostConstruct
     @Scheduled(cron = "0 0 0 * * *")
     public void fetchDataFromTimekeeper() {
         Logger logger = Logger.getLogger(ConsultantService.class.getName());
