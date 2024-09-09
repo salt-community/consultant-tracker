@@ -1,14 +1,16 @@
-import React from 'react';
+import React from "react";
 import Logo from "@/components/navbar/logo/logo";
-import './navbar.css'
+import "./navbar.css";
 import Link from "next/link";
-import SignOut from "@/components/navbar/sign-out/sign-out";
+import { UserButton } from "@clerk/nextjs";
 
 const Navbar = () => {
   return (
     <div className="navbar-container">
-      <Link href="/"><Logo /></Link>
-      <Link href="/"><SignOut /></Link>
+      <Link href="/home">
+        <Logo />
+      </Link>
+      <UserButton />
     </div>
   );
 };

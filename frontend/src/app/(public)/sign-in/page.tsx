@@ -1,24 +1,13 @@
-"use client"
-import {ClerkProvider, SignedIn, SignedOut, SignInButton} from "@clerk/nextjs";
-import Home from "@/app/(private)/home/page";
-import Navbar from "@/components/navbar/navbar";
+"use client";
+import { SignIn } from "@clerk/nextjs";
 
-const Page = () => {
-  const PUBLISHABLE_KEY = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
-  if (!PUBLISHABLE_KEY) {
-    throw new Error("Missing Publishable Key");
-  }
+function Page() {
   return (
-    <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
-      <SignedOut>
-        <SignInButton/>
-      </SignedOut>
-      <SignedIn>
-        <Navbar/>
-        <Home/>
-      </SignedIn>
-    </ClerkProvider>
+    <>
+      <div>Wlecome to CT Scan</div>
+      <SignIn routing="hash" />
+    </>
   );
-};
+}
 
 export default Page;
