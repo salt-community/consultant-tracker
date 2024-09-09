@@ -10,5 +10,5 @@ RUN mvn clean package -DskipTests
 FROM amazoncorretto:21.0.3-alpine3.19
 
 COPY --from=build /app/target/backend-0.0.1-SNAPSHOT.jar consultant-tracker.jar
-EXPOSE 8080
+EXPOSE 8081
 ENTRYPOINT ["java","-jar","consultant-tracker.jar"]
