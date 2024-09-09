@@ -1,5 +1,7 @@
 app:
   mode:
+server:
+  port: 8080
 spring:
   datasource:
     url: ${DB.URL}
@@ -8,16 +10,14 @@ spring:
   jpa:
     defer-datasource-initialization: true
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        boot:
-          allow_jdbc_metadata_access: false
   sql:
     init:
       platform: postgresql
-      mode: never
+      mode: always
   config:
     import: optional:secret.yml
   main:

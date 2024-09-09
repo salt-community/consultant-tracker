@@ -89,7 +89,7 @@ public class RedDayService {
         return nonWorkingDays;
     }
 
-    @PostConstruct
+//    @PostConstruct
     @Scheduled(cron="0 0 0 1 1 *")
     public void getRedDaysFromNager() {
         var saltStartYear = 2018;
