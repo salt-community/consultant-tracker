@@ -29,17 +29,16 @@ public class TimeChunksService {
     public void saveTimeChunksForAllConsultants(List<Consultant> consultants) {
         Logger logger = Logger.getLogger(TimeChunksService.class.getName());
         logger.info("inside saveTimeChunksForAllConsultants");
-//        for (Consultant consultant : consultants) {
-        for (int i = 0; i<30; i++) {
-            logger.info("for loop consultant: " + consultants.get(i).getFullName());
-            List<TimeChunks> timeChunksToSave = getGroupedConsultantsRegisteredTimeItems(consultants.get(i).getId());
+        for (Consultant consultant : consultants) {
+            logger.info("for loop consultant: " + consultant.getFullName());
+            List<TimeChunks> timeChunksToSave = getGroupedConsultantsRegisteredTimeItems(consultant.getId());
             if (timeChunksToSave == null) {
                 continue;
             }
             logger.info("timeChunks is not null");
             List<TimeChunks> timeChunksRemainingDaysToSave = timeChunksToSave.stream().filter(el -> el.getType().equals(REMAINING_DAYS.activity)).toList();
             if(!timeChunksRemainingDaysToSave.isEmpty()){
-                List<TimeChunks> chunksInDB = timeChunksRepository.findAllById_ConsultantIdAndType(consultants.get(i).getId(), REMAINING_DAYS.activity);
+                List<TimeChunks> chunksInDB = timeChunksRepository.findAllById_ConsultantIdAndType(consultant.getId(), REMAINING_DAYS.activity);
                 if (!chunksInDB.isEmpty()
                         && (chunksInDB.getFirst().getId().getStartDate().isAfter(timeChunksRemainingDaysToSave.getFirst().getId().getStartDate())
                         || chunksInDB.getFirst().getId().getStartDate().isBefore(timeChunksRemainingDaysToSave.getFirst().getId().getStartDate()))) {
