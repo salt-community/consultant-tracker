@@ -58,7 +58,7 @@ public class ObjectConstructor {
                 consultant.getTimekeeperId(),
                 consultant.isActive(),
                 consultant.getClient(),
-                consultant.getSaltUser().getFullName() !=  null ? consultant.getSaltUser().getFullName() : "",
+                consultant.getSaltUser() !=  null ? consultant.getSaltUser().getFullName() : "",
                 true);
     }
 
