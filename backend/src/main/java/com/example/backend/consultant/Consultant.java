@@ -22,6 +22,7 @@ public class Consultant {
     private String fullName;
     private String email;
     private Long timekeeperId;
+    @Nullable
     private String notionId;
     private boolean active;
     private String client;
