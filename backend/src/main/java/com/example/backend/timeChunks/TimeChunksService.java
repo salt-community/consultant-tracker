@@ -1,7 +1,6 @@
 package com.example.backend.timeChunks;
 
 import com.example.backend.consultant.Consultant;
-import com.example.backend.consultant.ConsultantService;
 import com.example.backend.redDay.RedDayService;
 import com.example.backend.registeredTime.RegisteredTime;
 import com.example.backend.registeredTime.RegisteredTimeService;
@@ -11,10 +10,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.*;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-import static com.example.backend.client.timekeeper.Activity.CONSULTANCY_TIME;
 import static com.example.backend.client.timekeeper.Activity.REMAINING_DAYS;
 import static java.time.temporal.ChronoUnit.DAYS;
 
@@ -27,15 +24,11 @@ public class TimeChunksService {
     private final RedDayService redDayService;
 
     public void saveTimeChunksForAllConsultants(List<Consultant> consultants) {
-        Logger logger = Logger.getLogger(TimeChunksService.class.getName());
-        logger.info("inside saveTimeChunksForAllConsultants");
         for (Consultant consultant : consultants) {
-            logger.info("for loop consultant: " + consultant.getFullName());
             List<TimeChunks> timeChunksToSave = getGroupedConsultantsRegisteredTimeItems(consultant.getId());
             if (timeChunksToSave == null) {
                 continue;
             }
-            logger.info("timeChunks is not null");
             List<TimeChunks> timeChunksRemainingDaysToSave = timeChunksToSave.stream().filter(el -> el.getType().equals(REMAINING_DAYS.activity)).toList();
             if(!timeChunksRemainingDaysToSave.isEmpty()){
                 List<TimeChunks> chunksInDB = timeChunksRepository.findAllById_ConsultantIdAndType(consultant.getId(), REMAINING_DAYS.activity);
@@ -46,14 +39,10 @@ public class TimeChunksService {
                 }
             }
             timeChunksRepository.saveAll(timeChunksToSave);
-            logger.info("TimeChunksSaved");
         }
-        logger.info("Done with saveTimeChunksForAllConsultants");
     }
 
     public List<TimeChunks> getGroupedConsultantsRegisteredTimeItems(UUID id) {
-        Logger logger = Logger.getLogger(TimeChunksService.class.getName());
-        logger.info("inside getGroupedConsultantsRegisteredTimeItems");
         List<RegisteredTime> registeredTimeList = registeredTimeService.getTimeByConsultantId(id);
         if (registeredTimeList.isEmpty()) {
             return null;

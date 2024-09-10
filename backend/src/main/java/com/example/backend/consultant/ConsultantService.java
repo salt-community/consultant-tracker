@@ -167,8 +167,6 @@ public class ConsultantService {
 
     //-----------------------------COVERED BY TESTS ---------------------------------
     private void updateExistingConsultant(TimekeeperUserDto tkUser) {
-        Logger logger = Logger.getLogger(ConsultantService.class.getName());
-        logger.info("Inside updateExistingConsultant");
         List<Consultant> consultants = getAllConsultants();
         consultants.stream()
                 .filter(consultant -> consultant.getTimekeeperId().equals(tkUser.id()))
@@ -185,7 +183,6 @@ public class ConsultantService {
                         consultantRepository.save(consultant);
                     }
                 });
-        logger.info("Done with updateExistingConsultant");
     }
 
     //-----------------------------COVERED BY TESTS ---------------------------------
