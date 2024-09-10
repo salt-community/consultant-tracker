@@ -35,6 +35,7 @@ public class TimeChunksService {
             if (timeChunksToSave == null) {
                 continue;
             }
+            logger.info("timeChunks is not null");
             List<TimeChunks> timeChunksRemainingDaysToSave = timeChunksToSave.stream().filter(el -> el.getType().equals(REMAINING_DAYS.activity)).toList();
             if(!timeChunksRemainingDaysToSave.isEmpty()){
                 List<TimeChunks> chunksInDB = timeChunksRepository.findAllById_ConsultantIdAndType(consultant.getId(), REMAINING_DAYS.activity);
@@ -45,11 +46,14 @@ public class TimeChunksService {
                 }
             }
             timeChunksRepository.saveAll(timeChunksToSave);
+            logger.info("TimeChunksSaved");
         }
         logger.info("Done with saveTimeChunksForAllConsultants");
     }
 
     public List<TimeChunks> getGroupedConsultantsRegisteredTimeItems(UUID id) {
+        Logger logger = Logger.getLogger(TimeChunksService.class.getName());
+        logger.info("inside getGroupedConsultantsRegisteredTimeItems");
         List<RegisteredTime> registeredTimeList = registeredTimeService.getTimeByConsultantId(id);
         if (registeredTimeList.isEmpty()) {
             return null;
