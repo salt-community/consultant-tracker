@@ -3,12 +3,16 @@ package com.example.backend.consultant;
 import com.example.backend.saltUser.SaltUser;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Consultant {
 
     @Id
@@ -17,39 +21,14 @@ public class Consultant {
 
     private String fullName;
     private String email;
-    private String phoneNumber;
     private Long timekeeperId;
+    private String notionId;
     private boolean active;
     private String client;
-// remove and use salt_user_id
-    private String responsiblePT;
     private String country;
 
     @ManyToOne
     @JoinColumn(name = "saltUser_id", referencedColumnName = "id")
     @Nullable
     private SaltUser saltUser;
-
-    public Consultant(UUID id,
-                      String fullName,
-                      String email,
-                      String phoneNumber,
-                      Long timekeeperId,
-                      String responsiblePT,
-                      String client,
-                      String country,
-                      boolean active) {
-        this.id = id;
-        this.fullName = fullName;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-        this.timekeeperId = timekeeperId;
-        this.active = active;
-        this.client = client;
-        this.responsiblePT = responsiblePT;
-        this.country = country;
-    }
-
-    public Consultant() {
-    }
 }
