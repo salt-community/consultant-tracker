@@ -19,7 +19,6 @@ public class MockedConsultantController {
         return new ConsultantResponseDto(UUID.fromString("53b6a53f-c71b-4264-a17a-c6a3e2489273"),
                 name,
                 email,
-                "111-222-333",
                 pt,
                 client,
                 "Sverige",

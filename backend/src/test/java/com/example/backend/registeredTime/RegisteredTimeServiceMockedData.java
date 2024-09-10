@@ -147,22 +147,22 @@ public class RegisteredTimeServiceMockedData {
                 UUID.fromString("68c670d6-3038-4fca-95be-2669aaf0b549"),
                 "John Doe",
                 "john.doe@gmail.com",
-                null,
                 1111L,
-                "Jane Doe",
+                null,
+                true,
                 "H&M",
                 "Sverige",
-                true);
+                null);
         Consultant mockedConsultant2 = new Consultant(
                 UUID.fromString("0239ceac-5e65-40a6-a949-5492c22b22e3"),
                 "John Doe2",
                 "john.doe2@gmail.com",
-                null,
                 2222L,
-                "Jane Doe2",
+                null,
+                true,
                 "H&M2",
                 "Sverige",
-                true);
+                null);
         return Lists.newArrayList(mockedConsultant, mockedConsultant2);
     }
 

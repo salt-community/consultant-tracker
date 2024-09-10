@@ -27,12 +27,13 @@ class ConsultantRepositoryTest {
         Consultant consultant = new Consultant(id,
                 "John Doe",
                 "john.doe@gmail.com",
-                null,
                 1111L,
-                "Jane Doe",
+                null,
+                true,
                 "H&M",
                 "Sverige",
-                true);
+                null
+                );
         Consultant savedConsultant = repo.save(consultant);
         savedId = savedConsultant.getId();
 

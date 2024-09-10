@@ -38,12 +38,13 @@ public class ObjectConstructor {
                 UUID.randomUUID(),
                 tkUser.firstName().trim().concat(" ").concat(tkUser.lastName()).trim(),
                 tkUser.email(),
-                tkUser.phone(),
                 tkUser.id(),
-                tkUser.responsiblePT(),
+                null,
+                true,
                 tkUser.client(),
                 "Sverige",
-                true);
+                null);
+
     }
 
     public static TimekeeperUserDto convertConsultantToTimekeeperUserDto(Consultant consultant) {
@@ -52,12 +53,12 @@ public class ObjectConstructor {
                 firstAndLastName[0],
                 firstAndLastName[1],
                 consultant.getEmail(),
-                consultant.getPhoneNumber(),
+                null,
                 null,
                 consultant.getTimekeeperId(),
                 consultant.isActive(),
                 consultant.getClient(),
-                consultant.getResponsiblePT(),
+                consultant.getSaltUser().getFullName() !=  null ? consultant.getSaltUser().getFullName() : "",
                 true);
     }
 

@@ -65,8 +65,6 @@ class ConsultantServiceTest extends ApplicationTestConfig {
     private static Consultant mockedConsultant1;
     private static Consultant mockedConsultant2;
     private static Consultant mockedConsultant3;
-    @Autowired
-    private SaltUserService saltUserService;
 
 
     @BeforeEach
