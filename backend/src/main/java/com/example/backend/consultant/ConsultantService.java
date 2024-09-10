@@ -50,9 +50,10 @@ public class ConsultantService {
                                 timeChunksService.getTimeChunksByConsultant(c.getId()))).toList());
     }
 
-    public InfographicResponseDto getInfographicsByPt(String pt) {
+    public InfographicResponseDto getInfographicsByPt(String ptName) {
         int totalConsultants = consultantRepository.findAllByActiveTrue().size();
-        int totalPtsConsultants = consultantRepository.countAllByActiveTrueAndResponsiblePT(pt);
+        SaltUser pt = saltUserService.getSaltUserByName(ptName);
+        int totalPtsConsultants = consultantRepository.countAllByActiveTrueAndSaltUser(pt);
         int totalPgpConsultants = consultantRepository.countAllByActiveTrueAndClient(PGP.value);
         return new InfographicResponseDto(totalConsultants, totalPtsConsultants, totalPgpConsultants);
     }
@@ -99,15 +100,15 @@ public class ConsultantService {
     }
 
     //-----------------------------COVERED BY TESTS ---------------------------------
-    public Page<Consultant> getAllConsultantsPageable(int page, int pageSize, String name, List<String> pt, List<String> client) {
+    public Page<Consultant> getAllConsultantsPageable(int page, int pageSize, String name, List<String> ptIds, List<String> client) {
         Pageable pageRequest = PageRequest.of(page, pageSize);
-        if (pt.isEmpty()) {
-            pt.addAll(getListOfAllClientsOrPts("pts"));
+        if (ptIds.isEmpty()) {
+            ptIds.addAll(getListOfAllClientsOrPtsNames("pts"));
         }
         if (client.isEmpty()) {
-            client.addAll(getListOfAllClientsOrPts("clients"));
+            client.addAll(getListOfAllClientsOrPtsNames("clients"));
         }
-        return consultantRepository.findAllByActiveTrueAndFilterByNameAndResponsiblePtAndClientsOrderByFullNameAsc(name, pageRequest, pt, client);
+        return consultantRepository.findAllByActiveTrueAndFilterByNameAndResponsiblePtAndClientsOrderByFullNameAsc(name, pageRequest, ptIds, client);
     }
 
     //-----------------------------COVERED BY TESTS ---------------------------------
@@ -120,7 +121,7 @@ public class ConsultantService {
         return consultantRepository.findAllByActiveTrue();
     }
 
-//    @PostConstruct
+//        @PostConstruct
     @Scheduled(cron = "0 0 0 * * *")
     public void fetchDataFromTimekeeper() {
         Logger logger = Logger.getLogger(ConsultantService.class.getName());
@@ -132,7 +133,7 @@ public class ConsultantService {
 
         List<Consultant> allActiveConsultants = getAllActiveConsultants();
 
-        fillClientAndResponsiblePt(allActiveConsultants);
+        fillClients(allActiveConsultants);
         logger.info("Clients and PTs filled");
 
         timeChunksService.saveTimeChunksForAllConsultants(allActiveConsultants);
@@ -152,12 +153,12 @@ public class ConsultantService {
                         UUID.randomUUID(),
                         tkUser.firstName().trim().concat(" ").concat(tkUser.lastName().trim()),
                         tkUser.email(),
-                        tkUser.phone(),
                         tkUser.id(),
-                        tkUser.responsiblePT(),
+                        null,
+                        tkUser.isActive(),
                         tkUser.client(),
                         countryTag,
-                        tkUser.isActive()));
+                        null));
             } else {
                 /* *** METHOD BELOW IS TESTED SEPARATELY *** */
                 updateExistingConsultant(tkUser);
@@ -196,31 +197,30 @@ public class ConsultantService {
     }
 
     //-----------------------------COVERED BY TESTS ---------------------------------
-    public void fillClientAndResponsiblePt(List<Consultant> listOfActiveConsultants) {
-        String[] responsiblePts = {"Josefin Stål", "Anna Carlsson"};
-        Random rand = new Random();
+    public void fillClients(List<Consultant> listOfActiveConsultants) {
         listOfActiveConsultants.forEach(el -> {
-            int rand_int1 = rand.nextInt(2);
             if (el.getClient() == null) {
                 el.setClient(registeredTimeService.getCurrentClient(el.getId()).trim());
             }
-            el.setResponsiblePT(responsiblePts[rand_int1]);
             consultantRepository.save(el);
         });
     }
 
     public ClientsAndPtsListDto getAllClientsAndPts() {
-        Set<String> listOfClients = getListOfAllClientsOrPts("clients");
-        Set<String> listOfPts = getListOfAllClientsOrPts("pts");
+        Set<String> listOfClients = getListOfAllClientsOrPtsNames("clients");
+        Set<String> listOfPts = getListOfAllClientsOrPtsNames("pts");
         return new ClientsAndPtsListDto(listOfClients, listOfPts);
     }
 
-    public Set<String> getListOfAllClientsOrPts(String clientOrPt) {
+    public Set<String> getListOfAllClientsOrPtsNames(String clientOrPt) {
         List<Consultant> activeConsultants = getAllActiveConsultants();
         Set<String> resultList = new TreeSet<>();
         for (Consultant consultant : activeConsultants) {
             if (clientOrPt.equals("pts")) {
-                resultList.add(consultant.getResponsiblePT());
+                List<String> ptNamesList = saltUserService.getAllPtsNames();
+                if (ptNamesList != null && !ptNamesList.isEmpty()) {
+                    resultList.addAll(ptNamesList);
+                }
             } else if (clientOrPt.equals("clients") && !consultant.getClient().equals("PGP")) {
                 resultList.add(consultant.getClient());
             }

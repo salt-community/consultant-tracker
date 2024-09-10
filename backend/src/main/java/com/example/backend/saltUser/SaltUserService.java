@@ -18,4 +18,12 @@ public class SaltUserService {
     public SaltUser getSaltUserById(UUID key) {
         return saltUserRepository.findById(key).orElse(null);
     }
+
+    public List<String> getAllPtsNames() {
+        return saltUserRepository.findAllNames();
+    }
+
+    public SaltUser getSaltUserByName(String ptName) {
+        return saltUserRepository.findByFullName(ptName);
+    }
 }

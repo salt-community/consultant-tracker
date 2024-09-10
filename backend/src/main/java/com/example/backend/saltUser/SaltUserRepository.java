@@ -12,4 +12,9 @@ public interface SaltUserRepository extends JpaRepository<SaltUser, UUID> {
 
     @Query("SELECT t.id FROM SaltUser t")
     List<UUID> findAllId();
+
+    @Query("SELECT t.fullName FROM SaltUser t")
+    List<String> findAllNames();
+
+    SaltUser findByFullName(String ptName);
 }

@@ -13,7 +13,6 @@ import static com.example.backend.utils.Country.SWEDEN;
 public record SingleConsultantResponseListDto(UUID id,
                                               String fullName,
                                               String email,
-                                              String phoneNumber,
                                               String responsiblePt,
                                               String client,
                                               String country,
@@ -26,12 +25,17 @@ public record SingleConsultantResponseListDto(UUID id,
             TotalDaysStatisticsDto totalDaysStatistics,
             List<ClientsListDto> clientsListDto,
             List<MeetingsDto> meetings) {
+        String responsiblePt = "";
+
+        if (consultant.getSaltUser().getFullName() != null) {
+            responsiblePt = consultant.getSaltUser().getFullName();
+        }
+
         return new SingleConsultantResponseListDto(
                 consultant.getId(),
                 consultant.getFullName(),
                 consultant.getEmail(),
-                consultant.getPhoneNumber(),
-                consultant.getResponsiblePT(),
+                responsiblePt,
                 consultant.getClient(),
                 consultant.getCountry().equals(SWEDEN.country) ? CountryCode.SE.countryCode : CountryCode.NO.countryCode,
                 totalDaysStatistics,
@@ -45,11 +49,11 @@ public record SingleConsultantResponseListDto(UUID id,
             TotalDaysStatisticsDto totalDaysStatistics,
             List<ClientsListDto> clientsListDto,
             List<MeetingsDto> meetings) {
+
         return new SingleConsultantResponseListDto(
                 consultant.getId(),
                 consultant.getFullName(),
                 consultant.getEmail(),
-                consultant.getPhoneNumber(),
                 consultant.getResponsiblePT(),
                 consultant.getClient(),
                 consultant.getCountry().equals(SWEDEN.country) ? CountryCode.SE.countryCode : CountryCode.NO.countryCode,

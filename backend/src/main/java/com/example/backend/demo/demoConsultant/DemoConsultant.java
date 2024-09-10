@@ -16,8 +16,8 @@ public class DemoConsultant {
 
     private String fullName;
     private String email;
-    private String phoneNumber;
     private Long timekeeperId;
+    private String notionId;
     private boolean active;
     private String client;
     private String responsiblePT;
