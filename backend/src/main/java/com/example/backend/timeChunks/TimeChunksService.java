@@ -1,6 +1,7 @@
 package com.example.backend.timeChunks;
 
 import com.example.backend.consultant.Consultant;
+import com.example.backend.consultant.ConsultantService;
 import com.example.backend.redDay.RedDayService;
 import com.example.backend.registeredTime.RegisteredTime;
 import com.example.backend.registeredTime.RegisteredTimeService;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import static com.example.backend.client.timekeeper.Activity.CONSULTANCY_TIME;
@@ -25,7 +27,10 @@ public class TimeChunksService {
     private final RedDayService redDayService;
 
     public void saveTimeChunksForAllConsultants(List<Consultant> consultants) {
+        Logger logger = Logger.getLogger(TimeChunksService.class.getName());
+        logger.info("inside saveTimeChunksForAllConsultants");
         for (Consultant consultant : consultants) {
+            logger.info("for loop consultant: " + consultant.getFullName());
             List<TimeChunks> timeChunksToSave = getGroupedConsultantsRegisteredTimeItems(consultant.getId());
             if (timeChunksToSave == null) {
                 continue;
@@ -41,6 +46,7 @@ public class TimeChunksService {
             }
             timeChunksRepository.saveAll(timeChunksToSave);
         }
+        logger.info("Done with saveTimeChunksForAllConsultants");
     }
 
     public List<TimeChunks> getGroupedConsultantsRegisteredTimeItems(UUID id) {
