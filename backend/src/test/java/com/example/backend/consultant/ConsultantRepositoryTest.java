@@ -28,7 +28,7 @@ class ConsultantRepositoryTest {
                 "John Doe",
                 "john.doe@gmail.com",
                 1111L,
-                null,
+                "null",
                 true,
                 "H&M",
                 "Sverige",
