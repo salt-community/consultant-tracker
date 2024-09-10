@@ -15,10 +15,6 @@ public class MeetingsController {
     private final MeetingsScheduleService meetingsScheduleService;
     private final NotionClient notionClient;
 
-//    public MeetingsController(MeetingsScheduleService meetingsScheduleService) {
-//        this.meetingsScheduleService = meetingsScheduleService;
-//    }
-
     @GetMapping
     public void saveMeetings() {
         meetingsScheduleService.assignMeetingsDatesForActiveConsultants();
