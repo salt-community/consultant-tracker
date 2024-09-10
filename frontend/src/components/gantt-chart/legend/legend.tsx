@@ -7,8 +7,8 @@ const Legend = () => {
       <div>
         <h4>Time chunks</h4>
         <div className="legend__container">
-          {legend.map(el => {
-            return <div className="legend-item__wrapper">
+          {legend.map((el,index) => {
+            return <div className="legend-item__wrapper" key={index}>
             <div className="legend__color-indicator" style={{background: el.color}}></div>
               <p className="legend__description">{el.description}</p>
             </div>
@@ -18,8 +18,8 @@ const Legend = () => {
       <div>
         <h4>Red days and weekends</h4>
         <div className="legend__container">
-          {redDaysAndWeekends.map(el => {
-            return <div className="legend-item__wrapper">
+          {redDaysAndWeekends.map((el, index) => {
+            return <div className="legend-item__wrapper" key={index}>
               <div className="legend__color-indicator" style={{background: el.color}}></div>
               <p className="legend__description">{el.description}</p>
             </div>
