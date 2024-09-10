@@ -77,32 +77,33 @@ class ConsultantServiceTest extends ApplicationTestConfig {
                 UUID.fromString("68c670d6-3038-4fca-95be-2669aaf0b549"),
                 "John Doe",
                 "john.doe@gmail.com",
-                null,
                 1111L,
-                "Jane Doe",
+                null,
+                true,
                 "H&M",
                 "Sverige",
-                true);
+                null);
         mockedConsultant2 = new Consultant(
                 UUID.fromString("0239ceac-5e65-40a6-a949-5492c22b22e3"),
                 "John Doe2",
                 "john.doe2@gmail.com",
-                null,
                 2222L,
-                "Jane Doe2",
+                null,
+                true,
                 "H&M",
                 "Sverige",
-                true);
+                null);
         mockedConsultant3 = new Consultant(
                 UUID.fromString("1239cead-5e65-40a6-a949-5492c22b22a4"),
                 "John Doe3",
                 "john.doe3@gmail.com",
-                null,
                 3333L,
-                "Jane Doe3",
+                null,
+                true,
                 "H&M",
                 "Sverige",
-                true);
+                null
+                );
     }
 
     @AfterEach
@@ -227,31 +228,6 @@ class ConsultantServiceTest extends ApplicationTestConfig {
                 .stream()
                 .filter(c -> !c.isActive()).toList().getFirst().getId();
         assertEquals(expectedResult, actualResult);
-    }
-
-    /* this test might not be useful if the
-     responsible PT is taken from Lucca later on */
-    @Test
-    void shouldUpdateResponsiblePtForAllConsultants() {
-        /* ARRANGE */
-        Mockito.when(mockedConsultantRepo.save(any(Consultant.class)))
-                .thenReturn(MockedConsultantService.mockedCreateConsultant(mockedConsultant1));
-        String possibleExpected1 = "Josefin Stål";
-        String possibleExpected2 = "Anna Carlsson";
-
-        /* ARRANGE FOR HELPER METHOD getAllActiveConsultants() */
-        Mockito.when(mockedConsultantRepo.findAllByActiveTrue()).thenReturn(List.of(mockedConsultant1));
-        Mockito.when(mockedRegisteredTimeService.getCurrentClient(any(UUID.class))).thenReturn("H&M");
-
-        /* ACT */
-        consultantService.fillClientAndResponsiblePt(List.of(mockedConsultant1));
-
-        /* ASSERT */
-        List<Consultant> resultList = MockedConsultantService.mockedGetConsultantsList();
-        Consultant actualResult = resultList.stream().filter(c -> (c.getId() == mockedConsultant1.getId())
-                && (c.getResponsiblePT().equals(possibleExpected1) || c.getResponsiblePT().equals(possibleExpected2))).toList().getFirst();
-        assertNotNull(actualResult);
-        assertEquals(mockedConsultant1.getId(), actualResult.getId());
     }
 
     @Test
@@ -392,48 +368,6 @@ class ConsultantServiceTest extends ApplicationTestConfig {
         assertEquals(3, registeredTimeList.size());
         assertEquals(expectedNumberOfKonsultTidEntries, actualNumberOfKonsultTidEntries);
         assertEquals(expectedSumOfHoursRegistered, actualSumOfHoursRegistered);
-    }
-
-    @Test
-    @SneakyThrows
-    void should_AddNewConsultantAnd_UpdateResponsiblePt_AfterUserAndTimeAreAdded_FetchDataFromTimekeeper() {
-        /* ARRANGE */
-        List<TimekeeperUserDto> mockedTkList = ObjectConstructor.getListOfTimekeeperUserDto(1);
-        Mockito.when(mockedTkClient.getUsers()).thenReturn(mockedTkList);
-
-        /* ARRANGE FOR HELPER METHOD - updateConsultantTable() */
-        Mockito.when(mockedConsultantRepo.existsByTimekeeperId(anyLong())).thenReturn(true);
-        try (MockedStatic<Tag> mockTag = mockStatic(Tag.class)) {
-            mockTag.when(() -> Tag.extractCountryTagFromTimekeeperUserDto(any(TimekeeperUserDto.class))).thenReturn("Sverige");
-        }
-        /* ARRANGE FOR HELPER TO THE HELPER METHOD - createConsultant() */
-        Mockito.when(mockedConsultantRepo.save(any(Consultant.class)))
-                .thenReturn(MockedConsultantService.mockedCreateConsultant(ObjectConstructor.convertTimekeeperUserDtoToConsultant(mockedTkList.getFirst())));
-
-        /* ARRANGE FOR HELPER METHOD - registeredTimeService.fetchAndSaveTimeRegisteredByConsultant() */
-        doAnswer((Answer<Void>) invocation -> {
-            MockedRegisteredTimeService.mockedFetchAndSaveTimeRegisteredByConsultant();
-            return null;
-        }).when(mockedRegisteredTimeService).fetchAndSaveTimeRegisteredByConsultantDB();
-
-        /* ARRANGE FOR HELPER METHOD - fillClientAndResponsiblePt() */
-        List<Consultant> activeConsultants = MockedConsultantService.mockedGetConsultantsList();
-        Mockito.when(mockedConsultantRepo.save(any(Consultant.class)))
-                .thenReturn(MockedConsultantService.mockedUpdateConsultant(activeConsultants.getFirst()));
-        String possibleExpectedPt1 = "Josefin Stål";
-        String possibleExpectedPt2 = "Anna Carlsson";
-
-        /* ARRANGE FOR HELPER TO THE HELPER METHOD - getAllActiveConsultants() */
-        Mockito.when(mockedConsultantRepo.findAllByActiveTrue()).thenReturn(activeConsultants);
-        Mockito.when(mockedRegisteredTimeService.getCurrentClient(any(UUID.class))).thenReturn("H&M");
-
-        /* ACT */
-        consultantService.fetchDataFromTimekeeper();
-
-        /* ASSERT */
-        String actualResultPt = activeConsultants.getFirst().getResponsiblePT();
-        boolean isAsExpected = actualResultPt.equals(possibleExpectedPt1) || actualResultPt.equals(possibleExpectedPt2);
-        assertTrue(isAsExpected);
     }
 
     @Test
