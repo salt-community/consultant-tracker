@@ -131,12 +131,13 @@ public class ConsultantService {
         logger.info("Data fetched from timekeeper");
 
         List<Consultant> allActiveConsultants = getAllActiveConsultants();
-        timeChunksService.saveTimeChunksForAllConsultants(allActiveConsultants);
-
-        logger.info("Chunks saved");
 
         fillClientAndResponsiblePt(allActiveConsultants);
         logger.info("Clients and PTs filled");
+
+        timeChunksService.saveTimeChunksForAllConsultants(allActiveConsultants);
+        logger.info("Chunks saved");
+
     }
 
     // Test in integration tests
