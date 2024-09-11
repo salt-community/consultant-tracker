@@ -60,7 +60,6 @@ const GanttChart = () => {
 
   useEffect(() => {
     fetchConsultantsData();
-    console.log("includePgps", includePgps) 
   }, [filterPts, filterClients, debounceFilterName, rowsPerPage, page, includePgps]);
 
   return loading ? <Loading/> : error.length !== 0
