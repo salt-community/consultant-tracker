@@ -36,8 +36,8 @@ public class ConsultantService {
     private final SaltUserService saltUserService;
 
     //-----------------------------COVERED BY TESTS ---------------------------------
-    public ConsultantResponseListDto getAllConsultantDtos(int page, int pageSize, String name, List<String> pt, List<String> client) {
-        Page<Consultant> consultantsList = getAllConsultantsPageable(page, pageSize, name, pt, client);
+    public ConsultantResponseListDto getAllConsultantDtos(int page, int pageSize, String name, List<String> pt, List<String> client, boolean includePgp) {
+        Page<Consultant> consultantsList = getAllConsultantsPageable(page, pageSize, name, pt, client, includePgp);
 
         return new ConsultantResponseListDto(
                 page,
@@ -104,15 +104,15 @@ public class ConsultantService {
             int pageSize,
             String name,
             List<String> ptNames,
-            List<String> client) {
+            List<String> client,
+            boolean includePgp) {
         Pageable pageRequest = PageRequest.of(page, pageSize);
         if (ptNames.isEmpty()) {
             // need PTs names
             ptNames.addAll(saltUserService.getAllPtsNames());
         }
         if (client.isEmpty()) {
-            // change to bool variable
-            client.addAll(getListOfAllClients(true));
+            client.addAll(getListOfAllClients(includePgp));
         }
         return consultantRepository.findAllByActiveTrueAndFilterByNameAndResponsiblePtAndClientsOrderByFullNameAsc(name, pageRequest, ptNames, client);
     }
@@ -217,8 +217,7 @@ public class ConsultantService {
     }
 
     public ClientsAndPtsListDto getAllClientsAndPts(boolean includePgp) {
-        // change to bool variable
-        Set<String> listOfClients = getListOfAllClients(true);
+        Set<String> listOfClients = getListOfAllClients(includePgp);
         Set<String> listOfPts = saltUserService.getAllPtsNames();
         return new ClientsAndPtsListDto(listOfClients, listOfPts);
     }

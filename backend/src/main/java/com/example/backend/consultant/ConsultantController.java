@@ -33,12 +33,13 @@ public class ConsultantController {
             @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
             @RequestParam(defaultValue = "", required = false) String name,
             @RequestParam(defaultValue = "", required = false) List<String> client,
-            @RequestParam(defaultValue = "", required = false) List<String> pt) {
+            @RequestParam(defaultValue = "", required = false) List<String> pt,
+            @RequestParam(defaultValue = "false", required = false) boolean includePgp) {
         if ("demo".equalsIgnoreCase(appMode)) {
             System.out.println("IN DEMO MODE");
             return ResponseEntity.ok(demoConsultantService.getAllDemoConsultantDtos(page, pageSize, name, pt, client));
         }
-        ConsultantResponseListDto consultantsResponse = consultantService.getAllConsultantDtos(page, pageSize, name, pt, client);
+        ConsultantResponseListDto consultantsResponse = consultantService.getAllConsultantDtos(page, pageSize, name, pt, client, includePgp);
         return ResponseEntity.ok(consultantsResponse);
     }
 
