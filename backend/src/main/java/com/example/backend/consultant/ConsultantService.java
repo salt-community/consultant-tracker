@@ -129,7 +129,7 @@ public class ConsultantService {
 
 //        @PostConstruct
 //    @Scheduled(cron = "0 0 0 * * *")
-    @Scheduled(cron = "0 15 11 * * *")
+    @Scheduled(cron = "0 26 11 * * *", zone = "Europe/Stockholm")
     public void fetchDataFromTimekeeper() {
         Logger logger = Logger.getLogger(ConsultantService.class.getName());
         List<TimekeeperUserDto> timekeeperUserDto = timekeeperClient.getUsers();
