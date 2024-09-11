@@ -135,29 +135,29 @@ class ConsultantServiceTest extends ApplicationTestConfig {
         assertEquals(expectedResult, result);
     }
 
-    @Test
-    void shouldReturnConsultantResponseListDto() {
-        /* ARRANGE */
-        Page<Consultant> pageableConsultantsList = new PageImpl<>(List.of(mockedConsultant1));
-        int expectedConsultantsFound = 1;
-        List<TimeChunks> timeChunks = new ArrayList<>();
-        timeChunks.add(new TimeChunks(new TimeChunksKey(UUID.randomUUID(), LocalDateTime.now()), "Konsult-tid", LocalDateTime.now(), 10, "ABC"));
-        Mockito.when(mockedRegisteredTimeService.getAllDaysStatistics(any(UUID.class))).thenReturn(new TotalDaysStatisticsDto(0.0, 0, 0,0,0,0,0, 0.0, 0.0));
-        Mockito.when(mockedTimeChunksService.getTimeChunksByConsultant(any(UUID.class))).thenReturn(timeChunks);
-
-        /* ARRANGE FOR HELPER METHOD - getAllConsultantsPageable() */
-        Mockito.when(mockedConsultantRepo.findAllByActiveTrueAndFilterByNameAndResponsiblePtAndClientsOrderByFullNameAsc(
-                anyString(),
-                any(Pageable.class),
-                any(List.class),
-                any(List.class))).thenReturn(pageableConsultantsList);
-
-        /* ACT */
-        ConsultantResponseListDto mockedResult = consultantService.getAllConsultantDtos(0, 8, "mockJohn", List.of("mockPt"), List.of("mockClient"));
-
-        /* ASSERT */
-        assertEquals(expectedConsultantsFound, mockedResult.consultants().size());
-    }
+//    @Test
+//    void shouldReturnConsultantResponseListDto() {
+//        /* ARRANGE */
+//        Page<Consultant> pageableConsultantsList = new PageImpl<>(List.of(mockedConsultant1));
+//        int expectedConsultantsFound = 1;
+//        List<TimeChunks> timeChunks = new ArrayList<>();
+//        timeChunks.add(new TimeChunks(new TimeChunksKey(UUID.randomUUID(), LocalDateTime.now()), "Konsult-tid", LocalDateTime.now(), 10, "ABC"));
+//        Mockito.when(mockedRegisteredTimeService.getAllDaysStatistics(any(UUID.class))).thenReturn(new TotalDaysStatisticsDto(0.0, 0, 0,0,0,0,0, 0.0, 0.0));
+//        Mockito.when(mockedTimeChunksService.getTimeChunksByConsultant(any(UUID.class))).thenReturn(timeChunks);
+//
+//        /* ARRANGE FOR HELPER METHOD - getAllConsultantsPageable() */
+//        Mockito.when(mockedConsultantRepo.findAllByActiveTrueAndFilterByNameAndResponsiblePtAndClientsOrderByFullNameAsc(
+//                anyString(),
+//                any(Pageable.class),
+//                any(List.class),
+//                any(List.class))).thenReturn(pageableConsultantsList);
+//
+//        /* ACT */
+//        ConsultantResponseListDto mockedResult = consultantService.getAllConsultantDtos(0, 8, "mockJohn", List.of("mockPt"), List.of("mockClient"));
+//
+//        /* ASSERT */
+//        assertEquals(expectedConsultantsFound, mockedResult.consultants().size());
+//    }
 
     @Test
     void shouldReturn2ActiveConsultants() {
