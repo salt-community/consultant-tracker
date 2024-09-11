@@ -132,6 +132,7 @@ public class ConsultantService {
     @Scheduled(cron = "0 55 11 * * *", zone = "Europe/Stockholm")
     public void fetchDataFromTimekeeper() {
         Logger logger = Logger.getLogger(ConsultantService.class.getName());
+        logger.info("Starting fetching data from timekeeper");
         List<TimekeeperUserDto> timekeeperUserDto = timekeeperClient.getUsers();
         assert timekeeperUserDto != null;
         updateConsultantTable(timekeeperUserDto);
