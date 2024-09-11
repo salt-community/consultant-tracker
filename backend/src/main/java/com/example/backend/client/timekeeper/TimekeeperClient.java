@@ -29,22 +29,22 @@ public class TimekeeperClient {
     public TimekeeperClient(@Value("${TIMEKEEPER.URL}") String baseUrl,
                             @Value("${TIMEKEEPER.AUTH}") String HEADER) {
 //        CLIENT_URL = WebClient.create(baseUrl);
-//        CLIENT_URL = WebClient.builder().baseUrl(baseUrl).exchangeStrategies(ExchangeStrategies.builder()
-//                        .codecs(configurer -> configurer
-//                                .defaultCodecs()
-//                                .maxInMemorySize(16 * 1024 * 1024))
-//                        .build())
-//                .build();
-        HttpClient httpClient = HttpClient.create()
-                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 100000);
-        CLIENT_URL = WebClient.builder()
-                .clientConnector(new ReactorClientHttpConnector(httpClient))
-                .baseUrl(baseUrl).exchangeStrategies(ExchangeStrategies.builder()
+        CLIENT_URL = WebClient.builder().baseUrl(baseUrl).exchangeStrategies(ExchangeStrategies.builder()
                         .codecs(configurer -> configurer
                                 .defaultCodecs()
                                 .maxInMemorySize(16 * 1024 * 1024))
                         .build())
                 .build();
+//        HttpClient httpClient = HttpClient.create()
+//                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 100000);
+//        CLIENT_URL = WebClient.builder()
+//                .clientConnector(new ReactorClientHttpConnector(httpClient))
+//                .baseUrl(baseUrl).exchangeStrategies(ExchangeStrategies.builder()
+//                        .codecs(configurer -> configurer
+//                                .defaultCodecs()
+//                                .maxInMemorySize(16 * 1024 * 1024))
+//                        .build())
+//                .build();
         this.HEADER = HEADER;
     }
 
