@@ -40,6 +40,7 @@ public class TimekeeperClient {
                 .build();
         this.HEADER = HEADER;
     }
+
  // TODO remove later
 //    public TimekeeperUserDto getUser(Long id) {
 //        TimekeeperUserListResponseDto dto = CLIENT_URL.get()
