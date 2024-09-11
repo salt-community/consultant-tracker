@@ -1,33 +1,47 @@
 "use client";
-import {ChangeEvent, useEffect} from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import "./filter.css";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Multiselect from "@/components/filter/multiselect/multiselect";
-import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch, RootState} from "@/store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/store/store";
 import {
   setDebounceFilterName,
   setFilterClients,
   setFilterName,
   setFilterPts,
   setListOfClients,
-  setListOfPts
+  setListOfPts,
 } from "@/store/slices/FilterFieldSlice";
-import {user} from "@/utils/utils";
-import {ClientsAndPtsListResponseType} from "@/types";
-import {getAllClientsAndPts} from "@/api";
-import {setPage} from "@/store/slices/PaginationSlice";
-
+import { user } from "@/utils/utils";
+import { ClientsAndPtsListResponseType } from "@/types";
+import { getAllClientsAndPts } from "@/api";
+import { setPage } from "@/store/slices/PaginationSlice";
+import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
 
 function FilterField() {
-  const filterPts = useSelector((state: RootState) => state.filterField.filterPts)
-  const filterClients = useSelector((state: RootState) => state.filterField.filterClients)
-  const filterName = useSelector((state: RootState) => state.filterField.filterName)
-  const listOfClients = useSelector((state: RootState) => state.filterField.listOfClients)
-  const listOfPts = useSelector((state: RootState) => state.filterField.listOfPts)
+  const filterPts = useSelector(
+    (state: RootState) => state.filterField.filterPts
+  );
+  const filterClients = useSelector(
+    (state: RootState) => state.filterField.filterClients
+  );
+  const filterName = useSelector(
+    (state: RootState) => state.filterField.filterName
+  );
+  const listOfClients = useSelector(
+    (state: RootState) => state.filterField.listOfClients
+  );
+  const listOfPts = useSelector(
+    (state: RootState) => state.filterField.listOfPts
+  );
 
   const dispatch = useDispatch<AppDispatch>();
+
+  const [showPgp, setShowPgp] = useState<boolean>(false);
+
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     dispatch(setPage(0));
     dispatch(setFilterName(e.target.value));
@@ -53,17 +67,16 @@ function FilterField() {
   const handleClear = () => {
     dispatch(setFilterPts([user]));
     dispatch(setFilterClients([]));
-    dispatch(setFilterName(""))
+    dispatch(setFilterName(""));
   };
 
   useEffect(() => {
-    getAllClientsAndPts()
-      .then((res: ClientsAndPtsListResponseType) => {
-        dispatch(setListOfPts(res.pts));
-        dispatch(setListOfClients(res.clients));
-      });
+    getAllClientsAndPts().then((res: ClientsAndPtsListResponseType) => {
+      dispatch(setListOfPts(res.pts));
+      dispatch(setListOfClients(res.clients));
+    });
   }, []);
-
+  const label = "All Consultants";
   return (
     <section className="filter-section">
       <fieldset className="filter-fieldset">
@@ -78,23 +91,31 @@ function FilterField() {
             onChange={handleInputChange}
           />
         </div>
+
         <Multiselect
           fullList={listOfClients}
           handleSelection={handleClientSelection}
-          setSelection={(clients)=>dispatch(setFilterClients(clients))}
+          setSelection={(clients) => dispatch(setFilterClients(clients))}
           selected={filterClients}
           label="Filter by client"
         />
         <Multiselect
           fullList={listOfPts}
           handleSelection={handlePtsSelection}
-          setSelection={(pts)=>dispatch(setFilterPts(pts))}
+          setSelection={(pts) => dispatch(setFilterPts(pts))}
           selected={filterPts}
           label="Filter by responsible pt"
         />
         <Button onClick={handleClear} variant="contained">
           Clear filter
         </Button>
+        <div className="filter-by__consultants">
+          <FormControlLabel control={<Checkbox />} label="All Consultants" />
+          <FormControlLabel
+            control={<Checkbox />}
+            label="Include PGP"
+          />
+        </div>
       </fieldset>
     </section>
   );
