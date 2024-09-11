@@ -34,6 +34,7 @@ public class ConsultantService {
     private final TimeChunksService timeChunksService;
     private final MeetingsScheduleService meetingsScheduleService;
     private final SaltUserService saltUserService;
+    private static final Logger LOGGER = Logger.getLogger(ConsultantService.class.getName());
 
     //-----------------------------COVERED BY TESTS ---------------------------------
     public ConsultantResponseListDto getAllConsultantDtos(int page, int pageSize, String name, List<String> pt, List<String> client, boolean includePgp) {
@@ -130,21 +131,20 @@ public class ConsultantService {
 //        @PostConstruct
     @Scheduled(cron = "0 0 0 * * *", zone = "Europe/Stockholm")
     public void fetchDataFromTimekeeper() {
-        Logger logger = Logger.getLogger(ConsultantService.class.getName());
-        logger.info("Starting fetching data from timekeeper");
+        LOGGER.info("Starting fetching data from timekeeper");
         List<TimekeeperUserDto> timekeeperUserDto = timekeeperClient.getUsers();
         assert timekeeperUserDto != null;
         updateConsultantTable(timekeeperUserDto);
         registeredTimeService.fetchAndSaveTimeRegisteredByConsultantDB();
-        logger.info("Data fetched from timekeeper");
+        LOGGER.info("Data fetched from timekeeper");
 
         List<Consultant> allActiveConsultants = getAllActiveConsultants();
 
         fillClients(allActiveConsultants);
-        logger.info("Clients and PTs filled");
+        LOGGER.info("Clients and PTs filled");
 
         timeChunksService.saveTimeChunksForAllConsultants(allActiveConsultants);
-        logger.info("Chunks saved");
+        LOGGER.info("Chunks saved");
 
     }
 

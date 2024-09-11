@@ -4,11 +4,13 @@ import com.example.backend.consultant.ConsultantService;
 import com.example.backend.saltUser.SaltUserService;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.*;
+import java.util.logging.Logger;
 
 
 @Service
@@ -19,6 +21,7 @@ public class NotionClient {
     private final String DB_ID;
     private final SaltUserService saltUserService;
     private final ConsultantService consultantService;
+    private static final Logger LOGGER = Logger.getLogger(NotionClient.class.getName());
 
     public NotionClient(@Value("${NOTION.URL}") String baseUrl,
                         @Value("${NOTION.AUTH}") String HEADER_AUTH,
@@ -41,7 +44,9 @@ public class NotionClient {
         this.consultantService = consultantService;
     }
 
+    @Scheduled(cron="0 0 2 * * 4", zone = "Europe/Stockholm")
     public void getUsersFromNotion() {
+        LOGGER.info("Fetching users from Notion");
         List<UUID> ptsIds = saltUserService.getAllPtsIds();
 
         String requestBody = """
@@ -73,6 +78,6 @@ public class NotionClient {
         if (!consultantsAndPts.isEmpty()) {
             consultantService.updatePtsForConsultants(consultantsAndPts);
         }
-
+        LOGGER.info("Users from Notion fetched");
     }
 }

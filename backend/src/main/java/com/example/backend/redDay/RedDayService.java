@@ -5,7 +5,6 @@ import com.example.backend.client.nager.dto.RedDaysFromNagerDto;
 import com.example.backend.consultant.ConsultantService;
 import com.example.backend.redDay.dto.RedDaysResponseDto;
 import com.example.backend.utils.Utilities;
-import jakarta.annotation.PostConstruct;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -26,7 +25,7 @@ public class RedDayService {
     private final RedDayRepository redDaysRepository;
     private final NagerClient workingDaysClient;
     private final ConsultantService consultantService;
-
+    private static final Logger LOGGER = Logger.getLogger(RedDayService.class.getName());
 
     public RedDayService(@Lazy ConsultantService consultantService,
                          RedDayRepository redDaysRepository,
@@ -93,6 +92,7 @@ public class RedDayService {
 //    @PostConstruct
     @Scheduled(cron="0 0 0 1 1 *", zone = "Europe/Stockholm")
 public void getRedDaysFromNager() {
+        LOGGER.info("Fetching red days from Nager");
         var saltStartYear = 2018;
 //        TODO ask about value of that part - refactor?
         RedDay latestDateDB = redDaysRepository.findFirstByOrderById_DateDesc();
@@ -109,6 +109,7 @@ public void getRedDaysFromNager() {
             //TODO handle in case there is not response from nager;
             saveRedDays(currentYearRedDaysArray);
         }
+        LOGGER.info("Red days from Nager fetched");
     }
 
 

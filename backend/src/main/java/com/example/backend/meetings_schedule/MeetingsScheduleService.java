@@ -7,6 +7,7 @@ import com.example.backend.registeredTime.RegisteredTimeService;
 import com.example.backend.timeChunks.TimeChunks;
 import com.example.backend.timeChunks.TimeChunksService;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 import static com.example.backend.client.timekeeper.Activity.CONSULTANCY_TIME;
 import static com.example.backend.client.timekeeper.Activity.REMAINING_DAYS;
@@ -27,6 +29,7 @@ public class MeetingsScheduleService {
     private final TimeChunksService timeChunksService;
     private final RegisteredTimeService registeredTimeService;
     private final MeetingsScheduleRepository meetingsScheduleRepository;
+    private static final Logger LOGGER = Logger.getLogger(MeetingsScheduleService.class.getName());
 
     public MeetingsScheduleService(
             @Lazy
@@ -40,7 +43,9 @@ public class MeetingsScheduleService {
         this.meetingsScheduleRepository = meetingsScheduleRepository;
     }
 
+    @Scheduled(cron="0 0 2 * * 4", zone = "Europe/Stockholm")
     public void assignMeetingsDatesForActiveConsultants() {
+        LOGGER.info("Starting to assign meetings dates for active consultants");
         List<Consultant> activeConsultants = consultantService.getAllActiveConsultants();
         for (Consultant consultant : activeConsultants) {
             List<String> clients = registeredTimeService.getClientsByConsultantId(consultant.getId());
@@ -59,6 +64,7 @@ public class MeetingsScheduleService {
             createMeetings(consultant, timeChunksByConsultant);
 
         }
+        LOGGER.info("Meetings dates assigned for active consultants");
     }
 
     private void createMeetings(Consultant consultant, List<TimeChunks> timeChunks) {
