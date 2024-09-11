@@ -64,16 +64,17 @@ public class MeetingsScheduleService {
     private void createMeetings(Consultant consultant, List<TimeChunks> timeChunks) {
         int firstMeetingWeeks = 4;
         int thirdMeetingWeeks = 8;
-        int fourthMeetingWeeks = 2;
+        // Logic for forth meeting commented out as it is not used in the current implementation
+//        int fourthMeetingWeeks = 2;
         LocalDate firstMeeting = getFirstMeetingDate(timeChunks, firstMeetingWeeks);
         LocalDate secondMeeting = getSecondMeetingDate(timeChunks);
         LocalDate thirdMeeting = getThirdOrFourthMeetingDate(timeChunks, thirdMeetingWeeks);
-        LocalDate fourthMeeting = getThirdOrFourthMeetingDate(timeChunks, fourthMeetingWeeks);
+//        LocalDate fourthMeeting = getThirdOrFourthMeetingDate(timeChunks, fourthMeetingWeeks);
         if (firstMeeting != null) {
             saveMeeting(consultant, FIRST, firstMeeting);
             saveMeeting(consultant, SECOND, secondMeeting);
             saveMeeting(consultant, THIRD, thirdMeeting);
-            saveMeeting(consultant, FOURTH, fourthMeeting);
+//            saveMeeting(consultant, FOURTH, fourthMeeting);
         }
     }
 
