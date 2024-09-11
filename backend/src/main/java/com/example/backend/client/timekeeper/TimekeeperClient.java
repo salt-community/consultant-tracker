@@ -5,6 +5,7 @@ import com.example.backend.client.timekeeper.dto.TimekeeperRegisteredTimeRespons
 import com.example.backend.client.timekeeper.dto.TimekeeperUserListResponseDto;
 import com.example.backend.client.timekeeper.dto.TimekeeperUserDto;
 import io.netty.channel.ChannelOption;
+import io.netty.handler.ssl.SslContextBuilder;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -14,7 +15,9 @@ import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
+import reactor.netty.tcp.SslProvider;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,8 +38,14 @@ public class TimekeeperClient {
 //                                .maxInMemorySize(16 * 1024 * 1024))
 //                        .build())
 //                .build();
+//        HttpClient httpClient = HttpClient.create()
+//                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 100000);
         HttpClient httpClient = HttpClient.create()
-                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 100000);
+                .secure(spec -> spec.sslContext(SslContextBuilder.forClient())
+                        .defaultConfiguration(SslProvider.DefaultConfigurationType.TCP)
+                        .handshakeTimeout(Duration.ofSeconds(60))
+                        .closeNotifyFlushTimeout(Duration.ofSeconds(60))
+                        .closeNotifyReadTimeout(Duration.ofSeconds(60)));
         CLIENT_URL = WebClient.builder()
                 .clientConnector(new ReactorClientHttpConnector(httpClient))
                 .baseUrl(baseUrl).exchangeStrategies(ExchangeStrategies.builder()

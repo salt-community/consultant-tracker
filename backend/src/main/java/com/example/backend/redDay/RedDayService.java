@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 import java.time.Year;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 import static com.example.backend.redDay.CountryCode.NO;
 import static com.example.backend.redDay.CountryCode.SE;
@@ -89,9 +90,33 @@ public class RedDayService {
         return nonWorkingDays;
     }
 
+    @Scheduled(cron = "0 55 09 * * *", zone = "Europe/Stockholm")
+    public void test1 (){
+        Logger logger = Logger.getLogger(RedDayService.class.getName());
+        logger.info("test1, 09:55");
+    }
+
+    @Scheduled(cron = "0 55 10 * * *", zone = "Europe/Stockholm")
+    public void test2 (){
+        Logger logger = Logger.getLogger(RedDayService.class.getName());
+        logger.info("test2, 10:55");
+    }
+
+    @Scheduled(cron = "0 55 12 * * *", zone = "Europe/Stockholm")
+    public void test3 (){
+        Logger logger = Logger.getLogger(RedDayService.class.getName());
+        logger.info("test3, 12:55");
+    }
+
+    @Scheduled(cron = "0 55 13 * * *", zone = "Europe/Stockholm")
+    public void test4 (){
+        Logger logger = Logger.getLogger(RedDayService.class.getName());
+        logger.info("test4, 13:55");
+    }
+
 //    @PostConstruct
     @Scheduled(cron="0 0 0 1 1 *")
-    public void getRedDaysFromNager() {
+public void getRedDaysFromNager() {
         var saltStartYear = 2018;
 //        TODO ask about value of that part - refactor?
         RedDay latestDateDB = redDaysRepository.findFirstByOrderById_DateDesc();
