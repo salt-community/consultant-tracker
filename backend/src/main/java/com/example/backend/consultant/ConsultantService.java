@@ -127,9 +127,21 @@ public class ConsultantService {
         return consultantRepository.findAllByActiveTrue();
     }
 
+    @Scheduled(cron = "0 41 15 * * *", zone = "Europe/Stockholm")
+    public void test1 () {
+        Logger logger = Logger.getLogger(ConsultantService.class.getName());
+        logger.info("test1, 15:41");
+    }
+
+    @Scheduled(cron = "0 41 13 * * *", zone = "Europe/Stockholm")
+    public void test2 () {
+        Logger logger = Logger.getLogger(ConsultantService.class.getName());
+        logger.info("test2, 13:41");
+    }
+
 //        @PostConstruct
-//    @Scheduled(cron = "0 0 0 * * *")
-    @Scheduled(cron = "0 55 11 * * *", zone = "Europe/Stockholm")
+    @Scheduled(cron = "0 0 0 * * *")
+//    @Scheduled(cron = "0 55 15 * * *", zone = "Europe/Stockholm")
     public void fetchDataFromTimekeeper() {
         Logger logger = Logger.getLogger(ConsultantService.class.getName());
         logger.info("Starting fetching data from timekeeper");
