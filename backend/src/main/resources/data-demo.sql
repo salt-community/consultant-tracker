@@ -1,8 +1,7 @@
-INSERT INTO demo_consultant (id, full_name, email, phone_number, timekeeper_id, active, client, responsiblept, country)
+INSERT INTO demo_consultant (id, full_name, email, timekeeper_id, active, client, responsiblept, country)
 SELECT c.id,
        'Alice Svensson',
        'alice.svensson@example.com',
-       NULL,
        1001,
        true,
        'Client A',
@@ -13,11 +12,10 @@ WHERE c.active IS true
 ORDER BY c.id
 LIMIT 1 OFFSET 0 ON CONFLICT DO NOTHING;
 
-INSERT INTO demo_consultant (id, full_name, email, phone_number, timekeeper_id, active, client, responsiblept, country)
+INSERT INTO demo_consultant (id, full_name, email, timekeeper_id, active, client, responsiblept, country)
 SELECT c.id,
        'Bob Eriksson',
        'bob@example.com',
-       NULL,
        1002,
        true,
        'Client A',
@@ -28,11 +26,10 @@ WHERE c.active IS true
 ORDER BY c.id
 LIMIT 1 OFFSET 1 ON CONFLICT DO NOTHING;
 
-INSERT INTO demo_consultant (id, full_name, email, phone_number, timekeeper_id, active, client, responsiblept, country)
+INSERT INTO demo_consultant (id, full_name, email, timekeeper_id, active, client, responsiblept, country)
 SELECT c.id,
        'Leona Rehnquist',
        'leona@example.com',
-       NULL,
        1002,
        true,
        'Client A',
@@ -43,11 +40,10 @@ WHERE c.active IS true
 ORDER BY c.id
 LIMIT 1 OFFSET 2 ON CONFLICT DO NOTHING;
 
-INSERT INTO demo_consultant (id, full_name, email, phone_number, timekeeper_id, active, client, responsiblept, country)
+INSERT INTO demo_consultant (id, full_name, email, timekeeper_id, active, client, responsiblept, country)
 SELECT c.id,
        'Gabriella Tornquist',
        'gabriella@example.com',
-       NULL,
        1002,
        true,
        'Client A',
@@ -58,11 +54,10 @@ WHERE c.active IS true
 ORDER BY c.id
 LIMIT 1 OFFSET 3 ON CONFLICT DO NOTHING;
 
-INSERT INTO demo_consultant (id, full_name, email, phone_number, timekeeper_id, active, client, responsiblept, country)
+INSERT INTO demo_consultant (id, full_name, email, timekeeper_id, active, client, responsiblept, country)
 SELECT c.id,
        'Kira Lagerlöf',
        'kira@example.com',
-       NULL,
        1002,
        true,
        'Client A',
@@ -73,11 +68,10 @@ WHERE c.active IS true
 ORDER BY c.id
 LIMIT 1 OFFSET 4 ON CONFLICT DO NOTHING;
 
-INSERT INTO demo_consultant (id, full_name, email, phone_number, timekeeper_id, active, client, responsiblept, country)
+INSERT INTO demo_consultant (id, full_name, email, timekeeper_id, active, client, responsiblept, country)
 SELECT c.id,
        'Denise Ceder',
        'denise@example.com',
-       NULL,
        1002,
        true,
        'Client B',
@@ -88,11 +82,10 @@ WHERE c.active IS true
 ORDER BY c.id
 LIMIT 1 OFFSET 5 ON CONFLICT DO NOTHING;
 
-INSERT INTO demo_consultant (id, full_name, email, phone_number, timekeeper_id, active, client, responsiblept, country)
+INSERT INTO demo_consultant (id, full_name, email, timekeeper_id, active, client, responsiblept, country)
 SELECT c.id,
        'Faje Lindblad',
        'faje@example.com',
-       NULL,
        1002,
        true,
        'Client B',
@@ -103,11 +96,10 @@ WHERE c.active IS true
 ORDER BY c.id
 LIMIT 1 OFFSET 6 ON CONFLICT DO NOTHING;
 
-INSERT INTO demo_consultant (id, full_name, email, phone_number, timekeeper_id, active, client, responsiblept, country)
+INSERT INTO demo_consultant (id, full_name, email, timekeeper_id, active, client, responsiblept, country)
 SELECT c.id,
        'Alf Forsberg',
        'alf@example.com',
-       NULL,
        1002,
        true,
        'Client B',
@@ -118,11 +110,10 @@ WHERE c.active IS true
 ORDER BY c.id
 LIMIT 1 OFFSET 7 ON CONFLICT DO NOTHING;
 
-INSERT INTO demo_consultant (id, full_name, email, phone_number, timekeeper_id, active, client, responsiblept, country)
+INSERT INTO demo_consultant (id, full_name, email, timekeeper_id, active, client, responsiblept, country)
 SELECT c.id,
        'Ulf Lindahl',
        'ulf@example.com',
-       NULL,
        1002,
        true,
        'Client B',
@@ -133,11 +124,10 @@ WHERE c.active IS true
 ORDER BY c.id
 LIMIT 1 OFFSET 8 ON CONFLICT DO NOTHING;
 
-INSERT INTO demo_consultant (id, full_name, email, phone_number, timekeeper_id, active, client, responsiblept, country)
+INSERT INTO demo_consultant (id, full_name, email, timekeeper_id, active, client, responsiblept, country)
 SELECT c.id,
        'Bertil Skarsgård',
        'bertil@example.com',
-       NULL,
        1002,
        true,
        'Client B',

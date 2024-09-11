@@ -64,7 +64,6 @@ class ConsultantRepositoryTest {
     @Test
     void shouldReturnListOfSize1() {
         Pageable pageRequest = PageRequest.of(0, 5);
-        System.out.println("repo.findAllByActiveTrue() = " + repo.findAllByActiveTrue());
         Page<Consultant> activeJohn = repo.findAllByActiveTrueAndFilterByNameAndResponsiblePtAndClientsOrderByFullNameAsc(
                 "john",
                 pageRequest,

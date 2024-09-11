@@ -35,10 +35,10 @@ public class ConsultantController {
             @RequestParam(defaultValue = "", required = false) String name,
             @RequestParam(defaultValue = "", required = false) List<String> client,
             @RequestParam(defaultValue = "", required = false) List<String> pt) {
-//        if ("demo".equalsIgnoreCase(appMode)) {
-//            System.out.println("IN DEMO MODE");
-//            return ResponseEntity.ok(demoConsultantService.getAllDemoConsultantDtos(page, pageSize, name, pt, client));
-//        }
+        if ("demo".equalsIgnoreCase(appMode)) {
+            System.out.println("IN DEMO MODE");
+            return ResponseEntity.ok(demoConsultantService.getAllDemoConsultantDtos(page, pageSize, name, pt, client));
+        }
         ConsultantResponseListDto consultantsResponse = consultantService.getAllConsultantDtos(page, pageSize, name, pt, client);
         return ResponseEntity.ok(consultantsResponse);
     }

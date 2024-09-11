@@ -218,7 +218,6 @@ public class ConsultantService {
         for (Consultant consultant : activeConsultants) {
             if (clientOrPt.equals("pts")) {
                 List<String> ptNamesList = saltUserService.getAllPtsNames();
-                System.out.println("ptNamesList = " + ptNamesList);
                 if (ptNamesList != null && !ptNamesList.isEmpty()) {
                     resultList.addAll(ptNamesList);
                 }
