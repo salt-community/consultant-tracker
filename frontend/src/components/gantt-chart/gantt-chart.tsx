@@ -36,13 +36,14 @@ const GanttChart = () => {
   const filterPts = useSelector((state: RootState) => state.filterField.filterPts)
   const filterClients = useSelector((state: RootState) => state.filterField.filterClients)
   const debounceFilterName = useSelector((state: RootState) => state.filterField.debounceFilterName)
+  const includePgps = useSelector((state: RootState) => state.filterField.includePgps)
 
 
   const fetchConsultantsData = () => {
     const filterPtsEncodeUriString = encodeString(filterPts, "pt");
     const filterClientsEncodeUriString = encodeString(filterClients, "client");
     dispatch(setLoading(true));
-    getConsultantsData(page, rowsPerPage, filterClientsEncodeUriString, filterPtsEncodeUriString, debounceFilterName)
+    getConsultantsData(page, rowsPerPage, filterClientsEncodeUriString, filterPtsEncodeUriString, debounceFilterName, includePgps)
       .then((res) => {
         dispatch(setItems(mapConsultantsToCalendarItems(res)));
         dispatch(setTotalItems(res.totalConsultants));
@@ -59,7 +60,8 @@ const GanttChart = () => {
 
   useEffect(() => {
     fetchConsultantsData();
-  }, [filterPts, filterClients, debounceFilterName, rowsPerPage, page]);
+    console.log("includePgps", includePgps) 
+  }, [filterPts, filterClients, debounceFilterName, rowsPerPage, page, includePgps]);
 
   return loading ? <Loading/> : error.length !== 0
     ? <Error message={error}/> :

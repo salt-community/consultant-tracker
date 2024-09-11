@@ -11,10 +11,10 @@ import {
   setFilterClients,
   setFilterName,
   setFilterPts,
+  setIncludePgps,
   setListOfClients,
   setListOfPts,
 } from "@/store/slices/FilterFieldSlice";
-import { user } from "@/utils/utils";
 import { ClientsAndPtsListResponseType } from "@/types";
 import { getAllClientsAndPts } from "@/api";
 import { setPage } from "@/store/slices/PaginationSlice";
@@ -37,10 +37,11 @@ function FilterField() {
   const listOfPts = useSelector(
     (state: RootState) => state.filterField.listOfPts
   );
+  const includePgps = useSelector(
+    (state: RootState) => state.filterField.includePgps
+  );
 
   const dispatch = useDispatch<AppDispatch>();
-
-  const [showPgp, setShowPgp] = useState<boolean>(false);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     dispatch(setPage(0));
@@ -65,18 +66,28 @@ function FilterField() {
   };
 
   const handleClear = () => {
-    dispatch(setFilterPts([user]));
+    dispatch(setFilterPts([]));
     dispatch(setFilterClients([]));
     dispatch(setFilterName(""));
+    dispatch(setIncludePgps(false));
+  };
+
+  const handlePgpSelection = () => {
+    if (includePgps && filterClients.includes("PGP")) {
+      dispatch(setFilterClients([]));
+    }
+    dispatch(setIncludePgps(!includePgps));
   };
 
   useEffect(() => {
-    getAllClientsAndPts().then((res: ClientsAndPtsListResponseType) => {
-      dispatch(setListOfPts(res.pts));
-      dispatch(setListOfClients(res.clients));
-    });
-  }, []);
-  const label = "All Consultants";
+    getAllClientsAndPts(includePgps).then(
+      (res: ClientsAndPtsListResponseType) => {
+        dispatch(setListOfPts(res.pts));
+        dispatch(setListOfClients(res.clients));
+      }
+    );
+  }, [includePgps]);
+
   return (
     <section className="filter-section">
       <fieldset className="filter-fieldset">
@@ -110,10 +121,11 @@ function FilterField() {
           Clear filter
         </Button>
         <div className="filter-by__consultants">
-          <FormControlLabel control={<Checkbox />} label="All Consultants" />
           <FormControlLabel
             control={<Checkbox />}
-            label="Include PGP"
+            label="Include PGPs"
+            checked={includePgps}
+            onChange={handlePgpSelection}
           />
         </div>
       </fieldset>

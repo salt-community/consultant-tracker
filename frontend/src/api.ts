@@ -1,8 +1,8 @@
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
-export const getConsultantsData = async (page:number, pageSize:number, clientEncodeURI:string, ptsEncodeURI:string, filterName:string) => {
+export const getConsultantsData = async (page:number, pageSize:number, clientEncodeURI:string, ptsEncodeURI:string, filterName:string, includePgps: boolean) => {
   return await fetch(
-    `${BASE_URL}/api/consultants?page=${page}&pageSize=${pageSize}&${ptsEncodeURI}&${clientEncodeURI}&name=${filterName}`)
+    `${BASE_URL}/api/consultants?page=${page}&pageSize=${pageSize}&${ptsEncodeURI}&${clientEncodeURI}&name=${filterName}&includePgps=${includePgps}`)
     .then((response) => response.json());
 }
 
@@ -36,8 +36,8 @@ export const getInfographicsByPt = async (pt: string) => {
     });
 }
 
-export const getAllClientsAndPts = async () => {
-  return await fetch(`${BASE_URL}/api/consultants/getAllClientsAndPts`)
+export const getAllClientsAndPts = async (includePgps: boolean) => {
+  return await fetch(`${BASE_URL}/api/consultants/getAllClientsAndPts?includePgps=${includePgps}`)
     .then((response) => {
       if (!response.ok) {
         throw new Error(`HTTP error ${response.status}`);

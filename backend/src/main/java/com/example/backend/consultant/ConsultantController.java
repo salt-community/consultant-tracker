@@ -34,12 +34,12 @@ public class ConsultantController {
             @RequestParam(defaultValue = "", required = false) String name,
             @RequestParam(defaultValue = "", required = false) List<String> client,
             @RequestParam(defaultValue = "", required = false) List<String> pt,
-            @RequestParam(defaultValue = "false", required = false) boolean includePgp) {
+            @RequestParam(defaultValue = "false", required = false) boolean includePgps) {
         if ("demo".equalsIgnoreCase(appMode)) {
             System.out.println("IN DEMO MODE");
             return ResponseEntity.ok(demoConsultantService.getAllDemoConsultantDtos(page, pageSize, name, pt, client));
         }
-        ConsultantResponseListDto consultantsResponse = consultantService.getAllConsultantDtos(page, pageSize, name, pt, client, includePgp);
+        ConsultantResponseListDto consultantsResponse = consultantService.getAllConsultantDtos(page, pageSize, name, pt, client, includePgps);
         return ResponseEntity.ok(consultantsResponse);
     }
 
@@ -58,11 +58,11 @@ public class ConsultantController {
 
     @GetMapping("/getAllClientsAndPts")
     public ResponseEntity<ClientsAndPtsListDto> getAllClientsAndPts(
-            @RequestParam(defaultValue = "false", required = false) boolean includePgp
+            @RequestParam(defaultValue = "false", required = false) boolean includePgps
     ) {
         if ("demo".equalsIgnoreCase(appMode)) {
             return ResponseEntity.ok(demoConsultantService.getAllDemoClientsAndPts());
         }
-        return ResponseEntity.ok(consultantService.getAllClientsAndPts(includePgp));
+        return ResponseEntity.ok(consultantService.getAllClientsAndPts(includePgps));
     }
 }
