@@ -91,7 +91,7 @@ public class RedDayService {
     }
 
 //    @PostConstruct
-    @Scheduled(cron="0 0 0 1 1 *")
+    @Scheduled(cron="0 0 0 1 1 *", zone = "Europe/Stockholm")
 public void getRedDaysFromNager() {
         var saltStartYear = 2018;
 //        TODO ask about value of that part - refactor?
