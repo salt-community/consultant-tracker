@@ -40,7 +40,7 @@ const Schedule = () => {
       })}
     </div>
   ) : (
-    <div> Time has run out </div>
+    <div> No meetings to show </div>
   );
 };
 
