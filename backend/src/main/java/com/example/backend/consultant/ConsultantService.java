@@ -127,8 +127,9 @@ public class ConsultantService {
         return consultantRepository.findAllByActiveTrue();
     }
 
-    //        @PostConstruct
-    @Scheduled(cron = "0 0 0 * * *")
+//        @PostConstruct
+//    @Scheduled(cron = "0 0 0 * * *")
+    @Scheduled(cron = "35 10 * * *")
     public void fetchDataFromTimekeeper() {
         Logger logger = Logger.getLogger(ConsultantService.class.getName());
         List<TimekeeperUserDto> timekeeperUserDto = timekeeperClient.getUsers();
