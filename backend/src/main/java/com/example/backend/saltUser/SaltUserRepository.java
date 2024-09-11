@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Repository
@@ -14,7 +15,7 @@ public interface SaltUserRepository extends JpaRepository<SaltUser, UUID> {
     List<UUID> findAllId();
 
     @Query("SELECT t.fullName FROM SaltUser t")
-    List<String> findAllNames();
+    Set<String> findAllNames();
 
     SaltUser findByFullName(String ptName);
 }

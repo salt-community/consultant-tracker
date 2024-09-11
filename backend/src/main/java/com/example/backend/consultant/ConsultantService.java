@@ -11,7 +11,6 @@ import com.example.backend.saltUser.SaltUser;
 import com.example.backend.saltUser.SaltUserService;
 import com.example.backend.tag.Tag;
 import com.example.backend.timeChunks.TimeChunksService;
-import jakarta.annotation.PostConstruct;
 import lombok.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -100,15 +99,22 @@ public class ConsultantService {
     }
 
     //-----------------------------COVERED BY TESTS ---------------------------------
-    public Page<Consultant> getAllConsultantsPageable(int page, int pageSize, String name, List<String> ptIds, List<String> client) {
+    public Page<Consultant> getAllConsultantsPageable(
+            int page,
+            int pageSize,
+            String name,
+            List<String> ptNames,
+            List<String> client) {
         Pageable pageRequest = PageRequest.of(page, pageSize);
-        if (ptIds.isEmpty()) {
-            ptIds.addAll(getListOfAllClientsOrPtsNames("pts"));
+        if (ptNames.isEmpty()) {
+            // need PTs names
+            ptNames.addAll(saltUserService.getAllPtsNames());
         }
         if (client.isEmpty()) {
-            client.addAll(getListOfAllClientsOrPtsNames("clients"));
+            // change to bool variable
+            client.addAll(getListOfAllClients(true));
         }
-        return consultantRepository.findAllByActiveTrueAndFilterByNameAndResponsiblePtAndClientsOrderByFullNameAsc(name, pageRequest, ptIds, client);
+        return consultantRepository.findAllByActiveTrueAndFilterByNameAndResponsiblePtAndClientsOrderByFullNameAsc(name, pageRequest, ptNames, client);
     }
 
     //-----------------------------COVERED BY TESTS ---------------------------------
@@ -121,7 +127,7 @@ public class ConsultantService {
         return consultantRepository.findAllByActiveTrue();
     }
 
-//        @PostConstruct
+    //        @PostConstruct
     @Scheduled(cron = "0 0 0 * * *")
     public void fetchDataFromTimekeeper() {
         Logger logger = Logger.getLogger(ConsultantService.class.getName());
@@ -176,10 +182,14 @@ public class ConsultantService {
                         consultant.setActive(tkUser.isActive() && tkUser.isEmployee());
                         consultantRepository.save(consultant);
                     }
-                    if (tkUser.tags() != null && !tkUser.tags().stream().filter(el -> el.getName().contains("På uppdrag")).toList().isEmpty()) {
+                    if (tkUser.tags() != null
+                            && !tkUser.tags().stream()
+                            .filter(el -> el.getName().contains("På uppdrag")).toList().isEmpty()) {
                         consultant.setClient(null);
                         consultantRepository.save(consultant);
-                    } else if (tkUser.tags() != null && !tkUser.tags().stream().filter(el -> el.getName().contains(PGP.value)).toList().isEmpty()) {
+                    } else if (tkUser.tags() != null
+                            && !tkUser.tags().stream()
+                            .filter(el -> el.getName().contains(PGP.value)).toList().isEmpty()) {
                         consultant.setClient(PGP.value);
                         consultantRepository.save(consultant);
                     }
@@ -206,24 +216,24 @@ public class ConsultantService {
         });
     }
 
-    public ClientsAndPtsListDto getAllClientsAndPts() {
-        Set<String> listOfClients = getListOfAllClientsOrPtsNames("clients");
-        Set<String> listOfPts = getListOfAllClientsOrPtsNames("pts");
+    public ClientsAndPtsListDto getAllClientsAndPts(boolean includePgp) {
+        // change to bool variable
+        Set<String> listOfClients = getListOfAllClients(true);
+        Set<String> listOfPts = saltUserService.getAllPtsNames();
         return new ClientsAndPtsListDto(listOfClients, listOfPts);
     }
 
-    public Set<String> getListOfAllClientsOrPtsNames(String clientOrPt) {
+    public Set<String> getListOfAllClients(boolean includePgp) {
         List<Consultant> activeConsultants = getAllActiveConsultants();
         Set<String> resultList = new TreeSet<>();
-        for (Consultant consultant : activeConsultants) {
-            if (clientOrPt.equals("pts")) {
-                List<String> ptNamesList = saltUserService.getAllPtsNames();
-                if (ptNamesList != null && !ptNamesList.isEmpty()) {
-                    resultList.addAll(ptNamesList);
+        if (includePgp) {
+            activeConsultants.forEach(consultant -> resultList.add(consultant.getClient()));
+        } else {
+            activeConsultants.forEach(consultant -> {
+                if (!consultant.getClient().equals("PGP")) {
+                    resultList.add(consultant.getClient());
                 }
-            } else if (clientOrPt.equals("clients") && !consultant.getClient().equals("PGP")) {
-                resultList.add(consultant.getClient());
-            }
+            });
         }
         return resultList;
     }

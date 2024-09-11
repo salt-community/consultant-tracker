@@ -22,7 +22,7 @@ public class ConsultantController {
     private String appMode;
 
     @GetMapping("/timekeeper")
-    public ResponseEntity<String> getAllConsultants(){
+    public ResponseEntity<String> getAllConsultants() {
         consultantService.fetchDataFromTimekeeper();
         return ResponseEntity.ok("Data fetched from timekeeper");
     }
@@ -43,12 +43,12 @@ public class ConsultantController {
     }
 
     @GetMapping("/infographics/{pt}")
-    public ResponseEntity<InfographicResponseDto> getInfographicsByPt(@PathVariable String pt){
-        return  ResponseEntity.ok(consultantService.getInfographicsByPt(pt));
+    public ResponseEntity<InfographicResponseDto> getInfographicsByPt(@PathVariable String pt) {
+        return ResponseEntity.ok(consultantService.getInfographicsByPt(pt));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<SingleConsultantResponseListDto> getConsultantById(@PathVariable UUID id){
+    public ResponseEntity<SingleConsultantResponseListDto> getConsultantById(@PathVariable UUID id) {
         if ("demo".equalsIgnoreCase(appMode)) {
             return ResponseEntity.ok(demoConsultantService.getDemoConsultantById(id));
         }
@@ -56,10 +56,12 @@ public class ConsultantController {
     }
 
     @GetMapping("/getAllClientsAndPts")
-    public ResponseEntity<ClientsAndPtsListDto> getAllClientsAndPts(){
+    public ResponseEntity<ClientsAndPtsListDto> getAllClientsAndPts(
+            @RequestParam(defaultValue = "false", required = false) boolean includePgp
+    ) {
         if ("demo".equalsIgnoreCase(appMode)) {
             return ResponseEntity.ok(demoConsultantService.getAllDemoClientsAndPts());
         }
-        return ResponseEntity.ok(consultantService.getAllClientsAndPts());
+        return ResponseEntity.ok(consultantService.getAllClientsAndPts(includePgp));
     }
 }

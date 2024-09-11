@@ -3,7 +3,9 @@ package com.example.backend.saltUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -19,8 +21,9 @@ public class SaltUserService {
         return saltUserRepository.findById(key).orElse(null);
     }
 
-    public List<String> getAllPtsNames() {
-        return saltUserRepository.findAllNames();
+    public Set<String> getAllPtsNames() {
+        Set<String> ptNamesList = saltUserRepository.findAllNames();
+        return ptNamesList.isEmpty() ? new HashSet<>() : ptNamesList;
     }
 
     public SaltUser getSaltUserByName(String ptName) {
