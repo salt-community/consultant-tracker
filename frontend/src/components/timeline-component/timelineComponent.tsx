@@ -36,7 +36,6 @@ const TimelineComponent = () => {
         groups={groups}
         items={items}
         onItemSelect={handleItemSelect}
-        onCanvasClick={() => {console.log("on canvas click")}}
         itemRenderer={itemRenderer}
         groupRenderer={groupsRenderer}
         canMove={false}
