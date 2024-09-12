@@ -51,7 +51,7 @@ class ConsultantRepositoryTest {
 
     @Test
     void shouldReturnSverigeForCountry() {
-        String actualResult = repo.findCountryById(savedId);
+        String actualResult = repo.findCountryById(savedId).get();
         assertEquals("Sverige", actualResult);
     }
 

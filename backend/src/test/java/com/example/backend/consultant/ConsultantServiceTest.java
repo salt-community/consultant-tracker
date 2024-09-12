@@ -38,6 +38,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -125,7 +126,7 @@ class ConsultantServiceTest extends ApplicationTestConfig {
     @Test
     void getCountryCodeByConsultantId() {
         /* ARRANGE */
-        Mockito.when(mockedConsultantRepo.findCountryById(any(UUID.class))).thenReturn("Sverige");
+        Mockito.when(mockedConsultantRepo.findCountryById(any(UUID.class))).thenReturn(Optional.of("Sverige"));
         String expectedResult = "Sverige";
 
         /* ACT */
