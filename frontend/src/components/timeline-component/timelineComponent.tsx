@@ -5,7 +5,7 @@ import {verticalLineClassNamesForTime} from "@/utils/utils";
 import Timeline from "react-calendar-timeline";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "@/store/store";
-import {setId, setModalData, setOpen, setRedDaysNO, setRedDaysSE} from "@/store/slices/GanttChartSlice";
+import {setId, setModalData, setOpenModal, setOpenTimeItemDetails, setRedDaysNO, setRedDaysSE} from "@/store/slices/GanttChartSlice";
 import {getRedDays} from "@/api";
 import {RedDaysResponseType} from "@/types";
 
@@ -19,7 +19,8 @@ const TimelineComponent = () => {
     const consultantItems = items.filter((el) => itemId == el.id)[0];
     dispatch(setModalData(consultantItems));
     dispatch(setId(consultantItems.group));
-    dispatch(setOpen(true));
+    dispatch(setOpenModal(true));
+    dispatch(setOpenTimeItemDetails(true));
   };
   useEffect(() => {
     getRedDays()
@@ -35,6 +36,7 @@ const TimelineComponent = () => {
         groups={groups}
         items={items}
         onItemSelect={handleItemSelect}
+        onCanvasClick={() => {console.log("on canvas click")}}
         itemRenderer={itemRenderer}
         groupRenderer={groupsRenderer}
         canMove={false}

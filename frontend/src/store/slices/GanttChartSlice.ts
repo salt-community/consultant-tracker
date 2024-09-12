@@ -5,7 +5,8 @@ import moment from "moment";
 
 interface GanttChartState {
   error: string,
-  open: boolean,
+  openModal: boolean,
+  openTimeItemDetails: boolean,
   items: ConsultantItemsType[],
   groups: string[],
   loading: boolean,
@@ -17,7 +18,8 @@ interface GanttChartState {
 
 const initialState: GanttChartState = {
   error: "",
-  open: false,
+  openModal: false,
+  openTimeItemDetails: false,
   items: [],
   groups: [],
   loading: true,
@@ -34,8 +36,11 @@ const dashboardHeaderSlice = createSlice({
     setError: (state, action: PayloadAction<string>) => {
       state.error = action.payload
     },
-    setOpen: (state, action: PayloadAction<boolean>) => {
-      state.open = action.payload
+    setOpenModal: (state, action: PayloadAction<boolean>) => {
+      state.openModal = action.payload
+    },
+    setOpenTimeItemDetails: (state, action: PayloadAction<boolean>) => {
+      state.openTimeItemDetails = action.payload
     },
     setItems: (state, action: PayloadAction<any>) => {
       state.items = action.payload
@@ -69,7 +74,8 @@ export const {
   setLoading,
   setGroups,
   setItems,
-  setOpen,
+  setOpenModal,
+  setOpenTimeItemDetails,
   setError
 } = dashboardHeaderSlice.actions;
 export default dashboardHeaderSlice.reducer;

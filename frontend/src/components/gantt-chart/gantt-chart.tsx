@@ -15,7 +15,7 @@ import {
   setGroups,
   setItems,
   setLoading,
-  setOpen,
+  setOpenModal,
 } from "@/store/slices/GanttChartSlice";
 import Pagination from "@/components/pagination/pagination";
 import {setTotalItems} from "@/store/slices/PaginationSlice";
@@ -53,7 +53,7 @@ const GanttChart = () => {
         dispatch(setError("Failed to fetch resources"));
       })
       .finally(() => {
-        dispatch(setOpen(false));
+        dispatch(setOpenModal(false));
         dispatch(setLoading(false))
       })
   };

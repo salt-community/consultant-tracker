@@ -13,7 +13,8 @@ import {setPersonalData} from "@/store/slices/BasicInfoSlice";
 const BasicInfo = () => {
   const dispatch = useDispatch<AppDispatch>();
   const personalData = useSelector((state:RootState)=>state.basicInfo.personalData)
-  const open = useSelector((state: RootState) => state.ganttChart.open)
+  const openModal = useSelector((state: RootState) => state.ganttChart.openModal)
+  const openTimeItemDetails = useSelector((state: RootState) => state.ganttChart.openTimeItemDetails)
   const fetchConsultantById = () => {
     if (id) getConsultantById(id).then((res) => {
       dispatch(setPersonalData(res))
@@ -26,7 +27,7 @@ const BasicInfo = () => {
 
   return (
     personalData && (
-      <div className={open ? "basic-info__wrapper show" : "hide"}>
+      <div className={openModal ? "basic-info__wrapper show" : "hide"}>
         <BasicInfoHeader name={personalData.fullName}/>
         <div className="basic-info__data">
           <CardDetails/>

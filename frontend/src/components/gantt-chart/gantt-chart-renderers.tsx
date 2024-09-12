@@ -1,5 +1,8 @@
+import { setId, setModalData, setOpenModal, setOpenTimeItemDetails } from "@/store/slices/GanttChartSlice";
+import { AppDispatch, RootState } from "@/store/store";
 import {selectColor} from "@/utils/utils";
-import * as React from "react";
+import './gantt-chart-renderers.css'
+import { useDispatch, useSelector } from "react-redux";
 type Props={
   item: any,
   itemContext: any,
@@ -35,7 +38,19 @@ type GroupProps = {
 }
 
 export const groupsRenderer = ({group}:GroupProps) => {
+  const dispatch = useDispatch<AppDispatch>();
+  const items = useSelector((state: RootState) => state.ganttChart.items)
+
+  const handleItemSelect = (itemId: string) => {
+    console.log("group id ", itemId);
+    console.log("items", items);
+    const consultantItems = items.filter((el) => itemId == el.group)[0];
+    dispatch(setModalData(consultantItems));
+    dispatch(setId(consultantItems.group));
+    dispatch(setOpenModal(true));
+    dispatch(setOpenTimeItemDetails(false));
+  };
   return (
-    <span className="title">{group.title}</span>
+    <span className="title" onClick={() => handleItemSelect(group.id)}>{group.title}</span>
   );
 };
