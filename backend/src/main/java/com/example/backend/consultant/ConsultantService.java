@@ -128,7 +128,7 @@ public class ConsultantService {
         return consultantRepository.findAllByActiveTrue();
     }
 
-//        @PostConstruct
+    //        @PostConstruct
     @Scheduled(cron = "0 0 0 * * *", zone = "Europe/Stockholm")
     public void fetchDataFromTimekeeper() {
         LOGGER.info("Starting fetching data from timekeeper");
@@ -204,7 +204,7 @@ public class ConsultantService {
 
     //-----------------------------COVERED BY TESTS ---------------------------------
     public String getCountryCodeByConsultantId(UUID consultantId) {
-        return consultantRepository.findCountryById(consultantId);
+        return consultantRepository.findCountryById(consultantId).orElse("Sverige");
     }
 
     //-----------------------------COVERED BY TESTS ---------------------------------

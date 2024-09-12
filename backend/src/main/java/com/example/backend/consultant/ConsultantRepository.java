@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -17,7 +18,7 @@ public interface ConsultantRepository extends JpaRepository<Consultant, UUID> {
     List<Consultant> findAllByActiveTrue();
 
     @Query("SELECT t.country FROM Consultant t WHERE t.id = (:id)")
-    String findCountryById(UUID id);
+    Optional<String> findCountryById(UUID id);
 
     int countAllByActiveTrueAndSaltUser(SaltUser saltUser);
 
