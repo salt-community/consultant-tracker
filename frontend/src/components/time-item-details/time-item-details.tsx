@@ -8,14 +8,17 @@ import {RootState} from "@/store/store";
 
 function TimeItemDetails() {
   const content = useSelector((state: RootState) => state.ganttChart.modalData)
+  const openTimeItemDetails = useSelector((state: RootState) => state.ganttChart.openTimeItemDetails)
+  
   useEffect(() => {
-  }, [content]);
+    console.log("openTimeItems", openTimeItemDetails)
+  }, [content,openTimeItemDetails]);
   let borderClassName = selectColor(content!.title!.toString());
 
   return (
     <div
-      className="time-details"
-      style={{ border: `1.5px solid ${borderClassName}` }}
+      className={openTimeItemDetails ? "time-details" : "time-details hidden"}
+      style={{ border: `1.5px solid ${borderClassName}`}}
     >
       {content && (
         <>

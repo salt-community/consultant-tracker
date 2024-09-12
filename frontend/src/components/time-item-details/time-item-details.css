@@ -8,3 +8,7 @@
   gap: 15px;
   box-shadow: rgba(0, 0, 0, 0.45) 0 25px 20px -20px;
 }
+
+.time-details.hidden {
+  visibility: hidden;
+}
