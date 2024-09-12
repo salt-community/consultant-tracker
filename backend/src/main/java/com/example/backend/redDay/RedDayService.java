@@ -49,7 +49,7 @@ public class RedDayService {
 
 
     private String getCountryCode(UUID consultantId) {
-        return consultantService.getCountryCodeByConsultantId(consultantId).equals("Sverige") ? "SE" : "NO";
+        return consultantService.getCountryCodeByConsultantId(consultantId).equals("Norge") ? "NO" : "SE";
     }
 
     public boolean isRedDay(LocalDate date, UUID consultantId) {
