@@ -1,4 +1,4 @@
-const BASE_URL = process.env.BACKEND_URL;
+const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export const getConsultantsData = async (page:number, pageSize:number, clientEncodeURI:string, ptsEncodeURI:string, filterName:string, includePgps: boolean) => {
   return await fetch(
