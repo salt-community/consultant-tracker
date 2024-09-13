@@ -7,6 +7,8 @@ WORKDIR /app
 # Copy package.json and package-lock.json
 COPY package*.json ./
 
+ENV NEXT_PUBLIC_BACKEND_URL=process.env.NEXT_PUBLIC_BACKEND_URL
+
 # Install dependencies
 RUN npm install
 
