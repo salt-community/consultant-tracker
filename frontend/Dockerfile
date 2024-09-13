@@ -7,11 +7,12 @@ WORKDIR /app
 # Copy package.json and package-lock.json
 COPY package*.json ./
 
-# Add the environment variable to the Dockerfile
+# Accept build-time arguments and set environment variables
 ARG NEXT_PUBLIC_BACKEND_URL
-
 ENV NEXT_PUBLIC_BACKEND_URL=${NEXT_PUBLIC_BACKEND_URL}
 
+# Build the Next.js app, injecting the environment variables at build-time
+RUN NEXT_PUBLIC_BACKEND_URL=${NEXT_PUBLIC_BACKEND_URL} npm run build
 # Install dependencies
 RUN npm install
 
@@ -25,4 +26,4 @@ RUN npm run build
 EXPOSE 3000
 
 # Define the command to run your app
-CMD ["npm", "start"]
+CMD ["npm", "start",]
