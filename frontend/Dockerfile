@@ -10,6 +10,10 @@ COPY package*.json ./
 
 # ARG VITE_BACKEND_URL
 ARG VITE_CLERK_PUBLISHABLE_KEY
+ENV PUBLISHABLE_KEY=VITE_CLERK_PUBLISHABLE_KEY
+
+# ARG THE_VAR_FROM_YOUR_DOT_ENV_FILE
+# ENV THE_VAR_YOUR_NEXT_EXPECTS=${THE_VAR_FROM_YOUR_DOT_ENV_FILE}
 
 # Step 4: Install dependencies
 RUN npm install
@@ -18,7 +22,8 @@ RUN npm install
 COPY . .
 
 # Step 6: Build the React app using Vite
-RUN VITE_CLERK_PUBLISHABLE_KEY=${VITE_CLERK_PUBLISHABLE_KEY} npm run build
+RUN npm run build
+# VITE_CLERK_PUBLISHABLE_KEY=${VITE_CLERK_PUBLISHABLE_KEY}
 
 # Step 7: Use an official Nginx image to serve the built files
 FROM nginx:alpine
