@@ -22,7 +22,7 @@ RUN npm install
 COPY . .
 
 # Debug step: list files in /app
-RUN ls -la /app
+RUN ls -la /app/dist
 
 # Step 6: Build the React app using Vite
 RUN npm run build
