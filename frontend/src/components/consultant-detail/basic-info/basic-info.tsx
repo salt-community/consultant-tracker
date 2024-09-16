@@ -1,20 +1,19 @@
-"use client";
 import "./basic-info.css";
 import {useEffect} from "react";
-import BasicInfoHeader from "@/components/consultant-detail/basic-info/header/header";
-import {getConsultantById} from "@/api";
-import CardDetails from "@/components/card-details/card-details";
-import TimeItemDetails from "@/components/time-item-details/time-item-details";
 import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch, RootState} from "@/store/store";
-import {setPersonalData} from "@/store/slices/BasicInfoSlice";
+import { setPersonalData } from "../../../store/slices/BasicInfoSlice";
+import { AppDispatch, RootState } from "../../../store/store";
+import CardDetails from "../../card-details/card-details";
+import TimeItemDetails from "../../time-item-details/time-item-details";
+import BasicInfoHeader from "./header/header";
+import { getConsultantById } from "../../../api";
+
 
 
 const BasicInfo = () => {
   const dispatch = useDispatch<AppDispatch>();
   const personalData = useSelector((state:RootState)=>state.basicInfo.personalData)
   const openModal = useSelector((state: RootState) => state.ganttChart.openModal)
-  const openTimeItemDetails = useSelector((state: RootState) => state.ganttChart.openTimeItemDetails)
   const fetchConsultantById = () => {
     if (id) getConsultantById(id).then((res) => {
       dispatch(setPersonalData(res))

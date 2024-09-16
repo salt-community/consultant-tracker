@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {ConsultantFetchType} from "@/types";
+import {ConsultantFetchType} from "../../types";
 
 interface BasicInfoState {
   personalData: ConsultantFetchType | undefined

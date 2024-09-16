@@ -1,5 +1,3 @@
-import React from 'react';
-
 const HeaderAvatar = () => {
   const image = "/avatar.svg";
   return (

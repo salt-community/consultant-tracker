@@ -1,12 +1,11 @@
-"use client"
 import {useEffect} from "react";
-import {InfographicResponseType} from "@/types";
-import Infographic from "@/components/dashboard/dashboard-header/infographic/infographic";
-import {getInfographicsByPt} from "@/api";
 import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch, RootState} from "@/store/store";
-import {setInfographicData} from "@/store/slices/DashboardHeaderSlice";
-import {user} from "@/utils/utils";
+import { InfographicResponseType } from "../../../types";
+import { getInfographicsByPt } from "../../../api";
+import Infographic from "./infographic/infographic";
+import { AppDispatch, RootState } from "../../../store/store";
+import { setInfographicData } from "../../../store/slices/DashboardHeaderSlice";
+import { user } from "../../../utils/utils";
 
 
 const DashboardHeader = () => {

@@ -1,6 +1,4 @@
-"use client";
-
-import HeaderAvatar from "@/components/consultant-detail/basic-info/header/avatar/avatar";
+import HeaderAvatar from "./avatar/avatar";
 import "./header.css";
 
 type Props = {

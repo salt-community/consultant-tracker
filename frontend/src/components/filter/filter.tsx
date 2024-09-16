@@ -1,11 +1,8 @@
-"use client";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect} from "react";
 import "./filter.css";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import Multiselect from "@/components/filter/multiselect/multiselect";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/store/store";
 import {
   setDebounceFilterName,
   setFilterClients,
@@ -14,12 +11,14 @@ import {
   setIncludePgps,
   setListOfClients,
   setListOfPts,
-} from "@/store/slices/FilterFieldSlice";
-import { ClientsAndPtsListResponseType } from "@/types";
-import { getAllClientsAndPts } from "@/api";
-import { setPage } from "@/store/slices/PaginationSlice";
+} from "../../store/slices/FilterFieldSlice";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import { AppDispatch, RootState } from "../../store/store";
+import Multiselect from "./multiselect/multiselect";
+import { setPage } from "../../store/slices/PaginationSlice";
+import { getAllClientsAndPts } from "../../api";
+import { ClientsAndPtsListResponseType } from "../../types";
 
 function FilterField() {
   const filterPts = useSelector(

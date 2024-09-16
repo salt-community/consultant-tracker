@@ -1,7 +1,9 @@
+import { RootState } from "../../../store/store";
+import SingleDetailField from "../../single-detail-field/single-detail-field";
 import "./absence-info.css";
-import SingleDetailField from "@/components/single-detail-field/single-detail-field";
+
 import {useSelector} from "react-redux";
-import {RootState} from "@/store/store";
+
 
 
 const AbsenceInfo = () => {

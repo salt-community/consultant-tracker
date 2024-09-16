@@ -1,13 +1,13 @@
-import React, {useEffect} from 'react';
-import {groupsRenderer, itemRenderer} from "@/components/gantt-chart/gantt-chart-renderers";
+import {useEffect} from 'react';
+import {groupsRenderer, itemRenderer} from "../../components/gantt-chart/gantt-chart-renderers";
 import moment from "moment";
-import {verticalLineClassNamesForTime} from "@/utils/utils";
+import {verticalLineClassNamesForTime} from "../../utils/utils";
 import Timeline from "react-calendar-timeline";
 import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch, RootState} from "@/store/store";
-import {setId, setModalData, setOpenModal, setOpenTimeItemDetails, setRedDaysNO, setRedDaysSE} from "@/store/slices/GanttChartSlice";
-import {getRedDays} from "@/api";
-import {RedDaysResponseType} from "@/types";
+import {AppDispatch, RootState} from "../../store/store";
+import {setId, setModalData, setOpenModal, setOpenTimeItemDetails, setRedDaysNO, setRedDaysSE} from "../../store/slices/GanttChartSlice";
+import {getRedDays} from "../../api";
+import {RedDaysResponseType} from "../../types";
 
 const TimelineComponent = () => {
   const dispatch = useDispatch<AppDispatch>();

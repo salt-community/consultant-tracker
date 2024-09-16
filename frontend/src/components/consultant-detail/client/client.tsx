@@ -1,9 +1,7 @@
-"use client";
+import { RootState } from "../../../store/store";
+import SingleDetailField from "../../single-detail-field/single-detail-field";
 import "./client.css"
-import SingleDetailField from "@/components/single-detail-field/single-detail-field";
 import {useSelector} from "react-redux";
-import {RootState} from "@/store/store";
-
 
 const Client = () => {
   const clientList = useSelector((state: RootState)=> state.basicInfo.personalData!.clientsList)

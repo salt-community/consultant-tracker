@@ -1,16 +1,14 @@
-"use client";
-
 import {SyntheticEvent, useState } from "react";
 import TabsComponent from "../tabs/tabs";
 import Schedule from "../consultant-detail/schedule/schedule";
-import AbsenceInfo from "@/components/consultant-detail/absence-info/absence-info";
 import Client from "../consultant-detail/client/client";
 import PersonalData from "../consultant-detail/basic-info/personal-data/personal-data";
+import AbsenceInfo from "../consultant-detail/absence-info/absence-info";
 
 
 const CardDetails = () => {
   const [value, setValue] = useState("personalData");
-  const handleChange = (event: SyntheticEvent, newValue: string) => {
+  const handleChange = (_event: SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
 

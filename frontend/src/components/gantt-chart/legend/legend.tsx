@@ -1,4 +1,4 @@
-import {legend, redDaysAndWeekends} from "@/utils/utils";
+import { legend, redDaysAndWeekends } from '../../../utils/utils';
 import './legend.css'
 
 const Legend = () => {

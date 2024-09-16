@@ -1,4 +1,3 @@
-import React from "react";
 import "./left-side-image.css"
 
 function LeftSideImage() {

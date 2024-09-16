@@ -1,8 +1,8 @@
-import React from "react";
-import Logo from "@/components/navbar/logo/logo";
+import Logo from "../../components/navbar/logo/logo";
 import "./navbar.css";
-import Link from "next/link";
-import { UserButton } from "@clerk/nextjs";
+
+import { UserButton } from "@clerk/clerk-react";
+import { Link } from "@mui/material";
 
 const Navbar = () => {
   return (

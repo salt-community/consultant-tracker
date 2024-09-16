@@ -2,7 +2,7 @@ import {
   ConsultantCalendarType,
   ConsultantFetchType, ConsultantItemsType,
   RegisteredTimeItemType,
-} from "@/types";
+} from "../types";
 import moment, {Moment} from "moment/moment";
 
 export const user = "Josefin Stål"
@@ -77,8 +77,8 @@ export const encodeString = (value: string[], prefix: string) => {
   return value
     .map((p) => `${prefix}=${encodeURIComponent(p)}`)
     .join("&")
-    .replaceAll("-", "%2D")
-    .replaceAll(".", "%2E");
+    .replace(/-/g, "%2D")
+    .replace(/\./g, "%2E");
 };
 
 export const mapGroups = (res: any) => {
@@ -145,8 +145,8 @@ export const verticalLineClassNamesForTime = (
   const currentTimeStart = moment(timeStart);
   const currentTimeEnd = moment(timeEnd);
 
-  let classes = [];
-  for (let holiday of redDaysSE) {
+  const classes = [];
+  for (const holiday of redDaysSE) {
     if (
       holiday.isSame(currentTimeStart, "day") &&
       holiday.isSame(currentTimeEnd, "day")
@@ -154,7 +154,7 @@ export const verticalLineClassNamesForTime = (
       classes.push("holidaySE");
     }
   }
-  for (let holiday of redDaysNO) {
+  for (const holiday of redDaysNO) {
     if (
       holiday.isSame(currentTimeStart, "day") &&
       holiday.isSame(currentTimeEnd, "day")

@@ -8,8 +8,8 @@ WORKDIR /app
 COPY package*.json ./
 
 # Accept build-time arguments and set environment variables
-ARG NEXT_PUBLIC_BACKEND_URL
-ENV NEXT_PUBLIC_BACKEND_URL=${NEXT_PUBLIC_BACKEND_URL}
+# ARG NEXT_PUBLIC_BACKEND_URL
+# ENV NEXT_PUBLIC_BACKEND_URL=${NEXT_PUBLIC_BACKEND_URL}
 
 # Install dependencies
 RUN npm install
@@ -17,10 +17,10 @@ RUN npm install
 # Copy the rest of the application code
 COPY . .
 # Build the Next.js app, injecting the environment variables at build-time
-RUN NEXT_PUBLIC_BACKEND_URL=${NEXT_PUBLIC_BACKEND_URL} npm run build
+RUN npm run build
 
 # Expose the port your app listens on (usually 3000)
 EXPOSE 3000
 
 # Define the command to run your app
-CMD ["npm", "start",]
+CMD ["npm", "start"]

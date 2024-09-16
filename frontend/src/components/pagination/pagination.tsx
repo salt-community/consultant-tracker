@@ -1,8 +1,7 @@
 import TablePagination from "@mui/material/TablePagination";
 import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch, RootState} from "@/store/store";
-import {setPage, setRowsPerPage} from "@/store/slices/PaginationSlice";
-import React from "react";
+import {AppDispatch, RootState} from "../../store/store";
+import {setPage, setRowsPerPage} from "../../store/slices/PaginationSlice";
 
 const Pagination = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -10,7 +9,7 @@ const Pagination = () => {
   const rowsPerPage = useSelector((state: RootState) => state.pagination.rowsPerPage)
   const page = useSelector((state: RootState) => state.pagination.page)
   const handleChangePage = (
-    event: React.MouseEvent<HTMLButtonElement> | null,
+    _event: React.MouseEvent<HTMLButtonElement> | null,
     newPage: number
   ) => {
     dispatch(setPage(newPage));

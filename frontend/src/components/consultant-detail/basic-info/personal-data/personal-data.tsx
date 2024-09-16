@@ -1,8 +1,9 @@
-import SingleDetailField from "@/components/single-detail-field/single-detail-field";
 import "./personal-data.css";
 import {useSelector} from "react-redux";
-import {RootState} from "@/store/store";
 import toast, {Toaster} from "react-hot-toast";
+import SingleDetailField from "../../../single-detail-field/single-detail-field";
+import { RootState } from "../../../../store/store";
+
 
 const PersonalData = () => {
   const personalData = useSelector((state: RootState) => state.basicInfo.personalData)

@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {ConsultantItemsType} from "@/types";
+import {ConsultantItemsType} from "../../types";
 import {Moment} from "moment/moment";
 import moment from "moment";
 
@@ -42,8 +42,8 @@ const dashboardHeaderSlice = createSlice({
     setOpenTimeItemDetails: (state, action: PayloadAction<boolean>) => {
       state.openTimeItemDetails = action.payload
     },
-    setItems: (state, action: PayloadAction<any>) => {
-      state.items = action.payload
+    setItems: (state, action: PayloadAction<ConsultantItemsType[]>) => {
+      state.items = Object.assign(state.items, action.payload);
     },
     setGroups: (state, action: PayloadAction<string[]>) => {
       state.groups = action.payload
@@ -54,8 +54,8 @@ const dashboardHeaderSlice = createSlice({
     setId: (state, action: PayloadAction<string>) => {
       state.id = action.payload
     },
-    setModalData: (state, action: PayloadAction<any>) => {
-      state.modalData = action.payload
+    setModalData: (state, action: PayloadAction<ConsultantItemsType>) => {
+      state.modalData = {start_time: action.payload.start_time, end_time: action.payload.end_time, title: action.payload.title, details: action.payload.details, id: action.payload.id, group: action.payload.group};
     },
     setRedDaysSE: (state, action: PayloadAction<moment.Moment[]>) => {
       state.redDaysSE = action.payload

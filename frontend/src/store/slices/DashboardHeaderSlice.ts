@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {InfographicDataType} from "@/types";
+import {InfographicDataType} from "../../types";
 
 interface DashboardHeaderState {
   infographicData: InfographicDataType[]

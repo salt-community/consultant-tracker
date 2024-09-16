@@ -1,4 +1,3 @@
-import React from "react";
 import "./infographic.css";
 
 type Props = {

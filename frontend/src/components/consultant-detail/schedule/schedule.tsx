@@ -1,13 +1,12 @@
-"use client";
-
 import "./schedules.css";
-import SingleDetailField from "@/components/single-detail-field/single-detail-field";
-import {useSelector} from "react-redux";
-import {RootState} from "@/store/store";
-
+import SingleDetailField from "../../single-detail-field/single-detail-field";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../store/store";
 
 const Schedule = () => {
-  const scheduleData = useSelector((state: RootState) => state.basicInfo.personalData!.meetings)
+  const scheduleData = useSelector(
+    (state: RootState) => state.basicInfo.personalData!.meetings
+  );
 
   const formatTitle = (title: string) => {
     switch (title) {
@@ -27,14 +26,17 @@ const Schedule = () => {
   return scheduleData.length > 0 ? (
     <div className="meetings-schedule__wrapper">
       {scheduleData.map((item, index) => {
-        const {year, weekNumber, title} = item;
+        const { year, weekNumber, title } = item;
         return (
           <div key={index} className="meetings-schedule__items">
-                <SingleDetailField title={index == 0 ? "Title" : undefined} content={formatTitle(title)}/>
-                <SingleDetailField
-                    title={index == 0 ? "Date" : undefined}
-                    content={`${year}, Week: ${weekNumber}`}
-                />
+            <SingleDetailField
+              title={index == 0 ? "Title" : undefined}
+              content={formatTitle(title)}
+            />
+            <SingleDetailField
+              title={index == 0 ? "Date" : undefined}
+              content={`${year}, Week: ${weekNumber}`}
+            />
           </div>
         );
       })}
