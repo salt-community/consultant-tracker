@@ -27,8 +27,8 @@ public class DemoConsultantService {
     ConsultantService consultantService;
     MeetingsScheduleService meetingsScheduleService;
 
-    public ConsultantResponseListDto getAllDemoConsultantDtos(int page, int pageSize, String name, List<String> pt, List<String> client) {
-        Page<DemoConsultant> consultantsList = getAllDemoConsultantsPageable(page, pageSize, name, pt, client);
+    public ConsultantResponseListDto getAllDemoConsultantDtos(int page, int pageSize, String name, List<String> pt, List<String> client, boolean includePgps) {
+        Page<DemoConsultant> consultantsList = getAllDemoConsultantsPageable(page, pageSize, name, pt, client, includePgps);
 
         return new ConsultantResponseListDto(
                 page,
@@ -40,24 +40,27 @@ public class DemoConsultantService {
                                 timeChunksService.getTimeChunksByConsultant(c.getId()))).toList());
     }
 
-    public Page<DemoConsultant> getAllDemoConsultantsPageable(int page, int pageSize, String name, List<String> pt, List<String> client) {
+    public Page<DemoConsultant> getAllDemoConsultantsPageable(int page, int pageSize, String name, List<String> pt, List<String> client, boolean includePgps) {
         Pageable pageRequest = PageRequest.of(page, pageSize);
         if (pt.isEmpty()) {
-            pt.addAll(getListOfAllDemoClientsOrPts("pts"));
+            pt.addAll(getListOfAllDemoClientsOrPts("pts", includePgps));
         }
         if (client.isEmpty()) {
-            client.addAll(getListOfAllDemoClientsOrPts("clients"));
+            client.addAll(getListOfAllDemoClientsOrPts("clients", includePgps));
         }
         return demoConsultantRepo.findAllByActiveTrueAndFilterByNameAndResponsiblePtAndClientsOrderByFullNameAsc(name, pageRequest, pt, client);
     }
 
-    public ClientsAndPtsListDto getAllDemoClientsAndPts() {
-        Set<String> listOfClients = getListOfAllDemoClientsOrPts("clients");
-        Set<String> listOfPts = getListOfAllDemoClientsOrPts("pts");
+    public ClientsAndPtsListDto getAllDemoClientsAndPts(boolean includePgps) {
+        Set<String> listOfClients = getListOfAllDemoClientsOrPts("clients", includePgps);
+        if(includePgps) {
+            listOfClients.add("PGP");
+        }
+        Set<String> listOfPts = getListOfAllDemoClientsOrPts("pts", includePgps);
         return new ClientsAndPtsListDto(listOfClients, listOfPts);
     }
 
-    public Set<String> getListOfAllDemoClientsOrPts(String clientOrPt) {
+    public Set<String> getListOfAllDemoClientsOrPts(String clientOrPt, boolean includePgps) {
         List<DemoConsultant> activeConsultants = demoConsultantRepo.findAllByActiveTrue();
         Set<String> resultList = new TreeSet<>();
         for (DemoConsultant consultant : activeConsultants) {
@@ -65,6 +68,9 @@ public class DemoConsultantService {
                 resultList.add(consultant.getResponsiblePT());
             } else if (clientOrPt.equals("clients") && !consultant.getClient().equals("PGP")) {
                 resultList.add(consultant.getClient());
+                if (includePgps) {
+                    resultList.add("PGP");
+                }
             }
         }
         return resultList;

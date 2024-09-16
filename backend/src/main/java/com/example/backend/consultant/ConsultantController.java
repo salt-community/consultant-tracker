@@ -37,7 +37,7 @@ public class ConsultantController {
             @RequestParam(defaultValue = "false", required = false) boolean includePgps) {
         if ("demo".equalsIgnoreCase(appMode)) {
             System.out.println("IN DEMO MODE");
-            return ResponseEntity.ok(demoConsultantService.getAllDemoConsultantDtos(page, pageSize, name, pt, client));
+            return ResponseEntity.ok(demoConsultantService.getAllDemoConsultantDtos(page, pageSize, name, pt, client, includePgps));
         }
         ConsultantResponseListDto consultantsResponse = consultantService.getAllConsultantDtos(page, pageSize, name, pt, client, includePgps);
         return ResponseEntity.ok(consultantsResponse);
@@ -61,7 +61,7 @@ public class ConsultantController {
             @RequestParam(defaultValue = "false", required = false) boolean includePgps
     ) {
         if ("demo".equalsIgnoreCase(appMode)) {
-            return ResponseEntity.ok(demoConsultantService.getAllDemoClientsAndPts());
+            return ResponseEntity.ok(demoConsultantService.getAllDemoClientsAndPts(includePgps));
         }
         return ResponseEntity.ok(consultantService.getAllClientsAndPts(includePgps));
     }

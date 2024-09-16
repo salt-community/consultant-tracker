@@ -25,12 +25,12 @@ function TimeItemDetails() {
         <>
           <h3>{content.title}</h3>
           <hr />
-          <SingleDetailField
+          {/* <SingleDetailField
             title="Client"
             content={content.details.projectName}
-          />
+          /> */}
           {/* FOR DEMO */}
-          {/* <SingleDetailField title="Client" content={content.details.client}/> */}
+          <SingleDetailField title="Client" content={content.details.client}/>
           <SingleDetailField
             title="Total Days Selected"
             content={`${content.details.totalDays}`}
