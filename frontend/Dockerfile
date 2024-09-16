@@ -9,8 +9,8 @@ COPY package*.json ./
 
 
 # ARG VITE_BACKEND_URL
-ARG VITE_CLERK_PUBLISHABLE_KEY
-ENV VITE_CLERK_PUBLISHABLE_KEY=${CLERK_PUBLISHABLE_KEY}
+ARG CLERK_PUBLISHABLE_KEY
+ENV PUBLISHABLE_KEY=${CLERK_PUBLISHABLE_KEY}
 
 # ARG THE_VAR_FROM_YOUR_DOT_ENV_FILE
 # ENV THE_VAR_YOUR_NEXT_EXPECTS=${THE_VAR_FROM_YOUR_DOT_ENV_FILE}
@@ -35,6 +35,8 @@ FROM nginx:alpine
 COPY --from=build /app/dist /usr/share/nginx/html
 
 # Step 9: Expose port 80 to the outside world
+ENV PORT 80
+ENV HOST 0.0.0.0
 EXPOSE 80
 
 # Step 10: Start Nginx when the container launches
