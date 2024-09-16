@@ -1,5 +1,5 @@
 # Step 1: Use an official Node.js runtime as a parent image
-FROM node:20-alpine AS build
+FROM node:14-alpine AS build
 
 # Step 2: Set the working directory in the container
 WORKDIR /app
@@ -20,6 +20,9 @@ RUN npm install
 
 # Step 5: Copy the rest of the application code
 COPY . .
+
+# Debug step: list files in /app
+RUN ls -la /app
 
 # Step 6: Build the React app using Vite
 RUN npm run build
