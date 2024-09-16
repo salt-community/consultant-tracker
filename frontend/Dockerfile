@@ -7,7 +7,9 @@ WORKDIR /app
 # Step 3: Copy package.json and package-lock.json to install dependencies
 COPY package*.json ./
 
+
 # ARG VITE_BACKEND_URL
+ARG VITE_CLERK_PUBLISHABLE_KEY
 
 # Step 4: Install dependencies
 RUN npm install
@@ -16,8 +18,7 @@ RUN npm install
 COPY . .
 
 # Step 6: Build the React app using Vite
-RUN npm run build
-ARG VITE_CLERK_PUBLISHABLE_KEY
+RUN VITE_CLERK_PUBLISHABLE_KEY=${VITE_CLERK_PUBLISHABLE_KEY} npm run build
 
 # Step 7: Use an official Nginx image to serve the built files
 FROM nginx:alpine
