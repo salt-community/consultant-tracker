@@ -1,0 +1,46 @@
+name: Deploy frontend to Google Cloud Run
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Checkout the code
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # Step 2: Authenticate to Google Cloud
+    - name: Set up Google Cloud SDK
+      uses: google-github-actions/setup-gcloud@v1
+      with:
+        project_id: ${{ secrets.GCP_PROJECT_ID }}
+        service_account_key: ${{ secrets.GCP_SA_KEY }}
+        export_default_credentials: true
+
+    # Step 3: Build the Docker image
+    - name: Build and push Docker image
+      run: |
+        docker build \
+          --build-arg VITE_CLERK_PUBLISHABLE_KEY: ${{ secrets.VITE_CLERK_PUBLISHABLE_KEY }} \
+          --build-arg VITE_BACKEND_URL: ${{secrets.VITE_BACKEND_URL}} \
+          -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/consultant-tracker-client:latest .
+
+    # Step 4: Push the Docker image to Google Container Registry
+    - name: Push Docker image to Google Container Registry
+      run: |
+        docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/consultant-tracker-client:latest
+
+    # Step 5: Deploy to Google Cloud Run
+    - name: Deploy to Cloud Run
+      run: |
+        gcloud run deploy consultant-tracker-client \
+          --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/consultant-tracker-client:latest \
+          --region europe-north1 \
+          --platform managed \
+          --allow-unauthenticated \
+          --set-env-vars VITE_CLERK_PUBLISHABLE_KEY: ${{ secrets.VITE_CLERK_PUBLISHABLE_KEY }},VITE_BACKEND_URL: ${{secrets.VITE_BACKEND_URL}}
