@@ -1,6 +1,7 @@
 # Step 1: Use an official Node.js runtime as a parent image
 FROM node:18-alpine AS build
 
+
 # Accept build arguments
 ARG VITE_CLERK_PUBLISHABLE_KEY
 ARG VITE_BACKEND_URL
