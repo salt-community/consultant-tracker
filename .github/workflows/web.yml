@@ -25,10 +25,10 @@ jobs:
           node-version: 20
 
       - name: Print current folder before install
-        run: ls -la
+        run: cd frontend && ls -la
 
       - name: Install dependencies
-        run: cd frontend && npm run install
+        run: cd frontend && npm i
 
       - name: Build project
         run: cd frontend && npm run build
