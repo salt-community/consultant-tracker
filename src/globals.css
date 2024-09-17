@@ -1,0 +1,78 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+:root {
+    --white: #fff;
+    --light-blue: #cee3fe;
+    --light-green: #d0e6dc;
+    --light-yellow: #f5eed5;
+    --light-violet: #e4def6;
+    --text-violet: #a78bfa;
+    --text-blue: #0d6eff;
+    --text-green: #1a8657;
+    --text-yellow: #f7950b;
+    --main-background: #575957;
+    /* --main-background: #800020; */
+    --main-background-opacity: rgba(134, 134, 134, 0.2);
+}
+
+
+/* ------ RESET ------ */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+* {
+    margin: 0;
+}
+
+body {
+    line-height: 1.5;
+    min-height: calc(100vh - 100px);
+    -webkit-font-smoothing: antialiased;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-image: url("../public/background.jpg");
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+    display: block;
+    max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+    font: inherit;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    overflow-wrap: break-word;
+}
+
+#root,
+#__next {
+    isolation: isolate;
+}
+
+ul {
+    padding: 0;
+    list-style: none;
+}

@@ -1,0 +1,14 @@
+.time-details {
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+  border-radius: 5px;
+  margin: 0 20px 0 5px;
+  padding: 20px;
+  gap: 15px;
+  box-shadow: rgba(0, 0, 0, 0.45) 0 25px 20px -20px;
+}
+
+.time-details.hidden {
+  visibility: hidden;
+}

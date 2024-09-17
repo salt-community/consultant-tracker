@@ -1,0 +1,10 @@
+.meetings-schedule__wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.meetings-schedule__items {
+    display: flex;
+    gap: 28px;
+}
