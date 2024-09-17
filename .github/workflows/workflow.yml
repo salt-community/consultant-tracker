@@ -28,58 +28,64 @@
 #        gcloud builds submit --config=cloudbuild.yaml \
 #          --substitutions=_VITE_CLERK_PUBLISHABLE_KEY=${{ secrets.VITE_CLERK_PUBLISHABLE_KEY }},_VITE_BACKEND_URL=${{ secrets.VITE_BACKEND_URL }}
 
-name: Consultant tracker frontend deployment to GP
+name: Deploy
 
 on:
   push:
-    branches: [ "main" ]
-    paths: [ "frontend/**" ]
-  workflow_dispatch:
-
+    branches:
+      - main
 
 env:
-  VITE_CLERK_PUBLISHABLE_KEY: ${{secrets.VITE_CLERK_PUBLISHABLE_KEY}}
-  VITE_BACKEND_URL: ${{secrets.VITE_BACKEND_URL}}
+  VITE_CLERK_PUBLISHABLE_KEY: ${{ secrets.VITE_CLERK_PUBLISHABLE_KEY }}
+  VITE_BASE_URL: ${{secrets.VITE_BASE_URL}}
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 jobs:
-  environment:
-    name: github-pages
-    url: ${{ steps.deployment.outputs.page_url }}
-
-    # The type of runner that the job will run on
+  build:
+    name: Build
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
+      - name: Checkout repo
+        uses: actions/checkout@v2
 
-      - name: Setup node
-        uses: actions/setup-node@v4
+      - name: Setup Node
+        uses: actions/setup-node@v1
         with:
           node-version: 20
 
+      - name:
+        uses: cd frontend
+
       - name: Install dependencies
-        run: cd frontend && npm i
+        uses: bahmutov/npm-install@v1
 
-      - name: Build the react app
-        run: cd frontend && npm run build
+      - name: Build project
+        run: npm run build
 
-      - name: setup pages
-        uses: actions/configure-pages@v3
+      - name: Upload production-ready build files
+        uses: actions/upload-artifact@v2
         with:
-          enablement: true
+          name: production-files
+          path: ./dist
 
-      - name: upload artifact
-        uses: actions/upload-pages-artifact@v2
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v2
         with:
-          name: github-pages
-          path: frontend/dist
+          name: production-files
+          path: ./frontend/dist
 
-      - name: Deploy to GitHub pages
-        uses: actions/deploy-pages@v2
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./frontend/dist
