@@ -27,7 +27,7 @@ jobs:
           node-version: 20
 
       - name: Enter frontend
-        uses: cd frontend
+        run: cd frontend
 
       - name: Install dependencies
         uses: bahmutov/npm-install@v1
