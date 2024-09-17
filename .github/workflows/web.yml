@@ -44,14 +44,11 @@ jobs:
     if: github.ref == 'refs/heads/main'
 
     steps:
-      - name: Show folders before downloading artifact
-        run: ls -la
-
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
           name: production-files
-          path: ./frontend/dist
+          path: ./dist
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
