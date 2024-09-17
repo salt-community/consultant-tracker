@@ -25,7 +25,7 @@ jobs:
     # Step 3: Build the Docker image
     - name: Build and push Docker image
       run: |
-        docker build \
+        cd frontend && docker build \
           --build-arg VITE_CLERK_PUBLISHABLE_KEY: ${{ secrets.VITE_CLERK_PUBLISHABLE_KEY }} \
           --build-arg VITE_BACKEND_URL: ${{secrets.VITE_BACKEND_URL}} \
           -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/consultant-tracker-client:latest .
