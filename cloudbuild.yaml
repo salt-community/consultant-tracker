@@ -7,8 +7,8 @@ steps:
     dir: 'frontend'  # Specify the frontend folder where your Dockerfile is
     args: [
       'build',
-      '--build-arg', 'VITE_CLERK_PUBLISHABLE_KEY=${VITE_CLERK_PUBLISHABLE_KEY}',
-      '--build-arg', 'VITE_BACKEND_URL=${VITE_BACKEND_URL}',
+      '--build-arg', 'VITE_CLERK_PUBLISHABLE_KEY=${_VITE_CLERK_PUBLISHABLE_KEY}',
+      '--build-arg', 'VITE_BACKEND_URL=${_VITE_BACKEND_URL}',
       '-t', 'gcr.io/$PROJECT_ID/consultant-tracker-client:latest',
       '.'
     ]
@@ -28,9 +28,9 @@ steps:
       '--region', 'europe-north1',
       '--platform', 'managed',
       '--allow-unauthenticated',
-      '--set-env-vars', 'VITE_CLERK_PUBLISHABLE_KEY=${VITE_CLERK_PUBLISHABLE_KEY},VITE_BACKEND_URL=${VITE_BACKEND_URL}'
+      '--set-env-vars', 'VITE_CLERK_PUBLISHABLE_KEY=${_VITE_CLERK_PUBLISHABLE_KEY},VITE_BACKEND_URL=${_VITE_BACKEND_URL}'
     ]
 
 substitutions:
-  VITE_CLERK_PUBLISHABLE_KEY: ''
-  VITE_BACKEND_URL: ''
+  _VITE_CLERK_PUBLISHABLE_KEY: ''
+  _VITE_BACKEND_URL: ''
