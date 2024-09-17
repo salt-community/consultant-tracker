@@ -4,7 +4,6 @@ options:
 steps:
   # Step 1: Build the Docker image with build arguments
   - name: 'gcr.io/cloud-builders/docker'
-    dir: 'frontend'  # Specify the frontend folder where your Dockerfile is
     args: [
       'build',
       '--build-arg', 'VITE_CLERK_PUBLISHABLE_KEY=${_VITE_CLERK_PUBLISHABLE_KEY}',
@@ -12,6 +11,7 @@ steps:
       '-t', 'gcr.io/$PROJECT_ID/consultant-tracker-client:latest',
       '.'
     ]
+    dir: 'frontend'  # Specify the frontend folder where your Dockerfile is
 
   # Step 2: Push the Docker image to Google Container Registry
   - name: 'gcr.io/cloud-builders/docker'
