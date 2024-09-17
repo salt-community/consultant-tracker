@@ -36,7 +36,7 @@ on:
       - main
 
 env:
-  VITE_CLERK_PUBLISHABLE_KEY: ${{ secrets.VITE_CLERK_PUBLISHABLE_KEY }}
+  VITE_CLERK_PUBLISHABLE_KEY: ${{secrets.VITE_CLERK_PUBLISHABLE_KEY}}
   VITE_BACKEND_URL: ${{secrets.VITE_BACKEND_URL}}
 
 permissions:
