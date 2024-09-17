@@ -1,3 +1,6 @@
+options:
+  logging: CLOUD_LOGGING_ONLY  # Use only Cloud Logging for build logs
+  
 steps:
   # Step 1: Build the Docker image with build arguments
   - name: 'gcr.io/cloud-builders/docker'
