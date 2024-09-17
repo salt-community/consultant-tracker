@@ -27,11 +27,17 @@ jobs:
       - name: Enter frontend
         run: cd frontend
 
+      - name: Print current folder before install
+        run: ls -la
+
       - name: Install dependencies
-        uses: bahmutov/npm-install@v1
+        run: npm run install
 
       - name: Build project
         run: npm run build
+
+      - name: Show folders after build
+        run: ls -la
 
       - name: Upload production-ready build files
         uses: actions/upload-artifact@v4
