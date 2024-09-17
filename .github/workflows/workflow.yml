@@ -22,28 +22,8 @@ jobs:
         service_account_key: ${{ secrets.GCP_SA_KEY }}
         export_default_credentials: true
 
-    # Step 3: Build the Docker image
-    - name: Build and push Docker image
+    # Step 3: Trigger Cloud Build
+    - name: Trigger Cloud Build
       run: |
-        docker build \
-          --build-arg VITE_CLERK_PUBLISHABLE_KEY: ${{ secrets.VITE_CLERK_PUBLISHABLE_KEY }} \
-          --build-arg VITE_BACKEND_URL: ${{secrets.VITE_BACKEND_URL}} \
-          -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/consultant-tracker-client:latest .
-
-    # Step 4: Push the Docker image to Google Container Registry
-    - name: Push Docker image to Google Container Registry
-      run: |
-        docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/consultant-tracker-client:latest
-
-    # Step 5: Deploy to Google Cloud Run
-    - name: Deploy to Cloud Run
-      run: |
-        gcloud run deploy consultant-tracker-client \
-          --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/consultant-tracker-client:latest \
-          --region europe-north1 \
-          --platform managed \
-          --allow-unauthenticated \
-          --set-env-vars VITE_CLERK_PUBLISHABLE_KEY: ${{ secrets.VITE_CLERK_PUBLISHABLE_KEY }},VITE_BACKEND_URL: ${{secrets.VITE_BACKEND_URL}}
-
-
-    
+        gcloud builds submit --config=cloudbuild.yaml \
+          --substitutions=VITE_CLERK_PUBLISHABLE_KEY=${{ secrets.VITE_CLERK_PUBLISHABLE_KEY }},VITE_BACKEND_URL=${{ secrets.VITE_BACKEND_URL }}
