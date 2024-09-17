@@ -1,5 +1,6 @@
 {
   "name": "consultant-tracker-client",
+  "homepage": "https://salt-community.github.io/Consultant-Tracker/",
   "private": true,
   "version": "0.0.0",
   "type": "module",
