@@ -1,5 +1,5 @@
 import './page-not-found.css'
-import SignIn from "../../view/sign-in/sign-in.tsx";
+import {SignIn} from "@clerk/clerk-react";
 
 export const PageNotFound = () => {
   return (
