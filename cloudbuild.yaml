@@ -30,3 +30,7 @@ steps:
       '--allow-unauthenticated',
       '--set-env-vars', 'VITE_CLERK_PUBLISHABLE_KEY=${VITE_CLERK_PUBLISHABLE_KEY},VITE_BACKEND_URL=${VITE_BACKEND_URL}'
     ]
+
+substitutions:
+  VITE_CLERK_PUBLISHABLE_KEY: ''
+  VITE_BACKEND_URL: ''
