@@ -1,46 +1,29 @@
-name: Deploy frontend to Google Cloud Run
+steps:
+  # Step 1: Build the Docker image with build arguments
+  - name: 'gcr.io/cloud-builders/docker'
+    dir: 'frontend'  # Specify the frontend folder where your Dockerfile is
+    args: [
+      'build',
+      '--build-arg', 'VITE_CLERK_PUBLISHABLE_KEY=${_VITE_CLERK_PUBLISHABLE_KEY}',
+      '--build-arg', 'VITE_BACKEND_URL=${_VITE_BACKEND_URL}',
+      '-t', 'gcr.io/$PROJECT_ID/consultant-tracker-client:latest',
+      '.'
+    ]
 
-on:
-  push:
-    branches:
-      - main
+  # Step 2: Push the Docker image to Google Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [
+      'push', 'gcr.io/$PROJECT_ID/consultant-tracker-client:latest'
+    ]
 
-jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
-
-    steps:
-    # Step 1: Checkout the code
-    - name: Checkout code
-      uses: actions/checkout@v3
-
-    # Step 2: Authenticate to Google Cloud
-    - name: Set up Google Cloud SDK
-      uses: google-github-actions/setup-gcloud@v1
-      with:
-        project_id: ${{ secrets.GCP_PROJECT_ID }}
-        service_account_key: ${{ secrets.GCP_SA_KEY }}
-        export_default_credentials: true
-
-    # Step 3: Build the Docker image
-    - name: Build and push Docker image
-      run: |
-        cd frontend && docker build \
-          --build-arg VITE_CLERK_PUBLISHABLE_KEY: ${{ secrets.VITE_CLERK_PUBLISHABLE_KEY }} \
-          --build-arg VITE_BACKEND_URL: ${{secrets.VITE_BACKEND_URL}} \
-          -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/consultant-tracker-client:latest .
-
-    # Step 4: Push the Docker image to Google Container Registry
-    - name: Push Docker image to Google Container Registry
-      run: |
-        docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/consultant-tracker-client:latest
-
-    # Step 5: Deploy to Google Cloud Run
-    - name: Deploy to Cloud Run
-      run: |
-        gcloud run deploy consultant-tracker-client \
-          --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/consultant-tracker-client:latest \
-          --region europe-north1 \
-          --platform managed \
-          --allow-unauthenticated \
-          --set-env-vars VITE_CLERK_PUBLISHABLE_KEY: ${{ secrets.VITE_CLERK_PUBLISHABLE_KEY }},VITE_BACKEND_URL: ${{secrets.VITE_BACKEND_URL}}
+  # Step 3: Deploy to Google Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'gcloud'
+    args: [
+      'run', 'deploy', 'consultant-tracker-client',
+      '--image', 'gcr.io/$PROJECT_ID/consultant-tracker-client:latest',
+      '--region', 'europe-north1',
+      '--platform', 'managed',
+      '--allow-unauthenticated',
+      '--set-env-vars', 'VITE_CLERK_PUBLISHABLE_KEY=${_VITE_CLERK_PUBLISHABLE_KEY},VITE_BACKEND_URL=${_VITE_BACKEND_URL}'
+    ]
