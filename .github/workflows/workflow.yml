@@ -26,4 +26,4 @@ jobs:
     - name: Trigger Cloud Build
       run: |
         gcloud builds submit --config=cloudbuild.yaml \
-          --substitutions=VITE_CLERK_PUBLISHABLE_KEY=${{ secrets.VITE_CLERK_PUBLISHABLE_KEY }},VITE_BACKEND_URL=${{ secrets.VITE_BACKEND_URL }}
+          --substitutions=_VITE_CLERK_PUBLISHABLE_KEY=${{ secrets.VITE_CLERK_PUBLISHABLE_KEY }},_VITE_BACKEND_URL=${{ secrets.VITE_BACKEND_URL }}
