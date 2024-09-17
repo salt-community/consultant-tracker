@@ -3,7 +3,7 @@ import "./index.css";
 import React from "react";
 
 
-import { router } from "./routing/routing";
+import { router } from "./routing/router.tsx";
 import { RouterProvider } from "react-router-dom";
 import { ClerkProvider } from "@clerk/clerk-react";
 
