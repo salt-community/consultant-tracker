@@ -4,7 +4,7 @@ FROM node:20-alpine AS build
 
 # Accept build arguments
 ARG VITE_CLERK_PUBLISHABLE_KEY
-ARG VITE_BACKEND_URL
+ENV VITE_CLERK_PUBLISHABLE_KEY=${VITE_CLERK_PUBLISHABLE_KEY}
 
 # Step 2: Set the working directory in the container
 WORKDIR /app
