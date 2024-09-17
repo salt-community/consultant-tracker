@@ -24,20 +24,14 @@ jobs:
         with:
           node-version: 20
 
-      - name: Print current folder before we try to enter frontend
-        run: ls -la
-
-      - name: Enter frontend
-        run: cd frontend
-
       - name: Print current folder before install
         run: ls -la
 
       - name: Install dependencies
-        run: npm run install
+        run: cd frontend && npm run install
 
       - name: Build project
-        run: npm run build
+        run: cd frontend && npm run build
 
       - name: Show folders after build
         run: ls -la
