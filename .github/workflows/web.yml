@@ -35,8 +35,8 @@ jobs:
       - name: Build project
         run: cd frontend && npm run build
 
-      - name: Show folders after build
-        run: cd frontend && ls -la
+      - name: Copy index.html to 404.html
+        run: cp ./dist/index.html ./dist/404.html
 
       - name: Upload production-ready build files
         uses: actions/upload-artifact@v4
