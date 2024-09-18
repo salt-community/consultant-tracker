@@ -3,8 +3,8 @@ import "./index.css";
 import React from "react";
 
 
-import { router } from "./routing/router.tsx";
-import { RouterProvider } from "react-router-dom";
+// import { router } from "./routing/router.tsx";
+// import { RouterProvider } from "react-router-dom";
 import {ClerkProvider, RedirectToSignUp, SignedOut} from "@clerk/clerk-react";
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
