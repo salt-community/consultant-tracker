@@ -9,14 +9,18 @@ spring:
     password: ${DB.PASSWORD}
   security:
     oauth2:
+#      resourceserver:
+#        jwt:
+#          issuer-uri: https://dev-34512620.okta.com/oauth2/default   -- example
+#          audiences: api://default   -- example
       client:
         registration:
-          clerk:
-            client-id: ${CLERK_CLIENT_ID}
-            client-secret: ${CLERK_CLIENT_SECRET_KEY}
-       #   jwt:
-        #    issuer-uri: https://dev-34582620.okta.com/oauth2/default   -- example
-         #   audiences: api://default   -- example
+          google:
+            client-id: ${GOOGLE.CLIENT_ID}
+            client-secret: ${GOOGLE.CLIENT_SECRET}
+#          clerk:
+#            client-id: ${CLERK_CLIENT_ID}
+#            client-secret: ${CLERK_CLIENT_SECRET_KEY}
   jpa:
     defer-datasource-initialization: true
     hibernate:
