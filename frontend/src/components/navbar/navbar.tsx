@@ -7,10 +7,10 @@ import { Link } from "@mui/material";
 const Navbar = () => {
   return (
     <div className="navbar-container">
-      <Link href="/home">
+      <Link href="/">
         <Logo />
       </Link>
-      <UserButton />
+      <Link href="/"><UserButton /></Link>
     </div>
   );
 };
