@@ -10,7 +10,7 @@ const Navbar = () => {
       <Link href="/">
         <Logo />
       </Link>
-      <SignOutButton redirectUrl={"/Consultant-Tracker"}/>
+      <SignOutButton redirectUrl={"/Consultant-Tracker/"}/>
     </div>
   );
 };

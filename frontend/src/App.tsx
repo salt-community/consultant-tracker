@@ -1,12 +1,19 @@
-import { useUser } from "@clerk/clerk-react";
 import "./globals.css";
-import Home from "./view/home/home";
-import LogIn from "./view/sign-in/sign-in";
+import Authentication from "./components/authentication/authentication.tsx";
+import {useLocation} from "react-router-dom";
+import {useEffect, useState} from "react";
+import {PageNotFound} from "./components/page-not-found/page-not-found.tsx";
 
 const App = ()=> {
+  const location = useLocation();
+  const [notFound, setNotFound] = useState(false);
+  useEffect(() => {
+    if(location.pathname !== "/Consultant-Tracker/"){
+      setNotFound(true)
+    }
+  }, []);
 
-  const { user } = useUser();
-  return <>{!user ? <LogIn /> : <Home />}</>;
+  return notFound ? <PageNotFound /> : <Authentication />
 }
 
 export default App;
