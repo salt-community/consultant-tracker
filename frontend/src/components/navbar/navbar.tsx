@@ -12,7 +12,7 @@ const Navbar = () => {
         <Logo />
       </Link>
       {/*<SignOutButton redirectUrl={"/Consultant-Tracker"}/>*/}
-      <UserButton />
+      <UserButton afterSwitchSessionUrl={"/Consultant-Tracker/"}/>
     </div>
   );
 };
