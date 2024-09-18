@@ -7,6 +7,16 @@ spring:
     url: ${DB.URL}
     username: ${DB.USERNAME}
     password: ${DB.PASSWORD}
+  security:
+    oauth2:
+      client:
+        registration:
+          clerk:
+            client-id: ${CLERK_CLIENT_ID}
+            client-secret: ${CLERK_CLIENT_SECRET_KEY}
+       #   jwt:
+        #    issuer-uri: https://dev-34582620.okta.com/oauth2/default   -- example
+         #   audiences: api://default   -- example
   jpa:
     defer-datasource-initialization: true
     hibernate:
@@ -22,3 +32,8 @@ spring:
     import: optional:secret.yml
   main:
     allow-circular-references: true
+logging:
+  level:
+    org:
+      springframework:
+        security: TRACE
