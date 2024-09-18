@@ -1,9 +1,9 @@
 import Logo from "../../components/navbar/logo/logo";
 import "./navbar.css";
 
-// import { UserButton } from "@clerk/clerk-react";
+import { UserButton } from "@clerk/clerk-react";
 import { Link } from "@mui/material";
-import {SignOutButton} from "@clerk/clerk-react";
+// import {SignOutButton} from "@clerk/clerk-react";
 
 const Navbar = () => {
   return (
@@ -11,8 +11,8 @@ const Navbar = () => {
       <Link href="/">
         <Logo />
       </Link>
-      <SignOutButton redirectUrl={"/Consultant-Tracker"}/>
-      {/*<UserButton />*/}
+      {/*<SignOutButton redirectUrl={"/Consultant-Tracker"}/>*/}
+      <UserButton />
     </div>
   );
 };
