@@ -5,8 +5,8 @@ import {
 } from "../types";
 import moment, {Moment} from "moment/moment";
 
-// export const user = "Josefin Stål"
-export const user = "Stella Asplund" // FOR DEMO
+export const user = "Josefin Stål"
+// export const user = "Stella Asplund" // FOR DEMO
 export const selectColor = (type: string) => {
   switch (type) {
     case "Konsult-tid":
