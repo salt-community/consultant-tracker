@@ -9,15 +9,15 @@ spring:
     password: ${DB.PASSWORD}
   security:
     oauth2:
-#      resourceserver:
-#        jwt:
-#          issuer-uri: https://dev-34512620.okta.com/oauth2/default   -- example
-#          audiences: api://default   -- example
-      client:
-        registration:
-          google:
-            client-id: ${GOOGLE.CLIENT_ID}
-            client-secret: ${GOOGLE.CLIENT_SECRET}
+      resourceserver:
+        jwt:
+          issuer-uri: ${ISSUER_URI}
+          audiences: api://default
+#      client:
+#        registration:
+#          google:
+#            client-id: ${GOOGLE.CLIENT_ID}
+#            client-secret: ${GOOGLE.CLIENT_SECRET}
 #          clerk:
 #            client-id: ${CLERK_CLIENT_ID}
 #            client-secret: ${CLERK_CLIENT_SECRET_KEY}
