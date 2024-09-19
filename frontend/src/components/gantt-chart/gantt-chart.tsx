@@ -36,6 +36,7 @@ const GanttChart = () => {
   const id = useSelector((state: RootState) => state.ganttChart.id);
   const error = useSelector((state: RootState) => state.ganttChart.error);
   const loading = useSelector((state: RootState) => state.ganttChart.loading);
+  const token = useSelector((state: RootState) => state.token.token);
 
   const filterPts = useSelector(
     (state: RootState) => state.filterField.filterPts
@@ -60,7 +61,8 @@ const GanttChart = () => {
       filterClientsEncodeUriString,
       filterPtsEncodeUriString,
       debounceFilterName,
-      includePgps
+      includePgps,
+      token
     )
       .then((res) => {
         dispatch(setItems(mapConsultantsToCalendarItems(res)));
