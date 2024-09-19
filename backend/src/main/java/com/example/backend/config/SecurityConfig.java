@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
@@ -30,34 +31,23 @@ public class SecurityConfig {
          */
 
         return http
-//                .csrf(AbstractHttpConfigurer::disable)
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth ->
                         auth.anyRequest().authenticated())
                 .cors(withDefaults())
-                .oauth2ResourceServer(oauth2 -> oauth2.jwt(withDefaults()))
-//                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//                .httpBasic(withDefaults())
-//                .oauth2Login(withDefaults())
-//                .formLogin(withDefaults())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .oauth2ResourceServer(oauth2 -> {
+                    oauth2.jwt(withDefaults());
+                    System.out.println("PRINT oauth2.jwt(withDefaults()) = " + oauth2);
+                })
                 .build();
 
-//        .authorizeHttpRequests(authorize -> authorize
-//                .requestMatchers("/api/secure/**").authenticated()
-//        )
-//                .cors(withDefaults())
-//                .oauth2ResourceServer(oauth2 -> oauth2.jwt(withDefaults()));
-//        return http.build();
 
     }
 
-//    @Bean
-//    CorsConfigurationSource corsConfigurationSource() {
-//        CorsConfiguration configuration = new CorsConfiguration();
-//        configuration.setAllowedOrigins(List.of("*"));
-//        configuration.setAllowedMethods(List.of("*"));
-//        configuration.setAllowedHeaders(List.of("*"));
-//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//        source.registerCorsConfiguration("/**", configuration);
-//        return source;
-//    }
+    @Bean
+    public JwtDecoder jwtDecoder() {
+        return NimbusJwtDecoder.withJwkSetUri("${JWT}").build();
+    }
+
 }
