@@ -40,6 +40,8 @@ function FilterField() {
     (state: RootState) => state.filterField.includePgps
   );
 
+  const token = useSelector((state: RootState) => state.token.token)
+
   const dispatch = useDispatch<AppDispatch>();
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -79,7 +81,7 @@ function FilterField() {
   };
 
   useEffect(() => {
-    getAllClientsAndPts(includePgps).then(
+    getAllClientsAndPts(includePgps, token).then(
       (res: ClientsAndPtsListResponseType) => {
         dispatch(setListOfPts(res.pts));
         dispatch(setListOfClients(res.clients));

@@ -14,8 +14,10 @@ const BasicInfo = () => {
   const dispatch = useDispatch<AppDispatch>();
   const personalData = useSelector((state:RootState)=>state.basicInfo.personalData)
   const openModal = useSelector((state: RootState) => state.ganttChart.openModal)
+  const token = useSelector((state: RootState) => state.token.token)
+  
   const fetchConsultantById = () => {
-    if (id) getConsultantById(id).then((res) => {
+    if (id) getConsultantById(id, token).then((res) => {
       dispatch(setPersonalData(res))
     });
   };

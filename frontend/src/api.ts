@@ -21,8 +21,14 @@ export const getConsultantsData = async (
     .catch((err) => console.log("consultant fetch err", err));
 };
 
-export const getRedDays = async () => {
-  return await fetch(`${BASE_URL}/api/redDays`).then((response) => {
+export const getRedDays = async (token: string) => {
+  return await fetch(`${BASE_URL}/api/redDays`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+    }
+  ).then((response) => {
     if (!response.ok) {
       throw new Error(`HTTP error ${response.status}`);
     }
@@ -30,8 +36,13 @@ export const getRedDays = async () => {
   });
 };
 
-export const getConsultantById = async (id: string) => {
-  return await fetch(`${BASE_URL}/api/consultants/${id}`).then((response) => {
+export const getConsultantById = async (id: string, token: string) => {
+  return await fetch(`${BASE_URL}/api/consultants/${id}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+    }).then((response) => {
     if (!response.ok) {
       throw new Error(`HTTP error ${response.status}`);
     }
@@ -39,8 +50,13 @@ export const getConsultantById = async (id: string) => {
   });
 };
 
-export const getInfographicsByPt = async (pt: string) => {
-  return await fetch(`${BASE_URL}/api/consultants/infographics/${pt}`).then(
+export const getInfographicsByPt = async (pt: string, token: string) => {
+  return await fetch(`${BASE_URL}/api/consultants/infographics/${pt}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+    }).then(
     (response) => {
       if (!response.ok) {
         throw new Error(`HTTP error ${response.status}`);
@@ -50,9 +66,14 @@ export const getInfographicsByPt = async (pt: string) => {
   );
 };
 
-export const getAllClientsAndPts = async (includePgps: boolean) => {
+export const getAllClientsAndPts = async (includePgps: boolean, token: string) => {
   return await fetch(
-    `${BASE_URL}/api/consultants/getAllClientsAndPts?includePgps=${includePgps}`
+    `${BASE_URL}/api/consultants/getAllClientsAndPts?includePgps=${includePgps}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+    }
   ).then((response) => {
     if (!response.ok) {
       throw new Error(`HTTP error ${response.status}`);

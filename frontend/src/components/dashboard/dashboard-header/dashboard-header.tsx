@@ -10,11 +10,12 @@ import { user } from "../../../utils/utils";
 
 const DashboardHeader = () => {
   const data = useSelector((state: RootState) => state.dashboardHeader.infographicData)
+  const token = useSelector((state: RootState) => state.token.token)
   const dispatch = useDispatch<AppDispatch>();
   const userFirstName = user.split(" ")[0]; //TODO change when authentication implemented
 
   useEffect(() => {
-    getInfographicsByPt(user) //TODO change when authentication implemented
+    getInfographicsByPt(user, token) //TODO change when authentication implemented
       .then((res: InfographicResponseType) => {
         const infographics = [
           {
