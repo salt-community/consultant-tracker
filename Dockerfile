@@ -7,9 +7,9 @@ WORKDIR /app
 # Step 3: Copy package.json and package-lock.json to install dependencies
 COPY frontend/package*.json ./
 
-RUN cd frontend/ && npm install
-
 RUN echo ls -la
+
+RUN cd frontend/ && npm install
 
 COPY . .
 
