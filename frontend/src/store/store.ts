@@ -4,6 +4,7 @@ import filterFieldReducer from "./slices/FilterFieldSlice";
 import ganttChartReducer from "./slices/GanttChartSlice";
 import paginationReducer from "./slices/PaginationSlice";
 import basicInfoReducer from "./slices/BasicInfoSlice";
+import tokenReducer from "./slices/TokenSlice";
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     ganttChart: ganttChartReducer,
     pagination: paginationReducer,
     basicInfo: basicInfoReducer,
+    token: tokenReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

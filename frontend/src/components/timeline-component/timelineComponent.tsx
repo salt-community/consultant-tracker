@@ -15,6 +15,7 @@ const TimelineComponent = () => {
   const groups = useSelector((state: RootState) => state.ganttChart.groups)
   const redDaysSE = useSelector((state: RootState) => state.ganttChart.redDaysSE)
   const redDaysNO = useSelector((state: RootState) => state.ganttChart.redDaysNO)
+  const token = useSelector((state: RootState) => state.token.token)
   const handleItemSelect = (itemId: string) => {
     const consultantItems = items.filter((el) => itemId == el.id)[0];
     dispatch(setModalData(consultantItems));
@@ -23,12 +24,12 @@ const TimelineComponent = () => {
     dispatch(setOpenTimeItemDetails(true));
   };
   useEffect(() => {
-    getRedDays()
+    token != "" && getRedDays(token)
       .then((res: RedDaysResponseType) => {
         dispatch(setRedDaysSE(res.redDaysSE.map((el) => moment(el))));
         dispatch(setRedDaysNO(res.redDaysNO.map((el) => moment(el))));
       });
-  }, []);
+  }, [token]);
 
   return (
     items.length > 0

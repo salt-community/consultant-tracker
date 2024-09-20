@@ -7,6 +7,12 @@ spring:
     url: ${DB.URL}
     username: ${DB.USERNAME}
     password: ${DB.PASSWORD}
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${ISSUER_URI}
+          audiences: api://default
   jpa:
     defer-datasource-initialization: true
     hibernate:
@@ -22,3 +28,8 @@ spring:
     import: optional:secret.yml
   main:
     allow-circular-references: true
+logging:
+  level:
+    org:
+      springframework:
+        security: TRACE
