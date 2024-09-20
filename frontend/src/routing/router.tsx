@@ -4,7 +4,7 @@ import { PageNotFound } from "../components/page-not-found/page-not-found.jsx";
 
 export const router = createBrowserRouter([
   {
-    path: "/Consultant-Tracker/",
+    path: "/consultant-tracker/",
     element: <App />,
     errorElement: <PageNotFound />,
   },
