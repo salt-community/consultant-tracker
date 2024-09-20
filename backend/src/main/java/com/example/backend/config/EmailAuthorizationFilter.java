@@ -4,43 +4,45 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.security.access.AccessDeniedException;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
+import org.springframework.web.filter.OncePerRequestFilter;
+
 import java.io.IOException;
 
-public class EmailAuthorizationFilter extends AbstractPreAuthenticatedProcessingFilter {
+@RequiredArgsConstructor
+public class EmailAuthorizationFilter extends OncePerRequestFilter {
+
+    private final String AUTH_EMAILS;
 
     @Override
-    protected Object getPreAuthenticatedPrincipal(HttpServletRequest request) {
-        System.out.println("in getPreAuthenticatedPrincipal() ");
-        // Extract the JWT from the Security Context
-        System.out.println(" SecurityContextHolder = " + SecurityContextHolder.getContext());
-        System.out.println(" SecurityContextHolder.getContext().getAuthentication() = "
-                +  SecurityContextHolder.getContext().getAuthentication());
-        Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        // Extract email from JWT
-        String email = jwt.getClaim("email");
-        System.out.println("email = " + email);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        // Authorize based on the email
-        if ("some.one@some.email".equals(email)) {
-            return email;  // Continue the request
+        if (authentication != null && authentication.getPrincipal() instanceof Jwt) {
+            Jwt jwt = (Jwt) authentication.getPrincipal();
+            System.out.println("jwt = " + jwt.getTokenValue());
+            String email = jwt.getClaim("email_address");
+            if (email != null && isAuthorizedEmail(email)) {
+                System.out.println("Email authorized: " + email);
+                filterChain.doFilter(request, response);
+            } else {
+                System.out.println("Access denied for email: " + email);
+                response.sendError(HttpServletResponse.SC_FORBIDDEN, "Unauthorized email");
+            }
         } else {
-            throw new AccessDeniedException("Access denied for email: " + email);
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Unauthenticated");
         }
     }
 
-    @Override
-    protected Object getPreAuthenticatedCredentials(HttpServletRequest request) {
-        return null;
+    private boolean isAuthorizedEmail(String email) {
+        return AUTH_EMAILS.contains(email);
     }
 
-//    @Override
-    protected void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-        super.doFilter(request, response, chain);
-    }
 }
 
