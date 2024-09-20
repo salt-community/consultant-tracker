@@ -5,7 +5,7 @@ FROM node:18-alpine AS build
 WORKDIR /app
 
 # Step 3: Copy package.json and package-lock.json to install dependencies
-COPY package.json package-lock.json ./
+COPY package*.json ./
 
 RUN npm install
 
@@ -13,8 +13,8 @@ COPY . .
 
 # Accept build arguments
 ARG VITE_CLERK_PUBLISHABLE_KEY
-ENV VITE_CLERK_PUBLISHABLE_KEY=${VITE_CLERK_PUBLISHABLE_KEY}
 ARG VITE_BACKEND_URL
+ENV VITE_CLERK_PUBLISHABLE_KEY=${VITE_CLERK_PUBLISHABLE_KEY}
 ENV VITE_BACKEND_URL=${VITE_BACKEND_URL}
 
 # Set the build environment variable (optional)
@@ -32,7 +32,7 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf
 # Copy the build output from the previous stage to Nginx's default public directory
 COPY --from=build /app/dist /usr/share/nginx/html
 
-EXPOSE 80
+EXPOSE 8080
 
 # Step 10: Start Nginx when the container launches
 CMD ["nginx", "-g", "daemon off;"]
