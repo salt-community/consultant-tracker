@@ -5,7 +5,7 @@ FROM node:18-alpine AS build
 WORKDIR /app
 
 # Step 3: Copy package.json and package-lock.json to install dependencies
-COPY frontend/package*.json frontend/tsconfig.json ./
+COPY frontend/package*.json frontend/tsconfig*.json ./
 
 RUN ls -la
 
