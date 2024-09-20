@@ -11,7 +11,9 @@ const Authentication = () => {
   const { getToken } = useAuth();
 
   const fetchToken = async () => {
-    const token = await getToken();
+    const template = 'email_test'
+    const token = await getToken({ template })
+    // const token = await getToken();
     console.log(token);
     token && dispatch(setToken(token));
   };

@@ -79,6 +79,7 @@ const GanttChart = () => {
   };
 
   useEffect(() => {
+    if(token)
     fetchConsultantsData();
   }, [
     filterPts,
@@ -87,6 +88,7 @@ const GanttChart = () => {
     rowsPerPage,
     page,
     includePgps,
+    token
   ]);
 
   return loading ? (
