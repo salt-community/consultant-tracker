@@ -15,7 +15,6 @@ steps:
       - "-f"
       - Dockerfile
     id: Build
-    dir: 'frontend'  # Specify the frontend folder where your Dockerfile is
   - name: gcr.io/cloud-builders/docker
     args:
       - push
