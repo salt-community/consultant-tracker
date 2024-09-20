@@ -1,5 +1,4 @@
 import './loading.css'
-import {CircularProgress} from "@mui/material";
 import shaker from "../../../public/shaker.gif"
 
 const Loading = () => {
