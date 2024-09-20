@@ -41,3 +41,4 @@ jobs:
         with:
           service: ${{ vars.GC_SERVICE_NAME }}
           image: ${{ env.IMAGE_URL }}
+          region: europe-north1
