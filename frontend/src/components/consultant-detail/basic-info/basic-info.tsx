@@ -23,8 +23,8 @@ const BasicInfo = () => {
   };
   const id = useSelector((state: RootState) => state.ganttChart.id)
   useEffect(() => {
-    fetchConsultantById();
-  }, [id]);
+    token != "" && fetchConsultantById();
+  }, [id, token]);
 
   return (
     personalData && (

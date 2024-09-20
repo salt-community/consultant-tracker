@@ -24,12 +24,12 @@ const TimelineComponent = () => {
     dispatch(setOpenTimeItemDetails(true));
   };
   useEffect(() => {
-    getRedDays(token)
+    token != "" && getRedDays(token)
       .then((res: RedDaysResponseType) => {
         dispatch(setRedDaysSE(res.redDaysSE.map((el) => moment(el))));
         dispatch(setRedDaysNO(res.redDaysNO.map((el) => moment(el))));
       });
-  }, []);
+  }, [token]);
 
   return (
     items.length > 0

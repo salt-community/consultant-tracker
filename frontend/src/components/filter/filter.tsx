@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect} from "react";
+import { ChangeEvent, useEffect } from "react";
 import "./filter.css";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -40,7 +40,7 @@ function FilterField() {
     (state: RootState) => state.filterField.includePgps
   );
 
-  const token = useSelector((state: RootState) => state.token.token)
+  const token = useSelector((state: RootState) => state.token.token);
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -81,13 +81,14 @@ function FilterField() {
   };
 
   useEffect(() => {
-    getAllClientsAndPts(includePgps, token).then(
-      (res: ClientsAndPtsListResponseType) => {
-        dispatch(setListOfPts(res.pts));
-        dispatch(setListOfClients(res.clients));
-      }
-    );
-  }, [includePgps]);
+    token != "" &&
+      getAllClientsAndPts(includePgps, token).then(
+        (res: ClientsAndPtsListResponseType) => {
+          dispatch(setListOfPts(res.pts));
+          dispatch(setListOfClients(res.clients));
+        }
+      );
+  }, [includePgps, token]);
 
   return (
     <section className="filter-section">

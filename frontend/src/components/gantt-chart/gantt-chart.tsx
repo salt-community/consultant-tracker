@@ -79,8 +79,7 @@ const GanttChart = () => {
   };
 
   useEffect(() => {
-    if(token)
-    fetchConsultantsData();
+    token != "" && fetchConsultantsData();
   }, [
     filterPts,
     filterClients,
