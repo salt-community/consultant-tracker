@@ -5,9 +5,11 @@ FROM node:18-alpine AS build
 WORKDIR /app
 
 # Step 3: Copy package.json and package-lock.json to install dependencies
-COPY package*.json ./
+COPY frontend/package*.json ./
 
-RUN npm install
+RUN CD frontend && npm install
+
+RUN echo ls -la
 
 COPY . .
 
@@ -22,7 +24,7 @@ RUN echo "VITE_CLERK_PUBLISHABLE_KEY=" $VITE_CLERK_PUBLISHABLE_KEY
 RUN echo "VITE_BACKEND_URL=" $VITE_BACKEND_URL
 
 #  Build the React app using Vite
-RUN npm run build
+RUN CD frontend && npm run build
 
 # Use an official Nginx image to serve the built files
 FROM nginx:alpine
