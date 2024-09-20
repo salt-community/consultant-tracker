@@ -1,36 +1,72 @@
-options:
-  logging: CLOUD_LOGGING_ONLY  # Use only Cloud Logging for build logs
-
 steps:
   # Step 1: Build the Docker image with build arguments
   - name: 'gcr.io/cloud-builders/docker'
-    args: [
-      'build',
-      '--build-arg', 'VITE_CLERK_PUBLISHABLE_KEY=${_VITE_CLERK_PUBLISHABLE_KEY}',
-      '--build-arg', 'VITE_BACKEND_URL=${_VITE_BACKEND_URL}',
-      '-t', 'gcr.io/$PROJECT_ID/consultant-tracker-client:latest',
-      '.'
-    ]
+    args: 
+      - "build",
+      - "--build-arg"
+      - "VITE_CLERK_PUBLISHABLE_KEY=${_VITE_CLERK_PUBLISHABLE_KEY}"
+      - "--build-arg"
+      - "VITE_BACKEND_URL=${_VITE_BACKEND_URL}"
+      - "--no-cache"
+      - "-t"
+      - >-
+        $_AR_HOSTNAME/$PROJECT_ID/cloud-run-source-deploy/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA
+      - .
+      - "-f"
+      - Dockerfile
+    id: Build
     dir: 'frontend'  # Specify the frontend folder where your Dockerfile is
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - push
+      - >-
+        $_AR_HOSTNAME/$PROJECT_ID/cloud-run-source-deploy/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA
+    id: Push
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk:slim"
+    args:
+      - run
+      - services
+      - update
+      - $_SERVICE_NAME
+      - "--platform=managed"
+      - >-
+        --image=$_AR_HOSTNAME/$PROJECT_ID/cloud-run-source-deploy/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA
+      - >-
+        --labels=managed-by=gcp-cloud-build-deploy-cloud-run,commit-sha=$COMMIT_SHA,gcb-build-id=$BUILD_ID,gcb-trigger-id=$_TRIGGER_ID
+      - "--region=$_DEPLOY_REGION"
+      - "--quiet"
+    id: Deploy
+    entrypoint: gcloud
+images:
+  - >-
+    $_AR_HOSTNAME/$PROJECT_ID/cloud-run-source-deploy/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA
+options:
+  logging: CLOUD_LOGGING_ONLY
 
+
+
+
+
+
+# _____________________ OUR STUFF ______________
   # Step 2: Push the Docker image to Google Container Registry
-  - name: 'gcr.io/cloud-builders/docker'
-    args: [
-      'push', 'gcr.io/$PROJECT_ID/consultant-tracker-client:latest'
-    ]
+#   - name: 'gcr.io/cloud-builders/docker'
+  #   args: [
+  #     'push', 'gcr.io/$PROJECT_ID/consultant-tracker-client:latest'
+   #  ]
 
   # Step 3: Deploy to Google Cloud Run
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: 'gcloud'
-    args: [
-      'run', 'deploy', 'consultant-tracker-client',
-      '--image', 'gcr.io/$PROJECT_ID/consultant-tracker-client:latest',
-      '--region', 'europe-north1',
-      '--platform', 'managed',
-      '--allow-unauthenticated',
-      '--set-env-vars', 'VITE_CLERK_PUBLISHABLE_KEY=${_VITE_CLERK_PUBLISHABLE_KEY},VITE_BACKEND_URL=${_VITE_BACKEND_URL}'
-    ]
+#   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+#     entrypoint: 'gcloud'
+    # args: [
+#       'run', 'deploy', 'consultant-tracker-client',
+ #      '--image', 'gcr.io/$PROJECT_ID/consultant-tracker-client:latest',
+  #     '--region', 'europe-north1',
+   #    '--platform', 'managed',
+#       '--allow-unauthenticated',
+#       '--set-env-vars', 'VITE_CLERK_PUBLISHABLE_KEY=${_VITE_CLERK_PUBLISHABLE_KEY},VITE_BACKEND_URL=${_VITE_BACKEND_URL}'
+#     ]
 
-substitutions:
-  _VITE_CLERK_PUBLISHABLE_KEY: ''
-  _VITE_BACKEND_URL: ''
+# substitutions:
+#   _VITE_CLERK_PUBLISHABLE_KEY: ''
+#   _VITE_BACKEND_URL: ''
