@@ -8,7 +8,7 @@ const App = ()=> {
   const location = useLocation();
   const [notFound, setNotFound] = useState(false);
   useEffect(() => {
-    if(location.pathname !== "/consultant-tracker/"){
+    if(location.pathname !== "/"){
       setNotFound(true)
     }
   }, []);
