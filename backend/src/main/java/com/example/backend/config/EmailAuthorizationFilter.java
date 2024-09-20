@@ -31,7 +31,7 @@ public class EmailAuthorizationFilter extends OncePerRequestFilter {
                 filterChain.doFilter(request, response);
             } else {
                 System.out.println("Access denied for email: " + email);
-                response.sendError(HttpServletResponse.SC_FORBIDDEN, "Unauthorized email");
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized email");
             }
         } else {
             response.sendError(HttpServletResponse.SC_FORBIDDEN, "Unauthenticated");
