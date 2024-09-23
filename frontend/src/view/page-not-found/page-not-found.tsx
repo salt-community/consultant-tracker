@@ -9,7 +9,7 @@ export const PageNotFound = () => {
       <img src={notFoundCat} alt="not found cat" className="not-found-image"/>
       <div className="not-found-content-wrapper">
         <p>Page not found. Please check the url and try again.</p>
-        <SignOutButton children={<Button variant="contained" color="primary">Home</Button>}/>
+        <SignOutButton children={<a href="/"><Button variant="contained" color="primary" >Home</Button></a>}/>
       </div>
     </div>
   );
