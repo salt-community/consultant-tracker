@@ -3,7 +3,7 @@ import LogIn from "../../view/sign-in/sign-in.tsx";
 import Home from "../../view/home/home.tsx";
 import {setToken} from "../../store/slices/TokenSlice.ts";
 import {useDispatch, useSelector} from "react-redux";
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import {RootState} from "../../store/store.ts";
 import {getAuthorization} from "../../api.ts";
 import {setAuthorized, setShowContent} from "../../store/slices/AuthorizationSlice.ts";
@@ -15,8 +15,6 @@ const Authentication = () => {
   const authorized = useSelector((state: RootState) => state.authorization.authorized)
   const showContent = useSelector((state: RootState) => state.authorization.showContent)
   const token = useSelector((state: RootState) => state.token.token)
-
-
 
   const {getToken} = useAuth();
 

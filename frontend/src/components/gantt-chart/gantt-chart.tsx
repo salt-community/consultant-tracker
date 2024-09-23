@@ -24,7 +24,6 @@ import {
   mapConsultantsToCalendarItems,
   mapGroups,
 } from "../../utils/utils";
-import {setAuthorized} from "../../store/slices/AuthorizationSlice.ts";
 
 const GanttChart = () => {
   const dispatch = useDispatch<AppDispatch>();
