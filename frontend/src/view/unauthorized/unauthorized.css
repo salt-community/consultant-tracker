@@ -1,0 +1,17 @@
+.unauthorized-container{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.unauthorized-image{
+    width: 500px;
+    height: auto;
+}
+
+.unauthorized-content-wrapper{
+    text-align: center;
+    font-size: 20px;
+    font-weight: 400;
+}

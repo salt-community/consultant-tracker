@@ -1,5 +1,5 @@
 import './loading.css'
-import shaker from "../../../public/shaker.gif"
+import shaker from "../../assets/shaker.gif"
 
 const Loading = () => {
   return (

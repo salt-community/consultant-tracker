@@ -1,6 +1,7 @@
 .page-wrapper {
     width: 80%;
     margin: 100px auto 20px auto;
+    height: 80vh;
 }
 
 @media screen and (max-width: 600px) {

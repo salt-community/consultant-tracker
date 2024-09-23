@@ -1,11 +1,11 @@
 import "react-calendar-timeline/lib/Timeline.css";
 import "./gantt-chart.css";
-import { useEffect } from "react";
+import {useEffect} from "react";
 import Loading from "../loading/loading";
 import Error from "../error/error";
 import BasicInfo from "../consultant-detail/basic-info/basic-info";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../store/store";
+import {useDispatch, useSelector} from "react-redux";
+import {AppDispatch, RootState} from "../../store/store";
 import {
   setError,
   setGroups,
@@ -14,16 +14,17 @@ import {
   setOpenModal,
 } from "../../store/slices/GanttChartSlice";
 import Pagination from "../pagination/pagination";
-import { setTotalItems } from "../../store/slices/PaginationSlice";
+import {setTotalItems} from "../../store/slices/PaginationSlice";
 import TimelineComponent from "../timeline-component/timelineComponent";
 import Legend from "./legend/legend";
 import AccordionComponent from "../accordion/accordion-component";
-import { getConsultantsData } from "../../api";
+import {getConsultantsData} from "../../api";
 import {
   encodeString,
   mapConsultantsToCalendarItems,
   mapGroups,
 } from "../../utils/utils";
+import {setAuthorized} from "../../store/slices/AuthorizationSlice.ts";
 
 const GanttChart = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -64,8 +65,8 @@ const GanttChart = () => {
       includePgps,
       token
     )
-      .then((res) => {
-        dispatch(setItems(mapConsultantsToCalendarItems(res)));
+      .then(res => {
+          dispatch(setItems(mapConsultantsToCalendarItems(res)));
         dispatch(setTotalItems(res.totalConsultants));
         dispatch(setGroups(mapGroups(res)));
       })
@@ -91,16 +92,16 @@ const GanttChart = () => {
   ]);
 
   return loading ? (
-    <Loading />
+    <Loading/>
   ) : error.length !== 0 ? (
-    <Error message={error} />
+    <Error message={error}/>
   ) : (
     <div>
-      <AccordionComponent title="Legend" content={<Legend />} />
-      <Pagination />
+      <AccordionComponent title="Legend" content={<Legend/>}/>
+      <Pagination/>
       <div className="gantt-chart__wrapper">
-        <TimelineComponent />
-        {id.length > 0 && <BasicInfo />}
+        <TimelineComponent/>
+        {id.length > 0 && <BasicInfo/>}
       </div>
     </div>
   );

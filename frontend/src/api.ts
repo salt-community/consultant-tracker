@@ -1,5 +1,12 @@
 const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
+export const getAuthorization =async(token: string)=>{
+  return await fetch(`${BASE_URL}/api/auth`,{
+    headers: {
+      Authorization: `Bearer ${token}`
+    }}).then(response=> response.json())
+}
+
 export const getConsultantsData = async (
   page: number,
   pageSize: number,
@@ -18,7 +25,6 @@ export const getConsultantsData = async (
     }
   )
     .then((response) => response.json())
-    .catch((err) => console.log("consultant fetch err", err));
 };
 
 export const getRedDays = async (token: string) => {
