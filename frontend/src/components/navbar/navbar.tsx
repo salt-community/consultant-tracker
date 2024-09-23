@@ -1,8 +1,7 @@
 import Logo from "../../components/navbar/logo/logo";
 import "./navbar.css";
-
-import {SignOutButton} from "@clerk/clerk-react";
 import { Link } from "@mui/material";
+import {UserButton} from "@clerk/clerk-react";
 
 const Navbar = () => {
   return (
@@ -10,7 +9,7 @@ const Navbar = () => {
       <Link href="/">
         <Logo />
       </Link>
-      <SignOutButton/>
+      <UserButton/>
     </div>
   );
 };
