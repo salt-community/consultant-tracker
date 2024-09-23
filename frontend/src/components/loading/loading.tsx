@@ -1,11 +1,23 @@
 import './loading.css'
-import shaker from "../../assets/shaker.gif"
+import Lottie from "react-lottie";
+import animationData from "../../lotties/cat-loading.json";
 
 const Loading = () => {
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice"
+    }
+  };
   return (
     <div className="spinner-container">
-      <img src={shaker} />
-    {/* <CircularProgress disableShrink /> */}
+      <Lottie
+        options={defaultOptions}
+        height={400}
+        width={400}
+      />
     </div>
   );
 };
