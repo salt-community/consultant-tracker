@@ -15,3 +15,27 @@
         width: 90%;
     }
 }
+
+.button-scroll-up{
+    position: fixed;
+    bottom: 100px;
+    right: 20px;
+    outline: none;
+    border: 2px solid black;
+    border-radius: 50%;
+    cursor: pointer;
+    background: transparent;
+    font-size: 20px;
+    width: 35px;
+    height: 35px;
+    transition: 0.5s;
+}
+.button-scroll-up:hover{
+    border: 2px solid  rgba(64, 122, 218, 1);
+    color: rgba(64, 122, 218, 1);
+    transition: 0.5s;
+}
+
+.button-scroll-up.hidden{
+    display: none;
+}
