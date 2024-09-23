@@ -1,5 +1,5 @@
 import {useEffect} from 'react';
-import {groupsRenderer, itemRenderer} from "../../components/gantt-chart/gantt-chart-renderers";
+import {groupsRenderer, itemRenderer} from "../gantt-chart/gantt-chart-renderers.tsx";
 import moment from "moment";
 import {verticalLineClassNamesForTime} from "../../utils/utils";
 import Timeline from "react-calendar-timeline";
