@@ -7,9 +7,6 @@ const Loading = () => {
     loop: true,
     autoplay: true,
     animationData: animationData,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice"
-    }
   };
   return (
     <div className="spinner-container">
