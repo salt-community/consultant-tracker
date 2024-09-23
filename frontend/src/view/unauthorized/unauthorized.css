@@ -1,17 +1,22 @@
 .unauthorized-container{
     display: flex;
     align-items: center;
-    flex-direction: column;
     gap: 20px;
 }
 
 .unauthorized-image{
     width: 500px;
     height: auto;
+    border-radius: 15px;
+    box-shadow:rgba(0, 0, 0, 0.45) 0 25px 20px -20px;
 }
 
 .unauthorized-content-wrapper{
     text-align: center;
     font-size: 20px;
     font-weight: 400;
+}
+
+.unauthorized-content-wrapper button{
+    margin-top: 20px;
 }
