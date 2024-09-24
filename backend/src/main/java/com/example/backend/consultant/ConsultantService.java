@@ -11,6 +11,7 @@ import com.example.backend.saltUser.SaltUser;
 import com.example.backend.saltUser.SaltUserService;
 import com.example.backend.tag.Tag;
 import com.example.backend.timeChunks.TimeChunksService;
+import jakarta.annotation.PostConstruct;
 import lombok.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -53,7 +54,10 @@ public class ConsultantService {
     public InfographicResponseDto getInfographicsByPt(String ptName) {
         int totalConsultants = consultantRepository.findAllByActiveTrue().size();
         SaltUser pt = saltUserService.getSaltUserByName(ptName);
-        int totalPtsConsultants = consultantRepository.countAllByActiveTrueAndSaltUser(pt);
+        int totalPtsConsultants = 0;
+        if(pt != null){
+            totalConsultants = consultantRepository.countAllByActiveTrueAndSaltUser(pt);
+        }
         int totalPgpConsultants = consultantRepository.countAllByActiveTrueAndClient(PGP.value);
         return new InfographicResponseDto(totalConsultants, totalPtsConsultants, totalPgpConsultants);
     }
@@ -128,7 +132,7 @@ public class ConsultantService {
         return consultantRepository.findAllByActiveTrue();
     }
 
-    //        @PostConstruct
+//            @PostConstruct
     @Scheduled(cron = "0 0 0 * * *", zone = "Europe/Stockholm")
     public void fetchDataFromTimekeeper() {
         LOGGER.info("Starting fetching data from timekeeper");
