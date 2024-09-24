@@ -31,15 +31,6 @@ public class TimekeeperClient {
 
     public TimekeeperClient(@Value("${TIMEKEEPER.URL}") String baseUrl,
                             @Value("${TIMEKEEPER.AUTH}") String HEADER) {
-//        CLIENT_URL = WebClient.create(baseUrl);
-//        CLIENT_URL = WebClient.builder().baseUrl(baseUrl).exchangeStrategies(ExchangeStrategies.builder()
-//                        .codecs(configurer -> configurer
-//                                .defaultCodecs()
-//                                .maxInMemorySize(16 * 1024 * 1024))
-//                        .build())
-//                .build();
-//        HttpClient httpClient = HttpClient.create()
-//                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 100000);
         HttpClient httpClient = HttpClient.create()
                 .secure(spec -> spec.sslContext(SslContextBuilder.forClient())
                         .defaultConfiguration(SslProvider.DefaultConfigurationType.TCP)
@@ -56,31 +47,6 @@ public class TimekeeperClient {
                 .build();
         this.HEADER = HEADER;
     }
-
- // TODO remove later
-//    public TimekeeperUserDto getUser(Long id) {
-//        TimekeeperUserListResponseDto dto = CLIENT_URL.get()
-//                .uri("api/v1/user/{id}", id)
-//                .header("Authorization", HEADER)
-//                .retrieve()
-//                .bodyToMono(TimekeeperUserListResponseDto.class)
-//                .block();
-//        assert dto != null;
-//        return dto.timekeeperUsers().stream()
-//                .map(tkUser -> {
-//                    return new TimekeeperUserDto(
-//                            tkUser.firstName(),
-//                            tkUser.lastName(),
-//                            tkUser.email(),
-//                            tkUser.phone(),
-//                            tkUser.tags(),
-//                            tkUser.id(),
-//                            tkUser.isActive(),
-//                            null,
-//                            null,
-//                            tkUser.isEmployee());
-//                }).toList().getFirst();
-//    }
 
     public List<TimekeeperUserDto> getUsers() {
         int index = 0;
