@@ -9,7 +9,7 @@ const Legend = () => {
         <div className="legend__container">
           {legend.map((el,index) => {
             return <div className="legend-item__wrapper" key={index}>
-            <div className="legend__color-indicator" style={{background: el.color}}></div>
+            <div className="legend__color-indicator" style={{background: el.color, opacity: 0.8}}></div>
               <p className="legend__description">{el.description}</p>
             </div>
           })}

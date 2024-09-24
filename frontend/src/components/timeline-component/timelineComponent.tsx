@@ -5,7 +5,15 @@ import {verticalLineClassNamesForTime} from "../../utils/utils";
 import Timeline from "react-calendar-timeline";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "../../store/store";
-import {setId, setModalData, setOpenModal, setOpenTimeItemDetails, setRedDaysNO, setRedDaysSE} from "../../store/slices/GanttChartSlice";
+import {
+  setId,
+  setModalData,
+  setOpenModal,
+  setOpenTimeItemDetails,
+  setRedDaysNO,
+  setRedDaysSE,
+  setSelectedId
+} from "../../store/slices/GanttChartSlice";
 import {getRedDays} from "../../api";
 import {RedDaysResponseType} from "../../types";
 
@@ -23,6 +31,7 @@ const TimelineComponent = () => {
     dispatch(setOpenModal(true));
     dispatch(setOpenTimeItemDetails(true));
     setTimeout(()=>window.scrollTo({top: 3000, behavior: "smooth"}),100)
+    dispatch(setSelectedId(consultantItems.group))
   };
   useEffect(() => {
     token != "" && getRedDays(token)

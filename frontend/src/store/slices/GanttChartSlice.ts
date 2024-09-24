@@ -13,7 +13,8 @@ interface GanttChartState {
   id: string,
   modalData?: ConsultantItemsType,
   redDaysSE: Moment[],
-  redDaysNO: Moment[]
+  redDaysNO: Moment[],
+  selectedId: string
 }
 
 const initialState: GanttChartState = {
@@ -26,7 +27,8 @@ const initialState: GanttChartState = {
   id: "",
   modalData: undefined,
   redDaysSE: [],
-  redDaysNO: []
+  redDaysNO: [],
+  selectedId: ""
 }
 
 const dashboardHeaderSlice = createSlice({
@@ -63,6 +65,9 @@ const dashboardHeaderSlice = createSlice({
     setRedDaysNO: (state, action: PayloadAction<moment.Moment[]>) => {
       state.redDaysNO = action.payload
     },
+    setSelectedId: (state, action: PayloadAction<string>) => {
+      state.selectedId = action.payload
+    },
   }
 })
 
@@ -76,6 +81,7 @@ export const {
   setItems,
   setOpenModal,
   setOpenTimeItemDetails,
-  setError
+  setError,
+  setSelectedId
 } = dashboardHeaderSlice.actions;
 export default dashboardHeaderSlice.reducer;

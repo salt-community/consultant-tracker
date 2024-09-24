@@ -1,4 +1,10 @@
-import { setId, setModalData, setOpenModal, setOpenTimeItemDetails } from "../../store/slices/GanttChartSlice";
+import {
+  setId,
+  setModalData,
+  setOpenModal,
+  setOpenTimeItemDetails,
+  setSelectedId
+} from "../../store/slices/GanttChartSlice";
 import './gantt-chart-renderers.css'
 
 import { selectColor } from "../../utils/utils";
@@ -25,6 +31,7 @@ export const itemRenderer = ({item, itemContext, getItemProps}:Props) => {
           borderColor,
           borderStyle: "solid",
           borderWidth: 1,
+          opacity: 0.8,
           borderRadius: 0,
           borderLeftWidth: itemContext.selected ? 3 : 1,
           borderRightWidth: itemContext.selected ? 3 : 1,
@@ -41,16 +48,18 @@ type GroupProps = {
 export const groupsRenderer = ({group}:GroupProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const items = useSelector((state: RootState) => state.ganttChart.items)
+  const selectedId = useSelector((state: RootState) => state.ganttChart.selectedId)
 
-  const handleItemSelect = (itemId: string) => {
-    const consultantItems = items.filter((el) => itemId == el.group)[0];
+  const handleItemSelect = (groupId: string) => {
+    const consultantItems = items.filter((el) => groupId == el.group)[0];
     dispatch(setModalData(consultantItems));
     dispatch(setId(consultantItems.group));
     dispatch(setOpenModal(true));
     dispatch(setOpenTimeItemDetails(false));
     setTimeout(()=>window.scrollTo({top: 3000, behavior: "smooth"}),100)
+    dispatch(setSelectedId(groupId));
   };
   return (
-    <span className="title" onClick={() => handleItemSelect(group.id)}>{group.title}</span>
+    <span className={selectedId === group.id ? "title active": "title"} onClick={() => handleItemSelect(group.id)}>{group.title}</span>
   );
 };
