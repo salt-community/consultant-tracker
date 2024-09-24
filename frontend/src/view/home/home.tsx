@@ -29,7 +29,6 @@ const Home = () => {
       </button>
       <Navbar/>
       <div className="dashboard-wrapper">
-        <div>Deployment test indicator</div>
         <Dashboard/>
       </div>
     </>
