@@ -22,7 +22,7 @@ const Authentication = () => {
   const fetchToken = async () => {
     const template = 'email_test'
     const token = await getToken({template})
-    user && dispatch(setUser(user.user?.fullName))
+    user && user.user && user.user.fullName && dispatch(setUser(user.user.fullName))
     token && dispatch(setToken(token));
   };
   const fetchAuthorized = () => {
