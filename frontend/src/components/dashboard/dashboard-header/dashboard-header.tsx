@@ -5,19 +5,20 @@ import { getInfographicsByPt } from "../../../api";
 import Infographic from "./infographic/infographic";
 import { AppDispatch, RootState } from "../../../store/store";
 import { setInfographicData } from "../../../store/slices/DashboardHeaderSlice";
-import { user } from "../../../utils/utils";
 
 const DashboardHeader = () => {
   const data = useSelector(
     (state: RootState) => state.dashboardHeader.infographicData
   );
   const token = useSelector((state: RootState) => state.token.token);
+  const user = useSelector((state: RootState) => state.authorization.user);
+
   const dispatch = useDispatch<AppDispatch>();
-  const userFirstName = user.split(" ")[0]; //TODO change when authentication implemented
+  const userFirstName = user.split(" ")[0];
 
   useEffect(() => {
     token != "" &&
-      getInfographicsByPt(user, token) //TODO change when authentication implemented
+      getInfographicsByPt(user, token)
         .then((res: InfographicResponseType) => {
           const infographics = [
             {
@@ -36,7 +37,10 @@ const DashboardHeader = () => {
               variant: "violet",
             },
           ];
-          dispatch(setInfographicData(infographics));
+          const filteredInfographics = infographics.filter(el=> {
+            return !(el.variant === "violet" && el.amount === 0);
+          })
+          dispatch(setInfographicData(filteredInfographics));
         });
   }, [token]);
 
