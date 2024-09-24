@@ -1,17 +1,16 @@
-.page-wrapper {
+.dashboard-wrapper {
     width: 80%;
     margin: 100px auto 20px auto;
-    height: 80vh;
 }
 
 @media screen and (max-width: 600px) {
-    .page-wrapper {
+    .dashboard-wrapper {
         width: 100%;
     }
 }
 
 @media screen and (width >= 601px) and (width <= 1200px) {
-    .page-wrapper {
+    .dashboard-wrapper {
         width: 90%;
     }
 }

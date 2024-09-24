@@ -28,7 +28,7 @@ const Home = () => {
         <BsArrowUp/>
       </button>
       <Navbar/>
-      <div className="page-wrapper">
+      <div className="dashboard-wrapper">
         <Dashboard/>
       </div>
     </>
