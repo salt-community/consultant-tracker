@@ -1,4 +1,4 @@
-import {SignedIn, SignedOut, useAuth} from "@clerk/clerk-react";
+import {SignedIn, SignedOut, useAuth, useUser} from "@clerk/clerk-react";
 import LogIn from "../../view/sign-in/sign-in.tsx";
 import Home from "../../view/home/home.tsx";
 import {setToken} from "../../store/slices/TokenSlice.ts";
@@ -6,7 +6,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
 import {RootState} from "../../store/store.ts";
 import {getAuthorization} from "../../api.ts";
-import {setAuthorized, setShowContent} from "../../store/slices/AuthorizationSlice.ts";
+import {setAuthorized, setShowContent, setUser} from "../../store/slices/AuthorizationSlice.ts";
 import Unauthorized from "../../view/unauthorized/unauthorized.tsx";
 import Loading from "../loading/loading.tsx";
 
@@ -17,10 +17,12 @@ const Authentication = () => {
   const token = useSelector((state: RootState) => state.token.token)
 
   const {getToken} = useAuth();
+  const user = useUser();
 
   const fetchToken = async () => {
     const template = 'email_test'
     const token = await getToken({template})
+    user && dispatch(setUser(user.user?.fullName))
     token && dispatch(setToken(token));
   };
   const fetchAuthorized = () => {
