@@ -56,7 +56,7 @@ export const groupsRenderer = ({group}:GroupProps) => {
     dispatch(setId(consultantItems.group));
     dispatch(setOpenModal(true));
     dispatch(setOpenTimeItemDetails(false));
-    setTimeout(()=>window.scrollTo({top: 3000, behavior: "smooth"}),100)
+    setTimeout(()=>window.scrollTo({top: 3000, behavior: "smooth"}),200)
     dispatch(setSelectedId(groupId));
   };
   return (

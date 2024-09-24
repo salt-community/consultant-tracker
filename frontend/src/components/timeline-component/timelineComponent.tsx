@@ -30,7 +30,7 @@ const TimelineComponent = () => {
     dispatch(setId(consultantItems.group));
     dispatch(setOpenModal(true));
     dispatch(setOpenTimeItemDetails(true));
-    setTimeout(()=>window.scrollTo({top: 3000, behavior: "smooth"}),100)
+    setTimeout(()=>window.scrollTo({top: 3000, behavior: "smooth"}),200)
     dispatch(setSelectedId(consultantItems.group))
   };
   useEffect(() => {
