@@ -1,5 +1,5 @@
 import './page-not-found.css'
-import notFoundCat from "../../assets/unauthorizedCat.webp";
+import notFoundCat from "../../assets/notFoundCat.webp";
 import {SignOutButton} from "@clerk/clerk-react";
 import Button from "@mui/material/Button";
 
