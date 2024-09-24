@@ -43,8 +43,6 @@ export const groupsRenderer = ({group}:GroupProps) => {
   const items = useSelector((state: RootState) => state.ganttChart.items)
 
   const handleItemSelect = (itemId: string) => {
-    console.log("group id ", itemId);
-    console.log("items", items);
     const consultantItems = items.filter((el) => itemId == el.group)[0];
     dispatch(setModalData(consultantItems));
     dispatch(setId(consultantItems.group));

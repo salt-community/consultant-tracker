@@ -12,7 +12,6 @@ function TimeItemDetails() {
   );
 
   useEffect(() => {
-    console.log("openTimeItems", openTimeItemDetails);
   }, [content, openTimeItemDetails]);
   const borderClassName = selectColor(content!.title!.toString());
 
