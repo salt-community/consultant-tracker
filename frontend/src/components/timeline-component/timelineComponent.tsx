@@ -22,6 +22,7 @@ const TimelineComponent = () => {
     dispatch(setId(consultantItems.group));
     dispatch(setOpenModal(true));
     dispatch(setOpenTimeItemDetails(true));
+    setTimeout(()=>window.scrollTo({top: 3000, behavior: "smooth"}),100)
   };
   useEffect(() => {
     token != "" && getRedDays(token)
