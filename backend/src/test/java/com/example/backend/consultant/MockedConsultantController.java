@@ -4,7 +4,7 @@ import com.example.backend.consultant.dto.ClientsAndPtsListDto;
 import com.example.backend.consultant.dto.ConsultantResponseDto;
 import com.example.backend.consultant.dto.ConsultantResponseListDto;
 import com.example.backend.consultant.dto.TotalDaysStatisticsDto;
-import com.example.backend.registeredTime.dto.RegisteredTimeResponseDto;
+import com.example.backend.registeredtime.dto.RegisteredTimeResponseDto;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

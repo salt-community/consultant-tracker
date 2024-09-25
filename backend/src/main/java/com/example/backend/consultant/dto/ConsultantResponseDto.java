@@ -1,10 +1,10 @@
 package com.example.backend.consultant.dto;
 
 import com.example.backend.consultant.Consultant;
-import com.example.backend.demo.demoConsultant.DemoConsultant;
-import com.example.backend.redDay.CountryCode;
-import com.example.backend.registeredTime.dto.RegisteredTimeResponseDto;
-import com.example.backend.timeChunks.TimeChunks;
+import com.example.backend.demo.DemoConsultant;
+import com.example.backend.reddays.CountryCode;
+import com.example.backend.registeredtime.dto.RegisteredTimeResponseDto;
+import com.example.backend.timechunks.TimeChunks;
 
 import java.util.List;
 import java.util.UUID;

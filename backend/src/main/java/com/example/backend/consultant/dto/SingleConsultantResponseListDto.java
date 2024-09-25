@@ -1,9 +1,9 @@
 package com.example.backend.consultant.dto;
 
 import com.example.backend.consultant.Consultant;
-import com.example.backend.demo.demoConsultant.DemoConsultant;
-import com.example.backend.meetings_schedule.dto.MeetingsDto;
-import com.example.backend.redDay.CountryCode;
+import com.example.backend.demo.DemoConsultant;
+import com.example.backend.meetings.dto.MeetingsDto;
+import com.example.backend.reddays.CountryCode;
 
 import java.util.List;
 import java.util.UUID;

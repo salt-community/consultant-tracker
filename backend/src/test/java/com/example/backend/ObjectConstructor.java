@@ -3,7 +3,7 @@ package com.example.backend;
 import com.example.backend.client.timekeeper.dto.TimekeeperUserDto;
 import com.example.backend.consultant.Consultant;
 import com.example.backend.consultant.dto.ConsultantTimeDto;
-import com.example.backend.registeredTime.RegisteredTimeKey;
+import com.example.backend.registeredtime.RegisteredTimeKey;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

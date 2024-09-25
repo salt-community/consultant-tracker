@@ -1,6 +1,6 @@
 package com.example.backend.notification;
 
-import com.example.backend.saltUser.SaltUser;
+import com.example.backend.saltuser.SaltUser;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -21,5 +21,4 @@ public class Notification {
     @ManyToOne
     @JoinColumn(name = "saltUser_id", referencedColumnName = "id")
     private SaltUser saltUser;
-
 }

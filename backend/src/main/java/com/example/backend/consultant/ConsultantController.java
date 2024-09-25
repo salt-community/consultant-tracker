@@ -1,7 +1,7 @@
 package com.example.backend.consultant;
 
 import com.example.backend.consultant.dto.*;
-import com.example.backend.demo.demoConsultant.DemoConsultantService;
+import com.example.backend.demo.DemoConsultantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;

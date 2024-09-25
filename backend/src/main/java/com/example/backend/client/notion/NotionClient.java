@@ -1,7 +1,7 @@
 package com.example.backend.client.notion;
 
 import com.example.backend.consultant.ConsultantService;
-import com.example.backend.saltUser.SaltUserService;
+import com.example.backend.saltuser.SaltUserService;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;

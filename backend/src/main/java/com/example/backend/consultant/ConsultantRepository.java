@@ -1,6 +1,6 @@
 package com.example.backend.consultant;
 
-import com.example.backend.saltUser.SaltUser;
+import com.example.backend.saltuser.SaltUser;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

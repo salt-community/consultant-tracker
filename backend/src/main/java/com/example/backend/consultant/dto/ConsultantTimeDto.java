@@ -1,7 +1,7 @@
 package com.example.backend.consultant.dto;
 
-import com.example.backend.registeredTime.RegisteredTime;
-import com.example.backend.registeredTime.RegisteredTimeKey;
+import com.example.backend.registeredtime.RegisteredTime;
+import com.example.backend.registeredtime.RegisteredTimeKey;
 
 import java.time.LocalDateTime;
 
