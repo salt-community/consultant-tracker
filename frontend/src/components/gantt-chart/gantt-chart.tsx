@@ -20,7 +20,6 @@ import Legend from "./legend/legend";
 import AccordionComponent from "../accordion/accordion-component";
 import { getConsultantsData } from "../../api";
 import {
-  encodeString,
   mapConsultantsToCalendarItems,
   mapGroups,
 } from "../../utils/utils";
@@ -55,13 +54,11 @@ const GanttChart = () => {
   const { getToken, signOut } = useAuth();
 
   const fetchConsultantsData = async () => {
-    const filterPtsEncodeUriString = encodeString(filterPts);
-    const filterClientsEncodeUriString = encodeString(filterClients);
     const params = {
       page: page.toString(),
       pageSize: rowsPerPage.toString(),
-      pt: filterPtsEncodeUriString,
-      client: filterClientsEncodeUriString,
+      pt: filterPts,
+      client: filterClients,
       name: debounceFilterName.toString(),
       includePgps: includePgps.toString(),
     };
