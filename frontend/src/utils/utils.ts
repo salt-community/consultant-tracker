@@ -73,13 +73,6 @@ export const redDaysAndWeekends =[
   },
 ]
 
-export const encodeString = (value: string[]) => {
-  return value
-    .map((p) => `${encodeURIComponent(p)}`)
-    .join("&")
-    .replace(/-/g, "%2D")
-    .replace(/\./g, "%2E");
-};
 
 export const mapGroups = (res: any) => {
   return res.consultants.map((el: ConsultantFetchType) => {
