@@ -78,7 +78,6 @@ const TimelineComponent = () => {
     />
   ) : (
     <div className="gantt-chart__no-data">
-      {" "}
       No data matching filter criteria{" "}
     </div>
   );
