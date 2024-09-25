@@ -1,4 +1,4 @@
-import {SignedIn, SignedOut, useAuth, useUser} from "@clerk/clerk-react";
+import {SignedIn, SignedOut, useAuth, useSession, useUser} from "@clerk/clerk-react";
 import LogIn from "../../view/sign-in/sign-in.tsx";
 import Home from "../../view/home/home.tsx";
 import {setToken} from "../../store/slices/TokenSlice.ts";
@@ -9,6 +9,7 @@ import {getAuthorization} from "../../api.ts";
 import {setAuthorized, setShowContent, setUser} from "../../store/slices/AuthorizationSlice.ts";
 import Unauthorized from "../../view/unauthorized/unauthorized.tsx";
 import Loading from "../loading/loading.tsx";
+import {fromEpochToDate} from "../../utils/utils.ts";
 
 const Authentication = () => {
   const dispatch = useDispatch();
@@ -18,10 +19,17 @@ const Authentication = () => {
 
   const {getToken} = useAuth();
   const user = useUser();
+  const session = useSession();
+  let expirationToken = new Date();
+
+
 
   const fetchToken = async () => {
     const template = 'email_test'
     const token = await getToken({template})
+    if(session.session && session.session.lastActiveToken && session.session.lastActiveToken.jwt){
+      expirationToken = fromEpochToDate(session.session.lastActiveToken.jwt.claims.exp);
+    }
     user && user.user && user.user.fullName && dispatch(setUser(user.user.fullName))
     token && dispatch(setToken(token));
   };

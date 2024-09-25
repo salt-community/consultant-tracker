@@ -166,4 +166,9 @@ export const verticalLineClassNamesForTime = (
 };
 
 
-
+export const fromEpochToDate = (exp: number)=>{
+  const utcSeconds = exp;
+  const d = new Date(0);
+  d.setUTCSeconds(utcSeconds);
+  return d;
+}
