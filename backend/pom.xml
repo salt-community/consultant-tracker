@@ -8,8 +8,8 @@
 		<version>3.3.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.salt.dev</groupId>
-	<artifactId>consultant-tracker-api</artifactId>
+	<groupId>salt.consultanttracker</groupId>
+	<artifactId>api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>consultant-tracker-api</name>
 	<description>consultant-tracker-api</description>
@@ -116,6 +116,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
+					<mainClass>salt.consultanttracker.api</mainClass>
 					<excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>
