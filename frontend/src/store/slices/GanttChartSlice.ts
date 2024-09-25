@@ -45,7 +45,7 @@ const dashboardHeaderSlice = createSlice({
       state.openTimeItemDetails = action.payload
     },
     setItems: (state, action: PayloadAction<ConsultantItemsType[]>) => {
-      state.items = Object.assign(state.items, action.payload);
+      state.items = [...action.payload];
     },
     setGroups: (state, action: PayloadAction<string[]>) => {
       state.groups = action.payload
