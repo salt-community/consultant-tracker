@@ -5,19 +5,29 @@ import { getInfographicsByPt } from "../../../api";
 import Infographic from "./infographic/infographic";
 import { AppDispatch, RootState } from "../../../store/store";
 import { setInfographicData } from "../../../store/slices/DashboardHeaderSlice";
+import { useAuth } from "@clerk/clerk-react";
+import { template } from "../../../constants";
 
 const DashboardHeader = () => {
   const data = useSelector(
     (state: RootState) => state.dashboardHeader.infographicData
   );
-  const token = useSelector((state: RootState) => state.token.token);
   const user = useSelector((state: RootState) => state.authorization.user);
-
   const dispatch = useDispatch<AppDispatch>();
   const userFirstName = user.split(" ")[0];
+  const { getToken, signOut } = useAuth();
+
 
   useEffect(() => {
-    token != "" &&
+    let token: string | null = "";
+    const getAccesstoken = async () => {
+      token = await getToken({template});
+    };
+    getAccesstoken();
+    if (!token) {
+      signOut();
+      return;
+    }
       getInfographicsByPt(user, token)
         .then((res: InfographicResponseType) => {
           const infographics = [
@@ -42,7 +52,7 @@ const DashboardHeader = () => {
           })
           dispatch(setInfographicData(filteredInfographics));
         });
-  }, [token]);
+  }, []);
 
   return (
     <div className="dashboard-infographic__card">

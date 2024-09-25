@@ -1,11 +1,11 @@
 import "react-calendar-timeline/lib/Timeline.css";
 import "./gantt-chart.css";
-import {useEffect} from "react";
+import { useEffect } from "react";
 import Loading from "../loading/loading";
 import Error from "../error/error";
 import BasicInfo from "../consultant-detail/basic-info/basic-info";
-import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch, RootState} from "../../store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../store/store";
 import {
   setError,
   setGroups,
@@ -14,16 +14,18 @@ import {
   setOpenModal,
 } from "../../store/slices/GanttChartSlice";
 import Pagination from "../pagination/pagination";
-import {setTotalItems} from "../../store/slices/PaginationSlice";
+import { setTotalItems } from "../../store/slices/PaginationSlice";
 import TimelineComponent from "../timeline-component/timelineComponent";
 import Legend from "./legend/legend";
 import AccordionComponent from "../accordion/accordion-component";
-import {getConsultantsData} from "../../api";
+import { getConsultantsData } from "../../api";
 import {
   encodeString,
   mapConsultantsToCalendarItems,
   mapGroups,
 } from "../../utils/utils";
+import { useAuth } from "@clerk/clerk-react";
+import { template } from "../../constants";
 
 const GanttChart = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -36,7 +38,6 @@ const GanttChart = () => {
   const id = useSelector((state: RootState) => state.ganttChart.id);
   const error = useSelector((state: RootState) => state.ganttChart.error);
   const loading = useSelector((state: RootState) => state.ganttChart.loading);
-  const token = useSelector((state: RootState) => state.token.token);
 
   const filterPts = useSelector(
     (state: RootState) => state.filterField.filterPts
@@ -51,21 +52,33 @@ const GanttChart = () => {
     (state: RootState) => state.filterField.includePgps
   );
 
-  const fetchConsultantsData = () => {
-    const filterPtsEncodeUriString = encodeString(filterPts, "pt");
-    const filterClientsEncodeUriString = encodeString(filterClients, "client");
+  const { getToken, signOut } = useAuth();
+
+  const fetchConsultantsData = async () => {
+    const filterPtsEncodeUriString = encodeString(filterPts);
+    const filterClientsEncodeUriString = encodeString(filterClients);
+    const params = {
+      page: page.toString(),
+      pageSize: rowsPerPage.toString(),
+      pt: filterPtsEncodeUriString,
+      client: filterClientsEncodeUriString,
+      name: debounceFilterName.toString(),
+      includePgps: includePgps.toString(),
+    };
+ 
+    const searchParams = new URLSearchParams(params);
+    const token = await getToken({template});
     dispatch(setLoading(true));
+    if (!token) {
+      signOut();
+      return;
+    }
     getConsultantsData(
-      page,
-      rowsPerPage,
-      filterClientsEncodeUriString,
-      filterPtsEncodeUriString,
-      debounceFilterName,
-      includePgps,
+     searchParams,
       token
     )
-      .then(res => {
-          dispatch(setItems(mapConsultantsToCalendarItems(res)));
+      .then((res) => {
+        dispatch(setItems(mapConsultantsToCalendarItems(res)));
         dispatch(setTotalItems(res.totalConsultants));
         dispatch(setGroups(mapGroups(res)));
       })
@@ -79,7 +92,7 @@ const GanttChart = () => {
   };
 
   useEffect(() => {
-    token != "" && fetchConsultantsData();
+    fetchConsultantsData();
   }, [
     filterPts,
     filterClients,
@@ -87,20 +100,19 @@ const GanttChart = () => {
     rowsPerPage,
     page,
     includePgps,
-    token
   ]);
 
   return loading ? (
-    <Loading/>
+    <Loading />
   ) : error.length !== 0 ? (
-    <Error message={error}/>
+    <Error message={error} />
   ) : (
     <div>
-      <AccordionComponent title="Legend" content={<Legend/>}/>
-      <Pagination/>
+      <AccordionComponent title="Legend" content={<Legend />} />
+      <Pagination />
       <div className="gantt-chart__wrapper">
-        <TimelineComponent/>
-        {id.length > 0 && <BasicInfo/>}
+        <TimelineComponent />
+        {id.length > 0 && <BasicInfo />}
       </div>
     </div>
   );

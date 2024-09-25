@@ -19,6 +19,8 @@ import Multiselect from "./multiselect/multiselect";
 import { setPage } from "../../store/slices/PaginationSlice";
 import { getAllClientsAndPts } from "../../api";
 import { ClientsAndPtsListResponseType } from "../../types";
+import { useAuth } from "@clerk/clerk-react";
+import { template } from "../../constants";
 
 function FilterField() {
   const filterPts = useSelector(
@@ -40,7 +42,7 @@ function FilterField() {
     (state: RootState) => state.filterField.includePgps
   );
 
-  const token = useSelector((state: RootState) => state.token.token);
+  const { getToken, signOut } = useAuth();
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -81,14 +83,22 @@ function FilterField() {
   };
 
   useEffect(() => {
-    token != "" &&
+    let token: string | null = "";
+    const getAccesstoken = async () => {
+      token = await getToken({template});
+    };
+    getAccesstoken();
+    if (!token) {
+      signOut();
+      return;
+    }
       getAllClientsAndPts(includePgps, token).then(
         (res: ClientsAndPtsListResponseType) => {
           dispatch(setListOfPts(res.pts));
           dispatch(setListOfClients(res.clients));
         }
       );
-  }, [includePgps, token]);
+  }, [includePgps]);
 
   return (
     <section className="filter-section">

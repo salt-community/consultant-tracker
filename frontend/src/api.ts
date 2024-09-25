@@ -8,16 +8,11 @@ export const getAuthorization =async(token: string)=>{
 }
 
 export const getConsultantsData = async (
-  page: number,
-  pageSize: number,
-  clientEncodeURI: string,
-  ptsEncodeURI: string,
-  filterName: string,
-  includePgps: boolean,
-  token: string
+ searchParams: URLSearchParams,
+  token: string,
 ) => {
   return await fetch(
-    `${BASE_URL}/api/consultants?page=${page}&pageSize=${pageSize}&${ptsEncodeURI}&${clientEncodeURI}&name=${filterName}&includePgps=${includePgps}`,
+    `${BASE_URL}/api/consultants?` + searchParams,
     {
       headers: {
         Authorization: `Bearer ${token}`

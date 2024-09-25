@@ -73,9 +73,9 @@ export const redDaysAndWeekends =[
   },
 ]
 
-export const encodeString = (value: string[], prefix: string) => {
+export const encodeString = (value: string[]) => {
   return value
-    .map((p) => `${prefix}=${encodeURIComponent(p)}`)
+    .map((p) => `${encodeURIComponent(p)}`)
     .join("&")
     .replace(/-/g, "%2D")
     .replace(/\./g, "%2E");
@@ -164,11 +164,3 @@ export const verticalLineClassNamesForTime = (
   }
   return classes;
 };
-
-
-export const fromEpochToDate = (exp: number)=>{
-  const utcSeconds = exp;
-  const d = new Date(0);
-  d.setUTCSeconds(utcSeconds);
-  return d;
-}
