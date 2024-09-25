@@ -65,12 +65,12 @@ const GanttChart = () => {
       name: debounceFilterName.toString(),
       includePgps: includePgps.toString(),
     };
- 
     const searchParams = new URLSearchParams(params);
     const token = await getToken({template});
+
     dispatch(setLoading(true));
     if (!token) {
-      signOut();
+      await signOut();
       return;
     }
     getConsultantsData(
@@ -92,7 +92,7 @@ const GanttChart = () => {
   };
 
   useEffect(() => {
-    fetchConsultantsData();
+    void fetchConsultantsData();
   }, [
     filterPts,
     filterClients,

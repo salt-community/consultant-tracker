@@ -29,12 +29,7 @@ export const getRedDays = async (token: string) => {
         Authorization: `Bearer ${token}`
       },
     }
-  ).then((response) => {
-    if (!response.ok) {
-      throw new Error(`HTTP error ${response.status}`);
-    }
-    return response.json();
-  });
+  ).then((response) => response.json());
 };
 
 export const getConsultantById = async (id: string, token: string) => {
@@ -43,12 +38,7 @@ export const getConsultantById = async (id: string, token: string) => {
       headers: {
         Authorization: `Bearer ${token}`
       },
-    }).then((response) => {
-    if (!response.ok) {
-      throw new Error(`HTTP error ${response.status}`);
-    }
-    return response.json();
-  });
+    }).then((response) => response.json());
 };
 
 export const getInfographicsByPt = async (pt: string, token: string) => {
@@ -57,14 +47,7 @@ export const getInfographicsByPt = async (pt: string, token: string) => {
       headers: {
         Authorization: `Bearer ${token}`
       },
-    }).then(
-    (response) => {
-      if (!response.ok) {
-        throw new Error(`HTTP error ${response.status}`);
-      }
-      return response.json();
-    }
-  );
+    }).then((response) => response.json());
 };
 
 export const getAllClientsAndPts = async (includePgps: boolean, token: string) => {
@@ -75,10 +58,5 @@ export const getAllClientsAndPts = async (includePgps: boolean, token: string) =
         Authorization: `Bearer ${token}`
       },
     }
-  ).then((response) => {
-    if (!response.ok) {
-      throw new Error(`HTTP error ${response.status}`);
-    }
-    return response.json();
-  });
+  ).then((response) => response.json());
 };

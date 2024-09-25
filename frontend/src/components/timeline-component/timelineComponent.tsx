@@ -1,13 +1,13 @@
-import { useEffect } from "react";
+import {useEffect} from "react";
 import {
   groupsRenderer,
   itemRenderer,
 } from "../gantt-chart/gantt-chart-renderers";
 import moment from "moment";
-import { verticalLineClassNamesForTime } from "../../utils/utils";
+import {verticalLineClassNamesForTime} from "../../utils/utils";
 import Timeline from "react-calendar-timeline";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../store/store";
+import {useDispatch, useSelector} from "react-redux";
+import {AppDispatch, RootState} from "../../store/store";
 import {
   setId,
   setModalData,
@@ -17,10 +17,10 @@ import {
   setRedDaysSE,
   setSelectedId,
 } from "../../store/slices/GanttChartSlice";
-import { getRedDays } from "../../api";
-import { RedDaysResponseType } from "../../types";
-import { useAuth } from "@clerk/clerk-react";
-import { template } from "../../constants";
+import {getRedDays} from "../../api";
+import {RedDaysResponseType} from "../../types";
+import {useAuth} from "@clerk/clerk-react";
+import {template} from "../../constants";
 
 const TimelineComponent = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -38,25 +38,25 @@ const TimelineComponent = () => {
     dispatch(setId(consultantItems.group));
     dispatch(setOpenModal(true));
     dispatch(setOpenTimeItemDetails(true));
-    setTimeout(() => window.scrollTo({ top: 3000, behavior: "smooth" }), 200);
+    setTimeout(() => window.scrollTo({top: 3000, behavior: "smooth"}), 200);
     dispatch(setSelectedId(consultantItems.group));
   };
-  const { getToken, signOut } = useAuth();
-
-  useEffect(() => {
+  const {getToken, signOut} = useAuth();
+  const getAccessToken = async () => {
     let token: string | null = "";
-    const getAccesstoken = async () => {
-      token = await getToken({template});
-    };
-    getAccesstoken();
+    token = await getToken({template});
+
     if (!token) {
-      signOut();
+      await signOut();
       return;
     }
     getRedDays(token).then((res: RedDaysResponseType) => {
       dispatch(setRedDaysSE(res.redDaysSE.map((el) => moment(el))));
       dispatch(setRedDaysNO(res.redDaysNO.map((el) => moment(el))));
     });
+  }
+  useEffect(() => {
+    void getAccessToken()
   }, []);
 
   return items.length > 0 ? (

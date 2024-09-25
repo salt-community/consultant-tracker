@@ -1,8 +1,8 @@
-import { ChangeEvent, useEffect } from "react";
+import {ChangeEvent, useEffect} from "react";
 import "./filter.css";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import { useDispatch, useSelector } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {
   setDebounceFilterName,
   setFilterClients,
@@ -14,13 +14,13 @@ import {
 } from "../../store/slices/FilterFieldSlice";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import { AppDispatch, RootState } from "../../store/store";
+import {AppDispatch, RootState} from "../../store/store";
 import Multiselect from "./multiselect/multiselect";
-import { setPage } from "../../store/slices/PaginationSlice";
-import { getAllClientsAndPts } from "../../api";
-import { ClientsAndPtsListResponseType } from "../../types";
-import { useAuth } from "@clerk/clerk-react";
-import { template } from "../../constants";
+import {setPage} from "../../store/slices/PaginationSlice";
+import {getAllClientsAndPts} from "../../api";
+import {ClientsAndPtsListResponseType} from "../../types";
+import {useAuth} from "@clerk/clerk-react";
+import {template} from "../../constants";
 
 function FilterField() {
   const filterPts = useSelector(
@@ -42,7 +42,7 @@ function FilterField() {
     (state: RootState) => state.filterField.includePgps
   );
 
-  const { getToken, signOut } = useAuth();
+  const {getToken, signOut} = useAuth();
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -81,23 +81,26 @@ function FilterField() {
     }
     dispatch(setIncludePgps(!includePgps));
   };
-
-  useEffect(() => {
+  const fetchAllClientsAndPts = (token: string) => {
+    getAllClientsAndPts(includePgps, token).then(
+      (res: ClientsAndPtsListResponseType) => {
+        dispatch(setListOfPts(res.pts));
+        dispatch(setListOfClients(res.clients));
+      }
+    );
+  }
+  const getAccessToken = async () => {
     let token: string | null = "";
-    const getAccesstoken = async () => {
-      token = await getToken({template});
-    };
-    getAccesstoken();
+    token = await getToken({template});
     if (!token) {
-      signOut();
+      await signOut();
       return;
     }
-      getAllClientsAndPts(includePgps, token).then(
-        (res: ClientsAndPtsListResponseType) => {
-          dispatch(setListOfPts(res.pts));
-          dispatch(setListOfClients(res.clients));
-        }
-      );
+    fetchAllClientsAndPts(token);
+  };
+
+  useEffect(() => {
+    void getAccessToken();
   }, [includePgps]);
 
   return (
@@ -134,7 +137,7 @@ function FilterField() {
         </Button>
         <div className="filter-by__consultants">
           <FormControlLabel
-            control={<Checkbox />}
+            control={<Checkbox/>}
             label="Include PGPs"
             checked={includePgps}
             onChange={handlePgpSelection}
