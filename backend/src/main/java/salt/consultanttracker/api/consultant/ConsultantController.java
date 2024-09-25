@@ -25,6 +25,9 @@ public class ConsultantController {
 
     @GetMapping("/timekeeper")
     public ResponseEntity<String> getAllConsultants() {
+//        redDaysService.getRedDaysFromNager();
+//        notionClient.getUsersFromNotion();
+//        meetingsScheduleService.assignMeetingsDatesForActiveConsultants();
         consultantService.fetchDataFromTimekeeper();
         return ResponseEntity.ok("Data fetched from timekeeper");
     }
