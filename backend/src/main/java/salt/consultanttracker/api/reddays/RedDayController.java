@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("/api/redDays")
+@RequestMapping("/api/red-days")
 @RequiredArgsConstructor
 @CrossOrigin
 public class RedDayController {
@@ -19,10 +19,5 @@ public class RedDayController {
     @GetMapping
     public ResponseEntity<RedDaysResponseDto> getAllRedDays(){
         return ResponseEntity.ok(redDaysService.getAllRedDays());
-    }
-
-    @GetMapping("/test")
-    public void test(){
-        redDaysService.getRedDaysFromNager();
     }
 }

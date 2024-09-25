@@ -23,7 +23,7 @@ export const getConsultantsData = async (
 };
 
 export const getRedDays = async (token: string) => {
-  return await fetch(`${BASE_URL}/api/redDays`,
+  return await fetch(`${BASE_URL}/api/red-days`,
     {
       headers: {
         Authorization: `Bearer ${token}`
