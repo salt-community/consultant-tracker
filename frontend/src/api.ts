@@ -52,7 +52,7 @@ export const getInfographicsByPt = async (pt: string, token: string) => {
 
 export const getAllClientsAndPts = async (includePgps: boolean, token: string) => {
   return await fetch(
-    `${BASE_URL}/api/consultants/getAllClientsAndPts?includePgps=${includePgps}`,
+    `${BASE_URL}/api/consultants/all-clients-and-pts?includePgps=${includePgps}`,
     {
       headers: {
         Authorization: `Bearer ${token}`

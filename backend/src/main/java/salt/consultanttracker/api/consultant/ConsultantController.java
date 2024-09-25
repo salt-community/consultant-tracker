@@ -58,7 +58,7 @@ public class ConsultantController {
         return ResponseEntity.ok(consultantService.getConsultantById(id));
     }
 
-    @GetMapping("/getAllClientsAndPts")
+    @GetMapping("/all-clients-and-pts")
     public ResponseEntity<ClientsAndPtsListDto> getAllClientsAndPts(
             @RequestParam(defaultValue = "false", required = false) boolean includePgps
     ) {
