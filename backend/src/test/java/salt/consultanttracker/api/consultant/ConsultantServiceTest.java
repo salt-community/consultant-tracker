@@ -9,7 +9,7 @@ import salt.consultanttracker.api.meetings.MeetingsScheduleService;
 import salt.consultanttracker.api.registeredtime.MockedRegisteredTimeService;
 import salt.consultanttracker.api.registeredtime.RegisteredTime;
 import salt.consultanttracker.api.registeredtime.RegisteredTimeService;
-import salt.consultanttracker.api.saltuser.SaltUserService;
+import salt.consultanttracker.api.responsiblept.ResponsiblePTService;
 import salt.consultanttracker.api.tag.Tag;
 import salt.consultanttracker.api.timechunks.TimeChunksService;
 import lombok.SneakyThrows;
@@ -50,7 +50,7 @@ class ConsultantServiceTest extends ApplicationTestConfig {
     @MockBean
     MeetingsScheduleService mockedMeetingsScheduleService;
     @MockBean
-    SaltUserService mockedSaltUserService;
+    ResponsiblePTService mockedSaltUserService;
     @InjectMocks
     ConsultantService consultantService;
     private static Consultant mockedConsultant1;

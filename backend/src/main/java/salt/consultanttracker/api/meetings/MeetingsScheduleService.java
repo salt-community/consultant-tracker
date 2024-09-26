@@ -90,7 +90,7 @@ public class MeetingsScheduleService {
                         meetingTitle),
                 meetingDate,
                 "Upcoming",
-                consultant.getSaltUser()));
+                consultant.getResponsiblePT()));
     }
 
     public LocalDate getFirstMeetingDate(List<TimeChunks> timeChunks, int weeks) {

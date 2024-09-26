@@ -1,6 +1,6 @@
 package salt.consultanttracker.api.notification;
 
-import salt.consultanttracker.api.saltuser.SaltUser;
+import salt.consultanttracker.api.responsiblept.ResponsiblePT;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -20,5 +20,5 @@ public class Notification {
 
     @ManyToOne
     @JoinColumn(name = "saltUser_id", referencedColumnName = "id")
-    private SaltUser saltUser;
+    private ResponsiblePT saltUser;
 }

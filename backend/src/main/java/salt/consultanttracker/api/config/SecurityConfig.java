@@ -18,12 +18,14 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class SecurityConfig {
 
     private final String JWT;
-    private final String AUTH_EMAILS;
+    private final String USER_EMAILS;
+    private final String ADMIN_EMAILS;
 
     public SecurityConfig(@Value("${JWT}") String jwt,
-                          @Value("${PT_EMAILS}") String authEmails) {
+                          @Value("${USER_EMAILS}") String userEmails, @Value("${ADMIN_EMAILS}") String adminEmails) {
         this.JWT = jwt;
-        this.AUTH_EMAILS = authEmails;
+        this.USER_EMAILS = userEmails;
+        this.ADMIN_EMAILS = adminEmails;
     }
 
     @Bean
@@ -33,7 +35,7 @@ public class SecurityConfig {
                         auth.anyRequest().authenticated())
                 .cors(withDefaults())
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(withDefaults()))
-                .addFilterAfter(new EmailAuthorizationFilter(AUTH_EMAILS), BearerTokenAuthenticationFilter.class)
+                .addFilterAfter(new EmailAuthorizationFilter(USER_EMAILS, ADMIN_EMAILS), BearerTokenAuthenticationFilter.class)
                 .build();
     }
 

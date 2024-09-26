@@ -1,4 +1,4 @@
-package salt.consultanttracker.api.saltuser;
+package salt.consultanttracker.api.responsiblept;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,7 +14,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SaltUser {
+public class ResponsiblePT {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

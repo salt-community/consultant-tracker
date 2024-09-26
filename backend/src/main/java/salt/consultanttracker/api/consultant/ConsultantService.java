@@ -6,9 +6,10 @@ import salt.consultanttracker.api.consultant.dto.*;
 import salt.consultanttracker.api.exceptions.ConsultantNotFoundException;
 import salt.consultanttracker.api.meetings.MeetingsScheduleService;
 import salt.consultanttracker.api.meetings.dto.MeetingsDto;
+import salt.consultanttracker.api.messages.Messages;
 import salt.consultanttracker.api.registeredtime.RegisteredTimeService;
-import salt.consultanttracker.api.saltuser.SaltUser;
-import salt.consultanttracker.api.saltuser.SaltUserService;
+import salt.consultanttracker.api.responsiblept.ResponsiblePT;
+import salt.consultanttracker.api.responsiblept.ResponsiblePTService;
 import salt.consultanttracker.api.tag.Tag;
 import salt.consultanttracker.api.timechunks.TimeChunksService;
 import lombok.*;
@@ -33,7 +34,7 @@ public class ConsultantService {
     private final RegisteredTimeService registeredTimeService;
     private final TimeChunksService timeChunksService;
     private final MeetingsScheduleService meetingsScheduleService;
-    private final SaltUserService saltUserService;
+    private final ResponsiblePTService saltUserService;
     private static final Logger LOGGER = Logger.getLogger(ConsultantService.class.getName());
 
     //-----------------------------COVERED BY TESTS ---------------------------------
@@ -52,17 +53,18 @@ public class ConsultantService {
 
     public InfographicResponseDto getInfographicsByPt(String ptName) {
         int totalConsultants = consultantRepository.findAllByActiveTrue().size();
-        SaltUser pt = saltUserService.getSaltUserByName(ptName);
+        ResponsiblePT pt = saltUserService.getSaltUserByName(ptName);
         int totalPtsConsultants = 0;
         if(pt != null){
-            totalConsultants = consultantRepository.countAllByActiveTrueAndSaltUser(pt);
+            totalConsultants = consultantRepository.countAllByActiveTrueAndResponsiblePT(pt);
         }
         int totalPgpConsultants = consultantRepository.countAllByActiveTrueAndClient(PGP.value);
         return new InfographicResponseDto(totalConsultants, totalPtsConsultants, totalPgpConsultants);
     }
 
     public SingleConsultantResponseListDto getConsultantById(UUID id) {
-        Consultant consultantById = consultantRepository.findById(id).orElseThrow(() -> new ConsultantNotFoundException("Consultant with such id not found."));
+        Consultant consultantById = consultantRepository.findById(id)
+                .orElseThrow(() -> new ConsultantNotFoundException(Messages.CONSULTANT_NOT_FOUND));
         TotalDaysStatisticsDto totalDaysStatistics = registeredTimeService.getAllDaysStatistics(id);
         List<ClientsListDto> clientsListDto = getClientListByConsultantId(id);
         List<MeetingsDto> meetings = meetingsScheduleService.getMeetingsDto(id);
@@ -184,19 +186,17 @@ public class ConsultantService {
                 .forEach(consultant -> {
                     if (consultant.isActive() != tkUser.isActive() || consultant.isActive() != tkUser.isEmployee()) {
                         consultant.setActive(tkUser.isActive() && tkUser.isEmployee());
-                        consultantRepository.save(consultant);
                     }
                     if (tkUser.tags() != null
                             && !tkUser.tags().stream()
                             .filter(el -> el.getName().contains("På uppdrag")).toList().isEmpty()) {
                         consultant.setClient(null);
-                        consultantRepository.save(consultant);
                     } else if (tkUser.tags() != null
                             && !tkUser.tags().stream()
                             .filter(el -> el.getName().contains(PGP.value)).toList().isEmpty()) {
                         consultant.setClient(PGP.value);
-                        consultantRepository.save(consultant);
                     }
+                    consultantRepository.save(consultant);
                 });
     }
 
@@ -244,7 +244,7 @@ public class ConsultantService {
     public void updatePtsForConsultants(Map<UUID, List<String>> consultantsAndPts) {
         List<Consultant> activeConsultants = getAllActiveConsultants();
         for (var entry : consultantsAndPts.entrySet()) {
-            SaltUser pt = saltUserService.getSaltUserById(entry.getKey());
+            ResponsiblePT pt = saltUserService.getSaltUserById(entry.getKey());
             List<String> consultants = entry.getValue();
             for (String name : consultants) {
                 String[] namesSplit = name.split(" ");
@@ -252,7 +252,7 @@ public class ConsultantService {
                 {
                     if (el.getFullName().contains(namesSplit[0])
                             && el.getFullName().contains(namesSplit[namesSplit.length - 1])) {
-                        el.setSaltUser(pt);
+                        el.setResponsiblePT(pt);
                         saveConsultant(el);
                     }
                 });

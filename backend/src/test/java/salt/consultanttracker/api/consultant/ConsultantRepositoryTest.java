@@ -1,6 +1,6 @@
 package salt.consultanttracker.api.consultant;
 
-import salt.consultanttracker.api.saltuser.SaltUser;
+import salt.consultanttracker.api.responsiblept.ResponsiblePT;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,7 @@ class ConsultantRepositoryTest {
                 true,
                 "H&M",
                 "Sverige",
-                new SaltUser(UUID.fromString("9b5dcb09-bd42-4306-a964-da0727c44a68"),
+                new ResponsiblePT(UUID.fromString("9b5dcb09-bd42-4306-a964-da0727c44a68"),
                         "Jane Doe",
                         "jane.doe@appliedtechnology.se" ,
                         "PT")

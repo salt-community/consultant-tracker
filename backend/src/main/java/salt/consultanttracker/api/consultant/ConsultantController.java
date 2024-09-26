@@ -23,15 +23,6 @@ public class ConsultantController {
     @Value("${app.mode}")
     private String appMode;
 
-    @GetMapping("/timekeeper")
-    public ResponseEntity<String> getAllConsultants() {
-//        redDaysService.getRedDaysFromNager();
-//        notionClient.getUsersFromNotion();
-//        meetingsScheduleService.assignMeetingsDatesForActiveConsultants();
-        consultantService.fetchDataFromTimekeeper();
-        return ResponseEntity.ok("Data fetched from timekeeper");
-    }
-
     @GetMapping
     public ResponseEntity<ConsultantResponseListDto> getConsultantsAndRegisteredTime(
             @RequestParam(name = "page", defaultValue = "0") int page,

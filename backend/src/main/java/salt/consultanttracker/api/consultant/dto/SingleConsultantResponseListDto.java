@@ -27,8 +27,8 @@ public record SingleConsultantResponseListDto(UUID id,
             List<MeetingsDto> meetings) {
         String responsiblePt = "";
 
-        if (consultant.getSaltUser().getFullName() != null) {
-            responsiblePt = consultant.getSaltUser().getFullName();
+        if (consultant.getResponsiblePT().getFullName() != null) {
+            responsiblePt = consultant.getResponsiblePT().getFullName();
         }
 
         return new SingleConsultantResponseListDto(

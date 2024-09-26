@@ -1,7 +1,7 @@
 package salt.consultanttracker.api.meetings;
 
 
-import salt.consultanttracker.api.saltuser.SaltUser;
+import salt.consultanttracker.api.responsiblept.ResponsiblePT;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,7 +22,7 @@ public class MeetingsSchedule {
     private String status;
 
     @ManyToOne
-    @JoinColumn(name = "saltUser_id", referencedColumnName = "id")
-    private SaltUser saltUser;
+    @JoinColumn(name = "responsiblePT_id", referencedColumnName = "id")
+    private ResponsiblePT responsiblePT;
 
 }

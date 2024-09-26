@@ -1,7 +1,7 @@
 package salt.consultanttracker.api.client.notion;
 
 import salt.consultanttracker.api.consultant.ConsultantService;
-import salt.consultanttracker.api.saltuser.SaltUserService;
+import salt.consultanttracker.api.responsiblept.ResponsiblePTService;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -19,14 +19,14 @@ public class NotionClient {
     private final WebClient CLIENT_URL;
     private final String HEADER_AUTH;
     private final String DB_ID;
-    private final SaltUserService saltUserService;
+    private final ResponsiblePTService saltUserService;
     private final ConsultantService consultantService;
     private static final Logger LOGGER = Logger.getLogger(NotionClient.class.getName());
 
     public NotionClient(@Value("${NOTION.URL}") String baseUrl,
                         @Value("${NOTION.AUTH}") String HEADER_AUTH,
                         @Value("${NOTION.DB_ID}") String DB_ID,
-                        SaltUserService saltUserService,
+                        ResponsiblePTService saltUserService,
                         ConsultantService consultantService) {
         this.HEADER_AUTH = HEADER_AUTH;
         CLIENT_URL = WebClient.builder().baseUrl(baseUrl)
@@ -43,7 +43,7 @@ public class NotionClient {
         this.saltUserService = saltUserService;
         this.consultantService = consultantService;
     }
-
+//    @PostConstruct
     @Scheduled(cron="0 0 2 * * 4", zone = "Europe/Stockholm")
     public void getUsersFromNotion() {
         LOGGER.info("Fetching users from Notion");
@@ -60,8 +60,6 @@ public class NotionClient {
                 }""";
 
         Map<UUID, List<String>> consultantsAndPts = new HashMap<>();
-
-// TODO fetch all pages
 
         for (UUID id : ptsIds) {
             String stringFormat = String.format(requestBody, id);

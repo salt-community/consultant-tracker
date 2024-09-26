@@ -1,6 +1,6 @@
 package salt.consultanttracker.api.consultant;
 
-import salt.consultanttracker.api.saltuser.SaltUser;
+import salt.consultanttracker.api.responsiblept.ResponsiblePT;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -29,7 +29,7 @@ public class Consultant {
     private String country;
 
     @ManyToOne
-    @JoinColumn(name = "saltUser_id", referencedColumnName = "id")
+    @JoinColumn(name = "responsiblePT_id", referencedColumnName = "id")
     @Nullable
-    private SaltUser saltUser;
+    private ResponsiblePT responsiblePT;
 }

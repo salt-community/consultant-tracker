@@ -1,4 +1,4 @@
-package salt.consultanttracker.api.saltuser;
+package salt.consultanttracker.api.responsiblept;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -10,14 +10,14 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class SaltUserService {
-    private final SaltUserRepository saltUserRepository;
+public class ResponsiblePTService {
+    private final ResponsiblePTRepository saltUserRepository;
 
     public List<UUID> getAllPtsIds() {
         return saltUserRepository.findAllId();
     }
 
-    public SaltUser getSaltUserById(UUID key) {
+    public ResponsiblePT getSaltUserById(UUID key) {
         return saltUserRepository.findById(key).orElse(null);
     }
 
@@ -26,7 +26,7 @@ public class SaltUserService {
         return ptNamesList.isEmpty() ? new HashSet<>() : ptNamesList;
     }
 
-    public SaltUser getSaltUserByName(String ptName) {
+    public ResponsiblePT getSaltUserByName(String ptName) {
         return saltUserRepository.findByFullName(ptName);
     }
 }

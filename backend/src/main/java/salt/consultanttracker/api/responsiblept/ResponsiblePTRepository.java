@@ -1,4 +1,4 @@
-package salt.consultanttracker.api.saltuser;
+package salt.consultanttracker.api.responsiblept;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -9,13 +9,13 @@ import java.util.Set;
 import java.util.UUID;
 
 @Repository
-public interface SaltUserRepository extends JpaRepository<SaltUser, UUID> {
+public interface ResponsiblePTRepository extends JpaRepository<ResponsiblePT, UUID> {
 
-    @Query("SELECT t.id FROM SaltUser t")
+    @Query("SELECT t.id FROM ResponsiblePT t")
     List<UUID> findAllId();
 
-    @Query("SELECT t.fullName FROM SaltUser t")
+    @Query("SELECT t.fullName FROM ResponsiblePT t")
     Set<String> findAllNames();
 
-    SaltUser findByFullName(String ptName);
+    ResponsiblePT findByFullName(String ptName);
 }
