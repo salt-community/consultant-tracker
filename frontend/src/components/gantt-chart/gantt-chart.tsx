@@ -58,7 +58,7 @@ const GanttChart = () => {
       page: page.toString(),
       pageSize: rowsPerPage.toString(),
       pt: filterPts.toString(),
-      client: filterClients,
+      client: filterClients.toString(),
       name: debounceFilterName.toString(),
       includePgps: includePgps.toString(),
     };
