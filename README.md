@@ -4,11 +4,12 @@ Application created to help core team keep track of consultants.
 Provides visual (gantt chart) representation of worked time,
 absences, vacations and remaining time for each consultant.
 
-### Technologies - frontend
+
+## Technologies - frontend
 
 TypeScript, React, Vite, MUI, Redux toolkit, npm
 
-### Starting frontend
+## Starting frontend
 
 - node version v20.15.0
 - create .env.local file and add secrets:
@@ -27,14 +28,18 @@ npm i
 npm run dev
 ```
 
+- state is handled using redux-toolkit in order to see actual state in dev mode in the browser
+install redux devtools
+
 - when pushing new changes run 
 ```
 npm run build
 ```
 
-### Deployment of frontend
 
-- deployment file to GoogleCloud is inside workflows build-and-deploy-to-gcp.yml 
+## Deployment of frontend
+
+- deployment file to GoogleCloud is inside workflows build-and-deploy-to-gcp.yml and in frontend/src/nginx.conf
 (we left also other successful build files we tried as a reference)
 - to see deployed frontend you need to enter: [consultant-tracker](https://consultant-tracker-client-735865474111.europe-north1.run.app)
 Keep in mind: to access deployed version of consultant-tracker you need to have email 
@@ -48,7 +53,7 @@ on GoogleCloud:
 
 ```
 
-#### Folder Structure Frontend
+## Folder Structure Frontend
 ```bash
 ├───assets
 ├───components
@@ -71,8 +76,9 @@ on GoogleCloud:
 │   ├───filter
 │   │   └───multiselect
 │   ├───gantt-chart
-│   │   └───legend
-│   │       └───item-color
+│   │   ├───legend
+│   │   │   └───item-color
+│   │   └───timeline-component
 │   ├───loading
 │   ├───modal-db
 │   │   └───progress-bar
@@ -81,6 +87,11 @@ on GoogleCloud:
 │   │   └───sign-out
 │   ├───pagination
 │   ├───single-detail-field
+│   ├───text-input
+│   └───time-item-details
+├───lotties
+├───routing
+├───store
 │   └───slices
 ├───utils
 └───view
@@ -97,7 +108,7 @@ on GoogleCloud:
 > accordion - component used for legend above gantt-chart
 
 > authentication - component includes logic for Clerk authentication, sets user (needed for correct display of infographics) and provides jwt token. 
-> Original token did not include email. In order to include it in Clerks dashboard/consultant-tracker/configure ⟶ 
+> Original token did not include email. In order to include it in Clerk go to dashboard/consultant-tracker/configure ⟶ 
 > we created our own JWT template with lifetime of 900 seconds and additional email_address claim. 
 > Name of our template is included in constants.ts. 
 > Needs to be set and adjusted accordingly for new Clerks account.
@@ -121,11 +132,40 @@ on GoogleCloud:
 > gantt-chart - component based on react-calendar-timeline library(lack of different alternatives) 
 > library is not supported anymore therefore while installing dependencies might appear alert about vulnerabilities.
 > Full documentation regarding library can be found [here](https://github.com/namespace-ee/react-calendar-timeline).
+> Item renderers and group renderers have been implemented in order to customize style and functionality of elements.
+> (Salt has currently 4 consultants from Norway) method responsible is used in utils.ts ⟶ verticalLineClassNamesForTime
+> Gantt-chart has 4 different views monthly, weekly, daily, hourly. Change can be obtained by clicking two top 
+> bars indicating period of time. 
+> Weekly view shows additional vertical indicators for weekends and redDays (Sweden and Norway).
 
+> loading - component displayed during fetching of data it implements animation from lotties(details below)
+
+> modal-db - component created for admin button that populated db, it prevents 
+> from accidental clicking and displays integral component progress bar.
+> Modal cannot be exited until process is successful or ends with error.
+> Designed that way to not interrupt with accidental clicking.
+
+> navbar - contains salt logo originally application was supposed to have subpages 
+> and click on logo was redirecting to home page. 
+> Application was developed using next.js however we migrated to vite 
+> and decided to make intuitive interface and easy to use for end user. 
+
+> pagination - component displayed in order to show amount of records provides by default 5 
+> results per page but offers also 10 and 25, can be easily adjusted by adding value of choice to rowsPerPageOptions.
+
+> single-detail-field
 
 > consultant-details - component is connected to card-details as it holds content of the tabs.
 
 > lotties - includes json cat animation implemented in <Loading /> component.
+
+> store - state is managed using redux toolkit. Keep in mind: in few cases related to 
+> react-calendar-timeline we were forces to use type any. It should be adjusted in the future if possible. 
+> It took really long time to try to fix it in order to build project. Unfortunately the resul was unsuccessful.
+
+> utils- contains colors for gantt chart and mapping for groups and time items for gantt-chart as well as 
+> previously mentioned method to distinct redDays and weekends.
+
 > Instruction how we implemented it can be found
 > [here](https://lottiefiles.com/blog/working-with-lottie-animations/how-to-use-lottie-in-react-app/)
 
@@ -133,11 +173,7 @@ on GoogleCloud:
 </details>
 
 
-
-
-
-
-### Future features
+## Future features
 
 - scheduled meetings notification system
 - custom color picker for gantt-chart from legend level
