@@ -10,7 +10,8 @@ import {
   setLoading,
   setOpenModal,
 } from "../../store/slices/GanttChartSlice";
-import {Pagination, TimelineComponent, AccordionComponent, Loading, Error, BasicInfo} from "../../components";
+import {Pagination, AccordionComponent, Loading, Error, BasicInfo} from "../../components";
+import {TimelineComponent} from "./timeline-component";
 import { setTotalItems } from "../../store/slices/PaginationSlice";
 import Legend from "./legend/legend";
 import { getConsultantsData } from "../../api";

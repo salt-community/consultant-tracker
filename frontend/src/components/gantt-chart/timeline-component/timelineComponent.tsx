@@ -2,12 +2,12 @@ import {useEffect} from "react";
 import {
   groupsRenderer,
   itemRenderer,
-} from "../gantt-chart/gantt-chart-renderers";
+} from "../gantt-chart-renderers";
 import moment from "moment";
-import {verticalLineClassNamesForTime} from "../../utils/utils";
+import {verticalLineClassNamesForTime} from "../../../utils/utils";
 import Timeline from "react-calendar-timeline";
 import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch, RootState} from "../../store/store";
+import {AppDispatch, RootState} from "../../../store/store";
 import {
   setId,
   setModalData,
@@ -16,11 +16,11 @@ import {
   setRedDaysNO,
   setRedDaysSE,
   setSelectedId,
-} from "../../store/slices/GanttChartSlice";
-import {getRedDays} from "../../api";
-import {RedDaysResponseType} from "../../types";
+} from "../../../store/slices/GanttChartSlice";
+import {getRedDays} from "../../../api";
+import {RedDaysResponseType} from "../../../types";
 import {useAuth} from "@clerk/clerk-react";
-import {template} from "../../constants";
+import {template} from "../../../constants";
 
 export const TimelineComponent = () => {
   const dispatch = useDispatch<AppDispatch>();
