@@ -23,7 +23,7 @@ const initialState: GanttChartState = {
   openTimeItemDetails: false,
   items: [],
   groups: [],
-  loading: true,
+  loading: false,
   id: "",
   modalData: undefined,
   redDaysSE: [],
