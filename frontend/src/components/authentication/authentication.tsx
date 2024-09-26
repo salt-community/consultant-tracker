@@ -6,13 +6,14 @@ import {useEffect} from "react";
 import {RootState} from "../../store/store";
 import {getAuthorization} from "../../api";
 import {
-  setAuthorized,
+  setAuthorized, setRole,
   setShowContent,
   setUser,
 } from "../../store/slices/AuthorizationSlice";
 import Unauthorized from "../../view/unauthorized/unauthorized";
 import Loading from "../loading/loading";
-import {template} from "../../constants.js";
+import {template} from "../../constants.ts";
+
 
 const Authentication = () => {
   const dispatch = useDispatch();
@@ -37,11 +38,16 @@ const Authentication = () => {
     if (user && user.user && user.user.fullName) {
       dispatch(setUser(user.user.fullName));
     }
-    getAuthorization(token).then((response) =>
-      response.status === 403 || response.status === 401
-        ? dispatch(setAuthorized(false))
-        : dispatch(setAuthorized(true))
-    )
+    getAuthorization(token).then((response) => {
+        if (response.status === 403 || response.status === 401) {
+          dispatch(setAuthorized(false))
+          return;
+        } else {
+          dispatch(setAuthorized(true));
+          return response.text()
+        }
+      }
+    ).then(res => res &&dispatch(setRole(res)))
       .finally(() => {
         dispatch(setShowContent(true))
       });
