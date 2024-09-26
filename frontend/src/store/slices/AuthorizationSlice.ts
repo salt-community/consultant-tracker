@@ -3,13 +3,15 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 interface AuthorizationState {
   showContent: boolean
   authorized: boolean,
-  user: string
+  user: string,
+  role: string
 }
 
 const initialState: AuthorizationState = {
   showContent: false,
   authorized: false,
-  user: ""
+  user: "",
+  role: ""
 }
 
 const authorizationSlice = createSlice({
@@ -24,9 +26,12 @@ const authorizationSlice = createSlice({
     },
     setUser: (state, action: PayloadAction<string>) => {
       state.user= action.payload
-    }
+    },
+    setRole: (state, action: PayloadAction<string>) => {
+      state.role= action.payload
+    },
   }
 })
 
-export const {setAuthorized, setShowContent, setUser} = authorizationSlice.actions;
+export const {setAuthorized,setRole, setShowContent, setUser} = authorizationSlice.actions;
 export default authorizationSlice.reducer;
