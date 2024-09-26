@@ -5,6 +5,7 @@ import ganttChartReducer from "./slices/GanttChartSlice";
 import paginationReducer from "./slices/PaginationSlice";
 import basicInfoReducer from "./slices/BasicInfoSlice";
 import authorizationReducer from "./slices/AuthorizationSlice";
+import modalReducer from "./slices/ModalSlice";
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     pagination: paginationReducer,
     basicInfo: basicInfoReducer,
     authorization: authorizationReducer,
+    modal: modalReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
