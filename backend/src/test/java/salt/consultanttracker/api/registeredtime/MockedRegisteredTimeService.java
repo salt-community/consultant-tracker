@@ -356,7 +356,7 @@ public class MockedRegisteredTimeService {
                 consultant.getId(),
                 consultant.getFullName(),
                 consultant.getEmail(),
-                consultant.getSaltUser().getFullName() != null ? consultant.getSaltUser().getFullName() : "",
+                consultant.getResponsiblePT().getFullName() != null ? consultant.getResponsiblePT().getFullName() : "",
                 consultant.getClient(),
                 consultant.getCountry(),
                 mockedStatistics,

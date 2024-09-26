@@ -26,7 +26,7 @@ public class ResponsiblePTService {
         return ptNamesList.isEmpty() ? new HashSet<>() : ptNamesList;
     }
 
-    public ResponsiblePT getSaltUserByName(String ptName) {
+    public ResponsiblePT getResponsiblePTByName(String ptName) {
         return saltUserRepository.findByFullName(ptName);
     }
 }

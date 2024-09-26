@@ -53,7 +53,7 @@ public class ConsultantService {
 
     public InfographicResponseDto getInfographicsByPt(String ptName) {
         int totalConsultants = consultantRepository.findAllByActiveTrue().size();
-        ResponsiblePT pt = saltUserService.getSaltUserByName(ptName);
+        ResponsiblePT pt = saltUserService.getResponsiblePTByName(ptName);
         int totalPtsConsultants = 0;
         if(pt != null){
             totalConsultants = consultantRepository.countAllByActiveTrueAndResponsiblePT(pt);
