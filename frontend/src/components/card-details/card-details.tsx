@@ -1,9 +1,9 @@
 import {SyntheticEvent, useState } from "react";
-import TabsComponent from "../tabs/tabs";
 import Schedule from "../consultant-detail/schedule/schedule";
 import Client from "../consultant-detail/client/client";
 import PersonalData from "../consultant-detail/basic-info/personal-data/personal-data";
 import AbsenceInfo from "../consultant-detail/absence-info/absence-info";
+import TabsComponent from "./tabs/tabs.tsx";
 
 
 const CardDetails = () => {

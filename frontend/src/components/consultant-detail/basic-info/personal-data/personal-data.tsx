@@ -7,9 +7,9 @@ import { RootState } from "../../../../store/store";
 
 const PersonalData = () => {
   const personalData = useSelector((state: RootState) => state.basicInfo.personalData)
-  const {email, client, totalDaysStatistics} = personalData!;
+  const {email, client, totalDaysStatistics, responsiblePt} = personalData!;
   const handleEmailCopy = () => {
-    navigator.clipboard.writeText(email)
+    void navigator.clipboard.writeText(email)
     toast.success("Email copied")
   }
   return (
@@ -17,6 +17,7 @@ const PersonalData = () => {
       <div className="personal-data__info">
         <SingleDetailField title="Email @appliedtechnology.se" content={email.split("@")[0]} onClick={handleEmailCopy}/>
         <SingleDetailField title="Client" content={client}/>
+        <SingleDetailField title="Responsible pt" content={responsiblePt}/>
       </div>
       <div className="personal-data__statistics">
         <div className="personal-data__statistics-wrapper">

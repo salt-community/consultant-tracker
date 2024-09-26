@@ -1,10 +1,7 @@
 import { RootState } from "../../../store/store";
 import SingleDetailField from "../../single-detail-field/single-detail-field";
 import "./absence-info.css";
-
 import {useSelector} from "react-redux";
-
-
 
 const AbsenceInfo = () => {
   const totalDaysStatistics = useSelector((state: RootState) => state.basicInfo.personalData!.totalDaysStatistics)

@@ -23,7 +23,7 @@ const Authentication = () => {
     (state: RootState) => state.authorization.showContent
   );
 
-  const {getToken, signOut} = useAuth();
+  const {getToken} = useAuth();
   const user = useUser();
 
   const getAccessToken = async () => {
