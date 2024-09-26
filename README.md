@@ -42,6 +42,7 @@ npm run build
 - deployment file to GoogleCloud is inside workflows build-and-deploy-to-gcp.yml and in frontend/src/nginx.conf
 (we left also other successful build files we tried as a reference)
 - to see deployed frontend you need to enter: [consultant-tracker](https://consultant-tracker-client-735865474111.europe-north1.run.app)
+
 Keep in mind: to access deployed version of consultant-tracker you need to have email 
 **@appliedtechnology.se** and be on the **USER_EMAIL** or **ADMIN_EMAIL** list (to add yourself you need to follow second path)
 on GoogleCloud:
