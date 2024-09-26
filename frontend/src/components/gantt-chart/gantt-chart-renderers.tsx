@@ -1,3 +1,4 @@
+import './gantt-chart-renderers.css'
 import {
   setId,
   setModalData,
@@ -5,11 +6,10 @@ import {
   setOpenTimeItemDetails,
   setSelectedId
 } from "../../store/slices/GanttChartSlice";
-import './gantt-chart-renderers.css'
-
-import { selectColor } from "../../utils/utils";
-import { AppDispatch, RootState } from "../../store/store";
 import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../store/store";
+import { selectColor } from "../../utils/utils";
+
 type Props={
   item: any,
   itemContext: any,

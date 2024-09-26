@@ -1,9 +1,9 @@
-import Logo from "../../components/navbar/logo/logo";
 import "./navbar.css";
+import Logo from "./logo/logo";
 import { Link } from "@mui/material";
 import {UserButton} from "@clerk/clerk-react";
 
-const Navbar = () => {
+export const Navbar = () => {
   return (
     <div className="navbar-container">
       <Link href="/">
@@ -14,4 +14,3 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;

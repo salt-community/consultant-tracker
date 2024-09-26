@@ -1,9 +1,6 @@
 import "react-calendar-timeline/lib/Timeline.css";
 import "./gantt-chart.css";
 import { useEffect } from "react";
-import Loading from "../loading/loading";
-import Error from "../error/error";
-import BasicInfo from "../consultant-detail/basic-info/basic-info";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
 import {
@@ -13,20 +10,18 @@ import {
   setLoading,
   setOpenModal,
 } from "../../store/slices/GanttChartSlice";
-import Pagination from "../pagination/pagination";
+import {Pagination, TimelineComponent, AccordionComponent, Loading, Error, BasicInfo} from "../../components";
 import { setTotalItems } from "../../store/slices/PaginationSlice";
-import TimelineComponent from "../timeline-component/timelineComponent";
 import Legend from "./legend/legend";
-import AccordionComponent from "../accordion/accordion-component";
 import { getConsultantsData } from "../../api";
 import {
   mapConsultantsToCalendarItems,
   mapGroups,
-} from "../../utils/utils";
+} from "../../utils/utils.ts";
 import { useAuth } from "@clerk/clerk-react";
 import { template } from "../../constants";
 
-const GanttChart = () => {
+export const GanttChart = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const page = useSelector((state: RootState) => state.pagination.page);
@@ -114,4 +109,3 @@ const GanttChart = () => {
     </div>
   );
 };
-export default GanttChart;

@@ -1,5 +1,5 @@
-import HeaderAvatar from "./avatar/avatar";
 import "./header.css";
+import HeaderAvatar from "./avatar/avatar.tsx";
 
 type Props = {
   name: string;
@@ -13,5 +13,4 @@ const BasicInfoHeader = ({ name }: Props) => {
     </section>
   );
 };
-
 export default BasicInfoHeader;

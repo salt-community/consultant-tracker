@@ -1,9 +1,9 @@
 import "./schedules.css";
-import SingleDetailField from "../../single-detail-field/single-detail-field";
+import {SingleDetailField} from "../../../components";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
 
-const Schedule = () => {
+export const Schedule = () => {
   const scheduleData = useSelector(
     (state: RootState) => state.basicInfo.personalData!.meetings
   );
@@ -46,4 +46,3 @@ const Schedule = () => {
   );
 };
 
-export default Schedule;

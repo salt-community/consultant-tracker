@@ -1,11 +1,11 @@
 import { selectColor } from "../../utils/utils";
 import { useEffect } from "react";
 import "./time-item-details.css";
-import SingleDetailField from "../single-detail-field/single-detail-field";
+import {SingleDetailField} from "../../components";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 
-function TimeItemDetails() {
+export const TimeItemDetails=()=> {
   const content = useSelector((state: RootState) => state.ganttChart.modalData);
   const openTimeItemDetails = useSelector(
     (state: RootState) => state.ganttChart.openTimeItemDetails

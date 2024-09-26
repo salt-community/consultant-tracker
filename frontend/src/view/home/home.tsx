@@ -1,10 +1,9 @@
-import Dashboard from "../../components/dashboard/dashboard";
-import Navbar from "../../components/navbar/navbar";
+import {Navbar, Dashboard} from "../../components";
 import "./home.css";
 import {useEffect, useState} from "react";
 import { BsArrowUp } from "react-icons/bs";
 
-const Home = () => {
+export const Home = () => {
   const [isVisible, setIsVisible] = useState(false);
   const handleScrollToTop = () => {
     window.scrollTo({top: 0, behavior: "smooth"});
@@ -34,4 +33,3 @@ const Home = () => {
     </>
   );
 };
-export default Home;

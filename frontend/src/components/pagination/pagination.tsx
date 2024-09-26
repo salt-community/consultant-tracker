@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "../../store/store";
 import {setPage, setRowsPerPage} from "../../store/slices/PaginationSlice";
 
-const Pagination = () => {
+export const Pagination = () => {
   const dispatch = useDispatch<AppDispatch>();
   const totalItems = useSelector((state: RootState) => state.pagination.totalItems)
   const rowsPerPage = useSelector((state: RootState) => state.pagination.rowsPerPage)
@@ -33,5 +33,3 @@ const Pagination = () => {
       />
   );
 };
-
-export default Pagination;

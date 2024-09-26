@@ -22,7 +22,7 @@ import {RedDaysResponseType} from "../../types";
 import {useAuth} from "@clerk/clerk-react";
 import {template} from "../../constants";
 
-const TimelineComponent = () => {
+export const TimelineComponent = () => {
   const dispatch = useDispatch<AppDispatch>();
   const items = useSelector((state: RootState) => state.ganttChart.items);
   const groups = useSelector((state: RootState) => state.ganttChart.groups);
@@ -83,4 +83,3 @@ const TimelineComponent = () => {
   );
 };
 
-export default TimelineComponent;

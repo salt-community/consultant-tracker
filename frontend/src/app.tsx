@@ -1,6 +1,6 @@
 import "./globals.css";
-import Authentication from "./components/authentication/authentication.tsx";
 import './app.css'
+import {Authentication} from "./components";
 
 const App = ()=> {
   return <div className="page-container"><Authentication /></div>

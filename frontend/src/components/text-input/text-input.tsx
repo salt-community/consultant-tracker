@@ -1,26 +1,24 @@
-import * as Mui from "@mui/material";
+import {TextField} from "@mui/material";
 import { ChangeEvent } from "react";
+import './text-input.css'
 
 type Props = {
   label: string;
   value: string | number;
-  readonly: boolean;
   name: string,
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 };
 
-const TextField = ({ label, value, readonly, onChange, name }: Props) => {
+export const TextInput = ({ label, value, onChange, name }: Props) => {
   return (
-    <Mui.TextField
+    <TextField
       id="outlined-basic"
       label={label}
-      variant="standard"
+      variant="outlined"
       value={value}
       onChange={onChange}
-      disabled={readonly}
       name={name}
     />
   );
 };
 
-export default TextField;

@@ -1,23 +1,24 @@
 import "./dashboard.css";
-import FilterField from "../filter/filter";
-
+import {FilterField, GanttChart, ModalComponent} from "../../components";
 import {Provider, useDispatch, useSelector} from "react-redux";
 import {RootState, store} from "../../store/store";
 import DashboardHeader from "./dashboard-header/dashboard-header";
-import GanttChart from "../gantt-chart/gantt-chart";
-import  {Toaster} from "react-hot-toast";
+import {Toaster} from "react-hot-toast";
 import {setModalOpen} from "../../store/slices/ModalSlice.ts";
-import ModalComponent from "../modal-db/modal-db.tsx";
 import Button from "@mui/material/Button";
 
-const Dashboard = () => {
+export const Dashboard = () => {
   const role = useSelector((state: RootState) => state.authorization.role)
   const dispatch = useDispatch();
 
   return (
     <Provider store={store}>
-      {role === "ADMIN" && <Button onClick={()=> dispatch(setModalOpen(true))} variant="contained" color="primary">Populate db</Button>}
-      <ModalComponent />
+      {role === "ADMIN" &&
+          <Button onClick={() => dispatch(setModalOpen(true))} variant="contained" color="primary">
+              Populate db
+          </Button>
+      }
+      <ModalComponent/>
       <DashboardHeader/>
       <FilterField/>
       <GanttChart/>
@@ -25,5 +26,3 @@ const Dashboard = () => {
     </Provider>
   );
 };
-
-export default Dashboard;

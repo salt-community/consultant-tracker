@@ -1,21 +1,19 @@
 import {SignedIn, SignedOut, useAuth, useUser} from "@clerk/clerk-react";
-import LogIn from "../../view/sign-in/sign-in";
-import Home from "../../view/home/home";
+import {LogIn, Home, Unauthorized} from "../../view";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
 import {RootState} from "../../store/store";
 import {getAuthorization} from "../../api";
 import {
-  setAuthorized, setRole,
+  setAuthorized,
+  setRole,
   setShowContent,
   setUser,
 } from "../../store/slices/AuthorizationSlice";
-import Unauthorized from "../../view/unauthorized/unauthorized";
-import Loading from "../loading/loading";
+import {Loading} from "../loading";
 import {template} from "../../constants.ts";
 
-
-const Authentication = () => {
+export const Authentication = () => {
   const dispatch = useDispatch();
   const authorized = useSelector(
     (state: RootState) => state.authorization.authorized
@@ -69,4 +67,3 @@ const Authentication = () => {
   );
 };
 
-export default Authentication;

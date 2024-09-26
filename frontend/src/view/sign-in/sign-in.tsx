@@ -1,6 +1,6 @@
 import { SignIn } from "@clerk/clerk-react";
 
-const LogIn = () => {
+export const LogIn = () => {
   return (
     <>
       <SignIn/>
@@ -8,4 +8,3 @@ const LogIn = () => {
   );
 };
 
-export default LogIn;

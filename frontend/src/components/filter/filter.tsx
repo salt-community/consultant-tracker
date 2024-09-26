@@ -1,7 +1,9 @@
 import {ChangeEvent, useEffect} from "react";
+import {TextInput} from "../text-input"
 import "./filter.css";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
+import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import {useDispatch, useSelector} from "react-redux";
 import {
   setDebounceFilterName,
@@ -12,17 +14,15 @@ import {
   setListOfClients,
   setListOfPts,
 } from "../../store/slices/FilterFieldSlice";
-import Checkbox from "@mui/material/Checkbox";
-import FormControlLabel from "@mui/material/FormControlLabel";
+import {setPage} from "../../store/slices/PaginationSlice";
 import {AppDispatch, RootState} from "../../store/store";
 import Multiselect from "./multiselect/multiselect";
-import {setPage} from "../../store/slices/PaginationSlice";
 import {getAllClientsAndPts} from "../../api";
 import {ClientsAndPtsListResponseType} from "../../types";
 import {useAuth} from "@clerk/clerk-react";
 import {template} from "../../constants";
 
-function FilterField() {
+export const FilterField = () => {
   const filterPts = useSelector(
     (state: RootState) => state.filterField.filterPts
   );
@@ -108,16 +108,13 @@ function FilterField() {
       <fieldset className="filter-fieldset">
         <legend className="filter-section__title"> Filter</legend>
         <div className="filter-by__wrapper">
-          <TextField
-            id="outlined-basic"
+          <TextInput
             label={`By consultant name`}
-            variant="outlined"
-            className="filter-text__input"
+            name="consultant-name-input"
             value={filterName}
             onChange={handleInputChange}
           />
         </div>
-
         <Multiselect
           fullList={listOfClients}
           handleSelection={handleClientSelection}
@@ -148,4 +145,3 @@ function FilterField() {
   );
 }
 
-export default FilterField;

@@ -1,9 +1,9 @@
 import { RootState } from "../../../store/store";
-import SingleDetailField from "../../single-detail-field/single-detail-field";
+import {SingleDetailField} from "../../../components";
 import "./client.css"
 import {useSelector} from "react-redux";
 
-const Client = () => {
+export const Client = () => {
   const clientList = useSelector((state: RootState)=> state.basicInfo.personalData!.clientsList)
   return (
     clientList && (
@@ -22,5 +22,3 @@ const Client = () => {
     )
   );
 };
-
-export default Client;

@@ -9,7 +9,7 @@ type Props = {
   value: string,
   handleChange: (event: SyntheticEvent, newValue: string) => void;
 }
-const TabsComponent = ({handleChange, value}: Props) => {
+export const TabsComponent = ({handleChange, value}: Props) => {
 
   return (
     <Box sx={{width: '100%'}}>
@@ -28,5 +28,3 @@ const TabsComponent = ({handleChange, value}: Props) => {
     </Box>
   );
 };
-
-export default TabsComponent;

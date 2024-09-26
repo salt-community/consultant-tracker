@@ -1,0 +1,1 @@
+export * from './single-detail-field.tsx'

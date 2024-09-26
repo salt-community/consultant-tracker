@@ -34,10 +34,6 @@
     cursor: pointer;
 }
 
-.MuiFormControl-root.filter-text__input {
-    width: 300px;
-}
-
 .filter-text__input:focus {
     border: 2px solid #0d6eff;
 }

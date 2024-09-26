@@ -5,7 +5,7 @@ type Props = {
   content: string;
   onClick?: ()=>void
 };
-const SingleDetailField = ({ title, content, onClick }: Props) => {
+export const SingleDetailField = ({ title, content, onClick }: Props) => {
   return (
     <div className="details__wrapper" onClick={onClick && onClick}>
       {title && <p className="details__title">{title}:</p>}
@@ -14,4 +14,3 @@ const SingleDetailField = ({ title, content, onClick }: Props) => {
   );
 };
 
-export default SingleDetailField;

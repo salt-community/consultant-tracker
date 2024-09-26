@@ -1,11 +1,11 @@
 import "./personal-data.css";
 import {useSelector} from "react-redux";
 import toast, {Toaster} from "react-hot-toast";
-import SingleDetailField from "../../../single-detail-field/single-detail-field";
-import { RootState } from "../../../../store/store";
+import {SingleDetailField} from "../../../components";
+import { RootState } from "../../../store/store";
 
 
-const PersonalData = () => {
+export const PersonalData = () => {
   const personalData = useSelector((state: RootState) => state.basicInfo.personalData)
   const {email, client, totalDaysStatistics, responsiblePt} = personalData!;
   const handleEmailCopy = () => {
@@ -53,5 +53,3 @@ const PersonalData = () => {
     </div>
   );
 };
-
-export default PersonalData;

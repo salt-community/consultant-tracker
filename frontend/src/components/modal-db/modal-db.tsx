@@ -1,17 +1,19 @@
-import {Modal} from "@mui/material";
+import './modal-db.css'
+import {populateDB} from "../../api.ts";
+import ProgressBar from "./progress-bar/progress-bar.tsx";
+import {INTERVAL, MAX_TIME, template} from "../../constants.ts";
+
+import {setModalOpen, setProgress, setProgressBarOpen} from "../../store/slices/ModalSlice.ts";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../store/store.ts";
-import './modal-db.css'
-import {INTERVAL, MAX_TIME, template} from "../../constants.ts";
-import {populateDB} from "../../api.ts";
-import toast from "react-hot-toast";
-import {setModalOpen, setProgress, setProgressBarOpen} from "../../store/slices/ModalSlice.ts";
-import {useAuth} from "@clerk/clerk-react";
+
+import {Modal} from "@mui/material";
 import Button from "@mui/material/Button";
-import ProgressBar from "./progress-bar/progress-bar.tsx";
+import toast from "react-hot-toast";
+import {useAuth} from "@clerk/clerk-react";
 
-const ModalComponent = () => {
 
+export const ModalComponent = () => {
   const dispatch = useDispatch();
   const modalOpen = useSelector((state: RootState) => state.modal.modalOpen)
   const progressBarOpen = useSelector((state: RootState) => state.modal.progressBarOpen)
@@ -78,5 +80,3 @@ const ModalComponent = () => {
     </Modal>
   );
 };
-
-export default ModalComponent;

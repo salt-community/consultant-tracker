@@ -3,14 +3,13 @@ import {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {setPersonalData} from "../../../store/slices/BasicInfoSlice";
 import {AppDispatch, RootState} from "../../../store/store";
-import CardDetails from "../../card-details/card-details";
-import TimeItemDetails from "../../time-item-details/time-item-details";
-import BasicInfoHeader from "./header/header";
+import {CardDetails, TimeItemDetails} from "../../../components";
 import {getConsultantById} from "../../../api";
 import {useAuth} from "@clerk/clerk-react";
 import {template} from "../../../constants";
+import BasicInfoHeader from "./header/header.tsx";
 
-const BasicInfo = () => {
+export const BasicInfo = () => {
   const dispatch = useDispatch<AppDispatch>();
   const personalData = useSelector(
     (state: RootState) => state.basicInfo.personalData
@@ -53,4 +52,3 @@ const BasicInfo = () => {
   );
 };
 
-export default BasicInfo;
