@@ -4,7 +4,14 @@ export const getAuthorization =async(token: string)=>{
   return await fetch(`${BASE_URL}/api/auth`,{
     headers: {
       Authorization: `Bearer ${token}`
-    }}).then(response=> response.json())
+    }})
+}
+
+export const populateDB =async(token: string)=>{
+  return await fetch(`${BASE_URL}/api/populate-db`,{
+    headers: {
+      Authorization: `Bearer ${token}`
+    }})
 }
 
 export const getConsultantsData = async (
