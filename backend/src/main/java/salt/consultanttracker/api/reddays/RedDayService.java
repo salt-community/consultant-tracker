@@ -1,6 +1,5 @@
 package salt.consultanttracker.api.reddays;
 
-import jakarta.annotation.PostConstruct;
 import salt.consultanttracker.api.client.nager.NagerClient;
 import salt.consultanttracker.api.client.nager.dto.RedDaysFromNagerDto;
 import salt.consultanttracker.api.consultant.ConsultantService;
