@@ -25,7 +25,7 @@ export type MeetingsType = {
 
 export type ConsultantItemsType = {
   start_time: moment.Moment,
-  itemProps?: React.HTMLAttributes<HTMLDivElement> | undefined;
+  itemProps?: Omit<React.HTMLAttributes<HTMLDivElement>, 'defaultValue'> | undefined;
   end_time: moment.Moment,
   details: {
     responsiblePt: string,
