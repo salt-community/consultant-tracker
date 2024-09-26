@@ -31,7 +31,7 @@ npm run dev
 - state is handled using redux-toolkit in order to see actual state in dev mode in the browser
 install redux devtools
 
-- when pushing new changes run 
+- before pushing new changes run 
 ```
 npm run build
 ```
