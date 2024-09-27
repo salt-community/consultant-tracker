@@ -3,6 +3,7 @@ package salt.consultanttracker.api.reddays;
 import salt.consultanttracker.api.client.nager.NagerClient;
 import salt.consultanttracker.api.client.nager.dto.RedDaysFromNagerDto;
 import salt.consultanttracker.api.consultant.ConsultantService;
+import salt.consultanttracker.api.exceptions.ExternalAPIException;
 import salt.consultanttracker.api.reddays.dto.RedDaysResponseDto;
 import salt.consultanttracker.api.utils.Utilities;
 import org.springframework.context.annotation.Lazy;
@@ -23,7 +24,7 @@ import static salt.consultanttracker.api.reddays.CountryCode.SE;
 @Service
 public class RedDayService {
     private final RedDayRepository redDaysRepository;
-    private final NagerClient workingDaysClient;
+    private final NagerClient nagerClient;
     private final ConsultantService consultantService;
     private static final Logger LOGGER = Logger.getLogger(RedDayService.class.getName());
 
@@ -33,7 +34,7 @@ public class RedDayService {
                           ) {
         this.consultantService = consultantService;
         this.redDaysRepository = redDaysRepository;
-        this.workingDaysClient = workingDaysClient;
+        this.nagerClient = workingDaysClient;
     }
     //-----------------------------COVERED BY TESTS ---------------------------------
     public List<LocalDate> getRedDays(String countryCode) {
@@ -91,7 +92,7 @@ public class RedDayService {
 
 //    @PostConstruct
     @Scheduled(cron="0 0 0 1 1 *", zone = "Europe/Stockholm")
-public void getRedDaysFromNager() {
+public void getRedDaysFromNager() throws ExternalAPIException {
         LOGGER.info("Fetching red days from Nager");
         var saltStartYear = 2018;
 //        TODO ask about value of that part - refactor?
@@ -105,7 +106,7 @@ public void getRedDaysFromNager() {
         }
         //        TODO ask about value of that part
         for (int i = 0; saltStartYear + i <= Year.now().getValue()+1; i++) {
-            List<RedDaysFromNagerDto> currentYearRedDaysArray = workingDaysClient.getRedDaysPerYear(saltStartYear + i, new String[]{"SE", "NO"});
+            List<RedDaysFromNagerDto> currentYearRedDaysArray = nagerClient.getRedDaysPerYear(saltStartYear + i, new String[]{"SE", "NO"});
             //TODO handle in case there is not response from nager;
             saveRedDays(currentYearRedDaysArray);
         }

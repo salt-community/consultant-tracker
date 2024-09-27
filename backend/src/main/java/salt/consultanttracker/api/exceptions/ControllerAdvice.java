@@ -8,8 +8,18 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class ControllerAdvice {
     @ExceptionHandler({ConsultantNotFoundException.class})
-    private ResponseEntity<ApiError> notFoundException (RuntimeException error) {
-        ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, error.getMessage());
-        return new ResponseEntity<>(apiError, apiError.status());
+    private ResponseEntity<ApiError> notFoundException (RuntimeException exception) {
+        ApiError apiError = new ApiError(HttpStatus.NOT_FOUND.value(),HttpStatus.NOT_FOUND.getReasonPhrase(), exception.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiError);
+    }
+
+    @ExceptionHandler({ExternalAPIException.class})
+    private ResponseEntity<ApiError> externalAPIException (ExternalAPIException exception) {
+        ApiError apiError = new ApiError(
+                CustomStatusCodes.EXTERNAL_API_ERROR.getCode(),
+                CustomStatusCodes.EXTERNAL_API_ERROR.getReasonPhrase(),
+                exception.getMessage()
+        );
+        return ResponseEntity.status(CustomStatusCodes.EXTERNAL_API_ERROR.getCode()).body(apiError);
     }
 }
