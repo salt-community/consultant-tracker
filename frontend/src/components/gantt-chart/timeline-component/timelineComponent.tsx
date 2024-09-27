@@ -1,9 +1,8 @@
-import {useEffect} from "react";
 import {
   groupsRenderer,
   itemRenderer,
 } from "../gantt-chart-renderers";
-import moment from "moment";
+import * as moment from "moment";
 import {verticalLineClassNamesForTime} from "../../../utils/utils";
 import Timeline from "react-calendar-timeline";
 import {useDispatch, useSelector} from "react-redux";
@@ -13,14 +12,8 @@ import {
   setModalData,
   setOpenModal,
   setOpenTimeItemDetails,
-  setRedDaysNO,
-  setRedDaysSE,
   setSelectedId,
 } from "../../../store/slices/GanttChartSlice";
-import {getRedDays} from "../../../api";
-import {RedDaysResponseType} from "../../../types";
-import {useAuth} from "@clerk/clerk-react";
-import {template} from "../../../constants";
 
 export const TimelineComponent = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -41,23 +34,6 @@ export const TimelineComponent = () => {
     setTimeout(() => window.scrollTo({top: 3000, behavior: "smooth"}), 200);
     dispatch(setSelectedId(consultantItems.group));
   };
-  const {getToken, signOut} = useAuth();
-  const getAccessToken = async () => {
-    let token: string | null = "";
-    token = await getToken({template});
-
-    if (!token) {
-      await signOut();
-      return;
-    }
-    getRedDays(token).then((res: RedDaysResponseType) => {
-      dispatch(setRedDaysSE(res.redDaysSE.map((el) => moment(el))));
-      dispatch(setRedDaysNO(res.redDaysNO.map((el) => moment(el))));
-    });
-  }
-  useEffect(() => {
-    void getAccessToken()
-  }, []);
 
   return items.length > 0 ? (
     <Timeline

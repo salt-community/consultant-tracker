@@ -1,12 +1,14 @@
 import {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {InfographicResponseType} from "../../../types";
-import {getInfographicsByPt} from "../../../api";
+import {InfographicResponseType, RedDaysResponseType} from "../../../types";
+import {getInfographicsByPt, getRedDays} from "../../../api";
 import Infographic from "./infographic/infographic";
 import {AppDispatch, RootState} from "../../../store/store";
 import {setInfographicData} from "../../../store/slices/DashboardHeaderSlice";
 import {useAuth} from "@clerk/clerk-react";
 import {template} from "../../../constants";
+import {setRedDaysNO, setRedDaysSE} from "../../../store/slices/GanttChartSlice.ts";
+import * as moment from "moment";
 
 const DashboardHeader = () => {
   const data = useSelector(
@@ -51,11 +53,16 @@ const DashboardHeader = () => {
       return;
     }
     fetchInfographicsByPt(token);
+    getRedDays(token).then((res: RedDaysResponseType) => {
+      dispatch(setRedDaysSE(res.redDaysSE.map((el) => moment(el))));
+      dispatch(setRedDaysNO(res.redDaysNO.map((el) => moment(el))));
+    });
   };
 
   useEffect(() => {
     void getAccessToken();
   }, [user]);
+
 
   return (
     <div className="dashboard-infographic__card">
