@@ -3,9 +3,7 @@ FROM maven:3.8.8-eclipse-temurin-21-alpine AS build
 WORKDIR /app
 
 ENV HOST 0.0.0.0
-COPY pom.xml .
-COPY src ./src
-#COPY . .
+COPY . .
 RUN mvn clean package -DskipTests
 
 FROM amazoncorretto:21.0.3-alpine3.19
