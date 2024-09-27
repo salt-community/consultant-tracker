@@ -65,7 +65,7 @@ npm run build
 
 - deployment file to GoogleCloud is inside workflows build-and-deploy-to-gcp.yml and in frontend/src/nginx.conf
 (we left also other successful build files we tried as a reference)
-- 
+
 > [!TIP]
 > If you will need to generate new GCP_SA_KEY you need to enter:
 >```
