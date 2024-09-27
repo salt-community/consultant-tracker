@@ -190,6 +190,8 @@ on GoogleCloud:
 > consultant-details - component is connected to card-details as it holds content of the tabs.
 
 > lotties - includes json cat animation implemented in <Loading /> component.
+> Instruction how we implemented it can be found
+> [here](https://lottiefiles.com/blog/working-with-lottie-animations/how-to-use-lottie-in-react-app/)
 
 > store - state is managed using redux toolkit. Keep in mind: in few cases related to 
 > react-calendar-timeline we were forces to use type any. It should be adjusted in the future if possible. 
@@ -198,8 +200,7 @@ on GoogleCloud:
 > utils- contains colors for gantt chart and mapping for groups and time items for gantt-chart as well as 
 > previously mentioned method to distinct redDays and weekends.
 
-> Instruction how we implemented it can be found
-> [here](https://lottiefiles.com/blog/working-with-lottie-animations/how-to-use-lottie-in-react-app/)
+
 
 
 </details>
