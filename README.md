@@ -65,12 +65,13 @@ npm run build
 
 - deployment file to GoogleCloud is inside workflows build-and-deploy-to-gcp.yml and in frontend/src/nginx.conf
 (we left also other successful build files we tried as a reference)
-
-- if there is a need to update  GCP_SA_KEY you need to enter:
-```
-  pgp-sandbox ⟶ Service Accounts ⟶ select second service starting 735..
-   ⟶ KEYS ⟶ ADD KEY ⟶  place json on github in GCP_SA_KEY secret
-```
+- 
+> [!TIP]
+> If you will need to generate new GCP_SA_KEY you need to enter:
+>```
+>  pgp-sandbox ⟶ Service Accounts ⟶ select second service starting 735..
+>   ⟶ KEYS ⟶ ADD KEY ⟶  place json on github in GCP_SA_KEY secret
+>```
 
 - to see deployed frontend you need to enter: [consultant-tracker](https://consultant-tracker-client-735865474111.europe-north1.run.app)
 
@@ -246,13 +247,13 @@ ADMIN_EMAILS:
  pgp-sandbox ⟶ CloudRun ⟶ consultant-tracker-server (region: europe-north-1)
    ⟶ Edit & Deploy New Revision ⟶ VARIABLES & SECRETS
 ```
-- before you start application don't forget to run docker
-enter /backend folder and run command:
+- before you start application don't forget to run docker.
+Enter /backend folder and run command:
 ```
  docker compose up
 ```
 - to run application in demo mode select BackendApplication 
-in the toolbar and Edit configuration enter demo in Active profiles input and start
+in the toolbar and Edit configuration. Type "demo" in Active profiles input and start
 
 - before pushing new changes build application and make sure all tests are passing
 ```
@@ -307,6 +308,7 @@ you need to go to:
  >client - nager ⟶ fetching red days for Sweden and Norway 
  > (currently Salt has still 4 developers from Norawy).
  > Red days are being fetch to correctly calculate remaining time for each consultant.
+ > We fetch from 2018 till now + 1 year. It is scheduled to run every year 1 January.
  
 > client - notion ⟶ 
 
