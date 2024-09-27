@@ -51,12 +51,12 @@ export const ModalComponent = () => {
         toast.success("Successfully populated db.")
       }
     }).finally(() => {
-      setProgress(100);
+      dispatch(setProgress(100));
       clearInterval(progressInterval);
       setTimeout(()=>{
         dispatch(setModalOpen(false))
         dispatch(setProgressBarOpen(false))
-        setProgress(0);
+        dispatch(setProgress(0));
       }, 500);
 
     })
@@ -70,8 +70,10 @@ export const ModalComponent = () => {
     >
       <div className="modal-content">
         <div>
-          <p>Do you want to proceed this might take up to 5 minutes.</p>
-          <p>After process is done please refresh page.</p>
+        {!progressBarOpen && <p>You are about to populate the DB</p>}
+          <p>This might take up to 15 minutes</p>
+          <p>After the process is done please refresh the page.</p>
+          {!progressBarOpen && <p>Do you want to proceed?</p>}
         </div>
         {progressBarOpen ? <ProgressBar />: <div className="modal-buttons__wrapper">
           <Button onClick={handlePopulateDB} variant="outlined" color="success">Yes</Button>

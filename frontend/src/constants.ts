@@ -21,5 +21,5 @@ export const tabs = [
   },
 ];
 export const template = "consultant-tracker-email";
-export const MAX_TIME = 180000;
+export const MAX_TIME = 900000;
 export const INTERVAL = 200;
