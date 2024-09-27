@@ -1,22 +1,46 @@
-# Consultant Tracker
+# $\color{rgb(60,143,201)}{\textsf{Consultant Tracker}}$
 
 Application created to help core team keep track of consultants.
 Provides visual (gantt chart) representation of worked time,
 absences, vacations and remaining time for each consultant.
 
 
-## Technologies - frontend
+## $\color{rgb(107, 187, 242)}{\textsf{Technologies - frontend}}$
 
 TypeScript, React, Vite, MUI, Redux toolkit, npm
 
-## Starting frontend
+
+## $\color{rgb(107, 187, 242)}{\textsf{Starting frontend}}$
 
 - node version v20.15.0
-- create .env.local file and add secrets:
+
+> [!NOTE]
+> If you are going to set up Clerk it is important to restrict only emails for @appliedtechnology.se
+> In order to do that go to:
+>```
+>    1. Clerk ⟶ consultant-tracker project ⟶ Configure ⟶ User&Authentication ⟶ Social connections ⟶ Auth providers 
+>   ⟶ click on cog next to Used for sign-in ⟶ enter Client ID and Client secret from GoogleCloud
+>    a) pgp-sandbox ⟶ APIs & Services ⟶ Credentials ⟶ Consultant-Tracker ⟶ Client ID
+>    b) pgp-sandbox ⟶ APIs & Services ⟶ Credentials ⟶ Consultant-Tracker ⟶ click on edit pencil ⟶ Client secret
+>```
+
+- in /frontend folder create .env.local file and add secrets (secrets can be provided by Salt admin):
 ```
   VITE_CLERK_PUBLISHABLE_KEY=
   VITE_BACKEND_URL=
 ```
+
+> [!TIP]
+> VITE_CLERK_PUBLISHABLE_KEY - you can find it on your Clerk account:
+>```
+>    Clerk ⟶ consultant-tracker project ⟶ Configure ⟶ Developers ⟶ API keys
+>```
+> VITE_BACKEND_URL - you can copy from GoogleCloud 
+> ```
+> pgp-sandbox ⟶ CloudRun ⟶ consultant-tracker-server (region: europe-north-1)
+> ```
+
+
 - substitute secrets on gitHub with yours
 ```
 Settings ⟶ Security ⟶ Secrets and variables ⟶ Actions
@@ -37,10 +61,17 @@ npm run build
 ```
 
 
-## Deployment of frontend
+## $\color{rgb(107, 187, 242)}{\textsf{Deployment of frontend}}$
 
 - deployment file to GoogleCloud is inside workflows build-and-deploy-to-gcp.yml and in frontend/src/nginx.conf
 (we left also other successful build files we tried as a reference)
+
+- if there is a need to update  GCP_SA_KEY you need to enter:
+```
+  pgp-sandbox ⟶ Service Accounts ⟶ select second service starting 735..
+   ⟶ KEYS ⟶ ADD KEY ⟶  place json on github in GCP_SA_KEY secret
+```
+
 - to see deployed frontend you need to enter: [consultant-tracker](https://consultant-tracker-client-735865474111.europe-north1.run.app)
 
 Keep in mind: to access deployed version of consultant-tracker you need to have email 
@@ -54,7 +85,7 @@ on GoogleCloud:
 
 ```
 
-## Folder Structure Frontend
+## $\color{rgb(107, 187, 242)}{\textsf{Folder Structure Frontend}}$
 ```bash
 ├───assets
 ├───components
@@ -173,8 +204,114 @@ on GoogleCloud:
 
 </details>
 
+##  $\color{rgb(107, 187, 242)}{\textsf{Technologies - backend}}$
 
-## Future features
+Java, Spring Boot, Lombok, Spring Security, Maven, Docker
+
+## $\color{rgb(107, 187, 242)}{\textsf{Starting backend}}$ 
+
+- java version 21.0.4
+- create secret.yml in backend/main/resources and add secrets (secrets can be provided by Salt admin):
+
+```
+DB:
+  USERNAME: 
+  PASSWORD: 
+  URL: 
+TIMEKEEPER:
+  URL: 
+  AUTH: 
+NAGER:
+  URL: 
+NOTION_PROXY:
+  URL: 
+  AUTH: 
+ISSUER_URI: 
+JWT: 
+USER_EMAILS: 
+ADMIN_EMAILS:
+```
+
+> [!TIP]
+> ISSUER_URI and JWT you can find  on your Clerk account:
+>```
+>    1.Clerk ⟶ consultant-tracker project ⟶ Configure ⟶ User&Authentication ⟶ Social connections 
+>    ⟶ click on Google cog icon ⟶ copy base url without v1/oauth_callback
+>    2.Clerk ⟶ consultant-tracker project ⟶ Configure ⟶ Session management ⟶ JWT templates ⟶ Issuer input
+>```
+
+- substitute secrets on GoogleCloud with yours:
+```
+ pgp-sandbox ⟶ CloudRun ⟶ consultant-tracker-server (region: europe-north-1)
+   ⟶ Edit & Deploy New Revision ⟶ VARIABLES & SECRETS
+```
+- before you start application don't forget to run docker
+enter /backend folder and run command:
+```
+ docker compose up
+```
+- to run application in demo mode select BackendApplication 
+in the toolbar and Edit configuration enter demo in Active profiles input and start
+
+- before pushing new changes build application and make sure all tests are passing
+```
+    mvn clean package 
+```
+
+## $\color{rgb(107, 187, 242)}{\textsf{Deployment of backend}}$ 
+
+- by default trigger is disabled, to run deployment or enable trigger
+you need to go to:
+```
+ pgp-sandbox ⟶ CloudRun ⟶ consultant-tracker-server (region: europe-north-1)
+   ⟶ Build History ⟶ Triggers ⟶ rmgpgab-consultant-tracker-server-europe-north1-salt-communiyqz ⟶ 
+   RUN (if you want to deploy manually) or ENABLE to deploy with every push to main branch)
+```
+## $\color{rgb(107, 187, 242)}{\textsf{Folder Structure Backend}}$
+```
+├───java
+│   └───salt
+│       └───consultanttracker
+│           └───api
+│               ├───client
+│               │   ├───nager
+│               │   │   └───dto
+│               │   ├───notion
+│               │   │   └───dtos
+│               │   └───timekeeper
+│               │       └───dto
+│               ├───config
+│               ├───consultant
+│               │   └───dto
+│               ├───demo
+│               ├───exceptions
+│               ├───meetings
+│               │   └───dto
+│               ├───messages
+│               ├───notification
+│               ├───populatedb
+│               ├───reddays
+│               │   └───dto
+│               ├───registeredtime
+│               │   └───dto
+│               ├───responsiblept
+│               ├───tag
+│               ├───timechunks
+│               └───utils
+└───resources
+
+```
+<details><summary>Folder details</summary>
+
+ >client - nager ⟶ fetching red days for Sweden and Norway 
+ > (currently Salt has still 4 developers from Norawy).
+ > Red days are being fetch to correctly calculate remaining time for each consultant.
+ 
+> client - notion ⟶ 
+
+</details>
+
+## $\color{rgb(107, 187, 242)}{\textsf{Future features}}$
 
 - scheduled meetings notification system
 - custom color picker for gantt-chart from legend level
