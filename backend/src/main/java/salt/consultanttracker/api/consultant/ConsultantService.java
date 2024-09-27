@@ -1,5 +1,6 @@
 package salt.consultanttracker.api.consultant;
 
+import salt.consultanttracker.api.client.notion.dtos.ConsultantsNProxyDto;
 import salt.consultanttracker.api.client.timekeeper.TimekeeperClient;
 import salt.consultanttracker.api.client.timekeeper.dto.TimekeeperUserDto;
 import salt.consultanttracker.api.consultant.dto.*;
@@ -55,7 +56,7 @@ public class ConsultantService {
         int totalConsultants = consultantRepository.findAllByActiveTrue().size();
         ResponsiblePT pt = saltUserService.getResponsiblePTByName(ptName);
         int totalPtsConsultants = 0;
-        if(pt != null){
+        if (pt != null) {
             totalConsultants = consultantRepository.countAllByActiveTrueAndResponsiblePT(pt);
         }
         int totalPgpConsultants = consultantRepository.countAllByActiveTrueAndClient(PGP.value);
@@ -74,6 +75,7 @@ public class ConsultantService {
     public Consultant getConsultantByIdAndReturnConsultant(UUID id) {
         return consultantRepository.findConsultantById(id);
     }
+
 
     //-----------------------------COVERED BY TESTS ---------------------------------
     public List<ClientsListDto> getClientListByConsultantId(UUID consultantId) {
@@ -133,7 +135,7 @@ public class ConsultantService {
         return consultantRepository.findAllByActiveTrue();
     }
 
-//            @PostConstruct
+    //            @PostConstruct
     @Scheduled(cron = "0 0 0 * * *", zone = "Europe/Stockholm")
     public void fetchDataFromTimekeeper() {
         LOGGER.info("Starting fetching data from timekeeper");
@@ -241,22 +243,37 @@ public class ConsultantService {
         return resultList;
     }
 
-    public void updatePtsForConsultants(Map<UUID, List<String>> consultantsAndPts) {
-        List<Consultant> activeConsultants = getAllActiveConsultants();
-        for (var entry : consultantsAndPts.entrySet()) {
-            ResponsiblePT pt = saltUserService.getSaltUserById(entry.getKey());
-            List<String> consultants = entry.getValue();
-            for (String name : consultants) {
-                String[] namesSplit = name.split(" ");
-                activeConsultants.forEach(el ->
-                {
-                    if (el.getFullName().contains(namesSplit[0])
-                            && el.getFullName().contains(namesSplit[namesSplit.length - 1])) {
-                        el.setResponsiblePT(pt);
-                        saveConsultant(el);
-                    }
-                });
-            }
+
+    public void updateConsultantsTableWithNotionData(List<ConsultantsNProxyDto> listOfConsultants) {
+        updateNotionIdInConsultantsTable(listOfConsultants);
+    }
+
+    private void updateNotionIdInConsultantsTable(List<ConsultantsNProxyDto> listOfNProxyConsultants) {
+        List<Consultant> activeConsultants = consultantRepository.findAllByActiveTrueAndNotionIdIsNull();
+        if (!activeConsultants.isEmpty()) {
+            activeConsultants.forEach(consultant -> {
+                        UUID uuid = updateProxyIdByConsultantName(consultant.getFullName(), listOfNProxyConsultants);
+                        if(uuid != null){
+                            consultant.setNotionId(uuid);
+                        }
+                    });
+            consultantRepository.saveAll(activeConsultants);
         }
+
+    }
+
+    private UUID updateProxyIdByConsultantName(String fullName, List<ConsultantsNProxyDto> listOfNProxyConsultants) {
+        List<ConsultantsNProxyDto> filteredListOfNProxyConsultant = listOfNProxyConsultants.stream()
+                .filter(consultant -> areNamesMatching(fullName, consultant.name()))
+                .toList();
+        if(filteredListOfNProxyConsultant.isEmpty()){
+            return null;
+        }
+        return filteredListOfNProxyConsultant.getFirst().id();
+    }
+
+    private boolean areNamesMatching(String fullName, String nProxyName) {
+        String[] namesSplit = nProxyName.split(" ");
+        return fullName.contains(namesSplit[0]) && fullName.contains(namesSplit[namesSplit.length - 1]);
     }
 }

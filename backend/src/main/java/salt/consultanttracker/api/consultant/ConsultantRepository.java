@@ -28,4 +28,5 @@ public interface ConsultantRepository extends JpaRepository<Consultant, UUID> {
     int countAllByActiveTrueAndClient(String client);
 
     Consultant findConsultantById(UUID id);
+    List<Consultant> findAllByActiveTrueAndNotionIdIsNull();
 }

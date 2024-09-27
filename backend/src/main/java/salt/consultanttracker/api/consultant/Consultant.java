@@ -23,7 +23,7 @@ public class Consultant {
     private String email;
     private Long timekeeperId;
     @Nullable
-    private String notionId;
+    private UUID notionId;
     private boolean active;
     private String client;
     private String country;

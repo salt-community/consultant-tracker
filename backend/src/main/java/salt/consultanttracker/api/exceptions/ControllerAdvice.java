@@ -13,7 +13,7 @@ public class ControllerAdvice {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiError);
     }
 
-    @ExceptionHandler({ExternalAPIException.class})
+    @ExceptionHandler({ExternalAPIException.class, UnexpectedResponseException.class})
     private ResponseEntity<ApiError> externalAPIException (ExternalAPIException exception) {
         ApiError apiError = new ApiError(
                 CustomStatusCodes.EXTERNAL_API_ERROR.getCode(),

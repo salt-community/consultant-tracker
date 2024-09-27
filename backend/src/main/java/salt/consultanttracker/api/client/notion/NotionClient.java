@@ -1,6 +1,11 @@
 package salt.consultanttracker.api.client.notion;
 
+import org.springframework.core.ParameterizedTypeReference;
+import salt.consultanttracker.api.client.notion.dtos.ConsultantsNProxyDto;
+import salt.consultanttracker.api.client.notion.dtos.ResponsiblePTDto;
 import salt.consultanttracker.api.consultant.ConsultantService;
+import salt.consultanttracker.api.exceptions.ExternalAPIException;
+import salt.consultanttracker.api.messages.Messages;
 import salt.consultanttracker.api.responsiblept.ResponsiblePTService;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.rmi.UnexpectedException;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -18,64 +24,69 @@ import java.util.logging.Logger;
 public class NotionClient {
     private final WebClient CLIENT_URL;
     private final String HEADER_AUTH;
-    private final String DB_ID;
     private final ResponsiblePTService saltUserService;
     private final ConsultantService consultantService;
     private static final Logger LOGGER = Logger.getLogger(NotionClient.class.getName());
+    private final ResponsiblePTService responsiblePTService;
 
-    public NotionClient(@Value("${NOTION.URL}") String baseUrl,
-                        @Value("${NOTION.AUTH}") String HEADER_AUTH,
-                        @Value("${NOTION.DB_ID}") String DB_ID,
+    public NotionClient(@Value("${NOTION_PROXY.URL}") String baseUrl,
+                        @Value("${NOTION_PROXY.AUTH}") String HEADER_AUTH,
                         ResponsiblePTService saltUserService,
-                        ConsultantService consultantService) {
+                        ConsultantService consultantService, ResponsiblePTService responsiblePTService) {
         this.HEADER_AUTH = HEADER_AUTH;
         CLIENT_URL = WebClient.builder().baseUrl(baseUrl)
                 .defaultHeaders(httpHeaders -> {
-                    httpHeaders.set("Authorization", HEADER_AUTH);
-                    httpHeaders.set("Notion-Version", "2022-06-28");
+                    httpHeaders.set("X-aPI-KeY", HEADER_AUTH);
                     httpHeaders.set("Content-Type", "application/json");
                 }).exchangeStrategies(ExchangeStrategies.builder()
                         .codecs(configurer -> configurer
                                 .defaultCodecs()
                                 .maxInMemorySize(16 * 1024 * 1024))
                         .build()).build();
-        this.DB_ID = DB_ID;
+
         this.saltUserService = saltUserService;
         this.consultantService = consultantService;
+        this.responsiblePTService = responsiblePTService;
     }
-//    @PostConstruct
-    @Scheduled(cron="0 0 2 * * 4", zone = "Europe/Stockholm")
-    public void getUsersFromNotion() {
-        LOGGER.info("Fetching users from Notion");
-        List<UUID> ptsIds = saltUserService.getAllPtsIds();
 
-        String requestBody = """
-                {
-                "filter": {
-                  "property": "Responsible",
-                  "people": {
-                    "contains": "%s"
-                     }
-                 }
-                }""";
 
-        Map<UUID, List<String>> consultantsAndPts = new HashMap<>();
-
-        for (UUID id : ptsIds) {
-            String stringFormat = String.format(requestBody, id);
-            NotionResponse dto = CLIENT_URL.post()
-                    .uri("/{dbId}/query", DB_ID)
-                    .bodyValue(stringFormat)
+    @Scheduled(cron = "0 0 2 * * 4", zone = "Europe/Stockholm")
+    public void getResponsiblePTFromNotion() {
+        try {
+            List<ResponsiblePTDto> dto = CLIENT_URL.get()
+                    .uri("/responsible")
                     .retrieve()
-                    .bodyToMono(NotionResponse.class)
+                    .bodyToMono(new ParameterizedTypeReference<List<ResponsiblePTDto>>() {
+                    })
                     .block();
-            if (dto != null) {
-                consultantsAndPts.put(id, dto.getConsultantsList());
+            if (dto != null && !dto.isEmpty()) {
+                responsiblePTService.updateResponsiblePt(dto);
+            } else {
+                throw new UnexpectedException(Messages.UNEXPECTED_RESPONSE_EXCEPTION);
             }
+        } catch (Exception e) {
+            LOGGER.severe(Messages.NOTION_PROXY_FETCH_FAIL);
+            throw new ExternalAPIException(Messages.NOTION_PROXY_FETCH_FAIL);
         }
-        if (!consultantsAndPts.isEmpty()) {
-            consultantService.updatePtsForConsultants(consultantsAndPts);
+    }
+
+    @Scheduled(cron = "0 0 2 * * 4", zone = "Europe/Stockholm")
+    public void matchResponsiblePTForConsultants() {
+        try {
+            List<ConsultantsNProxyDto> dto = CLIENT_URL.get()
+                    .uri("/consultants")
+                    .retrieve()
+                    .bodyToMono(new ParameterizedTypeReference<List<ConsultantsNProxyDto>>() {
+                    })
+                    .block();
+            if (dto != null && !dto.isEmpty()) {
+               consultantService.updateConsultantsTableWithNotionData(dto);
+            } else {
+                throw new UnexpectedException(Messages.UNEXPECTED_RESPONSE_EXCEPTION);
+            }
+        } catch (Exception e) {
+            LOGGER.severe(Messages.NOTION_PROXY_FETCH_FAIL);
+            throw new ExternalAPIException(Messages.NOTION_PROXY_FETCH_FAIL);
         }
-        LOGGER.info("Users from Notion fetched");
     }
 }
