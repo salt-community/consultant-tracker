@@ -1,6 +1,5 @@
 package salt.consultanttracker.api.client.timekeeper;
 
-import salt.consultanttracker.api.client.notion.NotionClient;
 import salt.consultanttracker.api.client.timekeeper.dto.TimekeeperRegisteredTimeListResponseDto;
 import salt.consultanttracker.api.client.timekeeper.dto.TimekeeperRegisteredTimeResponseDto;
 import salt.consultanttracker.api.client.timekeeper.dto.TimekeeperUserListResponseDto;
@@ -53,6 +52,7 @@ public class TimekeeperClient {
     }
 
     public List<TimekeeperUserDto> getUsers() {
+        try {
             int index = 0;
             int numOfPages = 1;
             List<TimekeeperUserDto> users = new ArrayList<>();
@@ -82,9 +82,14 @@ public class TimekeeperClient {
                 index++;
             }
             return users;
+        } catch (Exception e) {
+            LOGGER.severe(Messages.TIMEKEEPER_FETCH_FAIL);
+            throw new ExternalAPIException(Messages.TIMEKEEPER_FETCH_FAIL);
+        }
     }
 
     public List<TimekeeperRegisteredTimeResponseDto> getTimeRegisteredByConsultant(Long id, Long countTimeRegistered) {
+        try {
             int index = 0;
             int numOfPages = 1;
             List<TimekeeperRegisteredTimeResponseDto> registeredTime = new ArrayList<>();
@@ -118,6 +123,10 @@ public class TimekeeperClient {
                 index++;
             }
             return registeredTime;
+        } catch (Exception e) {
+            LOGGER.severe(Messages.TIMEKEEPER_FETCH_FAIL);
+            throw new ExternalAPIException(Messages.TIMEKEEPER_FETCH_FAIL);
+        }
 
     }
 }
