@@ -30,7 +30,7 @@ class ConsultantRepositoryTest {
                 "John Doe",
                 "john.doe@gmail.com",
                 1111L,
-                UUID.randomUUID().toString(),
+                UUID.randomUUID(),
                 true,
                 "H&M",
                 "Sverige",

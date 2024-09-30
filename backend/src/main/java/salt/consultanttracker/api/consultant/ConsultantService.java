@@ -40,7 +40,12 @@ public class ConsultantService {
     private static final Logger LOGGER = Logger.getLogger(ConsultantService.class.getName());
 
     //-----------------------------COVERED BY TESTS ---------------------------------
-    public ConsultantResponseListDto getAllConsultantDtos(int page, int pageSize, String name, List<String> pt, List<String> client, boolean includePgp) {
+    public ConsultantResponseListDto getAllConsultantDtos(int page,
+                                                          int pageSize,
+                                                          String name,
+                                                          List<String> pt,
+                                                          List<String> client,
+                                                          boolean includePgp) {
         Page<Consultant> consultantsList = getAllConsultantsPageable(page, pageSize, name, pt, client, includePgp);
 
         return new ConsultantResponseListDto(
@@ -123,7 +128,11 @@ public class ConsultantService {
         if (client.isEmpty()) {
             client.addAll(getListOfAllClients(includePgp));
         }
-        return consultantRepository.findAllByActiveTrueAndFilterByNameAndResponsiblePtAndClientsOrderByFullNameAsc(name, pageRequest, ptNames, client);
+        return consultantRepository.
+                findAllByActiveTrueAndFilterByNameAndResponsiblePtAndClientsOrderByFullNameAsc(name,
+                        pageRequest,
+                        ptNames,
+                        client);
     }
 
     //-----------------------------COVERED BY TESTS ---------------------------------
