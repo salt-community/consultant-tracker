@@ -8,7 +8,7 @@ import {setInfographicData} from "../../../store/slices/DashboardHeaderSlice";
 import {useAuth} from "@clerk/clerk-react";
 import {template} from "../../../constants";
 import {setRedDaysNO, setRedDaysSE} from "../../../store/slices/GanttChartSlice.ts";
-import * as moment from "moment";
+import moment from "moment";
 
 const DashboardHeader = () => {
   const data = useSelector(

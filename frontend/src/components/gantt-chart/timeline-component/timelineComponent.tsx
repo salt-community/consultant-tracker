@@ -2,7 +2,7 @@ import {
   groupsRenderer,
   itemRenderer,
 } from "../gantt-chart-renderers";
-import * as moment from "moment";
+import moment from "moment";
 import {verticalLineClassNamesForTime} from "../../../utils/utils";
 import Timeline from "react-calendar-timeline";
 import {useDispatch, useSelector} from "react-redux";
