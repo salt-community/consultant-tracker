@@ -31,11 +31,16 @@ public class PopulateDBController {
         LOGGER.info("Red days fetched from Nager");
         consultantService.fetchDataFromTimekeeper();
         LOGGER.info("Consultants and registered time fetched from Timekeeper ");
-        notionClient.getUsersFromNotion();
+
+        notionClient.getResponsiblePTFromNotion();
+        LOGGER.info("PTs table populated");
+        notionClient.matchResponsiblePTForConsultants();
         LOGGER.info("PTs matched with consultants based on Notion");
+
         meetingsScheduleService.assignMeetingsDatesForActiveConsultants();
         LOGGER.info("Meetings schedule updated");
         LOGGER.info("Finished populating db");
         return ResponseEntity.ok("Finished populating db");
     }
+
 }

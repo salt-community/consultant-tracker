@@ -40,6 +40,8 @@ public class ResponsiblePTService {
                 .forEach(responsiblePTRepository::deleteById);
         dto.stream()
                 .filter(el -> !listOfPtsIdsFromDB.contains(el.id()))
-                .forEach(el -> responsiblePTRepository.save(new ResponsiblePT(el.id(), el.name(), el.email(), "pt")));
+                .forEach(el -> {
+                    responsiblePTRepository.save(new ResponsiblePT(el.id(), el.name(), el.email(), "pt"));
+                });
     }
 }

@@ -1,6 +1,7 @@
 package salt.consultanttracker.api.consultant;
 
 import salt.consultanttracker.api.client.notion.dtos.ConsultantsNProxyDto;
+import salt.consultanttracker.api.client.notion.dtos.ResponsiblePTDto;
 import salt.consultanttracker.api.client.timekeeper.TimekeeperClient;
 import salt.consultanttracker.api.client.timekeeper.dto.TimekeeperUserDto;
 import salt.consultanttracker.api.consultant.dto.*;
@@ -246,27 +247,44 @@ public class ConsultantService {
 
     public void updateConsultantsTableWithNotionData(List<ConsultantsNProxyDto> listOfConsultants) {
         updateNotionIdInConsultantsTable(listOfConsultants);
+        updateResponsiblePTInConsultantsTable(listOfConsultants);
+    }
+
+    private void updateResponsiblePTInConsultantsTable(List<ConsultantsNProxyDto> listOfNProxyConsultants) {
+        List<Consultant> activeConsultants = consultantRepository.findAllByActiveTrueAndNotionIdIsNotNull();
+        listOfNProxyConsultants.forEach(el -> {
+            activeConsultants.forEach(consultant -> {
+                if (el.id().equals(consultant.getNotionId())) {
+                    List<ResponsiblePTDto> listOfResponsiblePTDto = el.listOfResponsiblePTs();
+                    if (!listOfResponsiblePTDto.isEmpty()) {
+                        ResponsiblePTDto responsiblePTDto = listOfResponsiblePTDto.getFirst();
+                        ResponsiblePT responsiblePT = ResponsiblePTDto.toResponsiblePT(responsiblePTDto);
+                        consultant.setResponsiblePT(responsiblePT);
+                    }
+                }
+            });
+        });
+        consultantRepository.saveAll(activeConsultants);
     }
 
     private void updateNotionIdInConsultantsTable(List<ConsultantsNProxyDto> listOfNProxyConsultants) {
         List<Consultant> activeConsultants = consultantRepository.findAllByActiveTrueAndNotionIdIsNull();
         if (!activeConsultants.isEmpty()) {
             activeConsultants.forEach(consultant -> {
-                        UUID uuid = updateProxyIdByConsultantName(consultant.getFullName(), listOfNProxyConsultants);
-                        if(uuid != null){
-                            consultant.setNotionId(uuid);
-                        }
-                    });
+                UUID uuid = updateProxyIdByConsultantName(consultant.getFullName(), listOfNProxyConsultants);
+                if (uuid != null) {
+                    consultant.setNotionId(uuid);
+                }
+            });
             consultantRepository.saveAll(activeConsultants);
         }
-
     }
 
     private UUID updateProxyIdByConsultantName(String fullName, List<ConsultantsNProxyDto> listOfNProxyConsultants) {
         List<ConsultantsNProxyDto> filteredListOfNProxyConsultant = listOfNProxyConsultants.stream()
                 .filter(consultant -> areNamesMatching(fullName, consultant.name()))
                 .toList();
-        if(filteredListOfNProxyConsultant.isEmpty()){
+        if (filteredListOfNProxyConsultant.isEmpty()) {
             return null;
         }
         return filteredListOfNProxyConsultant.getFirst().id();
@@ -276,4 +294,6 @@ public class ConsultantService {
         String[] namesSplit = nProxyName.split(" ");
         return fullName.contains(namesSplit[0]) && fullName.contains(namesSplit[namesSplit.length - 1]);
     }
+
+
 }

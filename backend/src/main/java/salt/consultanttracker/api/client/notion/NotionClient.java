@@ -62,7 +62,7 @@ public class NotionClient {
             if (dto != null && !dto.isEmpty()) {
                 responsiblePTService.updateResponsiblePt(dto);
             } else {
-                throw new UnexpectedException(Messages.UNEXPECTED_RESPONSE_EXCEPTION);
+                throw new UnexpectedException(Messages.UNEXPECTED_RESPONSE_EXCEPTION_NPROXY);
             }
         } catch (Exception e) {
             LOGGER.severe(Messages.NOTION_PROXY_FETCH_FAIL);
@@ -82,7 +82,7 @@ public class NotionClient {
             if (dto != null && !dto.isEmpty()) {
                consultantService.updateConsultantsTableWithNotionData(dto);
             } else {
-                throw new UnexpectedException(Messages.UNEXPECTED_RESPONSE_EXCEPTION);
+                throw new UnexpectedException(Messages.UNEXPECTED_RESPONSE_EXCEPTION_NPROXY);
             }
         } catch (Exception e) {
             LOGGER.severe(Messages.NOTION_PROXY_FETCH_FAIL);
