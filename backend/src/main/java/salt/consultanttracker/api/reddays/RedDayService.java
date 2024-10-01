@@ -5,6 +5,7 @@ import salt.consultanttracker.api.client.nager.dto.RedDaysFromNagerDto;
 import salt.consultanttracker.api.consultant.ConsultantService;
 import salt.consultanttracker.api.exceptions.ExternalAPIException;
 import salt.consultanttracker.api.reddays.dto.RedDaysResponseDto;
+import salt.consultanttracker.api.utils.Country;
 import salt.consultanttracker.api.utils.Utilities;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -17,8 +18,9 @@ import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
 
-import static salt.consultanttracker.api.reddays.CountryCode.NO;
-import static salt.consultanttracker.api.reddays.CountryCode.SE;
+import static salt.consultanttracker.api.utils.Country.NO;
+import static salt.consultanttracker.api.utils.Country.SE;
+import static salt.consultanttracker.api.utils.Country.NORWAY;
 
 
 @Service
@@ -43,14 +45,14 @@ public class RedDayService {
     }
 
     public RedDaysResponseDto getAllRedDays(){
-        List<LocalDate> redDaysSE = getRedDays(SE.countryCode);
-        List<LocalDate> redDaysNO = getRedDays(NO.countryCode);
+        List<LocalDate> redDaysSE = getRedDays(SE.country);
+        List<LocalDate> redDaysNO = getRedDays(NO.country);
         return new RedDaysResponseDto(redDaysSE, redDaysNO);
     }
 
 
     private String getCountryCode(UUID consultantId) {
-        return consultantService.getCountryCodeByConsultantId(consultantId).equals("Norge") ? "NO" : "SE";
+        return consultantService.getCountryCodeByConsultantId(consultantId).equals(NORWAY.country) ? NO.country : SE.country;
     }
 
     public boolean isRedDay(LocalDate date, UUID consultantId) {

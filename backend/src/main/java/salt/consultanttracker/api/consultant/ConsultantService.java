@@ -26,6 +26,7 @@ import java.util.*;
 import java.util.logging.Logger;
 
 import static salt.consultanttracker.api.consultant.NotClient.PGP;
+import static salt.consultanttracker.api.utils.Country.SWEDEN;
 
 
 @Service
@@ -69,12 +70,12 @@ public class ConsultantService {
         return new InfographicResponseDto(totalConsultants, totalPtsConsultants, totalPgpConsultants);
     }
 
-    public SingleConsultantResponseListDto getConsultantById(UUID id) {
-        Consultant consultantById = consultantRepository.findById(id)
+    public SingleConsultantResponseListDto getConsultantById(UUID consultantId) {
+        Consultant consultantById = consultantRepository.findById(consultantId)
                 .orElseThrow(() -> new ConsultantNotFoundException(Messages.CONSULTANT_NOT_FOUND));
-        TotalDaysStatisticsDto totalDaysStatistics = registeredTimeService.getAllDaysStatistics(id);
-        List<ClientsListDto> clientsListDto = getClientListByConsultantId(id);
-        List<MeetingsDto> meetings = meetingsScheduleService.getMeetingsDto(id);
+        TotalDaysStatisticsDto totalDaysStatistics = registeredTimeService.getAllDaysStatistics(consultantId);
+        List<ClientsListDto> clientsListDto = getClientListByConsultantId(consultantId);
+        List<MeetingsDto> meetings = meetingsScheduleService.getMeetingsDto(consultantId);
         return SingleConsultantResponseListDto.toDto(consultantById, totalDaysStatistics, clientsListDto, meetings);
     }
 
@@ -93,7 +94,6 @@ public class ConsultantService {
         if (clientsListDto.size() > 1) {
             sortClientsListDtoByStartDateDesc(clientsListDto);
         }
-
         return clientsListDto;
     }
 
@@ -117,7 +117,6 @@ public class ConsultantService {
             boolean includePgp) {
         Pageable pageRequest = PageRequest.of(page, pageSize);
         if (ptNames.isEmpty()) {
-            // need PTs names
             ptNames.addAll(responsiblePTService.getAllPtsNames());
         }
         if (client.isEmpty()) {
@@ -140,7 +139,6 @@ public class ConsultantService {
         return consultantRepository.findAllByActiveTrue();
     }
 
-    //            @PostConstruct
     @Scheduled(cron = "0 0 0 * * *", zone = "Europe/Stockholm")
     public void fetchDataFromTimekeeper() {
         LOGGER.info("Starting fetching data from timekeeper");
@@ -187,24 +185,27 @@ public class ConsultantService {
 
     //-----------------------------COVERED BY TESTS ---------------------------------
     private void updateExistingConsultant(TimekeeperUserDto tkUser) {
-        List<Consultant> consultants = getAllConsultants();
-        consultants.stream()
-                .filter(consultant -> consultant.getTimekeeperId().equals(tkUser.id()))
-                .forEach(consultant -> {
-                    if (consultant.isActive() != tkUser.isActive() || consultant.isActive() != tkUser.isEmployee()) {
-                        consultant.setActive(tkUser.isActive() && tkUser.isEmployee());
-                    }
-                    if (tkUser.tags() != null
-                            && !tkUser.tags().stream()
-                            .filter(el -> el.getName().contains("På uppdrag")).toList().isEmpty()) {
-                        consultant.setClient(null);
-                    } else if (tkUser.tags() != null
-                            && !tkUser.tags().stream()
-                            .filter(el -> el.getName().contains(PGP.value)).toList().isEmpty()) {
-                        consultant.setClient(PGP.value);
-                    }
-                    consultantRepository.save(consultant);
-                });
+        Consultant consultant = consultantRepository.findByTimekeeperId(tkUser.id())
+                .orElseThrow(() -> new ConsultantNotFoundException(Messages.CONSULTANT_NOT_FOUND));
+        boolean updated = false;
+        if (consultant.isActive() != tkUser.isActive() || consultant.isActive() != tkUser.isEmployee()) {
+            consultant.setActive(tkUser.isActive() && tkUser.isEmployee());
+            updated = true;
+        }
+        if (tkUser.tags() != null
+                && !tkUser.tags().stream()
+                .filter(el -> el.getName().contains("På uppdrag")).toList().isEmpty()) {
+            consultant.setClient(null);
+            updated = true;
+        } else if (tkUser.tags() != null
+                && !tkUser.tags().stream()
+                .filter(el -> el.getName().contains(PGP.value)).toList().isEmpty()) {
+            consultant.setClient(PGP.value);
+            updated = true;
+        }
+        if(updated) {
+            saveConsultant(consultant);
+        }
     }
 
     //-----------------------------COVERED BY TESTS ---------------------------------
@@ -214,7 +215,7 @@ public class ConsultantService {
 
     //-----------------------------COVERED BY TESTS ---------------------------------
     public String getCountryCodeByConsultantId(UUID consultantId) {
-        return consultantRepository.findCountryById(consultantId).orElse("Sverige");
+        return consultantRepository.findCountryById(consultantId).orElse(SWEDEN.country);
     }
 
     //-----------------------------COVERED BY TESTS ---------------------------------

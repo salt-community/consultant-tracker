@@ -3,12 +3,11 @@ package salt.consultanttracker.api.consultant.dto;
 import salt.consultanttracker.api.consultant.Consultant;
 import salt.consultanttracker.api.demo.DemoConsultant;
 import salt.consultanttracker.api.meetings.dto.MeetingsDto;
-import salt.consultanttracker.api.reddays.CountryCode;
 
 import java.util.List;
 import java.util.UUID;
 
-import static salt.consultanttracker.api.utils.Country.SWEDEN;
+import static salt.consultanttracker.api.utils.Country.*;
 
 public record SingleConsultantResponseListDto(UUID id,
                                               String fullName,
@@ -37,7 +36,7 @@ public record SingleConsultantResponseListDto(UUID id,
                 consultant.getEmail(),
                 responsiblePt,
                 consultant.getClient(),
-                consultant.getCountry().equals(SWEDEN.country) ? CountryCode.SE.countryCode : CountryCode.NO.countryCode,
+                consultant.getCountry().equals(SWEDEN.country) ? SE.country : NO.country,
                 totalDaysStatistics,
                 clientsListDto,
                 meetings
@@ -56,7 +55,7 @@ public record SingleConsultantResponseListDto(UUID id,
                 consultant.getEmail(),
                 consultant.getResponsiblePT(),
                 consultant.getClient(),
-                consultant.getCountry().equals(SWEDEN.country) ? CountryCode.SE.countryCode : CountryCode.NO.countryCode,
+                consultant.getCountry().equals(SWEDEN.country) ? SE.country : NO.country,
                 totalDaysStatistics,
                 clientsListDto,
                 meetings

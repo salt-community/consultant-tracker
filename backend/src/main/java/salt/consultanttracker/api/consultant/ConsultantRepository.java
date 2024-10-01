@@ -17,6 +17,7 @@ public interface ConsultantRepository extends JpaRepository<Consultant, UUID> {
 
     List<Consultant> findAllByActiveTrue();
     int countAllByActiveTrue();
+    Optional<Consultant> findByTimekeeperId(Long id);
 
     @Query("SELECT t.country FROM Consultant t WHERE t.id = (:id)")
     Optional<String> findCountryById(UUID id);
