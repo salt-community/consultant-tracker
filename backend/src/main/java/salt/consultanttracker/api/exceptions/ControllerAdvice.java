@@ -5,6 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.net.ssl.SSLException;
+
 @RestControllerAdvice
 public class ControllerAdvice {
     @ExceptionHandler({ConsultantNotFoundException.class})
@@ -13,7 +15,7 @@ public class ControllerAdvice {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiError);
     }
 
-    @ExceptionHandler({ExternalAPIException.class, UnexpectedResponseException.class})
+    @ExceptionHandler({ExternalAPIException.class, UnexpectedResponseException.class, SSLException.class})
     private ResponseEntity<ApiError> externalAPIException (ExternalAPIException exception) {
         ApiError apiError = new ApiError(
                 CustomStatusCodes.EXTERNAL_API_ERROR.getCode(),

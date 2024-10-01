@@ -1,5 +1,6 @@
 package salt.consultanttracker.api.client.timekeeper;
 
+import io.netty.handler.ssl.SslContext;
 import salt.consultanttracker.api.client.timekeeper.dto.TimekeeperRegisteredTimeListResponseDto;
 import salt.consultanttracker.api.client.timekeeper.dto.TimekeeperRegisteredTimeResponseDto;
 import salt.consultanttracker.api.client.timekeeper.dto.TimekeeperUserListResponseDto;
@@ -14,10 +15,10 @@ import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
-import reactor.netty.tcp.SslProvider;
 import salt.consultanttracker.api.exceptions.ExternalAPIException;
 import salt.consultanttracker.api.messages.Messages;
 
+import javax.net.ssl.SSLException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -34,20 +35,27 @@ public class TimekeeperClient {
 
     public TimekeeperClient(@Value("${TIMEKEEPER.URL}") String baseUrl,
                             @Value("${TIMEKEEPER.AUTH}") String HEADER) {
-        HttpClient httpClient = HttpClient.create()
-                .secure(spec -> spec.sslContext(SslContextBuilder.forClient())
-                        .defaultConfiguration(SslProvider.DefaultConfigurationType.TCP)
-                        .handshakeTimeout(Duration.ofSeconds(60))
-                        .closeNotifyFlushTimeout(Duration.ofSeconds(60))
-                        .closeNotifyReadTimeout(Duration.ofSeconds(60)));
-        CLIENT_URL = WebClient.builder()
-                .clientConnector(new ReactorClientHttpConnector(httpClient))
-                .baseUrl(baseUrl).exchangeStrategies(ExchangeStrategies.builder()
-                        .codecs(configurer -> configurer
-                                .defaultCodecs()
-                                .maxInMemorySize(16 * 1024 * 1024))
-                        .build())
-                .build();
+        try{
+            SslContext sslContext = SslContextBuilder.forClient()
+                    .protocols("TLSv1.2", "TLSv1.3")
+                    .build();
+            HttpClient httpClient = HttpClient.create()
+                    .secure(spec -> spec.sslContext(sslContext)
+                            .handshakeTimeout(Duration.ofSeconds(60))
+                            .closeNotifyFlushTimeout(Duration.ofSeconds(60))
+                            .closeNotifyReadTimeout(Duration.ofSeconds(60)));
+            CLIENT_URL = WebClient.builder()
+                    .clientConnector(new ReactorClientHttpConnector(httpClient))
+                    .baseUrl(baseUrl).exchangeStrategies(ExchangeStrategies.builder()
+                            .codecs(configurer -> configurer
+                                    .defaultCodecs()
+                                    .maxInMemorySize(16 * 1024 * 1024))
+                            .build())
+                    .build();
+        }catch(SSLException e){
+            LOGGER.severe(Messages.SSL_EXCEPTION);
+            throw new ExternalAPIException(Messages.SSL_EXCEPTION);
+        }
         this.HEADER = HEADER;
     }
 
@@ -127,6 +135,5 @@ public class TimekeeperClient {
             LOGGER.severe(Messages.TIMEKEEPER_FETCH_FAIL);
             throw new ExternalAPIException(Messages.TIMEKEEPER_FETCH_FAIL);
         }
-
     }
 }
