@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 @Repository
@@ -32,4 +33,7 @@ public interface ConsultantRepository extends JpaRepository<Consultant, UUID> {
     Consultant findConsultantById(UUID id);
     List<Consultant> findAllByActiveTrueAndNotionIdIsNull();
     List<Consultant> findAllByActiveTrueAndNotionIdIsNotNull();
+
+    @Query("SELECT distinct t.client FROM Consultant t WHERE t.active = true")
+    Set<String> findDistinctClientsByActiveTrue();
 }

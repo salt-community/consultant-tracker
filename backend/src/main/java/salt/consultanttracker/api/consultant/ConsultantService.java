@@ -203,7 +203,7 @@ public class ConsultantService {
             consultant.setClient(PGP.value);
             updated = true;
         }
-        if(updated) {
+        if (updated) {
             saveConsultant(consultant);
         }
     }
@@ -223,8 +223,8 @@ public class ConsultantService {
         listOfActiveConsultants.forEach(el -> {
             if (el.getClient() == null) {
                 el.setClient(registeredTimeService.getCurrentClient(el.getId()).trim());
+                saveConsultant(el);
             }
-            consultantRepository.save(el);
         });
     }
 
@@ -235,18 +235,11 @@ public class ConsultantService {
     }
 
     public Set<String> getListOfAllClients(boolean includePgp) {
-        List<Consultant> activeConsultants = getAllActiveConsultants();
-        Set<String> resultList = new TreeSet<>();
-        if (includePgp) {
-            activeConsultants.forEach(consultant -> resultList.add(consultant.getClient()));
-        } else {
-            activeConsultants.forEach(consultant -> {
-                if (!consultant.getClient().equals("PGP")) {
-                    resultList.add(consultant.getClient());
-                }
-            });
+        Set<String> listOfClients = consultantRepository.findDistinctClientsByActiveTrue();
+        if(!includePgp){
+            listOfClients.remove(PGP.value);
         }
-        return resultList;
+        return listOfClients;
     }
 
 
