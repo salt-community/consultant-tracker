@@ -169,21 +169,6 @@ public class RegisteredTimeService {
         return countOfWorkedDays;
     }
 
-    //-----------------------------COVERED BY TESTS ---------------------------------
-    public List<ConsultantTimeDto> getAllConsultantsTimeItems() {
-        consultantService.fetchDataFromTimekeeper();
-        List<Consultant> consultants = consultantService.getAllConsultants();
-        List<RegisteredTime> consultantTimeDtoList = new ArrayList<>();
-        for (Consultant consultant : consultants) {
-            List<RegisteredTime> timeByConsultantId = getTimeByConsultantId(consultant.getId());
-            consultantTimeDtoList.addAll(timeByConsultantId);
-        }
-        return consultantTimeDtoList
-                .stream()
-                .map(ConsultantTimeDto::toConsultantTimeDto)
-                .toList();
-    }
-
     public TimeChunks getRemainingConsultancyTimeByConsultantId(UUID consultantId) {
         LocalDateTime lastRegisteredDate = registeredTimeRepository.findFirstById_ConsultantIdOrderByEndDateDesc(consultantId).getEndDate();
         LocalDateTime startDate = lastRegisteredDate.plusDays(1).withHour(0).withMinute(0).withSecond(0);
