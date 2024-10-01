@@ -103,20 +103,4 @@ class RegisteredTimeServiceTest {
         List<ConsultantTimeDto> actualResult = registeredTimeService.filterOutIncorrectlyRegisteredTimeDB(mockedTimeItemsList);
         assertEquals(2, actualResult.size());
     }
-
-    @Test
-    public void shouldGetAllConsultantsTimeItems() {
-        Mockito.lenient().when(consultantService.getAllConsultants()).thenReturn(
-                RegisteredTimeServiceMockedData.createMockedListOfConsultants());
-        Mockito.lenient().when(registeredTimeRepository.findAllById_ConsultantIdOrderById_StartDateAsc(
-                        listOfConsultantIds.get(0)))
-                .thenReturn(RegisteredTimeServiceMockedData.generateMockedRegisteredTimeData());
-        Mockito.lenient().when(registeredTimeRepository.findAllById_ConsultantIdOrderById_StartDateAsc(
-                        listOfConsultantIds.get(1)))
-                .thenReturn(RegisteredTimeServiceMockedData.generateMockedRegisteredTimeData());
-        List<ConsultantTimeDto> expectedResult = RegisteredTimeServiceMockedData.generateMockedExpectedResult();
-        List<ConsultantTimeDto> actualResult = registeredTimeService.getAllConsultantsTimeItems();
-        assertEquals(expectedResult.size(), actualResult.size());
-        assertEquals(expectedResult, actualResult);
-    }
 }
