@@ -36,11 +36,11 @@ public class ConsultantService {
     private final RegisteredTimeService registeredTimeService;
     private final TimeChunksService timeChunksService;
     private final MeetingsScheduleService meetingsScheduleService;
-    private final ResponsiblePTService saltUserService;
+    private final ResponsiblePTService responsiblePTService;
     private static final Logger LOGGER = Logger.getLogger(ConsultantService.class.getName());
 
     //-----------------------------COVERED BY TESTS ---------------------------------
-    public ConsultantResponseListDto getAllConsultantDtos(int page,
+    public ConsultantResponseListDto getAllConsultantsDto(int page,
                                                           int pageSize,
                                                           String name,
                                                           List<String> pt,
@@ -59,8 +59,8 @@ public class ConsultantService {
     }
 
     public InfographicResponseDto getInfographicsByPt(String ptName) {
-        int totalConsultants = consultantRepository.findAllByActiveTrue().size();
-        ResponsiblePT pt = saltUserService.getResponsiblePTByName(ptName);
+        int totalConsultants = consultantRepository.countAllByActiveTrue();
+        ResponsiblePT pt = responsiblePTService.getResponsiblePTByName(ptName);
         int totalPtsConsultants = 0;
         if (pt != null) {
             totalConsultants = consultantRepository.countAllByActiveTrueAndResponsiblePT(pt);
@@ -77,11 +77,6 @@ public class ConsultantService {
         List<MeetingsDto> meetings = meetingsScheduleService.getMeetingsDto(id);
         return SingleConsultantResponseListDto.toDto(consultantById, totalDaysStatistics, clientsListDto, meetings);
     }
-
-    public Consultant getConsultantByIdAndReturnConsultant(UUID id) {
-        return consultantRepository.findConsultantById(id);
-    }
-
 
     //-----------------------------COVERED BY TESTS ---------------------------------
     public List<ClientsListDto> getClientListByConsultantId(UUID consultantId) {
@@ -123,7 +118,7 @@ public class ConsultantService {
         Pageable pageRequest = PageRequest.of(page, pageSize);
         if (ptNames.isEmpty()) {
             // need PTs names
-            ptNames.addAll(saltUserService.getAllPtsNames());
+            ptNames.addAll(responsiblePTService.getAllPtsNames());
         }
         if (client.isEmpty()) {
             client.addAll(getListOfAllClients(includePgp));
@@ -234,7 +229,7 @@ public class ConsultantService {
 
     public ClientsAndPtsListDto getAllClientsAndPts(boolean includePgp) {
         Set<String> listOfClients = getListOfAllClients(includePgp);
-        Set<String> listOfPts = saltUserService.getAllPtsNames();
+        Set<String> listOfPts = responsiblePTService.getAllPtsNames();
         return new ClientsAndPtsListDto(listOfClients, listOfPts);
     }
 
@@ -303,6 +298,4 @@ public class ConsultantService {
         String[] namesSplit = nProxyName.split(" ");
         return fullName.contains(namesSplit[0]) && fullName.contains(namesSplit[namesSplit.length - 1]);
     }
-
-
 }

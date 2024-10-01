@@ -35,7 +35,7 @@ public class ConsultantController {
             System.out.println("IN DEMO MODE");
             return ResponseEntity.ok(demoConsultantService.getAllDemoConsultantDtos(page, pageSize, name, pt, client, includePgps));
         }
-        ConsultantResponseListDto consultantsResponse = consultantService.getAllConsultantDtos(page, pageSize, name, pt, client, includePgps);
+        ConsultantResponseListDto consultantsResponse = consultantService.getAllConsultantsDto(page, pageSize, name, pt, client, includePgps);
         return ResponseEntity.ok(consultantsResponse);
     }
 
