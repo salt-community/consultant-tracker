@@ -1,8 +1,9 @@
 package salt.consultanttracker.api.consultant;
 
+import org.springframework.cache.annotation.Cacheable;
+import salt.consultanttracker.api.cache.CacheService;
 import salt.consultanttracker.api.client.notion.dtos.ConsultantsNProxyDto;
 import salt.consultanttracker.api.client.notion.dtos.ResponsiblePTDto;
-import salt.consultanttracker.api.client.timekeeper.Activity;
 import salt.consultanttracker.api.client.timekeeper.TimekeeperClient;
 import salt.consultanttracker.api.client.timekeeper.dto.TimekeeperUserDto;
 import salt.consultanttracker.api.consultant.dto.*;
@@ -40,8 +41,10 @@ public class ConsultantService {
     private final MeetingsScheduleService meetingsScheduleService;
     private final ResponsiblePTService responsiblePTService;
     private static final Logger LOGGER = Logger.getLogger(ConsultantService.class.getName());
+    private final CacheService cacheService;
 
     //-----------------------------COVERED BY TESTS ---------------------------------
+
     public ConsultantResponseListDto getAllConsultantsDto(int page,
                                                           int pageSize,
                                                           String name,
@@ -150,14 +153,12 @@ public class ConsultantService {
         registeredTimeService.fetchAndSaveTimeRegisteredByConsultantDB(allActiveConsultants);
         LOGGER.info("Data fetched from timekeeper");
 
-
-
         fillClients(allActiveConsultants);
         LOGGER.info("Clients field filled");
 
         timeChunksService.saveTimeChunksForAllConsultants(allActiveConsultants);
         LOGGER.info("Time chunks saved");
-
+        cacheService.evictAllCaches();
     }
 
     // Test in integration tests

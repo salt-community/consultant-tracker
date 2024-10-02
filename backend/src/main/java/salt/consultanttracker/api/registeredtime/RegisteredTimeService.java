@@ -1,11 +1,11 @@
 package salt.consultanttracker.api.registeredtime;
 
+import org.springframework.cache.annotation.Cacheable;
 import salt.consultanttracker.api.client.timekeeper.TimekeeperClient;
 import salt.consultanttracker.api.client.timekeeper.dto.TimekeeperRegisteredTimeResponseDto;
 import salt.consultanttracker.api.consultant.Consultant;
 import salt.consultanttracker.api.consultant.ConsultantService;
 
-import salt.consultanttracker.api.consultant.dto.ConsultantTimeDto;
 import salt.consultanttracker.api.consultant.dto.TotalDaysStatisticsDto;
 import salt.consultanttracker.api.reddays.RedDayService;
 import salt.consultanttracker.api.registeredtime.dto.RemainingDaysDto;
@@ -56,74 +56,68 @@ public class RegisteredTimeService {
     //-----------------------------------MOVE TO SEPARATE SERVICE--------------------------------------------
     public void fetchAndSaveTimeRegisteredByConsultantDB(List<Consultant> consultants) {
         for (Consultant consultant : consultants) {
-            List<ConsultantTimeDto> consultantRegisteredTime =
+            List<RegisteredTime> consultantRegisteredTime =
                     fetchTimeFromTimekeeperDB(consultant.getId(), consultant.getTimekeeperId());
             consultantRegisteredTime = filterOutIncorrectlyRegisteredTimeDB(consultantRegisteredTime);
-            saveConsultantTimeDB(consultantRegisteredTime);
+            if(!consultantRegisteredTime.isEmpty()) {
+                saveConsultantTimeDB(consultantRegisteredTime);
+            }
         }
     }
 
-    private List<ConsultantTimeDto> fetchTimeFromTimekeeperDB(UUID consultantId, Long timekeeperId) {
+    private List<RegisteredTime> fetchTimeFromTimekeeperDB(UUID consultantId, Long timekeeperId) {
         long countRegisteredTime = registeredTimeRepository.countAllById_ConsultantId(consultantId);
-        List<TimekeeperRegisteredTimeResponseDto> consultancyTime = timekeeperClient.getTimeRegisteredByConsultant(timekeeperId, countRegisteredTime );
-        List<ConsultantTimeDto> consultantTimeDtoList = new ArrayList<>();
+        List<TimekeeperRegisteredTimeResponseDto> consultancyTime =
+                timekeeperClient.getTimeRegisteredByConsultant(timekeeperId, countRegisteredTime);
+        List<RegisteredTime> registeredTimeList = new ArrayList<>();
+        if(consultancyTime.isEmpty()){
+            return registeredTimeList;
+        }
         for (TimekeeperRegisteredTimeResponseDto item : consultancyTime) {
-            consultantTimeDtoList.add(new ConsultantTimeDto(
+            registeredTimeList.add(new RegisteredTime(
                     new RegisteredTimeKey(consultantId, item.date().withHour(0).withMinute(0).withSecond(0)),
-                    item.date().withHour(23).withMinute(59).withSecond(59),
                     item.activityName(),
+                    item.date().withHour(23).withMinute(59).withSecond(59),
                     item.totalHours(),
                     item.projectName()));
         }
-        return consultantTimeDtoList;
+        return registeredTimeList;
     }
 
     //-----------------------------COVERED BY TESTS ---------------------------------
-    public List<ConsultantTimeDto> filterOutIncorrectlyRegisteredTimeDB(List<ConsultantTimeDto> consultantRegisteredTime) {
+    public List<RegisteredTime> filterOutIncorrectlyRegisteredTimeDB(List<RegisteredTime> consultantRegisteredTime) {
         return consultantRegisteredTime
                 .stream()
-                .filter(el -> el.totalHours() != 0
-                        || (!el.dayType().equals(CONSULTANCY_TIME.activity)
-                        && !el.dayType().equals(OWN_ADMINISTRATION.activity)))
+                .filter(el -> el.getTotalHours() != 0
+                        || (!el.getType().equals(CONSULTANCY_TIME.activity)
+                        && !el.getType().equals(OWN_ADMINISTRATION.activity)))
                 .toList();
     }
 
-    private void saveConsultantTimeDB(List<ConsultantTimeDto> consultantTimeDtoList) {
-        Map<LocalDate, ConsultantTimeDto> timelineItemsMap = createTimeItemsDB(consultantTimeDtoList);
-        List<ConsultantTimeDto> timeToSave = new ArrayList<>(timelineItemsMap.values());
-        for (ConsultantTimeDto t : timeToSave) {
-            registeredTimeRepository
-                    .save(new RegisteredTime(
-                            new RegisteredTimeKey(t.itemId().getConsultantId(),
-                                    t.itemId().getStartDate()),
-                            t.dayType(),
-                            t.endDate().withHour(23).withMinute(59).withSecond(59),
-                            Math.round(t.totalHours() * 10.0) / 10.0,
-                            t.projectName()
-                    ));
-        }
+    private void saveConsultantTimeDB(List<RegisteredTime> consultantTimeDtoList) {
+        registeredTimeRepository.saveAll(createTimeItemsDB(consultantTimeDtoList));
     }
 
-    private Map<LocalDate, ConsultantTimeDto> createTimeItemsDB(List<ConsultantTimeDto> consultantTimeDtoList) {
-        Map<LocalDate, ConsultantTimeDto> timeItemsMap = new HashMap<>();
-        consultantTimeDtoList.forEach(consultantTimeDto -> {
-            LocalDate startDate = consultantTimeDto.itemId().getStartDate().toLocalDate();
+    private List<RegisteredTime> createTimeItemsDB(List<RegisteredTime> consultantTimeDtoList) {
+        Map<LocalDate, RegisteredTime> timeItemsMap = new HashMap<>();
+        consultantTimeDtoList.forEach(registeredTime -> {
+            LocalDate startDate = registeredTime.getId().getStartDate().toLocalDate();
             if (timeItemsMap.containsKey(startDate)) {
                 timeItemsMap.compute(startDate, (k, v) ->
-                        new ConsultantTimeDto(
-                                consultantTimeDto.itemId(),
-                                consultantTimeDto.endDate(),
-                                consultantTimeDto.dayType(),
-                                consultantTimeDto.totalHours() + timeItemsMap.get(startDate).totalHours(),
-                                consultantTimeDto.projectName()));
+                        new RegisteredTime(
+                                registeredTime.getId(),
+                                registeredTime.getType(),
+                                registeredTime.getEndDate(),
+                                registeredTime.getTotalHours() + timeItemsMap.get(startDate).getTotalHours(),
+                                registeredTime.getProjectName()));
             } else {
-                timeItemsMap.put(startDate, consultantTimeDto);
+                timeItemsMap.put(startDate, registeredTime);
             }
         });
-        return timeItemsMap;
+        return new ArrayList<>(timeItemsMap.values());
     }
 
-
+    @Cacheable(cacheNames = "totalStatistics", key="#id")
     public TotalDaysStatisticsDto getAllDaysStatistics(UUID id) {
         String country = consultantService.getCountryCodeByConsultantId(id);
         int totalWorkedDays = countTotalWorkedDays(id);
