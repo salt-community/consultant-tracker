@@ -1,11 +1,16 @@
 package salt.consultanttracker.api.consultant;
 
+import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
+import org.mockito.Mockito;
 import salt.consultanttracker.api.demo.DemoConsultantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -24,7 +29,7 @@ public class ConsultantControllerTest {
 
 //    @Test
 //    @DisplayName("/api/consultants")
-//    void givenNoFilterData__whenGetApiConsultants__thenReturn1ConsultantWithNameHermanGustav() throws Exception {
+//    public void givenNoFilterData__whenGetApiConsultants__thenReturn1ConsultantWithNameHermanGustav() throws Exception {
 //        Mockito.when(consultantService.getAllConsultantDtos(any(Integer.class),
 //                any(Integer.class),
 //                any(String.class),
@@ -38,7 +43,7 @@ public class ConsultantControllerTest {
 //    }
 //    @Test
 //    @DisplayName("/api/consultants?name=Lynn")
-//    void givenNameLynn__whenGetApiConsultants__thenReturn1ConsultantWithNameMichaelLynn() throws Exception {
+//    public void givenNameLynn__whenGetApiConsultants__thenReturn1ConsultantWithNameMichaelLynn() throws Exception {
 //        Mockito.when(consultantService.getAllConsultantDtos(0,
 //                10,
 //                "Lynn",

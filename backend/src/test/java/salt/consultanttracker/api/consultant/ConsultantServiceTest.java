@@ -1,7 +1,9 @@
 package salt.consultanttracker.api.consultant;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import salt.consultanttracker.api.ApplicationTestConfig;
 import salt.consultanttracker.api.ObjectConstructor;
+import salt.consultanttracker.api.cache.CacheService;
 import salt.consultanttracker.api.client.timekeeper.TimekeeperClient;
 import salt.consultanttracker.api.client.timekeeper.dto.TimekeeperUserDto;
 import salt.consultanttracker.api.consultant.dto.ClientsListDto;
@@ -56,11 +58,13 @@ class ConsultantServiceTest extends ApplicationTestConfig {
     private static Consultant mockedConsultant1;
     private static Consultant mockedConsultant2;
     private static Consultant mockedConsultant3;
+    @MockBean
+    private CacheService cacheService;
 
 
     @BeforeEach
     void setUpBeforeEach() {
-        consultantService = new ConsultantService(mockedConsultantRepo, mockedTkClient, mockedRegisteredTimeService, mockedTimeChunksService, mockedMeetingsScheduleService,mockedSaltUserService);
+        consultantService = new ConsultantService(mockedConsultantRepo, mockedTkClient, mockedRegisteredTimeService, mockedTimeChunksService, mockedMeetingsScheduleService,mockedSaltUserService, cacheService);
         // mock consultants
         mockedConsultant1 = new Consultant(
                 UUID.fromString("68c670d6-3038-4fca-95be-2669aaf0b549"),
@@ -167,7 +171,7 @@ class ConsultantServiceTest extends ApplicationTestConfig {
     @SneakyThrows
     void shouldAddConsultantToList() {
         /* ARRANGE */
-        var consultantServiceClass = new ConsultantService(mockedConsultantRepo, mockedTkClient, mockedRegisteredTimeService,mockedTimeChunksService,mockedMeetingsScheduleService, mockedSaltUserService);
+        var consultantServiceClass = new ConsultantService(mockedConsultantRepo, mockedTkClient, mockedRegisteredTimeService,mockedTimeChunksService,mockedMeetingsScheduleService, mockedSaltUserService, cacheService);
         var createConsultantMethod = consultantServiceClass.getClass().getDeclaredMethod("saveConsultant", Consultant.class);
         createConsultantMethod.setAccessible(true);
         var listSizeBefore = MockedConsultantService.mockedGetConsultantsList().size();
@@ -198,7 +202,7 @@ class ConsultantServiceTest extends ApplicationTestConfig {
         Mockito.when(mockedConsultantRepo.save(any(Consultant.class)))
                 .thenReturn(MockedConsultantService.mockedUpdateConsultant(mockedConsultant3));
 
-        var consultantServiceClass = new ConsultantService(mockedConsultantRepo, mockedTkClient, mockedRegisteredTimeService, mockedTimeChunksService,mockedMeetingsScheduleService, mockedSaltUserService);
+        var consultantServiceClass = new ConsultantService(mockedConsultantRepo, mockedTkClient, mockedRegisteredTimeService, mockedTimeChunksService,mockedMeetingsScheduleService, mockedSaltUserService,cacheService);
         var updateIsActiveForExistingConsultantMethod = consultantServiceClass
                 .getClass()
                 .getDeclaredMethod("updateExistingConsultant", TimekeeperUserDto.class);
@@ -229,7 +233,7 @@ class ConsultantServiceTest extends ApplicationTestConfig {
         try (MockedStatic<Tag> mockTag = mockStatic(Tag.class)) {
             mockTag.when(() -> Tag.extractCountryTagFromTimekeeperUserDto(any(TimekeeperUserDto.class))).thenReturn("Sverige");
         }
-        var consultantServiceClass = new ConsultantService(mockedConsultantRepo, mockedTkClient, mockedRegisteredTimeService, mockedTimeChunksService,mockedMeetingsScheduleService, mockedSaltUserService);
+        var consultantServiceClass = new ConsultantService(mockedConsultantRepo, mockedTkClient, mockedRegisteredTimeService, mockedTimeChunksService,mockedMeetingsScheduleService, mockedSaltUserService,cacheService);
         var updateConsultantTableMethod = consultantServiceClass.getClass().getDeclaredMethod("updateConsultantTable", List.class);
         updateConsultantTableMethod.setAccessible(true);
 
@@ -259,7 +263,7 @@ class ConsultantServiceTest extends ApplicationTestConfig {
 
         Mockito.when(mockedConsultantRepo.existsByTimekeeperId(anyLong())).thenReturn(true);
         Mockito.when(mockedConsultantRepo.findAll()).thenReturn(MockedConsultantService.mockedGetConsultantsList());
-        var consultantServiceClass = new ConsultantService(mockedConsultantRepo, mockedTkClient, mockedRegisteredTimeService, mockedTimeChunksService,mockedMeetingsScheduleService, mockedSaltUserService);
+        var consultantServiceClass = new ConsultantService(mockedConsultantRepo, mockedTkClient, mockedRegisteredTimeService, mockedTimeChunksService,mockedMeetingsScheduleService, mockedSaltUserService,cacheService);
         var updateConsultantTableMethod = consultantServiceClass.getClass().getDeclaredMethod("updateConsultantTable", List.class);
         updateConsultantTableMethod.setAccessible(true);
 
@@ -285,7 +289,7 @@ class ConsultantServiceTest extends ApplicationTestConfig {
                 ObjectConstructor.convertConsultantToTimekeeperUserDto(mockedConsultant1));
 
         Mockito.when(mockedConsultantRepo.existsByTimekeeperId(anyLong())).thenReturn(true);
-        var consultantServiceClass = new ConsultantService(mockedConsultantRepo, mockedTkClient, mockedRegisteredTimeService, mockedTimeChunksService,mockedMeetingsScheduleService, mockedSaltUserService);
+        var consultantServiceClass = new ConsultantService(mockedConsultantRepo, mockedTkClient, mockedRegisteredTimeService, mockedTimeChunksService,mockedMeetingsScheduleService, mockedSaltUserService,cacheService);
         var updateConsultantTableMethod = consultantServiceClass.getClass().getDeclaredMethod("updateConsultantTable", List.class);
         updateConsultantTableMethod.setAccessible(true);
 
@@ -319,15 +323,14 @@ class ConsultantServiceTest extends ApplicationTestConfig {
         /* ARRANGE FOR HELPER TO THE HELPER METHOD - createConsultant() */
         Mockito.when(mockedConsultantRepo.save(any(Consultant.class)))
                 .thenReturn(MockedConsultantService.mockedCreateConsultant(ObjectConstructor.convertTimekeeperUserDtoToConsultant(mockedTkList.getFirst())));
-
+        List<Consultant> activeConsultants = MockedConsultantService.mockedGetConsultantsList();
         /* ARRANGE FOR HELPER METHOD - registeredTimeService.fetchAndSaveTimeRegisteredByConsultant() */
         doAnswer((Answer<Void>) invocation -> {
             MockedRegisteredTimeService.mockedFetchAndSaveTimeRegisteredByConsultant();
             return null;
-        }).when(mockedRegisteredTimeService).fetchAndSaveTimeRegisteredByConsultantDB();
-
+        }).when(mockedRegisteredTimeService).fetchAndSaveTimeRegisteredByConsultantDB(activeConsultants);
         /* ARRANGE FOR HELPER METHOD - fillClientAndResponsiblePt() */
-        List<Consultant> activeConsultants = MockedConsultantService.mockedGetConsultantsList();
+
         Mockito.when(mockedConsultantRepo.save(any(Consultant.class)))
                 .thenReturn(MockedConsultantService.mockedUpdateConsultant(activeConsultants.getFirst()));
 

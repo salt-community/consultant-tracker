@@ -92,15 +92,15 @@ class RegisteredTimeServiceTest {
 
     @Test
     public void shouldReturnNoItemsWhenListIncludesOnlyWronglyRegisteredTime(){
-        List<ConsultantTimeDto> mockedTimeItemsList = RegisteredTimeServiceMockedData.createAllWronglyRegisteredTimeMockedData();
-        List<ConsultantTimeDto> actualResult = registeredTimeService.filterOutIncorrectlyRegisteredTimeDB(mockedTimeItemsList);
+        List<RegisteredTime> mockedTimeItemsList = RegisteredTimeServiceMockedData.createAllWronglyRegisteredTimeMockedData();
+        List<RegisteredTime> actualResult = registeredTimeService.filterOutIncorrectlyRegisteredTimeDB(mockedTimeItemsList);
         assertEquals(0, actualResult.size());
     }
 
     @Test
     public void shouldReturnThreeTimeItemsWhenListIncludesIncorrectlyRegisteredItemButTypeSemester() {
-        List<ConsultantTimeDto> mockedTimeItemsList = RegisteredTimeServiceMockedData.createSomeWronglyRegisteredTimeMockedData();
-        List<ConsultantTimeDto> actualResult = registeredTimeService.filterOutIncorrectlyRegisteredTimeDB(mockedTimeItemsList);
+        List<RegisteredTime> mockedTimeItemsList = RegisteredTimeServiceMockedData.createSomeWronglyRegisteredTimeMockedData();
+        List<RegisteredTime> actualResult = registeredTimeService.filterOutIncorrectlyRegisteredTimeDB(mockedTimeItemsList);
         assertEquals(2, actualResult.size());
     }
 }
