@@ -5,6 +5,9 @@ import lombok.Data;
 
 import java.util.List;
 
+import static salt.consultanttracker.api.utils.Country.NORWAY;
+import static salt.consultanttracker.api.utils.Country.SWEDEN;
+
 @Data
 public class Tag {
     private String name;
@@ -12,9 +15,9 @@ public class Tag {
     public static String extractCountryTagFromTimekeeperUserDto(TimekeeperUserDto tkUser) {
         List<Tag> countryTagList = tkUser.tags()
                 .stream()
-                .filter(el -> el.getName().trim().equals("Norge")
-                        || el.getName().trim().equals("Sverige"))
+                .filter(el -> el.getName().trim().equals(NORWAY.country)
+                        || el.getName().trim().equals(SWEDEN.country))
                 .toList();
-        return !countryTagList.isEmpty() ? countryTagList.getFirst().getName().trim() : "Sverige";
+        return !countryTagList.isEmpty() ? countryTagList.getFirst().getName().trim() : SWEDEN.country;
     }
 }
