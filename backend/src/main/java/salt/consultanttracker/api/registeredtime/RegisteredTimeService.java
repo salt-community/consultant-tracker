@@ -54,10 +54,10 @@ public class RegisteredTimeService {
     }
 
     //-----------------------------------MOVE TO SEPARATE SERVICE--------------------------------------------
-    public void fetchAndSaveTimeRegisteredByConsultantDB() {
-        List<Consultant> activeConsultants = consultantService.getAllActiveConsultants();
-        for (Consultant consultant : activeConsultants) {
-            List<ConsultantTimeDto> consultantRegisteredTime = fetchTimeFromTimekeeperDB(consultant.getId(), consultant.getTimekeeperId());
+    public void fetchAndSaveTimeRegisteredByConsultantDB(List<Consultant> consultants) {
+        for (Consultant consultant : consultants) {
+            List<ConsultantTimeDto> consultantRegisteredTime =
+                    fetchTimeFromTimekeeperDB(consultant.getId(), consultant.getTimekeeperId());
             consultantRegisteredTime = filterOutIncorrectlyRegisteredTimeDB(consultantRegisteredTime);
             saveConsultantTimeDB(consultantRegisteredTime);
         }
