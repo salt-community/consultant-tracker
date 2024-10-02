@@ -10,7 +10,9 @@ public enum Activity {
     CONSULTANCY_TIME("Konsult-tid"),
     ON_CALL("Jourtid"),
     PGP("PGP"),
-    REMAINING_DAYS("Remaining Days");
+    UPSKILLING("Upskilling"),
+    REMAINING_DAYS("Remaining Days"),
+    ON_ASSIGNMENT("På uppdrag");
     public final String activity;
     Activity(String activity) {
         this.activity = activity;

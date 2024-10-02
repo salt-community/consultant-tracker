@@ -2,6 +2,7 @@ package salt.consultanttracker.api.consultant;
 
 import salt.consultanttracker.api.client.notion.dtos.ConsultantsNProxyDto;
 import salt.consultanttracker.api.client.notion.dtos.ResponsiblePTDto;
+import salt.consultanttracker.api.client.timekeeper.Activity;
 import salt.consultanttracker.api.client.timekeeper.TimekeeperClient;
 import salt.consultanttracker.api.client.timekeeper.dto.TimekeeperUserDto;
 import salt.consultanttracker.api.consultant.dto.*;
@@ -25,7 +26,7 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.logging.Logger;
 
-import static salt.consultanttracker.api.consultant.NotClient.PGP;
+import static salt.consultanttracker.api.client.timekeeper.Activity.*;
 import static salt.consultanttracker.api.utils.Country.SWEDEN;
 
 
@@ -66,7 +67,7 @@ public class ConsultantService {
         if (pt != null) {
             totalConsultants = consultantRepository.countAllByActiveTrueAndResponsiblePT(pt);
         }
-        int totalPgpConsultants = consultantRepository.countAllByActiveTrueAndClient(PGP.value);
+        int totalPgpConsultants = consultantRepository.countAllByActiveTrueAndClient(PGP.activity);
         return new InfographicResponseDto(totalConsultants, totalPtsConsultants, totalPgpConsultants);
     }
 
@@ -84,8 +85,8 @@ public class ConsultantService {
         List<ClientsListDto> clientsListDto = new ArrayList<>();
         List<String> distinctClients = registeredTimeService.getClientsByConsultantId(consultantId);
         for (String client : distinctClients) {
-            if (!client.equalsIgnoreCase(PGP.value)
-                    && !client.equalsIgnoreCase(NotClient.UPSKILLING.value)) {
+            if (!client.equalsIgnoreCase(PGP.activity)
+                    && !client.equalsIgnoreCase(UPSKILLING.activity)) {
                 LocalDate startDate = registeredTimeService.getStartDateByClientAndConsultantId(client, consultantId);
                 LocalDate endDate = registeredTimeService.getEndDateByClientAndConsultantId(client, consultantId);
                 clientsListDto.add(new ClientsListDto(client, startDate, endDate));
@@ -151,10 +152,10 @@ public class ConsultantService {
         List<Consultant> allActiveConsultants = getAllActiveConsultants();
 
         fillClients(allActiveConsultants);
-        LOGGER.info("Clients and PTs filled");
+        LOGGER.info("Clients field filled");
 
         timeChunksService.saveTimeChunksForAllConsultants(allActiveConsultants);
-        LOGGER.info("Chunks saved");
+        LOGGER.info("Time chunks saved");
 
     }
 
@@ -194,13 +195,13 @@ public class ConsultantService {
         }
         if (tkUser.tags() != null
                 && !tkUser.tags().stream()
-                .filter(el -> el.getName().contains("På uppdrag")).toList().isEmpty()) {
+                .filter(el -> el.getName().contains(ON_ASSIGNMENT.activity)).toList().isEmpty()) {
             consultant.setClient(null);
             updated = true;
         } else if (tkUser.tags() != null
                 && !tkUser.tags().stream()
-                .filter(el -> el.getName().contains(PGP.value)).toList().isEmpty()) {
-            consultant.setClient(PGP.value);
+                .filter(el -> el.getName().contains(PGP.activity)).toList().isEmpty()) {
+            consultant.setClient(PGP.activity);
             updated = true;
         }
         if (updated) {
@@ -237,7 +238,7 @@ public class ConsultantService {
     public Set<String> getListOfAllClients(boolean includePgp) {
         Set<String> listOfClients = consultantRepository.findDistinctClientsByActiveTrue();
         if(!includePgp){
-            listOfClients.remove(PGP.value);
+            listOfClients.remove(PGP.activity);
         }
         return listOfClients;
     }
