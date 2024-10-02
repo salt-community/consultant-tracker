@@ -62,7 +62,6 @@ public class MeetingsScheduleService {
                 }
             }
             createMeetings(consultant, timeChunksByConsultant);
-
         }
         LOGGER.info("Meetings dates assigned for active consultants");
     }
@@ -74,7 +73,7 @@ public class MeetingsScheduleService {
 //        int fourthMeetingWeeks = 2;
         LocalDate firstMeeting = getFirstMeetingDate(timeChunks, firstMeetingWeeks);
         LocalDate secondMeeting = getSecondMeetingDate(timeChunks);
-        LocalDate thirdMeeting = getThirdOrFourthMeetingDate(timeChunks, thirdMeetingWeeks);
+        LocalDate thirdMeeting = getThirdMeetingDate(timeChunks, thirdMeetingWeeks);
 //        LocalDate fourthMeeting = getThirdOrFourthMeetingDate(timeChunks, fourthMeetingWeeks);
         if (firstMeeting != null) {
             saveMeeting(consultant, FIRST, firstMeeting);
@@ -120,11 +119,10 @@ public class MeetingsScheduleService {
         return firstDayOfWork.plusDays(countWeeksBetween / 2).toLocalDate();
     }
 
-    public LocalDate getThirdOrFourthMeetingDate(List<TimeChunks> timeChunks, int weeks) {
+    public LocalDate getThirdMeetingDate(List<TimeChunks> timeChunks, int weeks) {
         LocalDateTime estimatedEndDate = timeChunks.getLast().getEndDate();
         return estimatedEndDate.toLocalDate().minusWeeks(weeks);
     }
-
 
     private LocalDateTime getFirstDayOfWork(List<TimeChunks> timeChunks) {
         TimeChunks consultancyStart = timeChunks.stream()
