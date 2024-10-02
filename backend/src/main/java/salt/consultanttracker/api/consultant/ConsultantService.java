@@ -146,10 +146,11 @@ public class ConsultantService {
         List<TimekeeperUserDto> timekeeperUserDto = timekeeperClient.getUsers();
         assert timekeeperUserDto != null;
         updateConsultantTable(timekeeperUserDto);
-        registeredTimeService.fetchAndSaveTimeRegisteredByConsultantDB();
+        List<Consultant> allActiveConsultants = getAllActiveConsultants();
+        registeredTimeService.fetchAndSaveTimeRegisteredByConsultantDB(allActiveConsultants);
         LOGGER.info("Data fetched from timekeeper");
 
-        List<Consultant> allActiveConsultants = getAllActiveConsultants();
+
 
         fillClients(allActiveConsultants);
         LOGGER.info("Clients field filled");

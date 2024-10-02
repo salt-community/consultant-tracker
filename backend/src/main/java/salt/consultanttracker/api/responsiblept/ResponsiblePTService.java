@@ -2,13 +2,14 @@ package salt.consultanttracker.api.responsiblept;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import salt.consultanttracker.api.client.notion.dtos.ConsultantsNProxyDto;
 import salt.consultanttracker.api.client.notion.dtos.ResponsiblePTDto;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+
+import static salt.consultanttracker.api.responsiblept.Role.PT;
 
 @Service
 @RequiredArgsConstructor
@@ -41,7 +42,7 @@ public class ResponsiblePTService {
         dto.stream()
                 .filter(el -> !listOfPtsIdsFromDB.contains(el.id()))
                 .forEach(el -> {
-                    responsiblePTRepository.save(new ResponsiblePT(el.id(), el.name(), el.email(), "pt"));
+                    responsiblePTRepository.save(new ResponsiblePT(el.id(), el.name(), el.email(), PT.role));
                 });
     }
 }
