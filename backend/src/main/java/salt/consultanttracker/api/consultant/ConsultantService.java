@@ -1,6 +1,5 @@
 package salt.consultanttracker.api.consultant;
 
-import org.springframework.cache.annotation.Cacheable;
 import salt.consultanttracker.api.cache.CacheService;
 import salt.consultanttracker.api.client.notion.dtos.ConsultantsNProxyDto;
 import salt.consultanttracker.api.client.notion.dtos.ResponsiblePTDto;
