@@ -67,19 +67,13 @@ public class MeetingsScheduleService {
     }
 
     private void createMeetings(Consultant consultant, List<TimeChunks> timeChunks) {
-        int firstMeetingWeeks = 4;
-        int thirdMeetingWeeks = 8;
-        // Logic for forth meeting commented out as it is not used in the current implementation
-//        int fourthMeetingWeeks = 2;
-        LocalDate firstMeeting = getFirstMeetingDate(timeChunks, firstMeetingWeeks);
+        LocalDate firstMeeting = getFirstMeetingDate(timeChunks);
         LocalDate secondMeeting = getSecondMeetingDate(timeChunks);
-        LocalDate thirdMeeting = getThirdMeetingDate(timeChunks, thirdMeetingWeeks);
-//        LocalDate fourthMeeting = getThirdOrFourthMeetingDate(timeChunks, fourthMeetingWeeks);
+        LocalDate thirdMeeting = getThirdMeetingDate(timeChunks);
         if (firstMeeting != null) {
             saveMeeting(consultant, FIRST, firstMeeting);
             saveMeeting(consultant, SECOND, secondMeeting);
             saveMeeting(consultant, THIRD, thirdMeeting);
-//            saveMeeting(consultant, FOURTH, fourthMeeting);
         }
     }
 
@@ -92,7 +86,8 @@ public class MeetingsScheduleService {
                 consultant.getResponsiblePT()));
     }
 
-    public LocalDate getFirstMeetingDate(List<TimeChunks> timeChunks, int weeks) {
+    public LocalDate getFirstMeetingDate(List<TimeChunks> timeChunks) {
+        int weeks = 4;
         int nonConsultancyTime = 0;
         LocalDateTime firstDayOfWork = getFirstDayOfWork(timeChunks);
         if (firstDayOfWork == null) {
@@ -119,7 +114,8 @@ public class MeetingsScheduleService {
         return firstDayOfWork.plusDays(countWeeksBetween / 2).toLocalDate();
     }
 
-    public LocalDate getThirdMeetingDate(List<TimeChunks> timeChunks, int weeks) {
+    public LocalDate getThirdMeetingDate(List<TimeChunks> timeChunks) {
+        int weeks = 8;
         LocalDateTime estimatedEndDate = timeChunks.getLast().getEndDate();
         return estimatedEndDate.toLocalDate().minusWeeks(weeks);
     }
