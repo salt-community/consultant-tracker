@@ -1,5 +1,6 @@
 package salt.consultanttracker.api.reddays;
 
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import salt.consultanttracker.api.reddays.dto.RedDaysResponseDto;
 import org.junit.jupiter.api.Test;
 
@@ -18,6 +19,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @WebMvcTest(RedDayController.class)
+@AutoConfigureMockMvc(addFilters = false)
 public class RedDayControllerTest {
     @Autowired
     MockMvc mockMvc;
@@ -31,7 +33,7 @@ public class RedDayControllerTest {
         List<LocalDate> listRedDaysNO =  List.of(LocalDate.parse("2024-12-25"));
         var mockedServiceData = new RedDaysResponseDto(listRedDaysSE,listRedDaysNO);
         Mockito.when(redDayService.getAllRedDays()).thenReturn(mockedServiceData);
-        mockMvc.perform(get("/api/redDays"))
+        mockMvc.perform(get("/api/red-days"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.redDaysSE").value("2024-12-24"))
