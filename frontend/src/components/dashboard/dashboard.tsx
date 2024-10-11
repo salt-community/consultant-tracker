@@ -14,8 +14,8 @@ export const Dashboard = () => {
   return (
     <Provider store={store}>
       {role === "ADMIN" &&
-          <Button onClick={() => dispatch(setModalOpen(true))} variant="contained" color="primary">
-              Populate db
+          <Button onClick={() => dispatch(setModalOpen(true))} variant="contained" color="primary" className="button-wrapper" style={{ backgroundColor: '#D3D3D3', color: 'black', fontWeight: 300,  }}>
+              Refresh database 
           </Button>
       }
       <ModalComponent/>

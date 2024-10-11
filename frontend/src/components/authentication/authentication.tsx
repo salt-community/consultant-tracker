@@ -28,7 +28,7 @@ export const Authentication = () => {
   const getAccessToken = async () => {
     let token: string | null = "";
     token = await getToken({template});
-
+    console.log("Token: " + token)
     if (token === null) {
       dispatch(setAuthorized(false));
       return;

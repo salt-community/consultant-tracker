@@ -9,3 +9,13 @@
 .table-head{
 
 }
+
+.icon-wrapper{
+    height: 100px;
+    width: 100px;
+}
+
+.button-wrapper{
+    display: flex;
+    flex-direction: row;
+}
