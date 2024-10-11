@@ -35,7 +35,7 @@ export const TimelineComponent = () => {
     dispatch(setSelectedId(consultantItems.group));
   };
 
-  return items.length > 0 ? (
+  return groups.length > 0 ? (
     <Timeline
       groups={groups}
       items={items}
