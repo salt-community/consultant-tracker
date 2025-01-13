@@ -109,7 +109,7 @@ export const FilterField = () => {
         <legend className="filter-section__title"> Filter</legend>
         <div className="filter-by__wrapper">
           <TextInput
-            label={`By consultant name`}
+            label={`Consultant name`}
             name="consultant-name-input"
             value={filterName}
             onChange={handleInputChange}
@@ -120,14 +120,14 @@ export const FilterField = () => {
           handleSelection={handleClientSelection}
           setSelection={(clients) => dispatch(setFilterClients(clients))}
           selected={filterClients}
-          label="Filter by client"
+          label="Client"
         />
         <Multiselect
           fullList={listOfPts}
           handleSelection={handlePtsSelection}
           setSelection={(pts) => dispatch(setFilterPts(pts))}
           selected={filterPts}
-          label="Filter by responsible pt"
+          label="Responsible P&T"
         />
         <Button onClick={handleClear} variant="contained">
           Clear filter
