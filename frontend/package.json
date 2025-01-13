@@ -13,7 +13,7 @@
     "@clerk/clerk-react": "5.9.0",
     "@emotion/react": "11.11.4",
     "@emotion/styled": "11.11.5",
-    "@mui/icons-material": "5.15.21",
+    "@mui/icons-material": "^5.15.21",
     "@mui/material": "5.15.21",
     "@reduxjs/toolkit": "2.2.7",
     "date-fns": "3.6.0",
