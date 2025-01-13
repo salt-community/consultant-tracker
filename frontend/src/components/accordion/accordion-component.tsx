@@ -9,6 +9,7 @@ type Props = {
   title: string,
   content: ReactNode
 }
+
 export const AccordionComponent = ({title, content}: Props) => {
   return (
     <Accordion className="accordion__container">

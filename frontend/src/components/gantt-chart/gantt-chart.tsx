@@ -3,6 +3,7 @@ import "./gantt-chart.css";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
+import { IoIosInformationCircleOutline } from "react-icons/io";
 import {
   setError,
   setGroups,
@@ -101,12 +102,20 @@ export const GanttChart = () => {
     <Error message={error} />
   ) : (
     <div>
-      <AccordionComponent title="Legend" content={<Legend />} />
       <Pagination />
       <div className="gantt-chart__wrapper">
         <TimelineComponent />
         {id.length > 0 && <BasicInfo />}
       </div>
+      <AccordionComponent
+  title={
+    <span style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+      <IoIosInformationCircleOutline />
+      Info
+    </span>
+  }
+  content={<Legend />}
+/>
     </div>
   );
 };
