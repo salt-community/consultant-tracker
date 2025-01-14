@@ -26,7 +26,7 @@ const DashboardHeader = () => {
           {
             title: "Total consultants",
             amount: res.totalConsultants,
-            variant: "blue",
+            
           },
           {
             title: "Total PGP",

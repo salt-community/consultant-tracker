@@ -1,4 +1,5 @@
-import "./infographic.css";
+// import "./infographic.css";
+import "./infographic-v1.css";
 
 type Props = {
   title: string;

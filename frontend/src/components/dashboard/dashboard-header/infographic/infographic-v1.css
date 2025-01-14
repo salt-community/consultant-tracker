@@ -1,0 +1,16 @@
+.infographic-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  font-size: 15px;
+}
+
+h5{
+    font-size: 15px;
+    padding-right: 5px;
+}
+span{
+    font-size: 15px;
+    
+}
+

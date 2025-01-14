@@ -26,6 +26,7 @@ import { getConsultantsData } from "../../api";
 import { mapConsultantsToCalendarItems, mapGroups } from "../../utils/utils.ts";
 import { useAuth } from "@clerk/clerk-react";
 import { template } from "../../constants";
+import DashboardHeader from "../dashboard/dashboard-header/dashboard-header.tsx";
 
 export const GanttChart = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -114,7 +115,10 @@ export const GanttChart = () => {
         }
         content={<Legend />}
       />
-      <Pagination />
+      <div className="table-header">
+        <DashboardHeader/>
+        <Pagination />
+      </div>
       <div className="gantt-chart__wrapper">
         <TimelineComponent />
         {id.length > 0 && <BasicInfo />}

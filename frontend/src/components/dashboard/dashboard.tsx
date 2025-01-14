@@ -26,11 +26,11 @@ export const Dashboard = () => {
             fontWeight: 300,
           }}
         >
-          Refresh database <RefreshIcon />
+          Refresh database <RefreshIcon style={{height: "16px"}} />
         </Button>
       )}
       <ModalComponent />
-      <DashboardHeader />
+      {/* <DashboardHeader /> */}
       <FilterField />
       <GanttChart />
       <Toaster />
