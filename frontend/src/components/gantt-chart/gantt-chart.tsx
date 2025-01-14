@@ -26,7 +26,6 @@ import { getConsultantsData } from "../../api";
 import { mapConsultantsToCalendarItems, mapGroups } from "../../utils/utils.ts";
 import { useAuth } from "@clerk/clerk-react";
 import { template } from "../../constants";
-import { red } from "@mui/material/colors";
 
 export const GanttChart = () => {
   const dispatch = useDispatch<AppDispatch>();
