@@ -4,6 +4,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, {SelectChangeEvent} from '@mui/material/Select';
 import {Checkbox, ListItemText} from "@mui/material";
+import "./multiselect.css";
 
 type Props = {
   fullList: string[];
@@ -25,7 +26,7 @@ const Multiselect = ({fullList, handleSelection, selected, setSelection, label}:
     <div>
       <FormControl sx={{m: 1, width: 300}}>
         <InputLabel id="demo-multiple-checkbox-label">{label}</InputLabel>
-        <Select
+        <Select className='multiselect' 
           labelId="demo-multiple-checkbox-label"
           id="demo-multiple-checkbox"
           multiple
