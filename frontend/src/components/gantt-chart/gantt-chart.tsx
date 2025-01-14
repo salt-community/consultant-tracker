@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
 import { IoIosInformationCircleOutline } from "react-icons/io";
+import InfoIcon from '@mui/icons-material/Info';
 import {
   setError,
   setGroups,
@@ -107,7 +108,7 @@ export const GanttChart = () => {
           <span
             style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
           >
-            <IoIosInformationCircleOutline />
+            <IoIosInformationCircleOutline color="red" />
             Info
           </span>
         }
