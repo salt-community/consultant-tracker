@@ -4,6 +4,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import salt.consultanttracker.api.client.notion.dtos.ConsultantsNProxyDto;
 import salt.consultanttracker.api.client.notion.dtos.ResponsiblePTDto;
 import salt.consultanttracker.api.consultant.ConsultantService;
+import salt.consultanttracker.api.consultant.dto.ConsultantGIThubDto;
 import salt.consultanttracker.api.exceptions.ExternalAPIException;
 import salt.consultanttracker.api.messages.Messages;
 import salt.consultanttracker.api.responsiblept.ResponsiblePTService;
@@ -80,7 +81,30 @@ public class NotionClient {
                     })
                     .block();
             if (dto != null && !dto.isEmpty()) {
-               consultantService.updateConsultantsTableWithNotionData(dto);
+                consultantService.updateConsultantsTableWithNotionData(dto);
+                System.out.println("consultantsnproxy------------------>: " + dto);
+            } else {
+                throw new UnexpectedException(Messages.UNEXPECTED_RESPONSE_EXCEPTION_NPROXY);
+            }
+        } catch (Exception e) {
+            LOGGER.severe(Messages.NOTION_PROXY_FETCH_FAIL);
+            throw new ExternalAPIException(Messages.NOTION_PROXY_FETCH_FAIL);
+        }
+    }
+
+    //alu
+    @Scheduled(cron = "0 0 2 * * 4", zone = "Europe/Stockholm")
+    public String getClientGitHubFromNotion(String notionid) {
+        try {
+            List<ConsultantGIThubDto> dto = Collections.singletonList(CLIENT_URL.get()
+                    .uri("/developers/" + notionid + "/scores")
+                    .retrieve()
+                    .bodyToMono(new ParameterizedTypeReference<ConsultantGIThubDto>() {
+                    })
+                    .block());
+            if (dto != null && !dto.isEmpty()) {
+                System.out.println(dto);
+                return dto.toString();
             } else {
                 throw new UnexpectedException(Messages.UNEXPECTED_RESPONSE_EXCEPTION_NPROXY);
             }
@@ -90,3 +114,6 @@ public class NotionClient {
         }
     }
 }
+
+
+

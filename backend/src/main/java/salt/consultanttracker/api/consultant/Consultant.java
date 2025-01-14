@@ -27,6 +27,8 @@ public class Consultant {
     private boolean active;
     private String client;
     private String country;
+    private String githubImageUrl;
+
 
     @ManyToOne
     @JoinColumn(name = "responsiblePT_id", referencedColumnName = "id")

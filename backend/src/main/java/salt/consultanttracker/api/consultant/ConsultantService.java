@@ -1,6 +1,7 @@
 package salt.consultanttracker.api.consultant;
 
 import salt.consultanttracker.api.cache.CacheService;
+import salt.consultanttracker.api.client.notion.NotionClient;
 import salt.consultanttracker.api.client.notion.dtos.ConsultantsNProxyDto;
 import salt.consultanttracker.api.client.notion.dtos.ResponsiblePTDto;
 import salt.consultanttracker.api.client.timekeeper.TimekeeperClient;
@@ -41,6 +42,7 @@ public class ConsultantService {
     private final ResponsiblePTService responsiblePTService;
     private static final Logger LOGGER = Logger.getLogger(ConsultantService.class.getName());
     private final CacheService cacheService;
+//    private final NotionClient notionClient; ALU
 
     //-----------------------------COVERED BY TESTS ---------------------------------
 
@@ -168,6 +170,7 @@ public class ConsultantService {
                 /* *** METHOD BELOW IS TESTED SEPARATELY *** */
                 String countryTag = Tag.extractCountryTagFromTimekeeperUserDto(tkUser);
                 /* *** METHOD BELOW IS TESTED SEPARATELY *** */
+
                 saveConsultant(new Consultant(
                         UUID.randomUUID(),
                         tkUser.firstName().trim().concat(" ").concat(tkUser.lastName().trim()),
@@ -177,6 +180,7 @@ public class ConsultantService {
                         tkUser.isActive(),
                         tkUser.client(),
                         countryTag,
+                        null,
                         null));
             } else {
                 /* *** METHOD BELOW IS TESTED SEPARATELY *** */
@@ -249,6 +253,10 @@ public class ConsultantService {
         updateNotionIdInConsultantsTable(listOfConsultants);
         updateResponsiblePTInConsultantsTable(listOfConsultants);
     }
+//alu
+//    public String getConsultantGithubURI(String consultantId) {
+//        return notionClient.getClientGitHubFromNotion(consultantId);
+//    }
 
     private void updateResponsiblePTInConsultantsTable(List<ConsultantsNProxyDto> listOfNProxyConsultants) {
         List<Consultant> activeConsultants = consultantRepository.findAllByActiveTrueAndNotionIdIsNotNull();
@@ -274,6 +282,7 @@ public class ConsultantService {
                 UUID uuid = updateProxyIdByConsultantName(consultant.getFullName(), listOfNProxyConsultants);
                 if (uuid != null) {
                     consultant.setNotionId(uuid);
+                    consultant.setGithubImageUrl(consultant.getGithubImageUrl());
                 }
             });
             consultantRepository.saveAll(activeConsultants);

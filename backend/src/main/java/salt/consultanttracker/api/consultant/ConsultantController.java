@@ -1,8 +1,5 @@
 package salt.consultanttracker.api.consultant;
-import salt.consultanttracker.api.consultant.dto.ClientsAndPtsListDto;
-import salt.consultanttracker.api.consultant.dto.ConsultantResponseListDto;
-import salt.consultanttracker.api.consultant.dto.InfographicResponseDto;
-import salt.consultanttracker.api.consultant.dto.SingleConsultantResponseListDto;
+import salt.consultanttracker.api.consultant.dto.*;
 import salt.consultanttracker.api.demo.DemoConsultantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -51,6 +48,14 @@ public class ConsultantController {
         }
         return ResponseEntity.ok(consultantService.getConsultantById(id));
     }
+//alu
+//    @GetMapping("/github/{id}")
+//    public ResponseEntity<SingleConsultantResponseListDto> getConsultantGIThubById(@PathVariable UUID id) {
+//        if ("demo".equalsIgnoreCase(appMode)) {
+//
+//        }
+//        return ResponseEntity.ok(consultantService.getConsultantById(id));
+//    }
 
     @GetMapping("/all-clients-and-pts")
     public ResponseEntity<ClientsAndPtsListDto> getAllClientsAndPts(
