@@ -31,47 +31,47 @@ export const selectColor = (type: string) => {
 export const legend = [
   {
     color: "#6EACDA",
-    description: "Konsult-tid / Egen administration"
+    description: "Working hours (Konsult-tid)"
   },
   {
     color: "#7bc46e",
-    description: "Semester"
+    description: "Vacation (Semester)"
   },
   {
     color: "#F3FEB8",
-    description: "Sjuk"
+    description: "Sick leave (Sjuk)"
   },
   {
     color: "#8ddfc2",
-    description: "Tjänstledig"
+    description: "Off-duty (Tjänstledig)"
   },
   {
     color: "#a4a4a4",
-    description: "Remaining Days"
-  },
+    description: "Remaining Days (Dagar kvar)"
+  }, 
   {
     color: "#000000",
-    description: "Föräldraledig / VAB "
+    description: "Parental leave (Föräldraledig/VAB)"
   },
   {
     color: "#EF5A6F",
-    description: "No registered time"
+    description: "No registered time (Ej registrerad tid)"
   }
 ]
-export const redDaysAndWeekends =[
-  {
-    color: "#f5d1d7",
-    description: "Weekends "
-  },
-  {
-    color: "#F5D4A6FF",
-    description: "Holiday Norway "
-  },
-  {
-    color: "#F4AB9FFF",
-    description: "Holiday Sweden "
-  },
-]
+// export const redDaysAndWeekends =[
+//   {
+//     color: "#f5d1d7",
+//     description: "Weekends "
+//   },
+//   {
+//     color: "#F5D4A6FF",
+//     description: "Holiday Norway "
+//   },
+//   {
+//     color: "#F4AB9FFF",
+//     description: "Holiday Sweden "
+//   },
+// ]
 
 
 export const mapGroups = (res: any) => {

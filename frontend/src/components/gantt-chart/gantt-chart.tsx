@@ -11,15 +11,18 @@ import {
   setLoading,
   setOpenModal,
 } from "../../store/slices/GanttChartSlice";
-import {Pagination, AccordionComponent, Loading, Error, BasicInfo} from "../../components";
-import {TimelineComponent} from "./timeline-component";
+import {
+  Pagination,
+  AccordionComponent,
+  Loading,
+  Error,
+  BasicInfo,
+} from "../../components";
+import { TimelineComponent } from "./timeline-component";
 import { setTotalItems } from "../../store/slices/PaginationSlice";
 import Legend from "./legend/legend";
 import { getConsultantsData } from "../../api";
-import {
-  mapConsultantsToCalendarItems,
-  mapGroups,
-} from "../../utils/utils.ts";
+import { mapConsultantsToCalendarItems, mapGroups } from "../../utils/utils.ts";
 import { useAuth } from "@clerk/clerk-react";
 import { template } from "../../constants";
 
@@ -60,17 +63,14 @@ export const GanttChart = () => {
       includePgps: includePgps.toString(),
     };
     const searchParams = new URLSearchParams(params);
-    const token = await getToken({template});
+    const token = await getToken({ template });
 
     dispatch(setLoading(true));
     if (!token) {
       await signOut();
       return;
     }
-    getConsultantsData(
-     searchParams,
-      token
-    )
+    getConsultantsData(searchParams, token)
       .then((res) => {
         dispatch(setItems(mapConsultantsToCalendarItems(res)));
         dispatch(setTotalItems(res.totalConsultants));
@@ -102,20 +102,23 @@ export const GanttChart = () => {
     <Error message={error} />
   ) : (
     <div>
+      <AccordionComponent
+        title={
+          <span
+            style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
+          >
+            <IoIosInformationCircleOutline />
+            Info
+          </span>
+        }
+        content={<Legend />}
+      />
       <Pagination />
       <div className="gantt-chart__wrapper">
         <TimelineComponent />
         {id.length > 0 && <BasicInfo />}
       </div>
-      <AccordionComponent
-  title={
-    <span style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-      <IoIosInformationCircleOutline />
-      Info
-    </span>
-  }
-  content={<Legend />}
-/>
+      
     </div>
   );
 };
