@@ -3,7 +3,7 @@ import "./gantt-chart.css";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
-import { IoIosInformationCircleOutline } from "react-icons/io";
+// import { IoIosInformationCircleOutline } from "react-icons/io";
 import InfoIcon from '@mui/icons-material/Info';
 import {
   setError,
@@ -26,6 +26,7 @@ import { getConsultantsData } from "../../api";
 import { mapConsultantsToCalendarItems, mapGroups } from "../../utils/utils.ts";
 import { useAuth } from "@clerk/clerk-react";
 import { template } from "../../constants";
+import { red } from "@mui/material/colors";
 
 export const GanttChart = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -108,7 +109,7 @@ export const GanttChart = () => {
           <span
             style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
           >
-            <IoIosInformationCircleOutline color="red" />
+            <InfoIcon sx={{ color: "#FC7961" }} />
             Info
           </span>
         }
