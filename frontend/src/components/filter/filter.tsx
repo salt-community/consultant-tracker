@@ -129,7 +129,7 @@ export const FilterField = () => {
           selected={filterPts}
           label="Responsible P&T"
         />
-        <Button onClick={handleClear} variant="contained">
+        <Button onClick={handleClear} variant="contained" style={{backgroundColor: "#FC7961", color: "#f3f4f6", fontWeight: 500, borderRadius:"25px", fontStyle: "bold"}}>
           Clear filter
         </Button>
         <div className="filter-by__consultants">
