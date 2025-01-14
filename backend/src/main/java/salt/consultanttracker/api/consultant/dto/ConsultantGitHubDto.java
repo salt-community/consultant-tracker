@@ -1,5 +1,5 @@
 package salt.consultanttracker.api.consultant.dto;
 
-public record ConsultantGIThubDto(String githubUrl) {
+public record ConsultantGitHubDto(String githubUrl) {
 
 }

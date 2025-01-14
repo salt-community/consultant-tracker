@@ -4,7 +4,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import salt.consultanttracker.api.client.notion.dtos.ConsultantsNProxyDto;
 import salt.consultanttracker.api.client.notion.dtos.ResponsiblePTDto;
 import salt.consultanttracker.api.consultant.ConsultantService;
-import salt.consultanttracker.api.consultant.dto.ConsultantGIThubDto;
+import salt.consultanttracker.api.consultant.dto.ConsultantGitHubDto;
 import salt.consultanttracker.api.exceptions.ExternalAPIException;
 import salt.consultanttracker.api.messages.Messages;
 import salt.consultanttracker.api.responsiblept.ResponsiblePTService;
@@ -92,18 +92,16 @@ public class NotionClient {
         }
     }
 
-    //alu
-    @Scheduled(cron = "0 0 2 * * 4", zone = "Europe/Stockholm")
-    public String getClientGitHubFromNotion(String notionid) {
+    public String getConsultantGitHubImageUrlFromNotion(String notionId) {
         try {
-            List<ConsultantGIThubDto> dto = Collections.singletonList(CLIENT_URL.get()
-                    .uri("/developers/" + notionid + "/scores")
+            List<ConsultantGitHubDto> dto = CLIENT_URL.get()
+                    .uri("/developers/" + notionId + "/scores")
                     .retrieve()
-                    .bodyToMono(new ParameterizedTypeReference<ConsultantGIThubDto>() {
+                    .bodyToMono(new ParameterizedTypeReference<List<ConsultantGitHubDto>>() {
                     })
-                    .block());
+                    .block();
             if (dto != null && !dto.isEmpty()) {
-                System.out.println(dto);
+                System.out.println("github DTO: " + dto);
                 return dto.toString();
             } else {
                 throw new UnexpectedException(Messages.UNEXPECTED_RESPONSE_EXCEPTION_NPROXY);
