@@ -3,4 +3,10 @@
     box-shadow: rgba(17, 17, 26, 0.1) 0 4px 16px, rgba(17, 17, 26, 0.05) 0 8px 32px;
     border-radius: 5px;
     margin-bottom: 20px;
+    width: 20%;
+    transition: width 0.3s ease-in-out;
+}
+
+.MuiPaper-root.accordion__container.accordion__expanded {
+    width: 100%;
 }
