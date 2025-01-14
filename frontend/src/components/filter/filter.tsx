@@ -134,7 +134,14 @@ export const FilterField = () => {
         </Button>
         <div className="filter-by__consultants">
           <FormControlLabel
-            control={<Checkbox/>}
+            control={<Checkbox 
+              sx={{
+                color: 'black',
+                '&.Mui-checked': {
+                  color: 'black',
+                },
+              }}
+            />}
             label="Include PGPs"
             checked={includePgps}
             onChange={handlePgpSelection}
