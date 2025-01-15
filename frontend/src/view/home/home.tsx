@@ -1,4 +1,5 @@
 import { Navbar, Dashboard } from "../../components";
+import DashboardFooter from "../../components/dashboard/dashboard-footer/dashboard-footer";
 import "./home.css";
 import { useEffect, useState } from "react";
 import { BsArrowUp } from "react-icons/bs";
@@ -22,7 +23,7 @@ export const Home = () => {
     };
   }, []);
   return (
-    <>
+    <div className="home-wrapper">
       <button
         onClick={handleScrollToTop}
         className={isVisible ? "button-scroll-up" : "button-scroll-up hidden"}
@@ -33,6 +34,7 @@ export const Home = () => {
       <div className="dashboard-wrapper">
         <Dashboard />
       </div>
-    </>
+      <DashboardFooter />
+    </div>
   );
 };
