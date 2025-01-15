@@ -4,6 +4,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import salt.consultanttracker.api.client.notion.dtos.ConsultantsNProxyDto;
 import salt.consultanttracker.api.client.notion.dtos.ResponsiblePTDto;
 import salt.consultanttracker.api.consultant.ConsultantService;
+import salt.consultanttracker.api.consultant.dto.ConsultantGitHubDto;
 import salt.consultanttracker.api.exceptions.ExternalAPIException;
 import salt.consultanttracker.api.messages.Messages;
 import salt.consultanttracker.api.responsiblept.ResponsiblePTService;
@@ -69,7 +70,7 @@ public class NotionClient {
             throw new ExternalAPIException(Messages.NOTION_PROXY_FETCH_FAIL);
         }
     }
-
+    //TODO populate github img url here
     @Scheduled(cron = "0 0 2 * * 4", zone = "Europe/Stockholm")
     public void matchResponsiblePTForConsultants() {
         try {
@@ -80,7 +81,8 @@ public class NotionClient {
                     })
                     .block();
             if (dto != null && !dto.isEmpty()) {
-               consultantService.updateConsultantsTableWithNotionData(dto);
+                consultantService.updateConsultantsTableWithNotionData(dto);
+                System.out.println("consultantsnproxy------------------>: " + dto);
             } else {
                 throw new UnexpectedException(Messages.UNEXPECTED_RESPONSE_EXCEPTION_NPROXY);
             }
@@ -90,3 +92,6 @@ public class NotionClient {
         }
     }
 }
+
+
+

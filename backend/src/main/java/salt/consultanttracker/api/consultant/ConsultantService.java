@@ -1,6 +1,8 @@
 package salt.consultanttracker.api.consultant;
 
+import jakarta.transaction.Transactional;
 import salt.consultanttracker.api.cache.CacheService;
+import salt.consultanttracker.api.client.notion.NotionClient;
 import salt.consultanttracker.api.client.notion.dtos.ConsultantsNProxyDto;
 import salt.consultanttracker.api.client.notion.dtos.ResponsiblePTDto;
 import salt.consultanttracker.api.client.timekeeper.TimekeeperClient;
@@ -41,6 +43,7 @@ public class ConsultantService {
     private final ResponsiblePTService responsiblePTService;
     private static final Logger LOGGER = Logger.getLogger(ConsultantService.class.getName());
     private final CacheService cacheService;
+//    private final NotionClient notionClient; ALU
 
     //-----------------------------COVERED BY TESTS ---------------------------------
 
@@ -168,6 +171,7 @@ public class ConsultantService {
                 /* *** METHOD BELOW IS TESTED SEPARATELY *** */
                 String countryTag = Tag.extractCountryTagFromTimekeeperUserDto(tkUser);
                 /* *** METHOD BELOW IS TESTED SEPARATELY *** */
+
                 saveConsultant(new Consultant(
                         UUID.randomUUID(),
                         tkUser.firstName().trim().concat(" ").concat(tkUser.lastName().trim()),
@@ -177,6 +181,7 @@ public class ConsultantService {
                         tkUser.isActive(),
                         tkUser.client(),
                         countryTag,
+                        null,
                         null));
             } else {
                 /* *** METHOD BELOW IS TESTED SEPARATELY *** */
@@ -244,11 +249,15 @@ public class ConsultantService {
         return listOfClients;
     }
 
-
     public void updateConsultantsTableWithNotionData(List<ConsultantsNProxyDto> listOfConsultants) {
         updateNotionIdInConsultantsTable(listOfConsultants);
         updateResponsiblePTInConsultantsTable(listOfConsultants);
+        System.out.println("updating consultants table -----------> = " + listOfConsultants);
     }
+//alu
+//    public String getConsultantGithubURI(String consultantId) {
+//        return notionClient.getClientGitHubFromNotion(consultantId);
+//    }
 
     private void updateResponsiblePTInConsultantsTable(List<ConsultantsNProxyDto> listOfNProxyConsultants) {
         List<Consultant> activeConsultants = consultantRepository.findAllByActiveTrueAndNotionIdIsNotNull();
@@ -272,11 +281,16 @@ public class ConsultantService {
         if (!activeConsultants.isEmpty()) {
             activeConsultants.forEach(consultant -> {
                 UUID uuid = updateProxyIdByConsultantName(consultant.getFullName(), listOfNProxyConsultants);
+                String githubImageUrl = updateProxyGithubImageByConsultantName(consultant.getFullName(), listOfNProxyConsultants);
+//                System.out.println("githubImageUrl = " + githubImageUrl);
+                consultant.setGithubImageUrl("https://github.com/sabinehernandes.png");
                 if (uuid != null) {
                     consultant.setNotionId(uuid);
                 }
             });
             consultantRepository.saveAll(activeConsultants);
+            //alu
+            consultantRepository.flush();
         }
     }
 
@@ -288,6 +302,17 @@ public class ConsultantService {
             return null;
         }
         return filteredListOfNProxyConsultant.getFirst().id();
+    }
+
+    private String updateProxyGithubImageByConsultantName(String fullName, List<ConsultantsNProxyDto> listOfNProxyConsultants) {
+        List<ConsultantsNProxyDto> filteredListOfNProxyConsultant = listOfNProxyConsultants.stream()
+                .filter(consultant -> areNamesMatching(fullName, consultant.name()))
+                .toList();
+        if (filteredListOfNProxyConsultant.isEmpty()) {
+            return null;
+        }
+        System.out.println("filteredListOfNProxyConsultant = " + filteredListOfNProxyConsultant.toString());
+        return filteredListOfNProxyConsultant.getFirst().githubImageUrl();
     }
 
     private boolean areNamesMatching(String fullName, String nProxyName) {
