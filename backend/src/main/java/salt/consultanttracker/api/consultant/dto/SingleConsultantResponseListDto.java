@@ -17,7 +17,8 @@ public record SingleConsultantResponseListDto(UUID id,
                                               String country,
                                               TotalDaysStatisticsDto totalDaysStatistics,
                                               List<ClientsListDto> clientsList,
-                                              List<MeetingsDto> meetings) {
+                                              List<MeetingsDto> meetings,
+                                              String gitHubImgUrl) {
 
     public static SingleConsultantResponseListDto toDto(
             Consultant consultant,
@@ -39,7 +40,8 @@ public record SingleConsultantResponseListDto(UUID id,
                 consultant.getCountry().equals(SWEDEN.country) ? SE.country : NO.country,
                 totalDaysStatistics,
                 clientsListDto,
-                meetings
+                meetings,
+                consultant.getGithubImageUrl()
         );
     }
 
@@ -58,7 +60,9 @@ public record SingleConsultantResponseListDto(UUID id,
                 consultant.getCountry().equals(SWEDEN.country) ? SE.country : NO.country,
                 totalDaysStatistics,
                 clientsListDto,
-                meetings
+                meetings,
+                null
+
         );
     }
 }

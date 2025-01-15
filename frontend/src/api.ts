@@ -29,6 +29,18 @@ export const getConsultantsData = async (
     .then((response) => response.json())
 };
 
+export const getConsultantGithub = async (
+  id:string, token:string) => {
+    return await fetch("https://notion-proxy-735865474111.europe-north1.run.app/api/salt/developers/"+id,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+         
+        },
+      }
+    ).then((response) => response.json());
+  };
+
 export const getRedDays = async (token: string) => {
   return await fetch(`${BASE_URL}/api/red-days`,
     {

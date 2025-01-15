@@ -40,9 +40,10 @@ export const BasicInfo = () => {
   }, [id]);
 
   return (
+ 
     personalData && (
       <div className={openModal ? "basic-info__wrapper show" : "hide"}>
-        <BasicInfoHeader name={personalData.fullName}/>
+        <BasicInfoHeader name={personalData.fullName} gitHubImgUrl={personalData.gitHubImgUrl}/> 
         <div className="basic-info__data">
           <CardDetails/>
         </div>

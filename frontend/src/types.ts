@@ -65,7 +65,8 @@ export type ConsultantFetchType = {
   clientsList: ClientDataType[],
   meetings: MeetingsType[],
   client: string,
-  country: string
+  country: string,
+  gitHubImgUrl: string
 }
 
 export type TotalDaysStatisticsType = {
