@@ -7,6 +7,7 @@ import { Toaster } from "react-hot-toast";
 import { setModalOpen } from "../../store/slices/ModalSlice.ts";
 import Button from "@mui/material/Button";
 import RefreshIcon from "@mui/icons-material/Refresh";
+import Hero from "../hero/hero.tsx";
 
 export const Dashboard = () => {
   const role = useSelector((state: RootState) => state.authorization.role);
@@ -14,6 +15,7 @@ export const Dashboard = () => {
 
   return (
     <Provider store={store}>
+      <Hero/>
       {role === "ADMIN" && (
         <Button
           onClick={() => dispatch(setModalOpen(true))}
