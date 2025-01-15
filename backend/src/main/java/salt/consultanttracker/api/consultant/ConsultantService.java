@@ -282,13 +282,15 @@ public class ConsultantService {
             activeConsultants.forEach(consultant -> {
                 UUID uuid = updateProxyIdByConsultantName(consultant.getFullName(), listOfNProxyConsultants);
                 String githubImageUrl = updateProxyGithubImageByConsultantName(consultant.getFullName(), listOfNProxyConsultants);
-                System.out.println("githubImageUrl = " + githubImageUrl);
+//                System.out.println("githubImageUrl = " + githubImageUrl);
                 consultant.setGithubImageUrl("https://github.com/sabinehernandes.png");
                 if (uuid != null) {
                     consultant.setNotionId(uuid);
                 }
             });
             consultantRepository.saveAll(activeConsultants);
+            //alu
+            consultantRepository.flush();
         }
     }
 

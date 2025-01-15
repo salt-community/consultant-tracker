@@ -91,26 +91,6 @@ public class NotionClient {
             throw new ExternalAPIException(Messages.NOTION_PROXY_FETCH_FAIL);
         }
     }
-
-    public String getConsultantGitHubImageUrlFromNotion(String notionId) {
-        try {
-            List<ConsultantGitHubDto> dto = CLIENT_URL.get()
-                    .uri("/developers/" + notionId + "/scores")
-                    .retrieve()
-                    .bodyToMono(new ParameterizedTypeReference<List<ConsultantGitHubDto>>() {
-                    })
-                    .block();
-            if (dto != null && !dto.isEmpty()) {
-                System.out.println("github DTO: " + dto);
-                return dto.toString();
-            } else {
-                throw new UnexpectedException(Messages.UNEXPECTED_RESPONSE_EXCEPTION_NPROXY);
-            }
-        } catch (Exception e) {
-            LOGGER.severe(Messages.NOTION_PROXY_FETCH_FAIL);
-            throw new ExternalAPIException(Messages.NOTION_PROXY_FETCH_FAIL);
-        }
-    }
 }
 
 
