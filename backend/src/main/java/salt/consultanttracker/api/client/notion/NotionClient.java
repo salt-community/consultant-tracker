@@ -70,7 +70,7 @@ public class NotionClient {
             throw new ExternalAPIException(Messages.NOTION_PROXY_FETCH_FAIL);
         }
     }
-
+    //TODO populate github img url here
     @Scheduled(cron = "0 0 2 * * 4", zone = "Europe/Stockholm")
     public void matchResponsiblePTForConsultants() {
         try {
