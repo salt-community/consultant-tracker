@@ -1,5 +1,6 @@
 package salt.consultanttracker.api.consultant;
 
+import jakarta.transaction.Transactional;
 import salt.consultanttracker.api.cache.CacheService;
 import salt.consultanttracker.api.client.notion.NotionClient;
 import salt.consultanttracker.api.client.notion.dtos.ConsultantsNProxyDto;
@@ -248,10 +249,10 @@ public class ConsultantService {
         return listOfClients;
     }
 
-
     public void updateConsultantsTableWithNotionData(List<ConsultantsNProxyDto> listOfConsultants) {
         updateNotionIdInConsultantsTable(listOfConsultants);
         updateResponsiblePTInConsultantsTable(listOfConsultants);
+        System.out.println("updating consultants table -----------> = " + listOfConsultants);
     }
 //alu
 //    public String getConsultantGithubURI(String consultantId) {
@@ -280,9 +281,11 @@ public class ConsultantService {
         if (!activeConsultants.isEmpty()) {
             activeConsultants.forEach(consultant -> {
                 UUID uuid = updateProxyIdByConsultantName(consultant.getFullName(), listOfNProxyConsultants);
+                String githubImageUrl = updateProxyGithubImageByConsultantName(consultant.getFullName(), listOfNProxyConsultants);
+                System.out.println("githubImageUrl = " + githubImageUrl);
+                consultant.setGithubImageUrl("https://github.com/sabinehernandes.png");
                 if (uuid != null) {
                     consultant.setNotionId(uuid);
-                    consultant.setGithubImageUrl(consultant.getGithubImageUrl());
                 }
             });
             consultantRepository.saveAll(activeConsultants);
@@ -297,6 +300,17 @@ public class ConsultantService {
             return null;
         }
         return filteredListOfNProxyConsultant.getFirst().id();
+    }
+
+    private String updateProxyGithubImageByConsultantName(String fullName, List<ConsultantsNProxyDto> listOfNProxyConsultants) {
+        List<ConsultantsNProxyDto> filteredListOfNProxyConsultant = listOfNProxyConsultants.stream()
+                .filter(consultant -> areNamesMatching(fullName, consultant.name()))
+                .toList();
+        if (filteredListOfNProxyConsultant.isEmpty()) {
+            return null;
+        }
+        System.out.println("filteredListOfNProxyConsultant = " + filteredListOfNProxyConsultant.toString());
+        return filteredListOfNProxyConsultant.getFirst().githubImageUrl();
     }
 
     private boolean areNamesMatching(String fullName, String nProxyName) {
