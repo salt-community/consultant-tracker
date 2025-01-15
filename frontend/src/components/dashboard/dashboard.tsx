@@ -25,7 +25,8 @@ export const Dashboard = () => {
           style={{
             backgroundColor: "#D3D3D3",
             color: "black",
-            fontWeight: 300,
+            fontWeight: 400,
+            borderRadius: "25px"
           }}
         >
           Refresh database <RefreshIcon style={{height: "16px"}} />
