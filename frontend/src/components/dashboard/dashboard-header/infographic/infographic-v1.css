@@ -10,7 +10,11 @@ h5{
     padding-right: 5px;
 }
 span{
-    font-size: 15px;
     
+}
+
+.infographic-amount{
+    font-size: 16px;
+    color: #F36384;
 }
 

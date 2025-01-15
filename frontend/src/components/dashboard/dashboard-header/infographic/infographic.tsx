@@ -11,7 +11,7 @@ const Infographic = ({ title, amount, variant }: Props) => {
   return (
     <div className={`infographic-container ${variant}`}>
       <h5>{title}:</h5>
-      <span>{amount}</span>
+      <span className="infographic-amount" >{amount}</span>
     </div>
   );
 };
