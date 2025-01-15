@@ -18,10 +18,12 @@ TypeScript, React, Vite, MUI, Redux toolkit, npm
 > [!NOTE]
 > It is important to set the JWT to accept emails
 > Clerk ⟶ consultant-tracker project ⟶ Configure ⟶ Sessions management ⟶ JWT templates ⟶ New template ⟶ Blank ⟶ name it (consultant-tracker-email) ⟶ in the claims enter the following
+```
+  {
+    "email_address": "{{user.primary_email_address}}"
+  }  
+```
 
-{
-	"email_address": "{{user.primary_email_address}}"
-}
 
 > [!NOTE]
 > If you are going to set up Clerk it is important to restrict only emails for @appliedtechnology.se
