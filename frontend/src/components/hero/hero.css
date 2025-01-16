@@ -1,11 +1,12 @@
 .hero-container{
-    padding-bottom: 70px;
+    padding-bottom: 25px;
 }
 
 .hero-header{
     text-align: center;
-    font-weight: 900;
-    font-size: 60px;
+    font-weight: 600;
+    font-size: 51px;
     color: #0F2D45;
-    text-shadow: 2px 2px 5px gray;
+    /* letter-spacing: 3px; */
+    /* text-shadow: 2px 2px 5px gray; */
 }

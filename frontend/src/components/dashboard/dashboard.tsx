@@ -16,6 +16,12 @@ export const Dashboard = () => {
   return (
     <Provider store={store}>
       <Hero/>
+      
+      <ModalComponent />
+      {/* <DashboardHeader /> */}
+      <FilterField />
+      <GanttChart />
+      <Toaster />
       {role === "ADMIN" && (
         <Button
           onClick={() => dispatch(setModalOpen(true))}
@@ -32,11 +38,6 @@ export const Dashboard = () => {
           Refresh database <RefreshIcon style={{height: "16px"}} />
         </Button>
       )}
-      <ModalComponent />
-      {/* <DashboardHeader /> */}
-      <FilterField />
-      <GanttChart />
-      <Toaster />
     </Provider>
   );
 };
