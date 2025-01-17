@@ -6,6 +6,11 @@
   padding-left: 10px;
 }
 .title.active {
-  background: #fc7961;
+  background: #fc7861cb;
   color: white;
+}
+
+.title:hover {
+  background-color: #fc786163;
+  transition: 0.3s;
 }
