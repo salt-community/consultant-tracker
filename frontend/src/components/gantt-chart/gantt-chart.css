@@ -2,6 +2,9 @@
   background: #eae9e9;
   border-bottom: 1px solid #bbb;
 }
+.react-calendar-timeline .rct-sidebar .rct-sidebar-row {
+  padding: 0;
+}
 
 .react-calendar-timeline .rct-dateHeader-primary {
   color: #2f2f2f;
