@@ -10,6 +10,7 @@
     font-size: 14px;
     color: #000000;
     border-top: 1px solid #e9ecef;
+    position: static;
 }
 
 .dashboard-footer p {
