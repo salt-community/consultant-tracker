@@ -1,63 +1,64 @@
 import {
   ConsultantCalendarType,
-  ConsultantFetchType, ConsultantItemsType,
+  ConsultantFetchType,
+  ConsultantItemsType,
   RegisteredTimeItemType,
 } from "../types";
-import moment, {Moment} from "moment/moment";
+import moment, { Moment } from "moment/moment";
 
-export const user = "Josefin Stål"
+export const user = "Josefin Stål";
 // export const user = "Stella Asplund" // FOR DEMO
 export const selectColor = (type: string) => {
   switch (type) {
     case "Konsult-tid":
     case "Egen administration":
-      return "#6EACDA";
+      return "#1C7293";
     case "Semester":
-      return "#7bc46e";
+      return "#285943";
     case "Sjuk":
-      return "#F3FEB8";
+      return "#D46B3F";
     case "Tjänstledig":
-      return "#8ddfc2";
+      return "#A65AB3";
     case "Remaining Days":
-      return "#a4a4a4";
+      return "#9EB3C2";
     case "Föräldraledig":
     case "VAB":
-      return "#000000";
+      return "#645C5C";
     default:
-      return "#EF5A6F";
+      return "#A8201A";
   }
 };
 
 export const legend = [
   {
-    color: "#6EACDA",
-    description: "Working hours (Konsult-tid)"
+    color: "#1C7293",
+    description: "Working hours (Konsult-tid)",
   },
   {
-    color: "#7bc46e",
-    description: "Vacation (Semester)"
+    color: "#285943",
+    description: "Vacation (Semester)",
   },
   {
-    color: "#F3FEB8",
-    description: "Sick leave (Sjuk)"
+    color: "#D46B3F",
+    description: "Sick leave (Sjuk)",
   },
   {
-    color: "#8ddfc2",
-    description: "Off-duty (Tjänstledig)"
+    color: "#A65AB3",
+    description: "Off-duty (Tjänstledig)",
   },
   {
-    color: "#a4a4a4",
-    description: "Remaining Days (Dagar kvar)"
-  }, 
-  {
-    color: "#000000",
-    description: "Parental leave (Föräldraledig/VAB)"
+    color: "#9EB3C2",
+    description: "Remaining Days (Dagar kvar)",
   },
   {
-    color: "#EF5A6F",
-    description: "No registered time (Ej registrerad tid)"
-  }
-]
+    color: "#645C5C",
+    description: "Parental leave (Föräldraledig/VAB)",
+  },
+  {
+    color: "#A8201A",
+    description: "No registered time (Ej registrerad tid)",
+  },
+];
 // export const redDaysAndWeekends =[
 //   {
 //     color: "#f5d1d7",
@@ -73,18 +74,17 @@ export const legend = [
 //   },
 // ]
 
-
 export const mapGroups = (res: any) => {
   return res.consultants.map((el: ConsultantFetchType) => {
     const title =
-      el.country === "NO"
-        ? el.fullName + ` (${el.country})`
-        : el.fullName;
-    return {id: el.id, title: title};
+      el.country === "NO" ? el.fullName + ` (${el.country})` : el.fullName;
+    return { id: el.id, title: title };
   });
-}
+};
 
-export const mapConsultantsToCalendarItems = (res: ConsultantCalendarType): ConsultantItemsType[] => {
+export const mapConsultantsToCalendarItems = (
+  res: ConsultantCalendarType
+): ConsultantItemsType[] => {
   return res.consultants.flatMap((el: ConsultantFetchType) => {
     return el.registeredTimeDtoList.map((item: RegisteredTimeItemType) => {
       const {
