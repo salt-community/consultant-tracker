@@ -3,8 +3,18 @@
     gap: 10px;
     width: 70%;
     box-shadow: rgba(0, 0, 0, 0.45) 0 25px 20px -20px;
-    border: 1.5px solid #9c27b0;
+    border: 1.5px solid #fc7861cb;
     border-radius: 5px;
+}
+
+.css-1a4cg4j-MuiButtonBase-root-MuiTab-root.Mui-selected{
+    color: #fc7861cb;
+    /* background-color: #fc7861cb; */
+    -webkit-text-fill-color: black;
+}
+
+.css-11yukd5-MuiTabs-indicator {
+    /* background-color: #fc7861cb; */
 }
 
 .basic-info__wrapper {
@@ -13,6 +23,7 @@
     padding-bottom: 20px;
     width: 100%;
     gap: 15px;
+    
 }
 
 .basic-info__data .MuiInputBase-root {
@@ -41,8 +52,10 @@
 
 .show {
     display: flex;
+    border: 1.5px solid #fc7861cb;
 }
 
 .hide {
     display: none;
+    border: 1.5px solid #fc7861cb;
 }
