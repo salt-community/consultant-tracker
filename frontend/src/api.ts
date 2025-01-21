@@ -28,7 +28,7 @@ export const getConsultantsData = async (
   }).then((response) => response.json());
 };
 
-export const getConsultantGithub = async (id: string, token: string) => {
+export const getConsultantGithubImage = async (id: string, token: string) => {
   return await fetch(`${NOTION_URL}/developers/${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,
