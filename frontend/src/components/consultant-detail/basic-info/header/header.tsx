@@ -3,13 +3,13 @@ import HeaderAvatar from "./avatar/avatar.tsx";
 
 type Props = {
   name: string;
-  gitHubImgUrl: string;
+  githubImageUrl: string;
 };
 
-const BasicInfoHeader = ({ name, gitHubImgUrl }: Props) => {
+const BasicInfoHeader = ({ name, githubImageUrl }: Props) => {
   return (
     <section className="basic-info-header__container">
-      <HeaderAvatar gitHubImgUrl={gitHubImgUrl} />
+      <HeaderAvatar githubImageUrl={githubImageUrl} />
       <h2>{name}</h2>
     </section>
   );

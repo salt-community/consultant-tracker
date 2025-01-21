@@ -1,20 +1,16 @@
 type Props = {
-  gitHubImgUrl:string;
+  githubImageUrl: string;
 };
 
-const HeaderAvatar = ({gitHubImgUrl}:Props) => {
-  console.log("github url: " + gitHubImgUrl);
+const HeaderAvatar = ({ githubImageUrl }: Props) => {
   let image = "/avatar.svg";
-  if(gitHubImgUrl){
-    image = gitHubImgUrl;
+  if (githubImageUrl) {
+    image = githubImageUrl;
   }
 
   return (
     <aside className="basic-info-section">
-      <div
-        className="avatar"
-        style={{backgroundImage: `url(${image})`}}
-      />
+      <div className="avatar" style={{ backgroundImage: `url(${image})` }} />
     </aside>
   );
 };
