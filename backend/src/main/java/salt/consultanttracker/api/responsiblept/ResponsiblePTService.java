@@ -35,14 +35,14 @@ public class ResponsiblePTService {
 
     public void updateResponsiblePt(List<ResponsiblePTDto> dto) {
         List<UUID> listOfPtsIdsFromDB = getAllPtsIds();
-        List<UUID> listOfPtsIdsFromNotion = dto.stream().map(ResponsiblePTDto::id).toList();
+        List<UUID> listOfPtsIdsFromNotion = dto.stream().map(ResponsiblePTDto::staffId).toList();
         listOfPtsIdsFromDB.stream()
                 .filter(el -> !listOfPtsIdsFromNotion.contains(el))
                 .forEach(responsiblePTRepository::deleteById);
         dto.stream()
-                .filter(el -> !listOfPtsIdsFromDB.contains(el.id()))
+                .filter(el -> !listOfPtsIdsFromDB.contains(el.staffId()))
                 .forEach(el -> {
-                    responsiblePTRepository.save(new ResponsiblePT(el.id(), el.name(), el.email(), PT.role));
+                    responsiblePTRepository.save(new ResponsiblePT(el.staffId(), el.name(), el.email(), PT.role));
                 });
     }
 }

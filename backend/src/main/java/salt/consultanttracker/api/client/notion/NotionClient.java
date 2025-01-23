@@ -1,6 +1,7 @@
 package salt.consultanttracker.api.client.notion;
 
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.transaction.annotation.Transactional;
 import salt.consultanttracker.api.client.notion.dtos.ConsultantsNProxyDto;
 import salt.consultanttracker.api.client.notion.dtos.ResponsiblePTDto;
 import salt.consultanttracker.api.consultant.ConsultantService;
@@ -34,10 +35,12 @@ public class NotionClient {
                         @Value("${NOTION_PROXY.AUTH}") String HEADER_AUTH,
                         ResponsiblePTService saltUserService,
                         ConsultantService consultantService, ResponsiblePTService responsiblePTService) {
+        System.out.println("Base URL: " + baseUrl);
+        System.out.println("Header Auth: " + HEADER_AUTH);
         this.HEADER_AUTH = HEADER_AUTH;
         CLIENT_URL = WebClient.builder().baseUrl(baseUrl)
                 .defaultHeaders(httpHeaders -> {
-                    httpHeaders.set("X-aPI-KeY", HEADER_AUTH);
+                    httpHeaders.set("x-api-key", HEADER_AUTH);
                     httpHeaders.set("Content-Type", "application/json");
                 }).exchangeStrategies(ExchangeStrategies.builder()
                         .codecs(configurer -> configurer
@@ -55,11 +58,12 @@ public class NotionClient {
     public void getResponsiblePTFromNotion() {
         try {
             List<ResponsiblePTDto> dto = CLIENT_URL.get()
-                    .uri("/responsible")
+                    .uri("/staff")
                     .retrieve()
                     .bodyToMono(new ParameterizedTypeReference<List<ResponsiblePTDto>>() {
                     })
                     .block();
+
             if (dto != null && !dto.isEmpty()) {
                 responsiblePTService.updateResponsiblePt(dto);
             } else {
@@ -75,21 +79,26 @@ public class NotionClient {
     public void matchResponsiblePTForConsultants() {
         try {
             List<ConsultantsNProxyDto> dto = CLIENT_URL.get()
-                    .uri("/consultants")
+                    .uri("/developers")
                     .retrieve()
                     .bodyToMono(new ParameterizedTypeReference<List<ConsultantsNProxyDto>>() {
                     })
                     .block();
+
             if (dto != null && !dto.isEmpty()) {
+                for(ConsultantsNProxyDto proxy : dto) {
+                    System.out.println(proxy.toString());
+                }
                 consultantService.updateConsultantsTableWithNotionData(dto);
-                System.out.println("consultantsnproxy------------------>: " + dto);
             } else {
                 throw new UnexpectedException(Messages.UNEXPECTED_RESPONSE_EXCEPTION_NPROXY);
             }
         } catch (Exception e) {
+            System.out.println("ALU msg ---------> " + e.getMessage());
             LOGGER.severe(Messages.NOTION_PROXY_FETCH_FAIL);
             throw new ExternalAPIException(Messages.NOTION_PROXY_FETCH_FAIL);
         }
+        System.out.println("loading consultants successfully ------------->");
     }
 }
 

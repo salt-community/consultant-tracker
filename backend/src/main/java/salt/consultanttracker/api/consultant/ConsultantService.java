@@ -1,6 +1,6 @@
 package salt.consultanttracker.api.consultant;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import salt.consultanttracker.api.cache.CacheService;
 import salt.consultanttracker.api.client.notion.NotionClient;
 import salt.consultanttracker.api.client.notion.dtos.ConsultantsNProxyDto;
@@ -249,17 +249,17 @@ public class ConsultantService {
         return listOfClients;
     }
 
+    @Transactional
     public void updateConsultantsTableWithNotionData(List<ConsultantsNProxyDto> listOfConsultants) {
-        updateNotionIdInConsultantsTable(listOfConsultants);
         updateResponsiblePTInConsultantsTable(listOfConsultants);
-        System.out.println("updating consultants table -----------> = " + listOfConsultants);
+        updateNotionIdInConsultantsTable(listOfConsultants);
     }
 //alu
 //    public String getConsultantGithubURI(String consultantId) {
 //        return notionClient.getClientGitHubFromNotion(consultantId);
 //    }
 
-    private void updateResponsiblePTInConsultantsTable(List<ConsultantsNProxyDto> listOfNProxyConsultants) {
+    protected void updateResponsiblePTInConsultantsTable(List<ConsultantsNProxyDto> listOfNProxyConsultants) {
         List<Consultant> activeConsultants = consultantRepository.findAllByActiveTrueAndNotionIdIsNotNull();
         listOfNProxyConsultants.forEach(el -> {
             activeConsultants.forEach(consultant -> {
@@ -276,21 +276,23 @@ public class ConsultantService {
         consultantRepository.saveAll(activeConsultants);
     }
 
-    private void updateNotionIdInConsultantsTable(List<ConsultantsNProxyDto> listOfNProxyConsultants) {
+    protected void updateNotionIdInConsultantsTable(List<ConsultantsNProxyDto> listOfNProxyConsultants) {
         List<Consultant> activeConsultants = consultantRepository.findAllByActiveTrueAndNotionIdIsNull();
         if (!activeConsultants.isEmpty()) {
             activeConsultants.forEach(consultant -> {
                 UUID uuid = updateProxyIdByConsultantName(consultant.getFullName(), listOfNProxyConsultants);
                 String githubImageUrl = updateProxyGithubImageByConsultantName(consultant.getFullName(), listOfNProxyConsultants);
 //                System.out.println("githubImageUrl = " + githubImageUrl);
-                consultant.setGithubImageUrl("https://github.com/sabinehernandes.png");
+//                consultant.setGithubImageUrl("https://github.com/sabinehernandes.png");
+                consultant.setGithubImageUrl(githubImageUrl);
+
                 if (uuid != null) {
                     consultant.setNotionId(uuid);
                 }
             });
             consultantRepository.saveAll(activeConsultants);
             //alu
-            consultantRepository.flush();
+//            consultantRepository.flush();
         }
     }
 
@@ -311,7 +313,7 @@ public class ConsultantService {
         if (filteredListOfNProxyConsultant.isEmpty()) {
             return null;
         }
-        System.out.println("filteredListOfNProxyConsultant = " + filteredListOfNProxyConsultant.toString());
+//        System.out.println("filteredListOfNProxyConsultant = " + filteredListOfNProxyConsultant.toString());
         return filteredListOfNProxyConsultant.getFirst().githubImageUrl();
     }
 

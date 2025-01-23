@@ -4,8 +4,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 import java.util.UUID;
-
+//JsonProperty("responsiblePersonList"
 public record ConsultantsNProxyDto(String name, UUID id,
-                                   @JsonProperty("responsiblePersonList") List<ResponsiblePTDto> listOfResponsiblePTs,
-@JsonProperty("githubImageUrl") String githubImageUrl) {
+                                   @JsonProperty("responsibles") List<ResponsiblePTDto> listOfResponsiblePTs,
+                                   @JsonProperty("githubImageUrl") String githubImageUrl) {
+
+    @Override
+    public String toString() {
+        return "ConsultantsNProxyDto{" +
+                "name='" + name + '\'' +
+                ", id=" + id +
+                ", listOfResponsiblePTs=" + listOfResponsiblePTs +
+                ", githubImageUrl='" + githubImageUrl + '\'' +
+                '}';
+    }
 }

@@ -61,7 +61,8 @@ export const BasicInfo = () => {
       <div className={openModal ? "basic-info__wrapper show" : "hide"}>
         <BasicInfoHeader
           name={personalData.fullName}
-          githubImageUrl={githubImageUrl}
+          // githubImageUrl={githubImageUrl}
+          githubImageUrl={personalData.gitHubImgUrl}
         />
         <div className="basic-info__data">
           <CardDetails />
