@@ -8,6 +8,7 @@ import { getConsultantById, getConsultantGithubImage } from "../../../api";
 import { useAuth } from "@clerk/clerk-react";
 import { template } from "../../../constants";
 import BasicInfoHeader from "./header/header.tsx";
+import { setOpenModal } from "../../../store/slices/GanttChartSlice.ts";
 
 export const BasicInfo = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -59,6 +60,12 @@ export const BasicInfo = () => {
   return (
     personalData && (
       <div className={openModal ? "basic-info__wrapper show" : "hide"}>
+        <button
+          className="close_button"
+          onClick={() => dispatch(setOpenModal(false))}
+        >
+          &times;
+        </button>
         <BasicInfoHeader
           name={personalData.fullName}
           // githubImageUrl={githubImageUrl}
