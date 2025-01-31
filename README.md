@@ -238,7 +238,11 @@ TIMEKEEPER:
   URL: 
   AUTH: 
 NAGER:
-  URL: 
+  URL:
+NOTION:
+  URL:
+  AUTH:
+  DB_ID:
 NOTION_PROXY:
   URL: 
   AUTH: 
