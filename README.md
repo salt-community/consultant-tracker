@@ -35,10 +35,13 @@ TypeScript, React, Vite, MUI, Redux toolkit, npm
 >    b) pgp-sandbox ⟶ APIs & Services ⟶ Credentials ⟶ Consultant-Tracker ⟶ click on edit pencil ⟶ Client secret
 >```
 
-- in /frontend folder create .env.local file and add secrets (secrets can be provided by Salt admin):
+- in /frontend folder create .env.local file and add secrets (secrets can be provided by Salt admin). Check Notion Proxy URL on their [GitHub](https://github.com/salt-community/notion-proxy/):
 ```
   VITE_CLERK_PUBLISHABLE_KEY=
   VITE_BACKEND_URL=
+  NEXT_PUBLIC_API_URL=http://localhost:8080
+  VITE_BACKEND_URL=http://localhost:8080
+  NOTION_PROXY_URL=
 ```
 
 > [!TIP]
