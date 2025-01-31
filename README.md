@@ -136,7 +136,6 @@ on GoogleCloud:
 │   ├───single-detail-field
 │   ├───text-input
 │   └───time-item-details
-├───lotties
 ├───routing
 ├───store
 │   └───slices
@@ -203,10 +202,6 @@ on GoogleCloud:
 > single-detail-field
 
 > consultant-details - component is connected to card-details as it holds content of the tabs.
-
-> lotties - includes json cat animation implemented in <Loading /> component.
-> Instruction how we implemented it can be found
-> [here](https://lottiefiles.com/blog/working-with-lottie-animations/how-to-use-lottie-in-react-app/)
 
 > store - state is managed using redux toolkit. Keep in mind: in few cases related to 
 > react-calendar-timeline we were forces to use type any. It should be adjusted in the future if possible. 
