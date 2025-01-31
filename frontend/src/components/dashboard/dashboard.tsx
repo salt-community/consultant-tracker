@@ -2,7 +2,6 @@ import "./dashboard.css";
 import { FilterField, GanttChart, ModalComponent } from "../../components";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import { RootState, store } from "../../store/store";
-import DashboardHeader from "./dashboard-header/dashboard-header";
 import { Toaster } from "react-hot-toast";
 import { setModalOpen } from "../../store/slices/ModalSlice.ts";
 import Button from "@mui/material/Button";

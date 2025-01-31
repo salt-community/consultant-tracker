@@ -6,8 +6,10 @@ import { ReactNode, useState } from "react";
 import './accordion-component.css';
 
 type Props = {
-  title: ReactNode;
+  titleIcon?: ReactNode
+  title?: string;
   content: ReactNode;
+
 };
 
 
