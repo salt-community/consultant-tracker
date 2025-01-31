@@ -98,7 +98,11 @@ export const GanttChart = () => {
     includePgps,
   ]);
 
-  return  (
+  return loading ? (
+    <Loading />
+  ) : error.length !== 0 ? (
+    <Error message={error} />
+  ) : (
     <div>
       <AccordionComponent
         title={

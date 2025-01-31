@@ -6,9 +6,10 @@ import { ReactNode, useState } from "react";
 import './accordion-component.css';
 
 type Props = {
-  title: string,
-  content: ReactNode
+  title: ReactNode;
+  content: ReactNode;
 };
+
 
 export const AccordionComponent = ({ title, content }: Props) => {
   const [isExpanded, setIsExpanded] = useState(false);
