@@ -1,10 +1,10 @@
 import "./basic-info.css";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPersonalData } from "../../../store/slices/BasicInfoSlice";
 import { AppDispatch, RootState } from "../../../store/store";
 import { CardDetails, TimeItemDetails } from "../../../components";
-import { getConsultantById, getConsultantGithubImage } from "../../../api";
+import { getConsultantById } from "../../../api";
 import { useAuth } from "@clerk/clerk-react";
 import { template } from "../../../constants";
 import BasicInfoHeader from "./header/header.tsx";
@@ -15,7 +15,6 @@ export const BasicInfo = () => {
   const personalData = useSelector(
     (state: RootState) => state.basicInfo.personalData
   );
-  const [githubImageUrl, setGithubImageUrl] = useState<string>("");
 
   const openModal = useSelector(
     (state: RootState) => state.ganttChart.openModal
@@ -38,18 +37,6 @@ export const BasicInfo = () => {
       return;
     }
     fetchConsultantById(token);
-    fetchConsultantGithubImage(token);
-  };
-
-  const fetchConsultantGithubImage = (token: string) => {
-    if (id)
-      getConsultantGithubImage(id, token)
-        .then((res) => {
-          setGithubImageUrl(res.githubImageUrl);
-        })
-        .catch((error) => {
-          console.error(`Error fetching githubImageUrl: ${error}`);
-        });
   };
 
   const id = useSelector((state: RootState) => state.ganttChart.id);
@@ -68,7 +55,6 @@ export const BasicInfo = () => {
         </button>
         <BasicInfoHeader
           name={personalData.fullName}
-          // githubImageUrl={githubImageUrl}
           githubImageUrl={personalData.gitHubImgUrl}
         />
         <div className="basic-info__data">
