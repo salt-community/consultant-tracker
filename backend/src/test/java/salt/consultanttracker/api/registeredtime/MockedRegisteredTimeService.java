@@ -129,6 +129,7 @@ public class MockedRegisteredTimeService {
                 true,
                 "H&M",
                 "Sverige",
+                "https://github.com/sentrySlime.png",
                 null
                 );
         Consultant mockedConsultant2 = new Consultant(
@@ -140,6 +141,7 @@ public class MockedRegisteredTimeService {
                 true,
                 "H&M2",
                 "Sverige",
+                "https://github.com/sentrySlime.png",
                 null);
         return Lists.newArrayList(mockedConsultant, mockedConsultant2);
     }

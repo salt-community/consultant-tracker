@@ -83,6 +83,7 @@ class ConsultantServiceTest extends ApplicationTestConfig {
                 true,
                 "H&M",
                 "Sverige",
+                "https://github.com/sentrySlime.png",
                 null);
         mockedConsultant2 = new Consultant(
                 UUID.fromString("0239ceac-5e65-40a6-a949-5492c22b22e3"),
@@ -93,6 +94,7 @@ class ConsultantServiceTest extends ApplicationTestConfig {
                 true,
                 "H&M",
                 "Sverige",
+                "https://github.com/sentrySlime.png",
                 null);
         mockedConsultant3 = new Consultant(
                 UUID.fromString("1239cead-5e65-40a6-a949-5492c22b22a4"),
@@ -103,6 +105,7 @@ class ConsultantServiceTest extends ApplicationTestConfig {
                 true,
                 "H&M",
                 "Sverige",
+                "https://github.com/sentrySlime.png",
                 null
         );
     }

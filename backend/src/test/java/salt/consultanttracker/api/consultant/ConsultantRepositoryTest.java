@@ -35,6 +35,7 @@ class ConsultantRepositoryTest {
                 true,
                 "H&M",
                 "Sverige",
+                "https://github.com/sentrySlime.png",
                 new ResponsiblePT(UUID.fromString("9b5dcb09-bd42-4306-a964-da0727c44a68"),
                         "Jane Doe",
                         "jane.doe@appliedtechnology.se" ,
