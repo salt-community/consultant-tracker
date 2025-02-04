@@ -48,14 +48,6 @@ public class ConsultantController {
         }
         return ResponseEntity.ok(consultantService.getConsultantById(id));
     }
-//alu
-//    @GetMapping("/github/{id}")
-//    public ResponseEntity<SingleConsultantResponseListDto> getConsultantGIThubById(@PathVariable UUID id) {
-//        if ("demo".equalsIgnoreCase(appMode)) {
-//
-//        }
-//        return ResponseEntity.ok(consultantService.getConsultantById(id));
-//    }
 
     @GetMapping("/all-clients-and-pts")
     public ResponseEntity<ClientsAndPtsListDto> getAllClientsAndPts(
