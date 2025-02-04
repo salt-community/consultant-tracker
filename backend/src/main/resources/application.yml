@@ -7,6 +7,8 @@ spring:
     url: ${DB.URL}
     username: ${DB.USERNAME}
     password: ${DB.PASSWORD}
+    hikari:
+      allow-pool-suspension: true
   security:
     oauth2:
       resourceserver:
@@ -14,16 +16,19 @@ spring:
           issuer-uri: ${ISSUER_URI}
           audiences: api://default
   jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     defer-datasource-initialization: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: none
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+      boot:
+        allow_jdbc_metadata_access: false
   sql:
     init:
       platform: postgresql
-      mode: always
+      mode: never
   config:
     import: optional:secret.yml
   main:
