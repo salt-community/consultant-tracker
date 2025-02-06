@@ -13,7 +13,7 @@ type Props = {
 };
 
 
-export const AccordionComponent = ({ title, content }: Props) => {
+export const AccordionComponent = ({titleIcon, title, content }: Props) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const handleChange = (_event: React.SyntheticEvent, expanded: boolean) => {
@@ -30,7 +30,7 @@ export const AccordionComponent = ({ title, content }: Props) => {
         aria-controls={title}
         id={title}
       >
-        {title}
+        {titleIcon}
       </AccordionSummary>
       <AccordionDetails>
         {content}
