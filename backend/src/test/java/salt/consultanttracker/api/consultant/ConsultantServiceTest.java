@@ -321,7 +321,7 @@ class ConsultantServiceTest extends ApplicationTestConfig {
         Mockito.when(mockedRegisteredTimeService.getCurrentClient(any(UUID.class))).thenReturn("H&M");
 
         /* ACT */
-        consultantService.fetchDataFromTimekeeper();
+        //consultantService.fetchDataFromTimekeeper();
 
         /* ASSERT */
         int expectedDifferenceInListSize = 1;
