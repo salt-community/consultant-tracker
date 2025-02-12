@@ -25,7 +25,13 @@ public interface ConsultantRepository extends JpaRepository<Consultant, UUID> {
 
     int countAllByActiveTrueAndResponsiblePT(ResponsiblePT responsiblePT);
 
-    @Query("SELECT t FROM Consultant t WHERE t.active = true AND t.fullName iLIKE %:fullName% AND t.responsiblePT.fullName IN :ptList AND t.client IN :clientsList ORDER BY t.fullName ASC")
+    @Query("  SELECT t FROM Consultant t \n" +
+            "    LEFT JOIN t.responsiblePT r \n" +
+            "    WHERE t.active = true \n" +
+            "    AND LOWER(t.fullName) LIKE LOWER(CONCAT('%', :fullName, '%')) \n" +
+            "    AND (COALESCE(:ptList, NULL) IS NULL OR r.fullName IN :ptList OR r.fullName IS NULL) \n" +
+            "    AND t.client IN :clientsList \n" +
+            "    ORDER BY t.fullName ASC")
     Page<Consultant> findAllByActiveTrueAndFilterByNameAndResponsiblePtAndClientsOrderByFullNameAsc(String fullName, Pageable pageable, List<String> ptList, List<String> clientsList);
 
     int countAllByActiveTrueAndClient(String client);
