@@ -217,7 +217,9 @@ on GoogleCloud:
 
 ##  $\color{rgb(107, 187, 242)}{\textsf{Technologies - backend}}$
 
-Java, Spring Boot, Lombok, Spring Security, Maven, Docker
+Java, Spring Boot, Lombok, Spring Security, Maven, Docker.
+
+> ### Swagger (OpenAPI documentation) can be found [here](https://consultant-tracker-server-735865474111.europe-north1.run.app/swagger-ui/index.html#/).
 
 ## $\color{rgb(107, 187, 242)}{\textsf{Starting backend}}$ 
 
