@@ -1,5 +1,7 @@
 package salt.consultanttracker.api.populatedb;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -17,6 +19,7 @@ import java.util.logging.Logger;
 @RequestMapping("/api/populate-db")
 @CrossOrigin
 @RequiredArgsConstructor
+@Tag(name = "Populate DB")
 public class PopulateDBController {
     private final RedDayService redDayService;
     private final NotionClient notionClient;
@@ -25,12 +28,13 @@ public class PopulateDBController {
     private static final Logger LOGGER = Logger.getLogger(PopulateDBController.class.getName());
 
     @GetMapping
+    @Operation(description = "Populates the database, fetching from other services such as Red Days, Timekeeper and Notion")
     public ResponseEntity<String> getAllConsultants() {
         LOGGER.info("Starting to populate db");
         redDayService.getRedDaysFromNager();
         LOGGER.info("Red days fetched from Nager");
         consultantService.fetchDataFromTimekeeper();
-        LOGGER.info("Consultants and registered time fetched from Timekeeper ");
+        LOGGER.info("Consultants and registered time fetched from Timekeeper");
 
         notionClient.getResponsiblePTFromNotion();
         LOGGER.info("PTs table populated");
