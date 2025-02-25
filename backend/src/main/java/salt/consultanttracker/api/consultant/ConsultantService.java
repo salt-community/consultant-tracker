@@ -31,7 +31,6 @@ import java.util.logging.Logger;
 import static salt.consultanttracker.api.client.timekeeper.Activity.*;
 import static salt.consultanttracker.api.utils.Country.SWEDEN;
 
-
 @Service
 @RequiredArgsConstructor
 public class ConsultantService {
@@ -43,10 +42,8 @@ public class ConsultantService {
     private final ResponsiblePTService responsiblePTService;
     private static final Logger LOGGER = Logger.getLogger(ConsultantService.class.getName());
     private final CacheService cacheService;
-//    private final NotionClient notionClient; ALU
 
     //-----------------------------COVERED BY TESTS ---------------------------------
-
     public ConsultantResponseListDto getAllConsultantsDto(int page,
                                                           int pageSize,
                                                           String name,
@@ -254,10 +251,6 @@ public class ConsultantService {
         updateResponsiblePTInConsultantsTable(listOfConsultants);
         updateNotionIdInConsultantsTable(listOfConsultants);
     }
-//alu
-//    public String getConsultantGithubURI(String consultantId) {
-//        return notionClient.getClientGitHubFromNotion(consultantId);
-//    }
 
     protected void updateResponsiblePTInConsultantsTable(List<ConsultantsNProxyDto> listOfNProxyConsultants) {
         List<Consultant> activeConsultants = consultantRepository.findAllByActiveTrueAndNotionIdIsNotNull();
@@ -282,8 +275,6 @@ public class ConsultantService {
             activeConsultants.forEach(consultant -> {
                 UUID uuid = updateProxyIdByConsultantName(consultant.getFullName(), listOfNProxyConsultants);
                 String githubImageUrl = updateProxyGithubImageByConsultantName(consultant.getFullName(), listOfNProxyConsultants);
-//                System.out.println("githubImageUrl = " + githubImageUrl);
-//                consultant.setGithubImageUrl("https://github.com/sabinehernandes.png");
                 consultant.setGithubImageUrl(githubImageUrl);
 
                 if (uuid != null) {
@@ -291,8 +282,6 @@ public class ConsultantService {
                 }
             });
             consultantRepository.saveAll(activeConsultants);
-            //alu
-//            consultantRepository.flush();
         }
     }
 
@@ -313,7 +302,6 @@ public class ConsultantService {
         if (filteredListOfNProxyConsultant.isEmpty()) {
             return null;
         }
-//        System.out.println("filteredListOfNProxyConsultant = " + filteredListOfNProxyConsultant.toString());
         return filteredListOfNProxyConsultant.getFirst().githubImageUrl();
     }
 

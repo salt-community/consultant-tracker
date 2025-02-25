@@ -49,4 +49,3 @@ public class EmailAuthorizationFilter extends OncePerRequestFilter {
         return ADMIN_EMAILS.contains(email) ? "ADMIN" : "USER";
     }
 }
-

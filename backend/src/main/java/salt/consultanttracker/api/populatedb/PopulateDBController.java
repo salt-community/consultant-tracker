@@ -31,20 +31,23 @@ public class PopulateDBController {
     @Operation(description = "Populates the database, fetching from other services such as Red Days, Timekeeper and Notion")
     public ResponseEntity<String> getAllConsultants() {
         LOGGER.info("Starting to populate db");
+
         redDayService.getRedDaysFromNager();
         LOGGER.info("Red days fetched from Nager");
+
         consultantService.fetchDataFromTimekeeper();
         LOGGER.info("Consultants and registered time fetched from Timekeeper");
 
         notionClient.getResponsiblePTFromNotion();
         LOGGER.info("PTs table populated");
+
         notionClient.matchResponsiblePTForConsultants();
         LOGGER.info("PTs matched with consultants based on Notion");
 
         meetingsScheduleService.assignMeetingsDatesForActiveConsultants();
         LOGGER.info("Meetings schedule updated");
         LOGGER.info("Finished populating db");
+
         return ResponseEntity.ok("Finished populating db");
     }
-
 }
