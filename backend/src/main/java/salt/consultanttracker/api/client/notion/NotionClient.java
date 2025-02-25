@@ -20,7 +20,6 @@ import java.rmi.UnexpectedException;
 import java.util.*;
 import java.util.logging.Logger;
 
-
 @Service
 @Data
 public class NotionClient {
@@ -74,7 +73,7 @@ public class NotionClient {
             throw new ExternalAPIException(Messages.NOTION_PROXY_FETCH_FAIL);
         }
     }
-    //TODO populate github img url here
+
     @Scheduled(cron = "0 0 2 * * 4", zone = "Europe/Stockholm")
     public void matchResponsiblePTForConsultants() {
         try {
@@ -94,13 +93,9 @@ public class NotionClient {
                 throw new UnexpectedException(Messages.UNEXPECTED_RESPONSE_EXCEPTION_NPROXY);
             }
         } catch (Exception e) {
-            System.out.println("ALU msg ---------> " + e.getMessage());
             LOGGER.severe(Messages.NOTION_PROXY_FETCH_FAIL);
             throw new ExternalAPIException(Messages.NOTION_PROXY_FETCH_FAIL);
         }
-        System.out.println("loading consultants successfully ------------->");
+        LOGGER.info(Messages.NOTION_SUCCESS);
     }
 }
-
-
-

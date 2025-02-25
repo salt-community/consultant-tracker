@@ -50,7 +50,6 @@ public class RedDayService {
         return new RedDaysResponseDto(redDaysSE, redDaysNO);
     }
 
-
     private String getCountryCode(UUID consultantId) {
         return consultantService.getCountryCodeByConsultantId(consultantId).equals(NORWAY.country) ? NO.country : SE.country;
     }
@@ -94,7 +93,7 @@ public class RedDayService {
 
 //    @PostConstruct
     @Scheduled(cron="0 0 0 1 1 *", zone = "Europe/Stockholm")
-public void getRedDaysFromNager() throws ExternalAPIException {
+    public void getRedDaysFromNager() throws ExternalAPIException {
         LOGGER.info("Fetching red days from Nager");
         var saltStartYear = 2018;
 //        TODO ask about value of that part - refactor?
@@ -114,7 +113,6 @@ public void getRedDaysFromNager() throws ExternalAPIException {
         }
         LOGGER.info("Red days from Nager fetched");
     }
-
 
     private void saveRedDays(List<RedDaysFromNagerDto> redDaysArray) {
         for (RedDaysFromNagerDto redDays : redDaysArray) {

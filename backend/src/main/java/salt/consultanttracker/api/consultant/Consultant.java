@@ -18,7 +18,6 @@ public class Consultant {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-
     private String fullName;
     private String email;
     private Long timekeeperId;
