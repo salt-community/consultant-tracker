@@ -1,10 +1,10 @@
-import {ChangeEvent, useEffect} from "react";
-import {TextInput} from "../text-input"
+import { ChangeEvent, useEffect } from "react";
+import { TextInput } from "../text-input";
 import "./filter.css";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import {useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   setDebounceFilterName,
   setFilterClients,
@@ -14,13 +14,13 @@ import {
   setListOfClients,
   setListOfPts,
 } from "../../store/slices/FilterFieldSlice";
-import {setPage} from "../../store/slices/PaginationSlice";
-import {AppDispatch, RootState} from "../../store/store";
+import { setPage } from "../../store/slices/PaginationSlice";
+import { AppDispatch, RootState } from "../../store/store";
 import Multiselect from "./multiselect/multiselect";
-import {getAllClientsAndPts} from "../../api";
-import {ClientsAndPtsListResponseType} from "../../types";
-import {useAuth} from "@clerk/clerk-react";
-import {template} from "../../constants";
+import { getAllClientsAndPts } from "../../api";
+import { ClientsAndPtsListResponseType } from "../../types";
+import { useAuth } from "@clerk/clerk-react";
+import { template } from "../../constants";
 
 export const FilterField = () => {
   const filterPts = useSelector(
@@ -42,7 +42,7 @@ export const FilterField = () => {
     (state: RootState) => state.filterField.includePgps
   );
 
-  const {getToken, signOut} = useAuth();
+  const { getToken, signOut } = useAuth();
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -88,10 +88,10 @@ export const FilterField = () => {
         dispatch(setListOfClients(res.clients));
       }
     );
-  }
+  };
   const getAccessToken = async () => {
     let token: string | null = "";
-    token = await getToken({template});
+    token = await getToken({ template });
     if (!token) {
       await signOut();
       return;
@@ -129,19 +129,31 @@ export const FilterField = () => {
           selected={filterPts}
           label="Responsible P&T"
         />
-        <Button onClick={handleClear} variant="contained" style={{backgroundColor: "#FC7961", color: "#f3f4f6", fontWeight: 500, borderRadius:"25px", fontStyle: "bold"}}>
+        <Button
+          onClick={handleClear}
+          variant="contained"
+          style={{
+            backgroundColor: "#F35C7F",
+            color: "#f3f4f6",
+            fontWeight: 500,
+            borderRadius: "25px",
+            fontStyle: "bold",
+          }}
+        >
           Clear filter
         </Button>
         <div className="filter-by__consultants">
           <FormControlLabel
-            control={<Checkbox 
-              sx={{
-                color: 'black',
-                '&.Mui-checked': {
-                  color: 'black',
-                },
-              }}
-            />}
+            control={
+              <Checkbox
+                sx={{
+                  color: "black",
+                  "&.Mui-checked": {
+                    color: "black",
+                  },
+                }}
+              />
+            }
             label="Include PGPs"
             checked={includePgps}
             onChange={handlePgpSelection}
@@ -150,5 +162,4 @@ export const FilterField = () => {
       </fieldset>
     </section>
   );
-}
-
+};

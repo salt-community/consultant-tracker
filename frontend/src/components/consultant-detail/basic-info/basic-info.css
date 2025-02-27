@@ -45,12 +45,17 @@
 
 .show {
   display: flex;
-  border: 1.5px solid #fc7861cb;
+  border: 1.5px solid #0f2d45;
+  border-radius: 5px;
+  border-top: 0;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
 }
 
 .hide {
   display: none;
-  border: 1.5px solid #fc7861cb;
+  border: 1.5px solid #0f2d45;
+  border-radius: 5px;
 }
 
 .close_button {

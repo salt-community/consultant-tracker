@@ -5,16 +5,14 @@
   font-size: 15px;
 }
 
-h5{
-    font-size: 15px;
-    padding-right: 5px;
+h5 {
+  font-size: 15px;
+  padding-right: 5px;
 }
-span{
-    
-}
-
-.infographic-amount{
-    font-size: 16px;
-    color: #F36384;
+span {
 }
 
+.infographic-amount {
+  font-size: 16px;
+  color: #f35c7f;
+}

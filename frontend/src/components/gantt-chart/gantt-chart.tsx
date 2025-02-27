@@ -3,8 +3,7 @@ import "./gantt-chart.css";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
-// import { IoIosInformationCircleOutline } from "react-icons/io";
-import InfoIcon from '@mui/icons-material/Info';
+import InfoIcon from "@mui/icons-material/Info";
 import {
   setError,
   setGroups,
@@ -109,21 +108,20 @@ export const GanttChart = () => {
           <span
             style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
           >
-            <InfoIcon sx={{ color: "#FC7961" }} />
+            <InfoIcon sx={{ color: "#F35C7F" }} />
             Info
           </span>
         }
         content={<Legend />}
       />
       <div className="table-header">
-        <DashboardHeader/>
+        <DashboardHeader />
         <Pagination />
       </div>
       <div className="gantt-chart__wrapper">
         <TimelineComponent />
         {id.length > 0 && <BasicInfo />}
       </div>
-      
     </div>
   );
 };

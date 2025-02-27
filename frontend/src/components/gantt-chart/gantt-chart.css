@@ -14,12 +14,12 @@
   z-index: 1;
 }
 
-.holidayNO {
+/* .holidayNO {
   background: rgb(245, 212, 166);
-}
+} */
 
 .holidaySE {
-  background: rgb(244, 171, 159);
+  background: rgb(217, 42, 15);
 }
 
 .react-calendar-timeline .rct-vertical-lines .rct-vl.rct-day-6,
