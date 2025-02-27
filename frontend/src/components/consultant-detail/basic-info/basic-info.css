@@ -1,80 +1,73 @@
 .basic-info__data {
-    display: flex;
-    gap: 10px;
-    width: 70%;
-    box-shadow: rgba(0, 0, 0, 0.45) 0 25px 20px -20px;
-    border: 1.5px solid #fc7861cb;
-    border-radius: 5px;
+  display: flex;
+  gap: 10px;
+  width: 70%;
+  border: 1.5px solid #fc7861cb;
+  border-radius: 5px;
 }
 
-.css-1a4cg4j-MuiButtonBase-root-MuiTab-root.Mui-selected{
-    color: #fc7861cb;
-    /* background-color: #fc7861cb; */
-    -webkit-text-fill-color: black;
-}
-
-.css-11yukd5-MuiTabs-indicator {
-    /* background-color: #fc7861cb; */
+.css-1a4cg4j-MuiButtonBase-root-MuiTab-root.Mui-selected {
+  color: #fc7861cb;
+  -webkit-text-fill-color: black;
 }
 
 .basic-info__wrapper {
-    display: flex;
-    padding-top: 30px;
-    padding-bottom: 20px;
-    width: 100%;
-    gap: 15px;
-    
+  display: flex;
+  padding-top: 30px;
+  padding-bottom: 20px;
+  width: 100%;
+  gap: 15px;
 }
 
 .basic-info__data .MuiInputBase-root {
-    font-size: large;
-    font-weight: 500;
+  font-size: large;
+  font-weight: 500;
 }
 
 .basic-info__data .MuiInputBase-input.Mui-disabled {
-    -webkit-text-fill-color: black;
+  -webkit-text-fill-color: black;
 }
 
 .basic-info-section {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .avatar {
-    width: 100px;
-    height: 100px;
-    background-size: cover;
-    background-repeat: no-repeat;
-    align-self: start;
-    border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  align-self: start;
+  border-radius: 50%;
 }
 
 .show {
-    display: flex;
-    border: 1.5px solid #fc7861cb;
+  display: flex;
+  border: 1.5px solid #fc7861cb;
 }
 
 .hide {
-    display: none;
-    border: 1.5px solid #fc7861cb;
+  display: none;
+  border: 1.5px solid #fc7861cb;
 }
 
-.close_button{
-    color: #fff;
-    background-color:rgb(252, 121, 97);
-    border-radius: 25px;
-    height: 24px;
-    width: 30px;
-    text-align: center;
-    justify-content: center;
-    align-items: center;
-    display: flex;
-    padding: 1px;
-    margin-left: 10px;
-    border: none;
+.close_button {
+  color: #fff;
+  background-color: rgb(252, 121, 97);
+  border-radius: 25px;
+  height: 24px;
+  width: 30px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  padding: 1px;
+  margin-left: 10px;
+  border: none;
 }
 
-.close_button:hover{
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.278);
+.close_button:hover {
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.278);
 }
