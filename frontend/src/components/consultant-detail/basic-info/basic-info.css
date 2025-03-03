@@ -2,7 +2,7 @@
   display: flex;
   gap: 10px;
   width: 70%;
-  border: 1.5px solid #fc7861cb;
+  border: 1.5px solid #9c27b0;
   border-radius: 5px;
 }
 
@@ -13,8 +13,7 @@
 
 .basic-info__wrapper {
   display: flex;
-  padding-top: 30px;
-  padding-bottom: 20px;
+  padding: 20px 0;
   width: 100%;
   gap: 15px;
 }
@@ -60,7 +59,7 @@
 
 .close_button {
   color: #fff;
-  background-color: rgb(252, 121, 97);
+  background-color: rgb(243, 92, 127);
   border-radius: 25px;
   height: 24px;
   width: 30px;
@@ -69,8 +68,9 @@
   align-items: center;
   display: flex;
   padding: 1px;
-  margin-left: 10px;
+  margin-right: 10px;
   border: none;
+  cursor: pointer;
 }
 
 .close_button:hover {

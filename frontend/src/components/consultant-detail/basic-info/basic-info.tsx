@@ -47,12 +47,6 @@ export const BasicInfo = () => {
   return (
     personalData && (
       <div className={openModal ? "basic-info__wrapper show" : "hide"}>
-        <button
-          className="close_button"
-          onClick={() => dispatch(setOpenModal(false))}
-        >
-          &times;
-        </button>
         <BasicInfoHeader
           name={personalData.fullName}
           githubImageUrl={personalData.gitHubImgUrl}
@@ -61,6 +55,12 @@ export const BasicInfo = () => {
           <CardDetails />
         </div>
         <TimeItemDetails />
+        <button
+          className="close_button"
+          onClick={() => dispatch(setOpenModal(false))}
+        >
+          &times;
+        </button>
       </div>
     )
   );
