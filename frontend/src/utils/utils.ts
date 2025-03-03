@@ -11,50 +11,50 @@ export const selectColor = (type: string) => {
   switch (type) {
     case "Konsult-tid":
     case "Egen administration":
-      return "#1C7293";
+      return "#87d5f8";
     case "Semester":
-      return "#285943";
+      return "#9AE66E";
     case "Sjuk":
-      return "#D46B3F";
+      return "#F0B967";
     case "Tjänstledig":
-      return "#A65AB3";
+      return "#CE81F8";
     case "Remaining Days":
-      return "#9EB3C2";
+      return "#b4c4cc";
     case "Föräldraledig":
     case "VAB":
-      return "#645C5C";
+      return "#918181";
     default:
-      return "#A8201A";
+      return "#FA6977";
   }
 };
 
 export const legend = [
   {
-    color: "#1C7293",
+    color: "#87d5f8",
     description: "Working hours (Konsult-tid)",
   },
   {
-    color: "#285943",
+    color: "#9AE66E",
     description: "Vacation (Semester)",
   },
   {
-    color: "#D46B3F",
+    color: "#F0B967",
     description: "Sick leave (Sjuk)",
   },
   {
-    color: "#A65AB3",
+    color: "#CE81F8",
     description: "Off-duty (Tjänstledig)",
   },
   {
-    color: "#9EB3C2",
+    color: "#b4c4cc",
     description: "Remaining Days (Dagar kvar)",
   },
   {
-    color: "#645C5C",
+    color: "#918181",
     description: "Parental leave (Föräldraledig/VAB)",
   },
   {
-    color: "#A8201A",
+    color: "#FA6977",
     description: "No registered time (Ej registrerad tid)",
   },
 ];
