@@ -90,6 +90,22 @@ class RegisteredTimeServiceTest {
         assertEquals(250D, actualResult);
     }
 
+
+    @Test
+    public void shouldReturnTotalWorkedDays() {
+        Mockito.lenient().when(registeredTimeRepository.countAllById_ConsultantIdAndTypeIs (
+                        listOfConsultantIds.get(0),
+                        CONSULTANCY_TIME.activity))
+                .thenReturn(Optional.of(150));
+        Mockito.lenient().when(registeredTimeRepository.countAllById_ConsultantIdAndTypeIs(
+                        listOfConsultantIds.get(0),
+                        OWN_ADMINISTRATION.activity))
+                .thenReturn(Optional.of(100));
+        double actualResult = registeredTimeService.countTotalWorkedDays(listOfConsultantIds.get(0));
+        assertEquals(250, actualResult);
+    }
+
+
     @Test
     public void shouldReturnNoItemsWhenListIncludesOnlyWronglyRegisteredTime(){
         List<RegisteredTime> mockedTimeItemsList = RegisteredTimeServiceMockedData.createAllWronglyRegisteredTimeMockedData();

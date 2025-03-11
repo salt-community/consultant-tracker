@@ -157,7 +157,8 @@ public class RegisteredTimeService {
         return getTotalAdministrationHour + getTotalConsultancyHour;
     }
 
-    private int countTotalWorkedDays(UUID consultantId) {
+    //-----------------------------COVERED BY TESTS ---------------------------------
+    protected int countTotalWorkedDays(UUID consultantId) {
         int countOfWorkedDays = registeredTimeRepository.countAllById_ConsultantIdAndTypeIs(consultantId, CONSULTANCY_TIME.activity).orElse(0);
         countOfWorkedDays += registeredTimeRepository.countAllById_ConsultantIdAndTypeIs(consultantId, OWN_ADMINISTRATION.activity).orElse(0);
         return countOfWorkedDays;
