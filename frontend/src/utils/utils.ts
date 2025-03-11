@@ -58,20 +58,20 @@ export const legend = [
     description: "No registered time (Ej registrerad tid)",
   },
 ];
-// export const redDaysAndWeekends =[
-//   {
-//     color: "#f5d1d7",
-//     description: "Weekends "
-//   },
-//   {
-//     color: "#F5D4A6FF",
-//     description: "Holiday Norway "
-//   },
-//   {
-//     color: "#F4AB9FFF",
-//     description: "Holiday Sweden "
-//   },
-// ]
+export const redDaysAndWeekends =[
+  {
+    color: "#fcb3dd",
+    description: "Weekends "
+  },
+  {
+    color: "#ffcd7d",
+    description: "Holiday Norway "
+  },
+  {
+    color: "#d92a0f",
+    description: "Holiday Sweden "
+  },
+]
 
 export const mapGroups = (res: any) => {
   return res.consultants.map((el: ConsultantFetchType) => {
