@@ -13,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -36,6 +37,9 @@ class RegisteredTimeServiceTest {
     private RegisteredTimeService registeredTimeService;
     private final List<UUID> listOfConsultantIds = new ArrayList<>(List.of(UUID.fromString("68c670d6-3038-4fca-95be-2669aaf0b549"),
             UUID.fromString("0239ceac-5e65-40a6-a949-5492c22b22e3")));
+
+    LocalDateTime expectedEndDate = LocalDateTime.of(2024, 3, 10, 12, 0);
+
 
     @BeforeEach
     public void setUp() {
@@ -118,5 +122,21 @@ class RegisteredTimeServiceTest {
         List<RegisteredTime> mockedTimeItemsList = RegisteredTimeServiceMockedData.createSomeWronglyRegisteredTimeMockedData();
         List<RegisteredTime> actualResult = registeredTimeService.filterOutIncorrectlyRegisteredTimeDB(mockedTimeItemsList);
         assertEquals(2, actualResult.size());
+    }
+
+    @Test
+    public void shouldGetRemainingConsultancyTimeByConsultantId() {
+
+        RegisteredTime mockRegisteredTime = Mockito.mock(RegisteredTime.class);
+        LocalDateTime expectedEndDate = LocalDateTime.of(2024, 3, 10, 12, 0);
+        Mockito.when(mockRegisteredTime.getEndDate()).thenReturn(expectedEndDate);
+        Mockito.when(registeredTimeRepository.findFirstById_ConsultantIdOrderByEndDateDesc(
+                        listOfConsultantIds.get(0)))
+                .thenReturn(mockRegisteredTime);
+
+        LocalDateTime result = registeredTimeRepository.findFirstById_ConsultantIdOrderByEndDateDesc(
+                listOfConsultantIds.get(0)).getEndDate();
+
+        Assertions.assertEquals(expectedEndDate, result);
     }
 }
